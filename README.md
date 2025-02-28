@@ -18,7 +18,7 @@ If one is using bash shell, then things can be simplified with a command alias p
 
 The file [discount.c_](https://github.com/cHaR-shinigami/c_/blob/main/examples/compile/discount.c_) in contains an introductory example, which can be compiled as: `cc_ lib.c_ discount.c_` (assuming `compile/` is the current directory). If things go well, we can run the executable as `./a.out 4` (the program expects number of items as a command-line argument). Executing the script [build.sh](https://github.com/cHaR-shinigami/c_/blob/main/examples/build.sh) creates an additional directory named `object/` to store object files; it enables several warnings and optimizations for the compiler (`gcc` or `clang`), whose details can be found in the documentation.
 
-**Note**: Some of the code may not compile with older versions of `gcc` and `clang`, due to the use of C23 features that are supported in recent versions.
+**Note**: Some of the code may not compile with older versions of `gcc` and `clang`, due to the use of C23 features whose support was added in recent versions.
 
 ## If a library is worth writing, it is also worth documenting
 
