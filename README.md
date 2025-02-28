@@ -22,6 +22,6 @@ The file [discount.c_](https://github.com/cHaR-shinigami/c_/blob/main/examples/c
 
 ## If a library is worth writing, it is also worth documenting
 
-The full documentation has been prepared in LaTeX and the accompanying file [c_.pdf](https://github.com/cHaR-shinigami/c_/blob/main/c_.pdf) is the generated outcome: it specify the syntax, constraints, and semantics of various features in C_, without describing the implementation details. Programmers are free to write their own implementation of C_ that conforms to or refines the abstract semantics described in this document.
+The full documentation has been prepared in LaTeX and the accompanying file [c_.pdf](https://github.com/cHaR-shinigami/c_/blob/main/c_.pdf) is the generated outcome: it specifies the syntax, constraints, and semantics of various features in C_, without describing the implementation details. Programmers are free to write their own implementation of C_ that conforms to or refines the abstract semantics described in this document.
 
 The intent of documenting C_ in terms of its abstract semantics is two-fold: firstly, readers need not get bogged down to implementation details, which can often be an unnecessary distraction. The second reason is more important: this approach isolates the abstract behavior from any particular concrete implementation, which allows a future scope of providing more efficient translators for C_. Any serious discrepancy between the reference implementation and contents of the documentation is unintentional, and may be considered as a "bug".
