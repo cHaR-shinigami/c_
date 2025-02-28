@@ -1,0 +1,30 @@
+#ifndef CLASS__
+#define CLASS__
+
+#include <object._>
+
+#define class__c_(C, I, ...) C, __VA_ARGS__\
+ extern const struct Typex (I) property_c_(C, I)[];
+
+#define class_c_(...) class__c_(__VA_ARGS__)
+
+#define class_0_(C, ...) echo_(pop_ C_(pop_(, o__\
+(class_c_, COUNT_(__VA_ARGS__), (C, __VA_ARGS__,)))))\
+ class_1_(C)
+
+#define class_1_(C)\
+ typedef_c_(C, struct C)\
+ solvers_c_(C)\
+ extern const struct Type property_c_(C, Type)[];\
+ struct C {	union \
+{	struct echo_(top_ C_(cat_(C, _EXTENDS),)) base[1];\
+	Type_ type;\
+};
+
+#define class_(...) get_(COUNT_(__VA_ARGS__), class_0_,, class_1_)(__VA_ARGS__)
+
+#define implements ,
+
+#define fin };
+
+#endif

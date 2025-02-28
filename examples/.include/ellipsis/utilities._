@@ -1,0 +1,61 @@
+#ifndef UTILITIES__
+#define UTILITIES__
+
+#include <count._>
+
+#define echo_c_(...) __VA_ARGS__
+
+#define nothing_c_
+
+#define   thing_c_(...) echo_c_(thing_c_)__VA_ARGS__
+
+#define peel_c_(...) no ## __VA_ARGS__
+
+#define peel_(...) echo_c_(peel_c_ C_(echo_c_(thing_c_)__VA_ARGS__))
+
+#define reverse_c_(args) (pop_ top_(args,)), top_ pop_(, args)
+
+#define reverse_(...) echo_(pop_ C_(echo_\
+   (o__(reverse_c_, COUNT_(__VA_ARGS__), ((__VA_ARGS__,))))))
+
+#define PP_RANGE 1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,\
+ 14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,\
+ 30,  31,  32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,\
+ 46,  47,  48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,\
+ 62,  63,  64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,\
+ 78,  79,  80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,\
+ 94,  95,  96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109,\
+110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125
+
+#define dec_c_(...) pop_(__VA_ARGS__), PP_MAW
+
+#define DEC_(n) echo_(top_ C_(echo_\
+   (o__(dec_c_, n, (PP_MAX, 0, PP_RANGE)))))
+
+#define inc_c_(...) pop_(__VA_ARGS__), 0
+
+#define INC_(n) echo_(top_ C_(echo_\
+   (o__(inc_c_, n, (PP_RANGE, PP_MAW, PP_MAX)))))
+
+#define get_c_(...) top_(__VA_ARGS__),\
+ pop_ C_(pop_(__VA_ARGS__), top_(__VA_ARGS__))
+
+#define get_(i, d, ...) echo_(top_ C_(echo_(pop_ C_(echo_\
+   (o__(get_c_, i, (d, __VA_ARGS__))))),))
+
+#define mux_0_c_(top, ...) __VA_ARGS__
+
+#define mux_1_c_(top, ...) top
+
+#define mux_c_(bool) echo_(cat_ C_(mux_, cat_(bool, _c_)))
+
+#define mux_(n) mux_c_(get_(n, 1, 0))
+
+#define repeat_c_(args) top_(args,), echo_ args
+
+#define repeat__(n, ...) mux_(n)(echo_ pop_\
+ (, o__(repeat_c_, DEC_(n), ((__VA_ARGS__)))),)
+
+#define unary_(n) repeat__(n,)
+
+#endif

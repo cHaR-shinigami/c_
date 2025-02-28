@@ -1,0 +1,60 @@
+#ifndef OMNI__
+#define OMNI__
+
+#include <hof_c._>
+
+#define omni_3_(l, fun, ...) \
+begin\
+	hof_array_c_(omni_c_(echo_(l),), #l, OMNI__, _l)\
+	hof_funcn_c_(echo_(fun), #fun, OMNI__)\
+	hof_array_c_(omni_c_(echo_(__VA_ARGS__),lvalue__), #__VA_ARGS__, OMNI__,_r)\
+	let Size_ _i_ = 0, _j_;\
+	if   (_len_l > _len_r)\
+		for (; _i_ < _len_l; _i_++)\
+			(*_l)[_i_] = _f((*_l)[_i_], (*_r)[_i_ % _len_r]);\
+	elif (_len_l < _len_r)\
+		for (; _i_ < _len_r; _i_++) _j_ = _i_ % _len_l,\
+			(*_l)[_j_] = _f((*_l)[_j_], (*_r)[_i_]);\
+	else\
+		for (; _i_ < _len_l; _i_++)\
+			(*_l)[_i_] = _f((*_l)[_i_], (*_r)[_i_]); \
+end
+
+#define omni_4_(d, l, fun, ...) \
+begin\
+	hof_array_c_(omni_c_(echo_(d),), #d, OMNI__, _d)\
+	hof_array_c_(omni_c_(echo_(l), lvalue__), #l, OMNI__, _l)\
+	hof_funcn_c_(echo_(fun), #fun, OMNI__)\
+	hof_array_c_(omni_c_(echo_(__VA_ARGS__),lvalue__), #__VA_ARGS__, OMNI__,_r)\
+	Var _len = _len_d <= _len_l ? _len_d : _len_l;\
+	let Size_ _i_ = 0, _j_;\
+	if (_d == _r)\
+	{	for (; _i_ < _len  ; _i_++)\
+			(*_d)[_i_] = _f((*_l)[_i_], (*_r)[_i_]);\
+		for (; _i_ < _len_d; _i_++) _j_ = _i_ % _len,\
+			(*_d)[_j_] = _f((*_d)[_j_], (*_r)[_i_]);\
+		break;\
+	}\
+	if (_d != _l) for (; _i_ < _len; _i_++) (*_d)[_i_] = (*_l)[_i_];\
+	_i_ = 0;\
+	if   (_len > _len_r)\
+		for (; _i_ < _len  ; _i_++)\
+			(*_d)[_i_] = _f((*_d)[_i_], (*_r)[_i_ % _len_r]);\
+	elif (_len < _len_r)\
+		for (; _i_ < _len_r; _i_++) _j_ = _i_ % _len,\
+			(*_d)[_j_] = _f((*_d)[_j_], (*_r)[_i_]);\
+	else\
+		for (; _i_ < _len_r; _i_++)\
+			(*_d)[_i_] = _f((*_d)[_i_], (*_r)[_i_]); \
+end
+
+#define omni_(...) poly_3_(omni_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  OMNI__
+#ifndef DEBUG
+#define OMNI__ 0
+#else
+#define OMNI__ 1
+#endif

@@ -1,0 +1,24 @@
+#ifndef FENV__
+#define FENV__
+
+#include <fenv.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Fenv,
+ fenv_t)
+
+typedef_c_
+(Fexcept,
+ fexcept_t)
+
+#ifdef  __STDC_VERSION_FENV_H__
+
+typedef_c_
+(Femode,
+ femode_t)
+
+#endif
+
+#endif

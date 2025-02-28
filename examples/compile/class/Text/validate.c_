@@ -1,0 +1,12 @@
+#include "Text._"
+
+procedure_(Bool_, (Text, validate),
+(let Ptr (Text), this))
+	Var buffer = this->buffer;
+	Var length = this->length;
+	guard_((buffer iff length), FALSE_())
+	guard_( buffer, TRUE_())
+	for (Var_ i_ = (Size)0; i_ < length; i_++)
+		guard_((UByte) buffer[i_]  <=  255, FALSE_())
+	return ! buffer[length - 1];
+end

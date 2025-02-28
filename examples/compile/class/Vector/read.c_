@@ -1,0 +1,11 @@
+#include  "Vector._"
+
+procedure_(Vector_*, (Vector, read),
+(let Ptr  (Vector_), this),
+(let Stream, in))
+	Var   type = this->type;
+	this->type = (Type)typex_(Collection, Vector);
+	Var    col = solver_(Collection, read)(abstract_(Collection, this), in);
+	this->type = type;
+	return col? col->concrete_ : NULL;
+end

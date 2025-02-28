@@ -1,0 +1,16 @@
+#include  "List._"
+
+procedure_(List_*, (List, add),
+(let  Ptr (List_), sum),
+(let  Ptr (List ), augend),
+(let  Ptr (List ), addend))
+	Var join = validate_(sum)? sum : new__(*sum);
+	guard_(join, NULL)
+	if (join != sum) *join = (List){.type = type_(List)};
+	Var cat = solver_(Chain, add)(join->base, augend->base, addend->base);
+	guard_(cat, (test_(join != sum, free(join)), NULL))
+	post_ (cat == join->base);
+	Var   species = super(augend->species, addend->species);
+	join->species = join->species? super(join->species, species) : species;
+	return join;
+end

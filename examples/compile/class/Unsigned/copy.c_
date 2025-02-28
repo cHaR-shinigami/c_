@@ -1,0 +1,11 @@
+#include  "Unsigned._"
+
+procedure_(Unsigned_*, (Unsigned, copy),
+(let  Ptr (Unsigned_), this),
+(let  Ptr (Unsigned ), that))
+	Var  copy = need__(this);
+	guard_(copy, NULL)
+	if (!this) copy->type = type_(Unsigned);
+	copy->value = that->value;
+	return copy;
+end

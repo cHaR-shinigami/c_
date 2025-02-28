@@ -1,0 +1,25 @@
+#ifndef SPECIFIERS__
+#define SPECIFIERS__
+
+#include <statements._>
+
+#define Auto  auto const
+#define Auto_ auto
+
+#define let  register
+
+#define Var  let Auto
+#define Var_ let Auto_
+
+#define private static
+
+#define public  inline
+
+#define typedef_c_(T, ...)\
+ typedef __VA_ARGS__ cat_(T, _);\
+ typedef const cat_(T, _) T;
+
+#define typedef_(T, ...)\
+ typedef_c_(T, typeof_unqual (__VA_ARGS__))
+
+#endif

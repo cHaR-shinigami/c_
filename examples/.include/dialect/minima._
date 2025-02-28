@@ -1,0 +1,75 @@
+#ifndef MINIMA__
+#define MINIMA__
+
+#include <extrema._>
+
+#ifndef __STDC_IEC_60559_DFP__
+#define DEC_MIN_C
+#else
+#define DEC_MIN_C\
+ Decimal32_ : DEC32_MIN,\
+ Decimal64_ : DEC64_MIN,\
+ Decimal128_:DEC128_MIN,
+#endif
+
+#ifndef   INT8_MIN
+#define   INT8_MIN_C
+#else
+#define   INT8_MIN_C Int8_  : INT8_MIN,
+#endif
+
+#ifndef  INT16_MIN
+#define  INT16_MIN_C
+#else
+#define  INT16_MIN_C Int16_ : INT16_MIN,
+#endif
+
+#ifndef  INT32_MIN
+#define  INT32_MIN_C
+#else
+#define  INT32_MIN_C Int32_ : INT32_MIN,
+#endif
+
+#ifndef  INT64_MIN
+#define  INT64_MIN_C
+#else
+#define  INT64_MIN_C Int64_ : INT64_MIN,
+#endif
+
+#ifndef INTPTR_MIN
+#define INTPTR_MIN_C
+#else
+#define INTPTR_MIN_C Intptr_:INTPTR_MIN,
+#endif
+
+#define min_c_(T) ((T)(!has_sign_(T) ? 0 : _Generic((T)0,\
+   Char_ :  CHAR_MIN,\
+   Byte_ :  BYTE_MIN,\
+  Short_ : SHORT_MIN,\
+    Int_ :   INT_MIN,\
+   Long_ :  LONG_MIN,\
+  LLong_ : LLONG_MIN,\
+  Float_ :   FLT_MIN,\
+ Double_ :   DBL_MIN,\
+LDouble_ :  LDBL_MIN, DEC_MIN_C\
+ default : _Generic ((T)0, INT8_MIN_C INT16_MIN_C INT32_MIN_C INT64_MIN_C\
+ default : _Generic ((T)0, Int_least8_  : INT_LEAST8_MIN,\
+ default : _Generic ((T)0, Int_least16_ : INT_LEAST16_MIN,\
+ default : _Generic ((T)0, Int_least32_ : INT_LEAST32_MIN,\
+ default : _Generic ((T)0, Int_least64_ : INT_LEAST64_MIN,\
+ default : _Generic ((T)0, Int_fast8_   : INT_FAST8_MIN,\
+ default : _Generic ((T)0, Int_fast16_  : INT_FAST16_MIN,\
+ default : _Generic ((T)0, Int_fast32_  : INT_FAST32_MIN,\
+ default : _Generic ((T)0, Int_fast64_  : INT_FAST64_MIN,\
+ default : _Generic ((T)0, Intmax_      :     INTMAX_MIN,\
+ default : _Generic ((T)0, Ptrdiff_     :    PTRDIFF_MIN,\
+ default : _Generic ((T)0, Sig_atomic_  : SIG_ATOMIC_MIN,\
+ default : _Generic ((T)0, WChar_       :      WCHAR_MIN,\
+ default : _Generic ((T)0, WInt_        :       WINT_MIN,\
+ default : _Generic ((T)0, INTPTR_MIN_C\
+ default : -((((T)1 << (swidth_c_(T) - 2)) - 1)<<1 | 1) - (((T)-1 & 3)==3)\
+))))))))))))))))))
+
+#define min_(...) min_c_(echo_(__VA_ARGS__))
+
+#endif

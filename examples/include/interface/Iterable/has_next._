@@ -1,0 +1,16 @@
+#ifndef   ITERABLE__HAS_NEXT__
+#define   ITERABLE__HAS_NEXT__
+
+#include "Iterable._"
+
+private
+protocol_(Bool_, (Iterable, has_next),
+(let Typex (Iterable), typex),
+(let Ptr (Iterator), iterator))
+	pre_(is_typex(typex));
+	pre_(typex->has_next != NULL);
+	pre_(iterator != NULL);
+	return solver_(Iterable, has_next)(typex, iterator);
+end
+
+#endif

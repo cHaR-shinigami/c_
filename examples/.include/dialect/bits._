@@ -1,0 +1,438 @@
+#ifndef BITS__
+#define BITS__
+
+#include <allocation._>
+
+#include <stdint._>
+
+enum {BITS_WIDTH = UINT_FAST8_WIDTH};
+
+#define  bitcount_(...)  ((Size)(CHAR_BIT * sizeof *(__VA_ARGS__)))
+
+#define wordcount_(...)  ((Size)\
+ ((BITS_WIDTH-1 + (Size)(0|(__VA_ARGS__))) / BITS_WIDTH))
+
+#define bits_1_(...)     new_2_c_(UInt_fast8_, wordcount_(__VA_ARGS__))
+
+#define bits_2_(n, ...)  new_3_c_(UInt_fast8_, wordcount_(n), -!!(__VA_ARGS__))
+
+#define bits_(...) poly_3_(bits_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+typedef UInt_fast8  Bits [];
+typedef UInt_fast8_ Bits_[];
+
+ public Bool_ bit_0_c
+(	let LLong _len,
+	let Ptr_c(Bits) _bits,
+	let LLong _pos
+)
+{	guard_2_(_bits, 0)
+	let LLong  _bc = BITS_WIDTH*_len,
+	_i  =  _pos<0 ?  _pos + _bc : _pos;
+	guard_2_(_i >= 0  &&   _i < _bc, 0)
+	return (*_bits)[_i/BITS_WIDTH] >> _i%BITS_WIDTH  &  1;
+}
+#define bit_0_c_(b, i, ...) bit_0_c(length_c_(b), b, i)
+
+ public Bool_ bit_1_c
+(	let LLong _len,
+	let Ptr_c(Bits) _bits,
+	let LLong _pos,
+	let Site _site,
+	let Ptr_c(Char) _text,
+	let Ptr_c(Char) _undr,
+	let Ptr_c(Char) _over
+)
+{	if (!_bits) notnull_c(NULL, _text, _site);
+	let LLong  _bc = BITS_WIDTH*_len,
+	_i  =  _pos<0 ?  _pos + _bc : _pos;
+	assert_c_(_i >= 0 , _undr, _site, 1);
+	assert_c_(_i < _bc, _over, _site, 1);
+	return (*_bits)[_i/BITS_WIDTH] >> _i%BITS_WIDTH  &  1;
+}
+#define bit_1_c_(b, i, _b, _i) bit_1_c(length_c_(b), b, i, SITE, _b,\
+ "("_i") >= -bitcount_("_b")", "("_i") < bitcount_("_b")")
+
+#define BIT_C debug_c_(bit_, BITS__)
+
+#define bit__(b, ...) BIT_C(echo_(b), 0|(__VA_ARGS__), #b, #__VA_ARGS__)
+
+#define bit_( b, ...) \
+({ Var _ = b; BIT_C(_, 0|(__VA_ARGS__), #b, #__VA_ARGS__); })
+
+ public Bool_ set_0_c
+(	let LLong _len,
+	let Ptr_c(Bits_) _bits,
+	let LLong _pos,
+	let Bool  _bit
+)
+{	guard_2_(_bits, 0)
+	let LLong  _bc = BITS_WIDTH*_len,
+	_i  =  _pos<0 ?  _pos + _bc : _pos;
+	guard_2_(_i >= 0  &&   _i < _bc, 0)
+	let Ptr_c(UInt_fast8_) _word = & (*_bits)[_i/BITS_WIDTH];
+	let Size _j = _i%BITS_WIDTH;
+	let UInt_fast8 _mask  =  (UInt_fast8)1 << _j;
+	let Bool _old   =   *_word >> _j  &  1;
+	if (_bit) *_word |=  _mask;
+	else      *_word &= ~_mask;
+	return _old;
+}
+#define set_0_c_(b, i, ...) set_0_c(length_c_(b), b, i, 1)
+
+#define rst_0_c_(b, i, ...) set_0_c(length_c_(b), b, i, 0)
+
+ public Bool_ set_1_c
+(	let LLong _len,
+	let Ptr_c(Bits_) _bits,
+	let LLong _pos,
+	let Bool  _bit,
+	let Site _site,
+	let Ptr_c(Char) _text,
+	let Ptr_c(Char) _undr,
+	let Ptr_c(Char) _over
+)
+{	if (!_bits) notnull_c(NULL, _text, _site);
+	let LLong  _bc = BITS_WIDTH*_len,
+	_i  =  _pos<0 ?  _pos + _bc : _pos;
+	assert_c_(_i >= 0 , _undr, _site, 1);
+	assert_c_(_i < _bc, _over, _site, 1);
+	let Ptr_c(UInt_fast8_) _word = & (*_bits)[_i/BITS_WIDTH];
+	let Size _j = _i%BITS_WIDTH;
+	let UInt_fast8 _mask  =  (UInt_fast8)1 << _j;
+	let Bool _old   =   *_word >> _j  &  1;
+	if (_bit) *_word |=  _mask;
+	else      *_word &= ~_mask;
+	return _old;
+}
+#define set_1_c_(b, i, _b, _i) set_1_c(length_c_(b), b, i, 1, SITE, _b,\
+ "("_i") >= -bitcount_("_b")", "("_i") < bitcount_("_b")")
+
+#define rst_1_c_(b, i, _b, _i) set_1_c(length_c_(b), b, i, 0, SITE, _b,\
+ "("_i") >= -bitcount_("_b")", "("_i") < bitcount_("_b")")
+
+#define RST_C debug_c_(rst_, BITS__)
+
+#define rst__(b, ...) RST_C(echo_(b), 0|(__VA_ARGS__), #b, #__VA_ARGS__)
+
+#define rst_( b, ...) \
+({ Var _ = b; RST_C(_, 0|(__VA_ARGS__), #b, #__VA_ARGS__); })
+
+#define SET_C debug_c_(set_, BITS__)
+
+#define set__(b, ...) SET_C(echo_(b), 0|(__VA_ARGS__), #b, #__VA_ARGS__)
+
+#define set_( b, ...) \
+({ Var _ = b; SET_C(_, 0|(__VA_ARGS__), #b, #__VA_ARGS__); })
+
+#define bits_c_(f, _b, b) f(length_c_(b), notnull_c_(echo_(b), _b, BITS__))
+
+#define leading_zeros__(...) \
+bits_c_(leading_zeros, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define leading_zeros_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(leading_zeros, #__VA_ARGS__, _); })
+
+ public ULLong_ leading_zeros
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, 0)
+	let UInt_fast8_ _word_;
+	let ULLong_ _l0_ = 0;
+	for (let Size_ _i_ = 0; _i_ < _len; _i_++)
+		if (_word_ = (*_bits)[_i_])
+			for (; _word_; _word_ >>= 1, _l0_++)
+				stop_2_(_word_ & 1, _l0_)
+		else _l0_ += BITS_WIDTH;
+	return _l0_;
+}
+
+#define leading_ones__(...) \
+bits_c_(leading_ones, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define leading_ones_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(leading_ones, #__VA_ARGS__, _); })
+
+ public ULLong_ leading_ones
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, 0)
+	let UInt_fast8_ _word_;
+	let ULLong_ _l1_ = 0;
+	for (let Size_ _i_ = 0; _i_ < _len; _i_++)
+		if ((_word_ = (*_bits)[_i_]) != (UInt_fast8)-1)
+			for (; _word_; _word_ >>= 1, _l1_++)
+				guard_2_(_word_ & 1, _l1_)
+		else _l1_ += BITS_WIDTH;
+	return _l1_;
+}
+
+#define trailing_zeros__(...) \
+bits_c_(trailing_zeros, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define trailing_zeros_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(trailing_zeros, #__VA_ARGS__, _); })
+
+ public ULLong_ trailing_zeros
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, 0)
+	let UInt_fast8_ _word_;
+	let ULLong_ _t0_ = 0;
+	enum {_mask  =  (UInt_fast8)1 << BITS_WIDTH-1};
+	for (let Size_ _i_ = _len-1; _i_ < _len; _i_--)
+		if (_word_ = (*_bits)[_i_])
+			for (; _word_; _word_ <<= 1, _t0_++)
+				stop_2_(_word_ & _mask , _t0_)
+		else _t0_ += BITS_WIDTH;
+	return _t0_;
+}
+
+#define trailing_ones__(...) \
+bits_c_(trailing_ones, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define trailing_ones_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(trailing_ones, #__VA_ARGS__, _); })
+
+ public ULLong_ trailing_ones
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, 0)
+	let UInt_fast8_ _word_;
+	let ULLong_ _t1_ = 0;
+	enum {_mask  =  (UInt_fast8)1 << BITS_WIDTH-1};
+	for (let Size_ _i_ = _len-1; _i_ < _len; _i_--)
+		if ((_word_ = (*_bits)[_i_]) != (UInt_fast8)-1)
+			for (; _word_; _word_ <<= 1, _t1_++)
+				guard_2_(_word_ & _mask, _t1_)
+		else _t1_ += BITS_WIDTH;
+	return _t1_;
+}
+
+#define first_leading_zero__(...) \
+bits_c_(first_leading_zero, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define first_leading_zero_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(first_leading_zero, #__VA_ARGS__, _); })
+
+ public ULLong_ first_leading_zero
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, BITS_WIDTH * (ULLong)_len)
+	return leading_ones (_len, _bits);
+}
+
+#define first_leading_one__(...) \
+bits_c_(first_leading_one, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define first_leading_one_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(first_leading_one, #__VA_ARGS__, _); })
+
+ public ULLong_ first_leading_one
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, BITS_WIDTH * (ULLong)_len)
+	return leading_zeros(_len, _bits);
+}
+
+#define first_trailing_zero__(...) \
+bits_c_(first_trailing_zero, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define first_trailing_zero_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(first_trailing_zero, #__VA_ARGS__, _); })
+
+ public ULLong_ first_trailing_zero
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	let ULLong _bc = BITS_WIDTH*(ULLong)_len;
+	guard_2_(_bits, _bc)
+	let ULLong _t1 = trailing_ones (_len, _bits);
+	return _bc==_t1 ?  _bc : _bc-_t1 - 1;
+}
+
+#define first_trailing_one__(...) \
+bits_c_(first_trailing_one, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define first_trailing_one_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(first_trailing_one, #__VA_ARGS__, _); })
+
+ public ULLong_ first_trailing_one
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	let ULLong _bc = BITS_WIDTH*(ULLong)_len;
+	guard_2_(_bits, _bc)
+	let ULLong _t0 = trailing_zeros(_len, _bits);
+	return _bc==_t0 ?  _bc : _bc-_t0 - 1;
+}
+
+#define count_ones__(...) \
+bits_c_(count_ones, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define count_ones_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(count_ones, #__VA_ARGS__, _); })
+
+ public ULLong_ count_ones
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, 0)
+	let ULLong_ _n_ = 0;
+	for (let Size_ _i_ = 0; _i_ < _len; _i_++)
+		for (let UInt_fast8_ _word_ = (*_bits)[_i_]; _word_; _word_ >>= 1)
+			_n_ += _word_&1;
+	return  _n_;
+}
+
+#define count_zeros__(...) \
+bits_c_(count_zeros, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define count_zeros_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(count_zeros, #__VA_ARGS__, _); })
+
+ public ULLong_ count_zeros
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, 0)
+	return BITS_WIDTH*(ULLong)_len - count_ones(_len, _bits);
+}
+
+#define has_single_bit__(...) \
+bits_c_(has_single_bit, #__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define has_single_bit_( ...)    ({ Var _ = __VA_ARGS__; \
+bits_c_(has_single_bit, #__VA_ARGS__, _); })
+
+ public Bool_ has_single_bit
+(	let Size _len,
+	let Ptr_c(Bits) _bits
+)
+{	guard_2_(_bits, 0)
+	let Bool_ _hsb_ = 0;
+	let Size_ _i_   = 0;
+	for (; _i_ < _len; _i_++)
+	{	let UInt_fast8 _word = (*_bits)[_i_];
+		continue_(!_word)
+		stop_2_(_word-1 & _word, 0)
+		_hsb_ = 1;
+		break;
+	}
+	for (; _i_ < _len; _i_++)
+		stop_2_((*_bits)[_i_], 0)
+	return _hsb_;
+}
+
+#define rotate_bits_c_(_bits, shift, bits)\
+ rotate_bits(length_c_(bits), notnull_c_(echo_(bits), _bits, BITS__), 0|(shift))
+
+#define rotate_bits__(bits, ...)\
+ rotate_bits_c_(#bits, echo_(__VA_ARGS__), echo_(bits))
+
+#define rotate_bits_( bits, ...) ({ Var _ = bits;\
+ rotate_bits_c_(#bits, echo_(__VA_ARGS__), _); })
+
+ public Void_  rotate_bits
+(	let Size  _len,
+	let Ptr_c(Bits_) _bits,
+	let LLong _rot
+)
+begin
+	guard_1_(_bits)
+	let ULLong _bc = BITS_WIDTH*(ULLong)_len;
+	let ULLong _offset = _rot%_bc;
+	guard_1_  (_offset)
+	for(let ULLong_ _c_ = _bc, _i_ = 0; _c_; _i_++)
+	{	let ULLong _stop  =  _i_;
+		let Bool_ _bit_   =   (*_bits)[_i_/BITS_WIDTH] >> _i_%BITS_WIDTH  &  1;
+		begin
+			_i_ = (_i_ + _offset)%_bc;
+			let Ptr_c(UInt_fast8_) _word = & (*_bits)[_i_/BITS_WIDTH];
+			let UInt_fast8 _mask  =  (UInt_fast8)1 << _i_%BITS_WIDTH;
+			let Bool _bit  =  *_word & _mask;
+			if (_bit_) *_word |=  _mask;
+			else       *_word &= ~_mask;
+			_bit_ = _bit;
+			_c_--;
+		end_(_stop == _i_)
+	}
+end
+
+#define shift_c_(f, _bits, shift, bit, bits)\
+ f(length_c_(bits), notnull_c_(echo_(bits), _bits, BITS__), 0|(shift), bit)
+
+#define  left_shift__(bits, shift, ...) \
+shift_c_(left_shift, #bits, echo_(shift), echo_(__VA_ARGS__), echo_(bits))
+
+#define  left_shift_( bits, shift, ...) ({ Var _ = bits; \
+shift_c_(left_shift, #bits, echo_(shift), echo_(__VA_ARGS__), _); })
+
+ public Void_ left_shift
+(	let Size _len,
+	let Ptr_c(Bits_) _bits,
+	let ULLong _sh,
+	let Bool _bit
+)
+begin
+	guard_1_(_sh &&  _bits)
+	let ULLong  _bc = BITS_WIDTH*(ULLong)_len;
+	guard_1_(_sh <= _bc)
+	let ULLong_ _i_ = 0;
+	for (let ULLong_ _j_ = _sh; _j_ < _bc; _i_++, _j_++)
+	{	let Ptr_c(UInt_fast8_) _word = & (*_bits)[_i_/BITS_WIDTH];
+		let UInt_fast8 _mask  =  (UInt_fast8)1 << _i_%BITS_WIDTH;
+		if ((*_bits)[_j_/BITS_WIDTH] >> _j_%BITS_WIDTH  &  1)
+		     *_word |=  _mask;
+		else *_word &= ~_mask;
+	}
+	let UInt_fast8 _mask = ((UInt_fast8)1 << _i_%BITS_WIDTH)-1;
+	_i_ /= BITS_WIDTH;
+	if (_bit) for ((*_bits)[_i_] |= ~_mask; ++_i_ < _len;) (*_bits)[_i_] = -1;
+	else      for ((*_bits)[_i_] &=  _mask; ++_i_ < _len;) (*_bits)[_i_] =  0;
+end
+
+#define  shift_right__(bits, shift, ...) \
+shift_c_(shift_right, #bits, echo_(shift), echo_(__VA_ARGS__), echo_(bits))
+
+#define  shift_right_( bits, shift, ...) ({ Var _ = bits; \
+shift_c_(shift_right, #bits, echo_(shift), echo_(__VA_ARGS__), _); })
+
+ public Void_ shift_right
+(	let Size _len,
+	let Ptr_c(Bits_) _bits,
+	let ULLong _sh,
+	let Bool _bit
+)
+begin
+	guard_1_(_sh &&  _bits)
+	let ULLong  _bc = BITS_WIDTH*(ULLong)_len;
+	guard_1_(_sh <= _bc)
+	let ULLong_ _i_ = _bc-1;
+	for (let ULLong_ _j_ = _bc-_sh; _j_--; _i_--)
+	{	let Ptr_c(UInt_fast8_) _word = & (*_bits)[_i_/BITS_WIDTH];
+		let UInt_fast8 _mask  =  (UInt_fast8)1 << _i_%BITS_WIDTH;
+		if ((*_bits)[_j_/BITS_WIDTH] >> _j_%BITS_WIDTH  &  1)
+		     *_word |=  _mask;
+		else *_word &= ~_mask;
+	}
+	let UInt_fast8  _mask = ((UInt_fast8)1 << (_i_+1)%BITS_WIDTH)-1;
+	_i_ /= BITS_WIDTH;
+	if (_bit) for ((*_bits)[_i_] |=  _mask; _i_--;) (*_bits)[_i_] = -1;
+	else      for ((*_bits)[_i_] &= ~_mask; _i_--;) (*_bits)[_i_] =  0;
+end
+
+#endif
+
+#undef  BITS__
+#ifndef DEBUG
+#define BITS__ 0
+#else
+#define BITS__ 1
+#endif

@@ -1,0 +1,38 @@
+#ifndef POST__
+#define POST__
+
+#ifndef   ASSERT__
+#include <assert._>
+#endif
+
+ public Void_ post_c
+(	let Char _text[const],
+	let Stream _stream,
+	let Site _site
+)
+{	let Stream _sink = _stream? _stream : stderr;
+	fprintf(_sink,"Post-condition failed: %s, function %s, file %s, line %d.\n",
+	_text? _text : "", _site.func, _site.file, _site.line);
+	fflush (_sink);
+	exit(1);
+}
+#define post_c_(test,text,stream) (faux_(Bool,echo_(test)), (Bool_){0}\
+ = (test)? (Void)(text), (Void)(stream), 1\
+ : (post_c(text, stream, SITE), 0))
+
+#define post_1_(...)       post_1_c_(#__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define post_2_(test, ...) post_c_(echo_(test), echo_(__VA_ARGS__), stderr)
+
+#define post_3_(t, s, ...) post_c_(echo_(t), echo_(s), echo_(__VA_ARGS__))
+
+#define post_1_c_(_t,test) post_c_(echo_(test), _t, stderr)
+
+#define post_2_c_(_, t, s) post_2_(t,s)
+
+#define post_3_c_(_ , ...) post_3_(__VA_ARGS__)
+
+#define post_(...) poly_3_(post_, COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__,__VA_ARGS__)
+
+#endif

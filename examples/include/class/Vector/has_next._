@@ -1,0 +1,13 @@
+#ifndef   VECTOR__HAS_NEXT__
+#define   VECTOR__HAS_NEXT__
+
+#include "Vector._"
+
+protocol_(Bool_, (Vector, has_next),
+(let Typex (Iterable), typex),
+(let Ptr (Cursor), cursor))
+	pre_ (cursor != NULL);
+	return solver_(Vector, has_next)(typex, cursor);
+end
+
+#endif

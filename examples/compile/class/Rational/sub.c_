@@ -1,0 +1,14 @@
+#include  "Rational/validate._"
+
+procedure_(Rational_*, (Rational, sub),
+(let  Ptr (Rational_), difference),
+(let  Ptr (Rational ), minuend),
+(let  Ptr (Rational ), subtrahend))
+	Var value  =  minuend->value - subtrahend->value;
+	guard_(validator(value), NULL)
+	Var result = need__(difference);
+	guard_(result, NULL)
+	if (!difference) result->type = type_(Rational);
+	result->value = value;
+	return result;
+end

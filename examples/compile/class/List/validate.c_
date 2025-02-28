@@ -1,0 +1,9 @@
+#include "List._"
+
+procedure_(Bool_, (List, validate),
+(let Ptr (List), this))
+	guard_(this->type->self == this->type, TRUE_())
+	List_ list[1] = {*this};
+	list->type = (Type)typex_(Collection, List);
+	return solver_(Collection, validate)(abstract_(Collection, list));
+end

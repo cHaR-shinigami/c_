@@ -1,0 +1,188 @@
+#ifndef JOIN__
+#define JOIN__
+
+#include <hof_c._>
+
+typedef Ptr_c ( Char)  Sentence [];
+typedef Ptr_c_( Char)  Sentence_[];
+
+typedef Ptr_c (WChar) WSentence [];
+typedef Ptr_c_(WChar) WSentence_[];
+
+Void_ *calloc(Size, Size);
+
+ public Size_ range_c
+(	let Ptr_c(Int) _range,
+	let Ptr_c(Ptrdiff_) _a,
+	let Ptr_c(Ptrdiff_) _d,
+	let Size _len
+)
+{	let Ptrdiff_ _a_ = _range[0];
+	if (_a_ < 0) { if ((_a_ += _len) < 0) _a_ = 0; }
+	elif  ((Size)_a_ >= _len) _a_ = _len-1;
+	*_a = _a_;
+	let Ptrdiff_ _z_ = _range[1];
+	if (_z_ < 0) { if ((_z_ += _len) < 0) _z_ = 0; }
+	elif  ((Size)_z_ >= _len) _z_ = _len-1;
+	*_d = _range[2];
+	guard_2_((*_d &&  +_a_ != _z_
+	implies (_a_ < _z_  iff  *_d > 0)), 0)
+	if (!*_d) *_d  =  _z_ - _a_;
+	return    *_d ?  (_z_ - _a_) / *_d  +  1 : 1;
+}
+
+ public String_ *join_c
+(	let Size _len,
+	let Ptr_c(Sentence) _arr,
+	let Ptr_c(Char) _sep,
+	let Int (* const _rng)[3]
+)
+{	let Ptr_c(String_) _null = calloc(1, 1);
+	guard_2_(_arr, _null)
+	Ptrdiff_ _a_, _d_;
+	let Size _n = range_c(_rng? *_rng : (Int []){0, -1, 1}, &_a_, &_d_, _len);
+	let Size_ _count_ = 0;
+	let Ptr_c(Char) _glue = _sep? _sep : " ";
+	Size_ strlen(String);
+	let Size _glen = strlen(_glue);
+	let Size_ _i_ = _a_, _n_ = _n;
+	for_(; _n_--; _i_ += _d_)
+		let Ptr_c(Char) _str = (*_arr)[_i_];
+		if (_str) _count_  +=  strlen(_str) + _glen;
+	end
+	guard_2_(_count_, _null)
+	free(_null);
+	let Size _length  =  _count_-_glen + sizeof "\n";
+	let Ptr_c(String_) _join = new_2_c_(Char_, _length);
+	guard_2_(_join, NULL)
+	let Char_ *_des_ = *_join;
+	_i_ = _a_;
+	_n_ = _n ;
+	while_(_n_--)
+		let  Char *_src_ = (*_arr)[_i_];
+		_i_ += _d_;
+		continue_(!_src_)
+		while (*_des_ = *_src_) _des_++, _src_++;
+		break;
+	end
+	for_(; _n_--; _i_ += _d_)
+		let  Char *_src_ = (*_arr)[_i_];
+		continue_(!_src_)
+		Char_ *strcpy(String_, String);
+		_des_  =  strcpy(_des_, _glue) + _glen;
+		while (*_des_ = *_src_) _des_++, _src_++;
+	end
+	_des_[0] = '\n';
+	_des_[1] = '\0';
+	return _join;
+}
+
+ public WString_ *wjoin_c
+(	let Size _len,
+	let Ptr_c(WSentence) _arr,
+	let Ptr_c(WChar) _sep,
+	let Int (* const _rng)[3]
+)
+{	let Ptr_c(WString_) _null = calloc(1, sizeof L"");
+	guard_2_(_arr, _null)
+	Ptrdiff_ _a_, _d_;
+	let Size _n = range_c(_rng? *_rng : (Int []){0, -1, 1}, &_a_, &_d_, _len);
+	let Size_ _count_ = 0;
+	let Ptr_c(WChar) _glue = _sep? _sep : L" ";
+	Size_ wcslen(WString);
+	let Size _glen = wcslen(_glue);
+	let Size_ _i_ = _a_, _n_ = _n;
+	for_(; _n_--; _i_ += _d_)
+		let Ptr_c(WChar) _str = (*_arr)[_i_];
+		if (_str) _count_  +=  wcslen(_str) + _glen;
+	end
+	guard_2_(_count_, _null)
+	free(_null);
+	let Size _length  =  _count_-_glen + sizeof L"\n";
+	let Ptr_c(WString_) _join = new_2_c_(WChar_, _length);
+	guard_2_(_join, NULL)
+	let WChar_ *_des_ = *_join;
+	_i_ = _a_;
+	_n_ = _n ;
+	while_(_n_--)
+		let WChar *_src_ = (*_arr)[_i_];
+		_i_ += _d_;
+		continue_(!_src_)
+		while (*_des_ = *_src_) _des_++, _src_++;
+		break;
+	end
+	for_(; _n_--; _i_ += _d_)
+		let WChar *_src_ = (*_arr)[_i_];
+		continue_(!_src_)
+		WChar_ *wcscpy(WString_, WString);
+		_des_  =  wcscpy(_des_, _glue) + _glen;
+		while (*_des_ = *_src_) _des_++, _src_++;
+	end
+	_des_[0] = L'\n';
+	_des_[1] = L'\0';
+	return _join;
+}
+
+#define join_c_(...) _Generic ((typeof_unqual (**(__VA_ARGS__)) *)0,\
+  Char**:  join_c,  Char_**:  join_c,  String**:  join_c,  String_**:  join_c,\
+ WChar**: wjoin_c, WChar_**: wjoin_c, WString**: wjoin_c, WString_**: wjoin_c)
+
+#define join1_c_(arr, _arr)\
+ join_c_(arr)(length_c_(arr),\
+ notnull_c_(echo_(arr), _arr, JOIN__), NULL, NULL)
+
+#define join2_c_(arr, _arr, sep, _sep)\
+ join_c_(arr)(length_c_(arr),\
+ notnull_c_(echo_(arr), _arr, JOIN__),\
+ notnull_c_(echo_(sep), _sep, JOIN__), NULL)
+
+#define join3_c_(arr, _arr, sep, _sep, rng, _rng)\
+ join_c_(arr)(length_c_(arr),\
+ notnull_c_(echo_(arr), _arr, JOIN__),\
+ notnull_c_(echo_(sep), _sep, JOIN__),\
+ notnull_c_(echo_(rng), _rng, JOIN__))
+
+#define join__1__(...)\
+ join1_c_(echo_(__VA_ARGS__), #__VA_ARGS__)
+
+#define join__2__(arr, ...)\
+ join2_c_(echo_(arr), #arr, echo_(__VA_ARGS__), #__VA_ARGS__)
+
+#define join__3__(arr, sep, ...)\
+ join3_c_(echo_(arr), #arr, echo_(sep), #sep, echo_(__VA_ARGS__), #__VA_ARGS__)
+
+#define join__1_c_(_a, arr) join1_c_ (arr, _a)
+
+#define join__2_c_(_ , ...) join__2__(__VA_ARGS__)
+
+#define join__3_c_(_ , ...) join__3__(__VA_ARGS__)
+
+#define join__(...) poly_3_(join__, COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__, __VA_ARGS__)
+
+#define join_1_(...) join_1_c_(#__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define join_2_(arr, ...) \
+({ Var _ = arr; join2_c_(_, #arr, echo_(__VA_ARGS__), #__VA_ARGS__); })
+
+#define join_3_(arr, sep, ...) \
+({ Var _ = arr; join3_c_(_, #arr, echo_(sep),\
+ #sep, echo_(__VA_ARGS__), #__VA_ARGS__); })
+
+#define join_1_c_(_a, arr) ({ Var _ = arr; join1_c_(_, _a); })
+
+#define join_2_c_(_ , ...) join_2_(__VA_ARGS__)
+
+#define join_3_c_(_ , ...) join_3_(__VA_ARGS__)
+
+#define join_( ...) poly_3_(join_ , COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__, __VA_ARGS__)
+
+#endif
+
+#undef  JOIN__
+#ifndef DEBUG
+#define JOIN__ 0
+#else
+#define JOIN__ 1
+#endif

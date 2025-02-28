@@ -1,0 +1,29 @@
+#include  "Text._"
+
+procedure_(Text_*, (Text, sub),
+(let  Ptr (Text_), difference),
+(let  Ptr (Text ), minuend),
+(let  Ptr (Text ), subtrahend))
+	Var dif = need__(difference);
+	guard_(dif, NULL)
+	if (!difference) *dif = (Text){.type = type_(Text)};
+	Bool_ found_[256] = {FALSE_()};
+	let Size_ i_, j_ = 0, count_ = 1;
+	Var min =    minuend->buffer;
+	Var sub = subtrahend->buffer;
+	Size_ strlen(String);
+	for (i_ = strlen(sub); i_--;)
+		  found_[(UByte) sub[i_]] = TRUE_();
+	Var length = strlen(min);
+	for (i_ = length; i_--;) count_ +=
+		! found_[(UByte) min[i_]];
+	if_(dif->length < count_)
+		Var    buffer = realloc(dif->buffer , count_ + 1);
+		guard_(buffer, (test_(!difference, free(dif)), NULL))
+		( dif->buffer = buffer)[dif->length = count_] = '\0';
+	end
+	Var buffer = dif->buffer;
+	for (i_ = 0; i_ <= length; i_++)
+		if (! found_[(UByte) min[i_]]) buffer[j_++] = min[i_];
+	return dif;
+end

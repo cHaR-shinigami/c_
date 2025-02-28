@@ -1,0 +1,20 @@
+#ifndef BRANCHING__
+#define BRANCHING__
+
+#include <block._>
+
+#define   if_(...) if (__VA_ARGS__) begin
+
+#define elif( ...)     else if (__VA_ARGS__)
+
+#define elif_(...) end else if_(__VA_ARGS__)
+
+#define e1se       end else begin
+
+#define switch_(...) { do switch (__VA_ARGS__) { default: ;
+
+#define CASE {} break; case
+
+#define case_(...) CASE (__VA_ARGS__): ;
+
+#endif

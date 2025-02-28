@@ -1,0 +1,36 @@
+#ifndef KNIFE__
+#define KNIFE__
+
+#include <relation._>
+
+#define  head_c_(args) (pop_ top_(args,)), pop_(args,) top_ top_(args,)
+
+#define  head_(n, ...) mux_(n)(mux_c_(LT_(n, COUNT_(__VA_ARGS__)))\
+(echo_(pop_ C_(echo_(o__(head_c_, n, ((__VA_ARGS__)))))), __VA_ARGS__),)
+
+#define xhead_c_( ...) pop_(__VA_ARGS__)
+
+#define xhead_(n, ...) mux_c_(LT_(n, COUNT_(__VA_ARGS__)))\
+(echo_(o__(xhead_c_, n, (__VA_ARGS__))),)
+
+#define  tail_(n, ...) reverse_( head_(n, reverse_(__VA_ARGS__)))
+
+#define xtail_(n, ...) reverse_(xhead_(n, reverse_(__VA_ARGS__)))
+
+#define slice_(a, z, ...) xhead_(a, head_(INC_(z), __VA_ARGS__))
+
+#define xslice_c_(_range_,...) head_(top_ _range_, __VA_ARGS__)\
+mux_c_(NAND_(top_ _range_)(LT_(pop_ _range_,COUNT_(__VA_ARGS__))))(,,)\
+ xhead_(pop_ _range_, __VA_ARGS__)
+
+#define xslice_(a, z, ...) xslice_c_((a, INC_(z)), __VA_ARGS__)
+
+#define push_(new, i, ...) mux_(i)(head_(i, __VA_ARGS__)COMMA,) echo_(new)\
+mux_c_(GE_(i , COUNT_(__VA_ARGS__)))(,, xhead_(i , __VA_ARGS__))
+
+#define put_c_(n, args)    mux_c_(GE_(n, COUNT_(args)))(,, xhead_(n,args))
+
+#define put_( new, i, ...) mux_(i)(head_(i, __VA_ARGS__)COMMA,) echo_(new)\
+put_c_(COUNT_(new), xhead_(i, __VA_ARGS__))
+
+#endif

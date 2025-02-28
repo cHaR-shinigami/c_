@@ -1,0 +1,6 @@
+#ifndef CTYPE__
+#define CTYPE__
+
+#include <ctype.h>
+
+#endif

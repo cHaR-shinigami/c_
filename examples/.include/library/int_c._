@@ -1,0 +1,106 @@
+#ifndef INT_C__
+#define INT_C__
+
+#include <stdint.h>
+
+#include <specifiers._>
+
+#include <limits._>
+
+# ifdef    UINT8_MAX
+typedef_c_(UInt8 , uint8_t)
+#ifndef    UINT8_WIDTH
+#define    UINT8_WIDTH  8
+#endif
+#endif
+
+# ifdef     INT8_MAX
+typedef_c_( Int8 ,  int8_t)
+#ifndef     INT8_WIDTH
+#define     INT8_WIDTH  8
+#endif
+#endif
+
+# ifdef    UINT16_MAX
+typedef_c_(UInt16, uint16_t)
+#ifndef    UINT16_WIDTH
+#define    UINT16_WIDTH 16
+#endif
+#endif
+
+# ifdef     INT16_MAX
+typedef_c_( Int16,  int16_t)
+#ifndef     INT16_WIDTH
+#define     INT16_WIDTH 16
+#endif
+#endif
+
+# ifdef    UINT32_MAX
+typedef_c_(UInt32, uint32_t)
+#ifndef    UINT32_WIDTH
+#define    UINT32_WIDTH 32
+#endif
+#endif
+
+# ifdef     INT32_MAX
+typedef_c_( Int32,  int32_t)
+#ifndef     INT32_WIDTH
+#define     INT32_WIDTH 32
+#endif
+#endif
+
+# ifdef    UINT64_MAX
+typedef_c_(UInt64, uint64_t)
+#ifndef    UINT64_WIDTH
+#define    UINT64_WIDTH 64
+#endif
+#endif
+
+# ifdef     INT64_MAX
+typedef_c_( Int64,  int64_t)
+#ifndef     INT64_WIDTH
+#define     INT64_WIDTH 64
+#endif
+#endif
+
+typedef_c_(UInt_least8 , uint_least8_t)
+#ifndef    UINT_LEAST8_WIDTH
+#define    UINT_LEAST8_WIDTH   bitlen__(UINT_LEAST8_MAX )
+#endif
+
+typedef_c_( Int_least8 ,  int_least8_t)
+#ifndef     INT_LEAST8_WIDTH
+#define     INT_LEAST8_WIDTH  (bitlen__( INT_LEAST8_MAX ) + 1)
+#endif
+
+typedef_c_(UInt_least16, uint_least16_t)
+#ifndef    UINT_LEAST16_WIDTH
+#define    UINT_LEAST16_WIDTH  bitlen__(UINT_LEAST16_MAX)
+#endif
+
+typedef_c_( Int_least16,  int_least16_t)
+#ifndef     INT_LEAST16_WIDTH
+#define     INT_LEAST16_WIDTH (bitlen__( INT_LEAST16_MAX) + 1)
+#endif
+
+typedef_c_(UInt_least32, uint_least32_t)
+#ifndef    UINT_LEAST32_WIDTH
+#define    UINT_LEAST32_WIDTH  bitlen__(UINT_LEAST32_MAX)
+#endif
+
+typedef_c_( Int_least32,  int_least32_t)
+#ifndef     INT_LEAST32_WIDTH
+#define     INT_LEAST32_WIDTH (bitlen__( INT_LEAST32_MAX) + 1)
+#endif
+
+typedef_c_(UInt_least64, uint_least64_t)
+#ifndef    UINT_LEAST64_WIDTH
+#define    UINT_LEAST64_WIDTH  bitlen__(UINT_LEAST64_MAX)
+#endif
+
+typedef_c_( Int_least64,  int_least64_t)
+#ifndef     INT_LEAST64_WIDTH
+#define     INT_LEAST64_WIDTH (bitlen__( INT_LEAST64_MAX) + 1)
+#endif
+
+#endif

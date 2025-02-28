@@ -1,0 +1,12 @@
+#ifndef MBS_C__
+#define MBS_C__
+
+#include <wchar.h>
+
+#include <specifiers._>
+
+typedef_c_
+(MBstate,
+ mbstate_t)
+
+#endif

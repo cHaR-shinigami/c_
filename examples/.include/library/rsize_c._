@@ -1,0 +1,18 @@
+#ifdef  __STDC_LIB_EXT1__
+#ifdef  __STDC_WANT_LIB_EXT1__
+
+#ifndef RSIZE_C__
+#define RSIZE_C__
+
+#include <stddef.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Rsize,
+ rsize_t)
+
+#endif
+
+#endif
+#endif

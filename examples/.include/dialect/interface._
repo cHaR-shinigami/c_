@@ -1,0 +1,36 @@
+#ifndef INTERFACE__
+#define INTERFACE__
+
+#include <abstract._>
+
+#define Interface_(I) typedef_c_(Typex(I), const struct Typex(I) *)\
+ typedef_c_(I, struct I \
+{	union\
+	{	struct top_ C_(cat_(I, _EXTENDS),) base[1];\
+		struct\
+		{	Type_ type;\
+			union\
+			{	Void  *concrete ;\
+				Void_ *concrete_;\
+				union\
+				{	Type_ type;\
+					Typex_(I) typex;\
+				}	*_concrete;\
+			};\
+		};\
+	}; \
+}) static_assert_(offsetof(I, concrete) == offsetof(Abstract, concrete))
+
+#define interface__c_(I, f, ...) I, __VA_ARGS__ Procedure_c(I, f) *f;
+
+#define interface_c_(...) interface__c_(__VA_ARGS__)
+
+#define interface_(I, ...) solvers_c_(I)\
+ extern const struct Type property_c_(I, Type)[];\
+ struct Typex(I) \
+{	struct Typex(echo_(top_ C_(cat_(I, _EXTENDS),))) base[1];\
+	echo_(pop_ C_(pop_(, o__(interface_c_,\
+	COUNT_(__VA_ARGS__), (I, __VA_ARGS__,)))))\
+};
+
+#endif

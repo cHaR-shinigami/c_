@@ -1,0 +1,40 @@
+#ifndef FOLD__
+#define FOLD__
+
+#include <hof_c._>
+
+#define fold_3_(result, fun, ...) \
+begin\
+	Var _result = &(result);\
+	guard_1_(notnull_c_(_result, #result, FOLD__))\
+	hof_funcn_c_(echo_(fun), #fun, FOLD__)\
+	hof_array_c_(echo_(__VA_ARGS__), #__VA_ARGS__, FOLD__, _arr)\
+	Var_ _temp_ = *_result;\
+	for (Var_ _i_ = (Size)0; _i_ < _len_arr; _i_++)\
+	     _temp_ = _f(_temp_, (*_arr)[_i_]);\
+	*_result = _temp_; \
+end
+
+#define fold_4_(result, fun, arr, ...) \
+begin\
+	Var _result = &(result);\
+	guard_1_(notnull_c_(_result, #result, FOLD__))\
+	hof_funcn_c_(echo_(fun), #fun, FOLD__)\
+	hof_array_c_(echo_(arr), #arr, FOLD__, _arr)\
+	hof_range_c_(echo_(__VA_ARGS__), #__VA_ARGS__, FOLD__, #arr, _len_arr)\
+	Var_ _temp_ = *_result;\
+	for (Var_ _i_ = _a_; _n_--; _i_ += _d_)\
+	     _temp_ = _f(_temp_, (*_arr)[_i_]);\
+	*_result = _temp_; \
+end
+
+#define fold_(...)  poly_3_(fold_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  FOLD__
+#ifndef DEBUG
+#define FOLD__  0
+#else
+#define FOLD__  1
+#endif

@@ -1,0 +1,20 @@
+#ifndef   ITERABLE__GET_NEXT__
+#define   ITERABLE__GET_NEXT__
+
+#include "Iterable._"
+
+private
+protocol_(Void *, (Iterable, get_next),
+(let Typex(Iterable), typex),
+(let Ptr (Iterator_), iterator))
+	pre_(is_typex(typex));
+	pre_(typex->has_next != NULL);
+	pre_(typex->get_next != NULL);
+	pre_(iterator != NULL);
+	Var hasnext = typex->has_next(typex, iterator);
+	Var    next = solver_(Iterable, get_next)(typex, iterator);
+	post_((next implies  hasnext));
+	return next;
+end
+
+#endif

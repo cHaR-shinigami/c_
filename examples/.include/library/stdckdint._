@@ -1,0 +1,18 @@
+#ifndef STDCKDINT__
+#define STDCKDINT__
+
+#include <stdckdint.h>
+
+#define\
+ ckd_add_(...)\
+ ckd_add (__VA_ARGS__)
+
+#define\
+ ckd_sub_(...)\
+ ckd_sub (__VA_ARGS__)
+
+#define\
+ ckd_mul_(...)\
+ ckd_mul (__VA_ARGS__)
+
+#endif

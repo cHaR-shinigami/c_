@@ -1,0 +1,9 @@
+#include "Chain/iterator._"
+
+procedure_(Node_ *, (Chain, iterator),
+(let Ptr (Chain), this))
+	Var node = new__(Node);
+	guard_(node, NULL)
+	*node = this->length? * this->head : (Node){.next = node};
+	return node;
+end

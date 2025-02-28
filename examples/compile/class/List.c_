@@ -1,0 +1,5 @@
+#include "List._"
+
+ define_ (List)
+
+ define_ (List implements Collection)

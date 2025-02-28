@@ -1,0 +1,183 @@
+#ifndef POINTER__
+#define POINTER__
+
+#ifndef   ASSERT__
+#include <assert._>
+#endif
+
+#include <stddef._>
+
+#define is_pointer_c_(p) _Generic ((p) + 0, Ptrdiff_ : FALSE,\
+ default : _Generic ((p) - (p), Ptrdiff_ : TRUE, default : FALSE))
+
+#define is_pointer_(...) is_pointer_c_(*(typeof (__VA_ARGS__) *)0)
+
+typedef Void_ *Ptr_c_;
+
+#define NULLPTR ((Ptr_c_)+0)
+
+#define Ptr_c( ...) __VA_ARGS__ * const
+
+#define Ptr_c_(...) __VA_ARGS__ *
+
+#define Ptr( ...)  typeof (Ptr_c (typeof (__VA_ARGS__)))
+
+#define Ptr_(...)  typeof (Ptr_c_(typeof (__VA_ARGS__)))
+
+union   unqual_c
+{	Pointer _ptr;
+	Void_  *_pun;
+};
+#define unqual_c_(...) ((union unqual_c){(__VA_ARGS__)}._pun)
+
+#define unqual__(...) ((typeof_unqual  (*(__VA_ARGS__))*)unqual_c_(__VA_ARGS__))
+
+#define unqual_( ...) ({ Var _ = (__VA_ARGS__); unqual__(_); })
+
+ public Void_ *notnull_c
+(	let Pointer _ptr,
+	let Ptr_c(Char) _text,
+	let Site _site
+)
+{	stop_2_(_ptr, unqual_c_(_ptr))
+	fprintf(stderr, "Assertion failed: (%s) != NULL, function %s, "
+	"file %s, line %d.\n", _text, _site.func, _site.file, _site.line);
+	fflush (stderr);
+	exit(1);
+}
+#define notnull_c_(ptr, _ptr, DEBUG) mux_c_(DEBUG)\
+((typeof_c_(ptr)) notnull_c(ptr, _ptr, SITE), echo_(ptr))
+
+ public Void_ *notnull_0_c
+(	let Pointer _ptr,
+	let Pointer _def
+)
+{	return unqual_c_(_ptr ? _ptr : _def);
+}
+#define notnull_0_c_(ptr, def, ...) (faux_(typeof_c_(ptr), echo_(def)),\
+ (typeof_c_(ptr)) notnull_0_c(ptr, def))
+
+ public Void_ *notnull_1_c
+(	let Pointer _ptr,
+	let Ptr_c(Char) _text,
+	let Site _site,
+	let Stream _stream
+)
+{	assert_5_(_ptr, _text, _site, _stream, 1);
+	return unqual_c_(_ptr);
+}
+#define notnull_1_c_(ptr, def, ...) (eval_(typeof_c_(ptr), echo_(def),\
+ (typeof_c_(ptr)) notnull_1_c(ptr, __VA_ARGS__))
+
+#define notnull__1__(...) notnull__1_c_(#__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define notnull__c__(ptr, def,_ptr) mux_c_(POINTER__)\
+   ((eval_(typeof_c_(ptr), echo_(def)), notnull_c_(echo_(ptr), _ptr, 1)),\
+  notnull_0_c_(echo_(ptr), echo_(def),)))
+
+#define notnull__2__(ptr,...) notnull__c__(echo_(ptr), echo_(__VA_ARGS__), #ptr)
+
+#define notnull__3__(ptr, def, ...) mux_c_(POINTER__)\
+ (notnull_1_c_(echo_(ptr), echo_(def), echo_(__VA_ARGS__), SITE, stderr),\
+(eval_(Char *, echo_(__VA_ARGS__)),\
+  notnull_0_c_(echo_(ptr), echo_(def),)))
+
+#define notnull__4__(ptr, def, text, ...) mux_c_(POINTER__)\
+ (notnull_1_c_(echo_(ptr), echo_(def), echo_(text), echo_(__VA_ARGS__),stderr),\
+(eval_(Char *, echo_(text)),\
+ eval_(Site  , echo_(__VA_ARGS__)),\
+  notnull_0_c_(echo_(ptr), echo_(def),)))
+
+#define notnull__5__(ptr, def, text, site, ...) notnull__6__\
+(echo_(ptr), echo_(def), echo_(text), echo_(site), echo_(__VA_ARGS__),POINTER__)
+
+#define notnull__6__(ptr, def, text, site, stream, DEBUG) mux_c_(DEBUG)\
+ (notnull_1_c_(echo_(ptr), echo_(def), echo_(text), echo_(site),echo_(stream)),\
+(eval_(Char *, echo_(text)),\
+ eval_(Site  , echo_(site)),\
+ eval_(Stream, echo_(stream)),\
+  notnull_0_c_(echo_(ptr), echo_(def),)))
+
+#define notnull__1_c_(_p, ptr)(notnull_c_(echo_(ptr), _p, POINTER__))
+
+#define notnull__2_c_(_ , ...) notnull__2__(__VA_ARGS__)
+
+#define notnull__3_c_(_ , ...) notnull__3__(__VA_ARGS__)
+
+#define notnull__4_c_(_ , ...) notnull__4__(__VA_ARGS__)
+
+#define notnull__5_c_(_ , ...) notnull__5__(__VA_ARGS__)
+
+#define notnull__6_c_(_ , ...) notnull__6__(__VA_ARGS__)
+
+#define notnull__(...) poly_3_(notnull__, COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__, __VA_ARGS__)
+
+#define notnull_1_(...) notnull_1_c__(#__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define notnull_2_(ptr, ...) \
+({ Var _ = ptr; notnull__c__(_, echo_( __VA_ARGS__), #ptr); })
+
+#define notnull_3_(ptr, def, ...) \
+({ Var _ = ptr; notnull__3__(_, echo_(def), echo_(__VA_ARGS__)); })
+
+#define notnull_4_(ptr, def, text, ...) \
+({ Var _ = ptr; notnull__4__(_, echo_(def), echo_(text), echo_(__VA_ARGS__)); })
+
+#define notnull_5_(ptr, def, text, site, ...) notnull_6_\
+(echo_(ptr), echo_(def), echo_(text), echo_(site), echo_(__VA_ARGS__),POINTER__)
+
+#define notnull_6_(ptr, def, text, site, stream, DEBUG) ({ Var _ = ptr;\
+ notnull__6__(_, echo_(def), echo_(text), echo_(site), echo_(stream), DEBUG); })
+
+#define notnull_1_c__(_p, ptr) ({ Var _ = ptr; notnull__1_c_(_p, _); })
+
+#define notnull_2_c__(_ , ...) notnull_2_(__VA_ARGS__)
+
+#define notnull_3_c__(_ , ...) notnull_3_(__VA_ARGS__)
+
+#define notnull_4_c__(_ , ...) notnull_4_(__VA_ARGS__)
+
+#define notnull_5_c__(_ , ...) notnull_5_(__VA_ARGS__)
+
+#define notnull_6_c__(_ , ...) notnull_6_(__VA_ARGS__)
+
+#define notnull_( ...) poly_3_(notnull_ , COUNT_(__VA_ARGS__), _c__)\
+(#__VA_ARGS__, __VA_ARGS__)
+
+#define fetch__c__(ptr, def, _ptr)\
+ (*(faux_(typeof_c_(*(ptr)), echo_(def)),\
+ (typeof_c_(ptr)) mux_c_(POINTER__)\
+ (((Void)(def), notnull_c(ptr, _ptr, SITE)),\
+ notnull_0_c(echo_(ptr), (typeof_c_(*(ptr)) []){def}))))
+
+#define fetch__1__(...)      fetch__1_c_(#__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define fetch__2__(ptr, ...) fetch__c__(echo_(ptr), echo_(__VA_ARGS__), #ptr)
+
+#define fetch__1_c_(_p, ptr) (*notnull__1_c_(_p, echo_(ptr)))
+
+#define fetch__2_c_(_, p, d) fetch__2__(p, d)
+
+#define fetch__(...) poly_3_(fetch__, COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__, __VA_ARGS__)
+
+#define fetch_1_(...)        fetch_1_c_(#__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define fetch_2_(p, ...) ({ Var _ = p; fetch__c__(_, echo_(__VA_ARGS__), #p); })
+
+#define fetch_1_c_(_ptr,ptr) ({ Var _ = ptr; fetch__1_c_(_ptr, _); })
+
+#define fetch_2_c_(_ , p, d) fetch_2_(p, d)
+
+#define fetch_( ...) poly_3_(fetch_ , COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__, __VA_ARGS__)
+
+#endif
+
+#undef  POINTER__
+#ifndef DEBUG
+#define POINTER__ 0
+#else
+#define POINTER__ 1
+#endif

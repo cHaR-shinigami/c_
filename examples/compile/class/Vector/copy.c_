@@ -1,0 +1,23 @@
+#include  "Vector._"
+
+procedure_(Vector_*, (Vector, copy),
+(let  Ptr (Vector_), this),
+(let  Ptr (Vector ), that))
+	Var copy = validate_(this)? this : solver_(Vector, init)
+	(type_(Vector), (Tape){&(Type){NULL}, &this->count});
+	guard_(copy, NULL)
+	copy->count = 0;
+	copy->species = that->species;
+	Vector_ _src[1] = {*that};
+	_src->type = (Type)typex_(Iterable, Vector);
+	Var   type = copy->type;
+	copy->type = (Type)typex_(Iterable, Vector);
+	Var it
+	=  solver_(Iterable, copy)
+	(abstract_(Iterable, copy),
+	 abstract_(Iterable, _src));
+	copy->type = type;
+	guard_(it, (test_(copy != this, free(copy)), NULL))
+	post_ (it->concrete == copy);
+	return copy;
+end

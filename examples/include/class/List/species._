@@ -1,0 +1,19 @@
+#ifndef   LIST__SPECIES__
+#define   LIST__SPECIES__
+
+#include "List._"
+
+protocol_(Type_ , (List, species),
+(let Ptr (List_), this),
+(let Type, species))
+	pre_(validate_(List, this));
+	Var   type = this->type;
+	this->type = (Type)typex_(Collection, List);
+	Var update = verifier_(Collection, species)
+	(_site, abstract_(Collection, this), species);
+	this->type = type;
+	post_ (update == this->species);
+	return update;
+end
+
+#endif

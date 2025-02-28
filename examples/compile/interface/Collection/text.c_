@@ -1,0 +1,46 @@
+#include  "Collection._"
+
+procedure_(Void_*, (Collection, text),
+(let  Ptr (Collection), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Void_), out))
+	Var concrete = this->concrete;
+	Var    typex = concrete_(this)->typex->base;
+	Var    count = typex->count(concrete);
+	if_(!count)
+		Var text = out? out : malloc(1);
+		if (text) *(Char_ *)text = '\0';
+		return text;
+	end
+	Var parts = new__(Char_ * [count]);
+	guard_(parts, NULL)
+	Var_ len_ = (Size)1;
+{	Var iterator = typex->iterator(concrete);
+	guard_(iterator, (free(parts), NULL))
+	Var get_next = typex->get_next;
+	for_(Var_ i_ = (Size)0; i_ < count; i_++)
+		Size_ length_ = 1;
+		if_(!((*parts)[i_] = text__(get_next(typex, iterator), &length_, NULL)))
+			while (i_--) free((*parts)[i_]);
+			free(iterator);
+			free(parts);
+			return NULL;
+		end
+		len_ += length_;
+	end
+	free(iterator);
+}	Var text = (out &&  *length >= len_)? (String_ *)out : new__(Char_ [len_]);
+	*length = len_;
+	if_(text)
+		Var_ text_ = *text;
+		for_(Var_ i_ = (Size)0; i_ < count; i_++)
+			Var_ part_ = (*parts)[i_];
+			while ((*text_ = part_++[0])) text_++;
+			text_++[0] = '\n';
+		end
+		*text_ = '\0';
+	end
+	for (Var_ i_ = count; i_--;) free((*parts)[i_]);
+	free(parts);
+	return text;
+end

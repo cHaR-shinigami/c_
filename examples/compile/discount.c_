@@ -1,0 +1,29 @@
+#include <c._>
+
+Int_ main(Int argc, Ptr(Char_) argv[const])
+begin
+	guard_(argc == 2)
+	Auto_ count_ = 0U;
+	guard_(input__(argv[1], count_) == 1)
+	Var prices = new__(Float_ [count_]);
+	guard_(prices)
+	Var discounts = new__(Float_ [count_]);
+	guard_(discounts)
+	loop_(0, count_ - 1)
+		print_("Enter price and discount (in %) for item", _i_ + 1);
+		guard_(scan__((*prices)[_i_], (*discounts)[_i_]) == 2, 1)
+	end
+	Auto_ price_ = 0.f;
+	op_(price_, +, prices)
+	print_("Total price is", price_);
+	op_(discounts, *, prices)
+	op_(discounts, /, 100)
+	loop_(0, count_ - 1)
+		print_("Discount on item", _i_ + 1, "is", (*discounts)[_i_]);
+	end
+	Auto_ discount_ = .0f;
+	op_(discount_, +, discounts)
+	print_("Total discount is", discount_);
+	print_("Final price is", price_ - discount_);
+	print_("Have a nice day");
+end

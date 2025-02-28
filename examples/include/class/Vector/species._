@@ -1,0 +1,20 @@
+#ifndef   VECTOR__SPECIES__
+#define   VECTOR__SPECIES__
+
+#include "Vector._"
+
+protocol_(Type_, (Vector, species),
+(let Ptr (Vector_), this),
+(let Type, species))
+	pre_(validate_(Vector, this));
+	pre_(this->species != NULL);
+	Var   type = this->type;
+	this->type = (Type)typex_(Collection, Vector);
+	Var update = verifier_(Collection, species)
+	(_site, abstract_(Collection, this), species);
+	this->type = type;
+	post_ (update == this->species);
+	return update;
+end
+
+#endif

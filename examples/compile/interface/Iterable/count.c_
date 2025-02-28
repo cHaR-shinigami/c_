@@ -1,0 +1,6 @@
+#include "Iterable/count._"
+
+procedure_(Size_, (Iterable, count),
+(let Ptr (Iterable), this))
+	return concrete_(this)->typex->count(this->concrete);
+end

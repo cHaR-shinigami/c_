@@ -1,0 +1,23 @@
+#include "Iterable._"
+
+procedure_(Bool_, (Iterable, validate),
+(let Ptr (Iterable), this))
+	Var    typex = concrete_(this)->typex;
+	guard_(typex->append
+		&& typex->count
+		&& typex->duplicate
+		&& typex->get_next
+		&& typex->has_next
+		&& typex->iterator, FALSE_())
+	Var concrete = this->concrete;
+	Var_  count_ = typex->count(concrete);
+	Var_   more_ = TRUE_();
+{	Var iterator = typex->iterator(concrete);
+	post_(iterator != NULL);
+	Var has_next = typex->has_next;
+	Var get_next = typex->get_next;
+	for (; (more_ = has_next(typex, iterator)) &&  count_; count_--)
+		get_next(typex, iterator);
+	free(iterator);
+}	return !(more_ ||  count_);
+end

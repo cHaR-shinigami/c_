@@ -1,0 +1,9 @@
+#include "Vector._"
+
+procedure_(Type_, (Vector, species),
+(let Ptr (Vector_), this),
+(let Type, species))
+	guard_(species, this->species)
+	return this->species = this->count?
+	 super(this->species, species) : species;
+end

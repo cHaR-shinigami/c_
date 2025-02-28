@@ -1,0 +1,20 @@
+#ifndef ITERATION__
+#define ITERATION__
+
+#include <block._>
+
+#define   for_(...) { do  for  (__VA_ARGS__)  {
+
+#define until( ...)   while (!((__VA_ARGS__)))
+
+#define until_(...) { do until (__VA_ARGS__)  {
+
+#define while_(...) { do while (__VA_ARGS__)  {
+
+#define   end_(...) }    until (__VA_ARGS__); }
+
+#define again_(...) }    while (__VA_ARGS__); }
+
+#define again       }    while (1); }
+
+#endif

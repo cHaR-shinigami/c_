@@ -1,0 +1,132 @@
+#ifndef INPUT__
+#define INPUT__
+
+#include <io_c._>
+
+enum {FMTLEN_C = sizeof "`%18446744073709551615[^`]`"};
+
+public Char * strfmt_c
+(	let Size _len,
+	let Ptr_c(Char_) _fmt
+)
+{	if (_len > 1)
+		sprintf(_fmt, " `%%%zu[^`]`", _len - 1);
+	else memcpy(_fmt, " `%%*""[^`]`", 11);
+	return _fmt;
+}
+
+public Char *wstrfmt_c
+(	let Size _len,
+	let Ptr_c(Char_) _fmt
+)
+{	if (_len > 1)
+		sprintf(_fmt," `%%%zul[^`]`", _len - 1);
+	else memcpy(_fmt," `%%*""l[^`]`", 12);
+	return _fmt;
+}
+
+#define strfmt_c_(wide, ...) mux_c_(wide)(wstrfmt_c, strfmt_c)\
+(sizeof (__VA_ARGS__) / _Generic (__VA_ARGS__,\
+ WChar_ * : sizeof L"", default : 1), (Char_ [FMTLEN_C + 1]){0})
+
+#define input_c_(...) io_c_(echo_(__VA_ARGS__), SCN, strfmt_c_)
+
+#define input__0_c_(...) (typeof (__VA_ARGS__) *) notnull_0_c\
+((Void_ *){&(__VA_ARGS__)}, &(typeof_c_(__VA_ARGS__)){0})
+
+#define input__1_c_(...) notnull_c_(&(__VA_ARGS__), #__VA_ARGS__, 1)
+
+#define INPUT_C debug_c_(input__, INPUT__)
+
+#define scanf_c_(src, sep) _Generic (src,\
+ Char  * : sscanf_c, WChar  * : swscanf_c,\
+ Char_ * : sscanf_c, WChar_ * : swscanf_c, Stream_ : _Generic (*(sep),\
+ Char_   : fscanf_c, WChar_   : fwscanf_c))
+
+#define input_0_c_(src , _src, sep, _sep, ...) scanf_c_(echo_(src), echo_(sep))\
+(notnull_c_ (echo_(src), _src, INPUT__), format_c_(sep)\
+((typeof_unqual (*(sep))[1 + FMTLEN_C + (COUNT_(__VA_ARGS__) - 1)\
+ * (FMTLEN_C + sizeof (sep) / sizeof *(sep)) - 1]){0},\
+ notnull_c_ (echo_(sep), _sep, INPUT__),\
+ (Char *[]){ map__(input_c_, __VA_ARGS__), NULL }\
+), map__(INPUT_C, __VA_ARGS__))
+
+#define input_2_c_(src , _src, arg) scanf_c_(echo_(src), "")\
+(notnull_c_ (echo_(src), _src, INPUT__), format_c_(src)\
+((typeof_unqual (* _Generic (*(src), WChar_ : L"", default : ""))\
+ [FMTLEN_C + 1]){0}, NULL, (Char *[]){ input_c_(arg), NULL }\
+), INPUT_C(arg))
+
+#define input_3_c_(src , _src, sep, arg) ((Void)(sep),\
+ scanf_c_(echo_(src), echo_(sep)))\
+(notnull_c_ (echo_(src), _src, INPUT__), format_c_(sep)\
+((typeof_unqual (*(sep))[FMTLEN_C + 1]){0},\
+ NULL, (Char *[]){ input_c_(arg), NULL }\
+), INPUT_C(arg))
+
+#define input__0__(src, sep, ...) input_0_c_\
+(echo_(src), #src, echo_(sep), #sep, __VA_ARGS__)
+
+#define input__1__(...) ((Int_ (*)(String, ...))f_c_(scanf, INPUT__))\
+(input_c_(__VA_ARGS__), INPUT_C(__VA_ARGS__))
+
+#define input__2__(src, ...) input_2_c_(echo_(src), #src, echo_(__VA_ARGS__))
+
+#define input__3__(src, sep, ...) input_3_c_\
+(echo_(src), #src, echo_(sep), echo_(__VA_ARGS__))
+
+#define input__(...) get_(COUNT_(__VA_ARGS__),\
+ input__0__,, input__1__, input__2__, input__3__)(__VA_ARGS__)
+
+#define temp_c_(_args_, i, ...) (pop_ _args_),\
+ __VA_ARGS__ Var _##i = &(top_ _args_);
+
+#define temp__c_(...) temp_c_(__VA_ARGS__)
+
+#define temps_c_(n, _args_, ...) echo_(pop_ C_(echo_\
+   (o__(temp__c_,n,(_args_, __VA_ARGS__,)))))
+
+#define tmp_c_(i) *_##i
+
+#define input__c_(src, _src, sep, _sep, n, _args_, rng) temps_c_(n,_args_, rng)\
+ input_0_c_(echo_(src),_src, echo_(sep), _sep, map__(tmp_c_, rng))
+
+#define input0_c_(src, _src, sep, _sep, n, _args_)\
+ input__c_ (echo_(src),_src, echo_(sep), _sep, n, _args_, RANGE_C_(n))
+
+#define input_0_(src, sep, ...) ({ input0_c_(echo_(src), #src,\
+ echo_(sep), #sep, COUNT_(__VA_ARGS__), (__VA_ARGS__,)); })
+
+#define input_1_(...) \
+({ Var _ = &(__VA_ARGS__); input__1__(*_); })
+
+#define input_2_(src, ...) \
+({ Var _ = &(__VA_ARGS__); input_2_c_(echo_(src), #src, *_); })
+
+#define input_3_(src, sep, ...) \
+({ Var _ = &(__VA_ARGS__); input_3_c_(echo_(src), #src, echo_(sep), *_); })
+
+#define input_(...) get_(COUNT_(__VA_ARGS__),\
+ input_0_,, input_1_, input_2_, input_3_)(__VA_ARGS__)
+
+#define scan__c_(...) ((Int_ (*)(String, ...))f_c_(scanf, INPUT__))(format_c\
+((Char_ [COUNT_(__VA_ARGS__) * FMTLEN_C + 1]){0}, "",\
+ (Char *[]){ map__(input_c_, __VA_ARGS__), NULL }\
+), map__(INPUT_C, __VA_ARGS__))
+
+#define scan__(...) get_(COUNT_(__VA_ARGS__), scan__c_,,input__1__)(__VA_ARGS__)
+
+#define scn_c_( n, _args_, rng) temps_c_(n,_args_,rng) scan__(map__(tmp_c_,rng))
+
+#define scan_c_(n, _args_) scn_c_(n, _args_, RANGE_C_(n))
+
+#define scan_(...) ({ scan_c_(COUNT_(__VA_ARGS__), (__VA_ARGS__,)); })
+
+#endif
+
+#undef  INPUT__
+#ifndef DEBUG
+#define INPUT__ 0
+#else
+#define INPUT__ 1
+#endif

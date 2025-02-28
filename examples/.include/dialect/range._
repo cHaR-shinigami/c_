@@ -1,0 +1,96 @@
+#ifndef RANGE__
+#define RANGE__
+
+#include <types._>
+
+#define Range( ...) Ptr (const typeof (0|(__VA_ARGS__)0) [3])
+
+#define Range_(...) Ptr_(const typeof (0|(__VA_ARGS__)0) [3])
+
+#define range_1_(...)    range_3_(0, (__VA_ARGS__) - 1, 1)
+
+#define range_2_(a, ...) range_3_(echo_(a), echo_(__VA_ARGS__), 1)
+
+#define range_3_(a, z, ...) (&(const typeof ((a) - (z))[3])\
+{0|(a), 0|(z), 0|(__VA_ARGS__)})
+
+#define range_(...) poly_3_(range_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define range_c_(...) (*_Generic (__VA_ARGS__,\
+ const typeof (0|**(__VA_ARGS__)) (*)[3] : __VA_ARGS__))
+
+#define greek_c_(rng, _rng, i) _Generic (rng, const typeof\
+ (0|**(rng)) (*)[3] : + (*notnull_c_(echo_(rng), _rng, RANGE__))[i])
+
+#define alpha_(...) greek_c_(echo_(__VA_ARGS__), #__VA_ARGS__, 0)
+
+#define omega_(...) greek_c_(echo_(__VA_ARGS__), #__VA_ARGS__, 1)
+
+#define delta_(...) greek_c_(echo_(__VA_ARGS__), #__VA_ARGS__, 2)
+
+#define loop_c_(t) for (Var_ _c_ = 1; _c_; _c_ = 0)\
+{	typedef const typeof (t) _T_c;\
+	Var _sign = has_sign_(_T_c);
+
+#define msub_c_(m, s) (+m >= s ? m - s : _dgt0 ? _d - (s - m) : -(_d + (s - m)))
+
+#define LOOP_C\
+	Var _altz = _a < _z;\
+	Var _dgt0 = _d > 0 ;\
+	guard_1_(((_d && _a!=_z && _sign) implies (_altz iff _dgt0)))\
+	Var_ _z_ = _z;\
+	if (_d)\
+	{	let _T_c\
+		_ad = _a % _d,\
+		_zd = _z % _d,\
+		_a0 = msub_c_(_ad, 0),\
+		_z0 = msub_c_(_zd, 0),\
+		_za = msub_c_(_z0, _a0);\
+		_z_ += _altz ? -_za : msub_c_(0, _za);\
+	}\
+	Var _omega = _z_;\
+	Var _delta = !_sign && _a > _z ? -_d : _d;\
+	Var_ _i_ = _a;\
+	do	for (Var_ _c_ = 1; _c_; test_2_(_c_ = _omega!=_i_,\
+		test_3_(_d, _i_ += _delta, _i_ = _omega))) {
+
+#define loop_1_(...) loop_1_c_(#__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define loop_2_(a, ...) loop_c_((a) - (__VA_ARGS__))\
+	let _T_c\
+	_a = a,\
+	_z = __VA_ARGS__,\
+	_d = _sign && _a > _z ? -1 : 1;\
+	LOOP_C
+
+#define loop_3_(a, z, ...) loop_c_((a) - (z))\
+	let _T_c\
+	_a = a,\
+	_z = z,\
+	_d = __VA_ARGS__;\
+	LOOP_C
+
+#define loop_1_c_(_rng, rng) loop_c_(**(rng))\
+	Var _azd = range_c_(rng);\
+	guard_1_(notnull_c_(_azd, _rng, RANGE__))\
+	let _T_c\
+	_a = _azd[0],\
+	_z = _azd[1],\
+	_d = _azd[2];\
+	LOOP_C
+
+#define loop_2_c_(_ , ...) loop_2_(__VA_ARGS__)
+
+#define loop_3_c_(_ , ...) loop_3_(__VA_ARGS__)
+
+#define loop_(...) poly_3_(loop_, COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__, __VA_ARGS__)
+
+#endif
+
+#undef  RANGE__
+#ifndef DEBUG
+#define RANGE__ 0
+#else
+#define RANGE__ 1
+#endif

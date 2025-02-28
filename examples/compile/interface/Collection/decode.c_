@@ -1,0 +1,31 @@
+#include  "Collection._"
+
+procedure_(Collection_*, (Collection, decode),
+(let  Ptr (Collection_), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Encoding), in))
+	guard_(validate_(Collection, this), NULL)
+	Var concrete = this->concrete_;
+	Var    typex = concrete_(this)->typex;
+	Var   append = typex->append;
+	Var  species = typex->species(concrete, NULL);
+	Var     init = species->init;
+	Var   decode = species->decode;
+	Var     free = species->free;
+	Var_  count_ = (Size)0;
+{	Var_ object_ = NULL;
+	for_(Var len = *length - 1; count_ < len;)
+		guard_(object_ ||  (object_ = init(species, (Tape){NULL})))
+		Size_ length_  =  *length - count_;
+	{	Var data = decode(object_, &length_, (Void *)& (*in)[count_]);
+		count_ += length_;
+		guard_(data)
+		if (data == object_) object_ = NULL;
+		continue_(append(concrete, data))
+		free(data);
+	}	break;
+	end
+	if (object_) free(object_);
+}	*length  =  count_ + (count_+1 == *length);
+	return this;
+end

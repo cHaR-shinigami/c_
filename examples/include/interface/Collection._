@@ -1,0 +1,20 @@
+#ifndef COLLECTION__
+#define COLLECTION__
+
+#include "Iterable._"
+
+#define Collection_EXTENDS Iterable,\
+ validate, copy, read, write,\
+ parse, text, decode, encode, add
+
+Interface_(Collection)
+
+prototype_(Bool_, (Collection, append),
+(Collection *, this), (Void *, data))
+
+prototype_(Type_, (Collection, species),
+(Collection *, this), (Type  , species))
+
+interface_(Collection, append, species)
+
+#endif

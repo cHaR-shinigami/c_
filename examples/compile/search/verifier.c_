@@ -1,0 +1,21 @@
+#include <c._>
+
+Size_ finder(Size len, Ptr (Int [len]) arr, Int key);
+
+Size_ find
+(	let Site _site,
+	let Size len,
+	let Ptr (Int [len]) arr,
+	let Int  key
+)
+begin
+	pre_(len != 0);
+	pre_(arr != NULL);
+	Var pos = finder(len, arr, key);
+	post_(pos <= len);
+	if (pos) loop_(0, pos - 1)
+		post_((*arr)[_i_] != key);
+	end
+	post_((pos < len  implies   (*arr)[pos] == key));
+	return pos;
+end

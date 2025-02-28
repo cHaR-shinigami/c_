@@ -1,0 +1,14 @@
+#ifndef   CHAIN__COUNT__
+#define   CHAIN__COUNT__
+
+#include "Chain._"
+
+protocol_(Size_ , (Chain, count),
+(let Ptr (Chain), this))
+	pre_(validate_(Chain, this));
+	Var count = solver_(Chain, count)(this);
+	post_ (count == this->length);
+	return count;
+end
+
+#endif

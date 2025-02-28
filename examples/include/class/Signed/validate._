@@ -1,0 +1,12 @@
+#ifndef   SIGNED__VALIDATE__
+#define   SIGNED__VALIDATE__
+
+#include "Signed._"
+
+private inline Bool_ validator(let LLong value)
+begin
+	return value >= SIGNED_MIN
+	&&     value <= SIGNED_MAX;
+end
+
+#endif

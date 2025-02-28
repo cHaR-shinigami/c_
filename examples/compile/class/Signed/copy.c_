@@ -1,0 +1,11 @@
+#include  "Signed._"
+
+procedure_(Signed_*, (Signed, copy),
+(let  Ptr (Signed_), this),
+(let  Ptr (Signed ), that))
+	Var copy= need__(this);
+	guard_(copy, NULL)
+	if (!this) copy->type = type_(Signed);
+	copy->value = that->value;
+	return copy;
+end

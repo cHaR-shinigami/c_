@@ -1,0 +1,41 @@
+#ifndef CHAIN__
+#define CHAIN__
+
+#include "Iterable._"
+
+#define Chain_EXTENDS Object,\
+ validate, init, free, compare, copy, add
+
+#define Chain_IMPLEMENTS_Iterable SELF,\
+ append, count, duplicate, get_next, has_next, iterator
+
+typedef_(Node, struct Node
+{	Void  *data;
+	struct Node *next;
+})
+
+class_ (Chain implements Iterable)
+	Node_ *head;
+	Size_  length;
+	Node_ *tail;
+fin
+
+prototype_(Bool_ , (Chain, append),
+(Chain_ *, this) , (Void *, data))
+
+prototype_(Size_ , (Chain, count),
+(Chain  *, this))
+
+prototype_(Node_*, (Chain, iterator),
+(Chain  *, this))
+
+prototype_(Node_*, (Chain, duplicate),
+(Typex (Iterable), typex), (Node  *, node))
+
+prototype_(Void *, (Chain, get_next),
+(Typex (Iterable), typex), (Node_ *, node))
+
+prototype_(Bool_ , (Chain, has_next),
+(Typex (Iterable), typex), (Node  *, node))
+
+#endif

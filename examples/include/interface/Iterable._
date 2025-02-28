@@ -1,0 +1,33 @@
+#ifndef ITERABLE__
+#define ITERABLE__
+
+#include <c._>
+
+#define Iterable_EXTENDS Abstract,\
+ validate, compare, copy, add
+
+Interface_(Iterable)
+
+typedef_  (Iterator, struct Iterator)
+
+prototype_(Bool_, (Iterable, append),
+(Iterable *, this), (Void *, data))
+
+prototype_(Size_, (Iterable, count),
+(Iterable *, this))
+
+prototype_(Iterator_ *, (Iterable, duplicate),
+(Typex (Iterable), typex), (Iterator *, iterator))
+
+prototype_(Void *, (Iterable, get_next),
+(Typex (Iterable), typex), (Iterator_*, iterator))
+
+prototype_(Bool_ , (Iterable, has_next),
+(Typex (Iterable), typex), (Iterator *, iterator))
+
+prototype_(Iterator_ *, (Iterable, iterator),
+(Iterable *, this))
+
+interface_(Iterable, append, count, duplicate, get_next, has_next, iterator)
+
+#endif

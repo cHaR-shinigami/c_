@@ -1,0 +1,11 @@
+#include  "Rational._"
+
+procedure_(Rational_*, (Rational, copy),
+(let  Ptr (Rational_), this),
+(let  Ptr (Rational ), that))
+	Var copy= need__(this);
+	guard_(copy, NULL)
+	if (!this) copy->type = type_(Rational);
+	copy->value = that->value;
+	return copy;
+end

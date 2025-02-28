@@ -1,0 +1,26 @@
+#ifndef UCHAR__
+#define UCHAR__
+
+#include  <uchar.h>
+
+#include  <mbs_c._>
+
+#include <size_c._>
+
+#ifdef  __STDC_VERSION_UCHAR_H__
+
+typedef_c_
+(Char8,
+ char8_t)
+
+#endif
+
+typedef_c_
+(Char16,
+ char16_t)
+
+typedef_c_
+(Char32,
+ char32_t)
+
+#endif

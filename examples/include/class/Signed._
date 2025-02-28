@@ -1,0 +1,17 @@
+#ifndef SIGNED__
+#define SIGNED__
+
+#include <c._>
+
+#define SIGNED_MAX 9223372036854775807LL
+#define SIGNED_MIN -SIGNED_MAX
+
+#define Signed_EXTENDS Object,\
+ validate, init, compare, copy, read, write,\
+ parse, text, decode, encode, add, sub, mul, div
+
+class_ (Signed)
+	LLong_ value;
+fin
+
+#endif

@@ -1,0 +1,12 @@
+#ifndef ONCE_C__
+#define ONCE_C__
+
+#include <threads.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Once_flag,
+ once_flag)
+
+#endif

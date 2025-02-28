@@ -1,0 +1,18 @@
+#include "Collection._"
+
+procedure_(Bool_, (Collection, validate),
+(let Ptr (Collection), this))
+	Var    typex = concrete_(this)->typex;
+	guard_(typex->append &&  typex->species, FALSE_())
+	Var concrete = this->concrete;
+	Var  species = typex->species(concrete, NULL);
+	guard_(is_type(species), FALSE_())
+	Var_ valid_ = TRUE_();
+{	Var   iterator  = typex->base->iterator(concrete);
+	post_(iterator != NULL);
+	Var get_next = typex->base->get_next;
+	for (Var_ count_ = typex->base->count(concrete); count_--
+	&&  (valid_ = validate(species, get_next(typex->base, iterator))););
+	free (iterator);
+}	return valid_;
+end

@@ -1,0 +1,19 @@
+#ifndef   LIST__APPEND__
+#define   LIST__APPEND__
+
+#include "List._"
+
+protocol_(Bool_ , (List, append),
+(let Ptr (List_), this),
+(let Ptr (Void ), data))
+	pre_ (validate_(List, this));
+	Var   type = this->type;
+	this->type = (Type)typex_(Collection, List);
+	Var success= verifier_(Collection, append)
+	(_site, abstract_(Collection, this), data);
+	this->type = type;
+	post_((success implies  data == this->base->tail->data));
+	return success;
+end
+
+#endif

@@ -1,0 +1,87 @@
+#include "Integers/sort._"
+
+private Void_ fix_inv_max_heap
+(	let Size len,
+	let Ptr (Int_ [len]) arr,
+	let Size_ i_
+)
+begin
+	Var_ last  = len - 1;
+	Var_ next_ = (Size)0;
+	begin
+		Var left  =  i_<<1 | 1;
+		guard_(left < len)
+		Var right = left+1;
+		if((right<len implies  (*arr)[last - left] >= (*arr)[last - right]))
+			if ((*arr)[last - left] > (*arr)[last - i_]) next_ = left;
+			else break;
+		elif  ((*arr)[last - right] > (*arr)[last - i_]) next_ = right;
+		else break;
+		Var temp = (*arr)[last - i_];
+		(*arr)[last - i_] = (*arr)[last - next_];
+		(*arr)[last - (i_ = next_)] = temp;
+	again
+end
+
+private Void_ fix_min_heap
+(	let Size len,
+	let Ptr (Int_ [len]) arr,
+	let Size_ i_
+)
+begin
+	Var_ next_ = (Size)0;
+	begin
+		Var left  =  i_<<1 | 1;
+		guard_(left < len)
+		Var right = left+1;
+		if((right<len implies  (*arr)[left] <= (*arr)[right]))
+			if ((*arr)[left] < (*arr)[i_]) next_ = left;
+			else break;
+		elif  ((*arr)[right] < (*arr)[i_]) next_ = right;
+		else break;
+		Var temp   = (*arr)[i_];
+		(*arr)[i_] = (*arr)[next_];
+		(*arr)[i_  = next_] = temp;
+	again
+end
+
+private Void_ make_inv_max_heap
+(	let Size len,
+	let Ptr (Int_ [len]) arr
+)
+begin
+	Var_ i_ = len>>1;
+	do fix_inv_max_heap(len, arr, i_); while (i_--);
+end
+
+private Void_ make_min_heap
+(	let Size len,
+	let Ptr (Int_ [len]) arr
+)
+begin
+	Var_ i_ = len>>1;
+	do fix_min_heap(len, arr, i_); while (i_--);
+end
+
+procedure_((Integers, sort),
+(let Size, len),
+(let Ptr (Int_ [len]), arr))
+	guard_(len>1 &&  arr)
+	Var left  = arr;
+	Var llen  = len >> 1;
+	Var right = (Ptr (Int_ []))(*arr + llen);
+	Var rlen  = len - llen;
+	make_inv_max_heap(llen, left);
+	make_min_heap(rlen, right);
+	Var max_left  = *right - 1;
+	Var min_right = *right;
+	until_(*max_left <= *min_right)
+		Var  temp = *max_left ;
+		*max_left = *min_right;
+		*min_right = temp;
+		fix_inv_max_heap(llen, left, 0);
+		fix_min_heap(rlen, right, 0);
+	end
+	solver_(Integers, sort)(llen - 1, left);
+	solver_(Integers, sort)(rlen - 1, (Ptr (Int_ []))(*right + 1));
+end

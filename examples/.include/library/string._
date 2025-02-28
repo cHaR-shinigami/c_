@@ -1,0 +1,12 @@
+#ifndef STRING__
+#define STRING__
+
+#include <string.h>
+
+#include <size_c._>
+
+#endif
+
+#include <errno_c._>
+
+#include <rsize_c._>

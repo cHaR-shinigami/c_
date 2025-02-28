@@ -1,0 +1,44 @@
+#ifndef REL__
+#define REL__
+
+#include <hof_c._>
+
+#define rel_3_(rel_, op, ...) \
+begin\
+	hof_array_c_(omni_c_(echo_(__VA_ARGS__),lvalue__), #__VA_ARGS__,REL__,_arr)\
+	guard_1_  (_len_arr)\
+	Var_ _i_ = _len_arr;\
+	while (--_i_) break_(!((*_arr)[_i_ - 1] op (*_arr)[_i_]))\
+	rel_ = ! _i_; \
+end
+
+#define rel_4_(rel_, l, op, ...) \
+begin\
+	hof_array_c_(omni_c_(echo_(l), lvalue__), #l, REL__, _l)\
+	hof_array_c_(omni_c_(echo_(__VA_ARGS__),lvalue__), #__VA_ARGS__, REL__, _r)\
+	Var_ _i_ = (Size)0;\
+	if   (_len_l > _len_r)\
+		for (; _i_ < _len_l; _i_++)\
+			break_(!((*_l)[_i_] op (*_r)[_i_ % _len_r]))\
+	elif (_len_l < _len_r)\
+	{	for (; _i_ < _len_r; _i_++)\
+			break_(!((*_l)[_i_ % _len_l] op (*_r)[_i_]))\
+		rel_ = _len_r==_i_;\
+		break;\
+	}\
+	else\
+		for (; _i_ < _len_l; _i_++)\
+			break_(!((*_l)[_i_] op (*_r)[_i_]))\
+	rel_ = _len_l==_i_; \
+end
+
+#define rel_(...) poly_3_(rel_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  REL__
+#ifndef DEBUG
+#define REL__ 0
+#else
+#define REL__ 1
+#endif

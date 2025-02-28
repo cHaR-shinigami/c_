@@ -1,0 +1,7 @@
+#include "Vector._"
+
+procedure_((Vector, free),
+(let Ptr (Vector_), this))
+	free(this->array);
+	free(this);
+end

@@ -1,0 +1,100 @@
+#ifndef ARRAY__
+#define ARRAY__
+
+#ifndef   POINTER__
+#include <pointer._>
+#endif
+
+#define is_array_c_(...) _Generic ((typeof_c_(__VA_ARGS__) *)0,\
+ typeof_unqual (__VA_ARGS__) * : FALSE, default : TRUE)
+
+#define is_array_(...) is_array_c_(*(typeof  (__VA_ARGS__) *)0)
+
+#define length_c_(...) (sizeof *(__VA_ARGS__) / sizeof **(__VA_ARGS__))
+
+#define length__( ...) ((Size) length_c_(__VA_ARGS__))
+
+#define length_(  ...) ({ Var _ = (__VA_ARGS__); (Size) length_c_(_); })
+
+ public Void_   *at_0_c
+(	let Pointer _arr,
+	let Ptrdiff _len,
+	let Size    _siz,
+	let Ptrdiff _pos,
+	let Pointer _def
+)
+{	let Ptr_c(Void_) _default = unqual_c_(_def);
+	guard_2_ (_arr , _default)
+	let Ptrdiff _index = (_pos < 0)? _pos + _len : _pos;
+	guard_2_ (_index >= 0, _default)
+	guard_2_ (_index<_len, _default)
+	return  & _index[(Char_ (*)[_siz]) unqual_c_(_arr)];
+}
+#define at_0_c_(arr, pos, def) ((typeof_c_(arr)) at_0_c\
+(arr, length_c_(arr), sizeof **(arr), 0|(pos), (typeof (**(arr)) []){def}))
+
+ public Void_   *at_1_c
+(	let Pointer _arr,
+	let Ptrdiff _len,
+	let Size    _siz,
+	let Ptrdiff _pos,
+	let Bool    _neg,
+	let Site    _site,
+	let Ptr_c(Char) _text,
+	let Ptr_c(Char) _undr,
+	let Ptr_c(Char) _ilt0,
+	let Ptr_c(Char) _over
+)
+{	if (!_arr) notnull_c(NULL, _text, _site);
+	let Ptrdiff  _index = (_neg &&  _pos < 0)? _pos + _len : _pos;
+	assert_c_(_index >= 0, _neg?  _undr : _ilt0, _site, 1);
+	assert_c_(_index<_len, _over, _site, 1);
+	return  & _index[(Char_ (*)[_siz]) unqual_c_(_arr)];
+}
+#define at_1_c_(arr, pos, neg, _arr, _pos) ((typeof_c_(arr)) at_1_c\
+(arr, length_c_(arr), sizeof **(arr), 0|(pos), neg, SITE, _arr,\
+ "("_pos") >= -length_("_arr")", "("_pos") >= 0",\
+ "("_pos") < ""length_("_arr")"))
+
+#define at_c_(arr, pos, def,_arr,_pos) (**(faux_(typeof (**(arr)), echo_(def)),\
+ mux_c_(ARRAY__)(((Void)(def),\
+   at_1_c_(echo_(arr), echo_(pos), 1, _arr, _pos)),\
+   at_0_c_(echo_(arr), echo_(pos), echo_(def)))))
+
+#define at__2_c_(arr, pos, _arr, _pos) (mux_c_(ARRAY__)\
+(**at_1_c_(echo_(arr), echo_(pos), 0, _arr, _pos), (*(arr))[pos]))
+
+#define at__3_c_(arr, pos, def, _arr, _) at_c_(echo_(arr), pos, def, _arr, #pos)
+
+#define at__2__(arr, ...) at__2_c_\
+(echo_(arr), echo_(__VA_ARGS__), #arr, #__VA_ARGS__)
+
+#define at__3__(arr, pos, ...) at_c_\
+(echo_(arr), echo_(pos), echo_(__VA_ARGS__), #arr, #pos)
+
+#define at__(arr, ...) poly_3_(at__, COUNT_(,__VA_ARGS__), _c_)\
+(echo_(arr), __VA_ARGS__, #arr, #__VA_ARGS__)
+
+#define at_2_c_(arr, pos, _arr, _pos)\
+({ Var _ = arr; at__2_c_(_,echo_(pos), _arr, _pos); })
+
+#define at_3_c_(arr, pos, def, _arr, _)\
+({ Var _ = arr; at_c_(_, pos, def, _arr, #pos); })
+
+#define at_2_(arr, ...) at_2_c_\
+(echo_(arr), echo_(__VA_ARGS__), #arr, #__VA_ARGS__)
+
+#define at_3_(arr, pos, ...)\
+({ Var _ = arr; at_c_(_, echo_(pos), echo_(__VA_ARGS__), #arr, #pos); })
+
+#define at_( arr, ...) poly_3_(at_ , COUNT_(,__VA_ARGS__), _c_)\
+(echo_(arr), __VA_ARGS__, #arr, #__VA_ARGS__)
+
+#endif
+
+#undef  ARRAY__
+#ifndef DEBUG
+#define ARRAY__ 0
+#else
+#define ARRAY__ 1
+#endif

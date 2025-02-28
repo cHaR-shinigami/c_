@@ -1,0 +1,12 @@
+#include  "Rational/validate._"
+
+#include  <errno._>
+
+procedure_(Rational_*, (Rational, decode),
+(let  Ptr (Rational_), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Encoding), in))
+	Var dec = solver_(Rational, parse)(this, length, in);
+	*length += ! (*in)[*length];
+	return dec;
+end

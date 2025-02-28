@@ -1,0 +1,10 @@
+#include  "List._"
+
+procedure_(Encoding_*, (List, encode),
+(let  Ptr (List ), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Encoding_), out))
+	List_ list[1] = {*this};
+	list->type = (Type)typex_(Collection, List);
+	return solver_(Collection,encode)(abstract_(Collection, list), length, out);
+end

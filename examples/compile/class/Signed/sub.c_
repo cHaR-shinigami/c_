@@ -1,0 +1,18 @@
+#include  "Signed._"
+
+procedure_(Signed_*, (Signed, sub),
+(let  Ptr (Signed_), difference),
+(let  Ptr (Signed ), minuend),
+(let  Ptr (Signed ), subtrahend))
+	Var result = need__(difference);
+	guard_(result, NULL)
+	if (!difference) result->type = type_(Signed);
+	Var_ l_ = minuend->value;
+	Var_ r_ = subtrahend->value;
+	Var sign  =  0>l_ &&  0<r_;
+	if (sign) l_ = -l_, r_ = -r_;
+	else guard_(0<l_ &&  0>r_, (result->value = l_-r_, result))
+	result->value  =  ((ULLong)l_ - (ULLong)r_) & SIGNED_MAX;
+	if (sign) result->value = -result->value;
+	return result;
+end

@@ -1,0 +1,44 @@
+#include "Integers/sort._"
+
+private Void_ burrow
+(	let Ptrdiff alpha,
+	let Ptr (Int_ []) arr,
+	let Ptrdiff mid,
+	let Ptrdiff omega
+)
+begin
+	guard_(alpha <= mid  &&   mid < omega)
+	Var_  left_ = mid;
+	Var_ right_ = mid+1;
+	until   ((alpha<=left_ &&  right_<=omega
+	implies (*arr)[left_] <= (*arr)[right_]))
+		left_--, right_++;
+	Var left = left_;
+	for_(right_ = mid+1; ++left_ <= mid; right_++)
+		Var tmp = (*arr)[left_];
+		(*arr)[ left_] = (*arr)[right_];	
+		(*arr)[right_] = tmp;
+	end
+	burrow(alpha, arr, left, mid);
+	burrow(mid+1, arr, right_-1, omega);
+end
+
+private Void_ sort
+(	let Size  alpha,
+	let Ptr (Int_ []) arr,
+	let Size  omega
+)
+begin
+	guard_(alpha < omega)
+	Var mid = (alpha + omega)>>1;
+	sort(alpha, arr, mid);
+	sort(mid+1, arr, omega);
+	burrow(alpha, arr, mid, omega);
+end
+
+procedure_((Integers, sort),
+(let Size, len),
+(let Ptr (Int_  [len]), arr))
+	guard_(len &&  arr)
+	sort(0, arr, len - 1);
+end

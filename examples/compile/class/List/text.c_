@@ -1,0 +1,10 @@
+#include  "List._"
+
+procedure_(Void_*, (List, text),
+(let  Ptr (List ), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Void_), out))
+	List_ list[1] = {*this};
+	list->type = (Type)typex_(Collection, List);
+	return solver_(Collection, text)(abstract_(Collection, list), length, out);
+end

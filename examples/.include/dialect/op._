@@ -1,0 +1,86 @@
+#ifndef OP__
+#define OP__
+
+#include <hof_c._>
+
+#define op_2_(op, ...) \
+begin\
+	hof_array_c_(omni_c_(echo_(__VA_ARGS__),), #__VA_ARGS__, OP__, _arr)\
+	for(Var_ _i_ = _len_arr; _i_--;)\
+	{	Var _ = op (*_arr)[_i_];\
+		(*_arr)[_i_] = _;\
+	} \
+end
+
+#define op_3_(l, op, ...) \
+begin\
+	hof_array_c_(omni_c_(echo_(l),), #l, OP__, _l)\
+	hof_array_c_(omni_c_(echo_(__VA_ARGS__), lvalue__), #__VA_ARGS__, OP__, _r)\
+	Var_ _i_ = (Size)0;\
+	if   (_len_l > _len_r)\
+		for (; _i_ < _len_l; _i_++)\
+		{	Var _  =  (*_l)[_i_] op (*_r)[_i_ % _len_r];\
+			(*_l)[_i_] = _;\
+		}\
+	elif (_len_l < _len_r)\
+		for (; _i_ < _len_r; _i_++)\
+		{	Var _il  =  _i_ % _len_l;\
+			Var _  =  (*_l)[_il] op (*_r)[_i_];\
+			(*_l)[_il] = _;\
+		}\
+	else\
+		for (; _i_ < _len_l; _i_++)\
+		{	Var _  =  (*_l)[_i_] op (*_r)[_i_];\
+			(*_l)[_i_] = _;\
+		} \
+end
+
+#define op_4_(d, l, op, ...) \
+begin\
+	hof_array_c_(omni_c_(echo_(d),), #d, OP__, _d)\
+	hof_array_c_(omni_c_(echo_(l), lvalue__), #l, OP__, _l)\
+	hof_array_c_(omni_c_(echo_(__VA_ARGS__), lvalue__), #__VA_ARGS__, OP__, _r)\
+	Var _length = _len_d <= _len_l ? _len_d : _len_l;\
+	Var_ _i_ = (Size)0;\
+	if (_d == _r)\
+	{	for (; _i_ <_length; _i_++)\
+		{	Var _  =  (*_l)[_i_] op (*_r)[_i_];\
+			(*_d)[_i_] = _;\
+		}\
+		for (; _i_ < _len_d; _i_++)\
+		{	Var _id  =  _i_ % _length;\
+			Var _  =  (*_d)[_id] op (*_r)[_i_];\
+			(*_d)[_id] = _;\
+		}\
+		break;\
+	}\
+	if (_d != _l) for (; _i_ < _length; _i_++) (*_d)[_i_] = (*_l)[_i_];\
+	_i_ = 0;\
+	if    (_length > _len_r)\
+		for (; _i_ <_length; _i_++)\
+		{	Var _  =  (*_d)[_i_] op (*_r)[_i_ % _len_r];\
+			(*_d)[_i_] = _;\
+		}\
+	elif  (_length < _len_r)\
+		for (; _i_ < _len_r; _i_++)\
+		{	Var _il  =  _i_ % _length;\
+			Var _  =  (*_d)[_il] op (*_r)[_i_];\
+			(*_d)[_il] = _;\
+		}\
+	else\
+		for (; _i_ < _len_r; _i_++)\
+		{	Var _  =  (*_d)[_i_] op (*_r)[_i_];\
+			(*_d)[_i_] = _;\
+		} \
+end
+
+#define op_(...) poly_3_(op_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  OP__
+#ifndef DEBUG
+#define OP__ 0
+#else
+#define OP__ 1
+#endif

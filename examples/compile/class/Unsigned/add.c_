@@ -1,0 +1,12 @@
+#include  "Unsigned._"
+
+procedure_(Unsigned_*, (Unsigned, add),
+(let  Ptr (Unsigned_), sum),
+(let  Ptr (Unsigned ), augend),
+(let  Ptr (Unsigned ), addend))
+	Var result = need__(sum);
+	guard_(result, NULL)
+	if (!sum) result->type = type_(Unsigned);
+	result->value  =  (augend->value + addend->value) & UNSIGNED_MAX;
+	return result;
+end

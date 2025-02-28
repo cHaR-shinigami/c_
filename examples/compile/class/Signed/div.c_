@@ -1,0 +1,13 @@
+#include  "Signed._"
+
+procedure_(Signed_*, (Signed, div),
+(let  Ptr (Signed_), output),
+(let  Ptr (Signed ), dividend),
+(let  Ptr (Signed ), divisor))
+	guard_(divisor->value, NULL)
+	Var result = need__(output);
+	guard_(result, NULL)
+	if (!output) result->type = type_(Signed);
+	result->value  =  dividend->value / divisor->value;
+	return result;
+end

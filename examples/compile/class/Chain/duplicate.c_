@@ -1,0 +1,12 @@
+#include "Chain/duplicate._"
+
+procedure_(Node_ *, (Chain, duplicate),
+(let Typex (Iterable), typex),
+(let Ptr  (Node), node))
+	(Void) typex;
+	Var dup = new__(Node);
+	guard_(dup, NULL)
+	dup->data =  node->data;
+	dup->next = (node->next != node)? node->next : dup;
+	return dup;
+end

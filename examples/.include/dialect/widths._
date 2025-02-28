@@ -1,0 +1,66 @@
+#ifndef WIDTHS__
+#define WIDTHS__
+
+#include <extrema._>
+
+#ifndef   INT8_WIDTH
+#define   INT8_WIDTH_C
+#else
+#define   INT8_WIDTH_C Int8_   :  8,
+#endif
+
+#ifndef  INT16_WIDTH
+#define  INT16_WIDTH_C
+#else
+#define  INT16_WIDTH_C Int16_  : 16,
+#endif
+
+#ifndef  INT32_WIDTH
+#define  INT32_WIDTH_C
+#else
+#define  INT32_WIDTH_C Int32_  : 32,
+#endif
+
+#ifndef  INT64_WIDTH
+#define  INT64_WIDTH_C
+#else
+#define  INT64_WIDTH_C Int64_  : 64,
+#endif
+
+#ifndef INTPTR_WIDTH
+#define INTPTR_WIDTH_C
+#else
+#define INTPTR_WIDTH_C Intptr_ : INTPTR_WIDTH,
+#endif
+
+#define width_c_(T) (!has_sign_(T) ?  bitlen__((T)-1) : _Generic ((T)0,\
+  Char_  :  CHAR_WIDTH,\
+  Byte_  :  BYTE_WIDTH,\
+ Short_  : SHORT_WIDTH,\
+   Int_  :   INT_WIDTH,\
+  Long_  :  LONG_WIDTH,\
+ LLong_  : LLONG_WIDTH,\
+ default : _Generic ((T)0,\
+ INT8_WIDTH_C INT16_WIDTH_C INT32_WIDTH_C INT64_WIDTH_C\
+ default : _Generic ((T)0, Int_least8_  : INT_LEAST8_WIDTH  ,\
+ default : _Generic ((T)0, Int_least16_ : INT_LEAST16_WIDTH ,\
+ default : _Generic ((T)0, Int_least32_ : INT_LEAST32_WIDTH ,\
+ default : _Generic ((T)0, Int_least64_ : INT_LEAST64_WIDTH ,\
+ default : _Generic ((T)0, Int_fast8_   : INT_FAST8_WIDTH   ,\
+ default : _Generic ((T)0, Int_fast16_  : INT_FAST16_WIDTH  ,\
+ default : _Generic ((T)0, Int_fast32_  : INT_FAST32_WIDTH  ,\
+ default : _Generic ((T)0, Int_fast64_  : INT_FAST64_WIDTH  ,\
+ default : _Generic ((T)0, Intmax_      :     INTMAX_WIDTH  ,\
+ default : _Generic ((T)0, Ptrdiff_     :    PTRDIFF_WIDTH  ,\
+ default : _Generic ((T)0, Sig_atomic_  : SIG_ATOMIC_WIDTH  ,\
+ default : _Generic ((T)0, WChar_       :      WCHAR_WIDTH  ,\
+ default : _Generic ((T)0, WInt_        :       WINT_WIDTH  ,\
+ default : _Generic ((T)0, INTPTR_WIDTH_C\
+ default :  swidth_c_(T)\
+)))))))))))))))))
+
+#define width_(...)      width_c_(echo_(__VA_ARGS__))
+
+#define precision_(...) (width_c_(echo_(__VA_ARGS__)) - has_sign_(__VA_ARGS__))
+
+#endif

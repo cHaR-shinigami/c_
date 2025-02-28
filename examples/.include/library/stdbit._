@@ -1,0 +1,80 @@
+#ifndef STDBIT__
+#define STDBIT__
+
+#include <stdbit.h>
+
+#include <size_c._>
+
+#include  <int_c._>
+
+#define\
+ stdc_leading_zeros_(...)\
+ stdc_leading_zeros\
+(__VA_ARGS__)
+
+#define\
+ stdc_leading_ones_(...)\
+ stdc_leading_ones\
+(__VA_ARGS__)
+
+#define\
+ stdc_trailing_zeros_(...)\
+ stdc_trailing_zeros\
+(__VA_ARGS__)
+
+#define\
+ stdc_trailing_ones_(...)\
+ stdc_trailing_ones\
+(__VA_ARGS__)
+
+#define\
+ stdc_first_leading_zero_(...)\
+ stdc_first_leading_zero\
+(__VA_ARGS__)
+
+#define\
+ stdc_first_leading_one_(...)\
+ stdc_first_leading_one\
+(__VA_ARGS__)
+
+#define\
+ stdc_first_trailing_zero_(...)\
+ stdc_first_trailing_zero\
+(__VA_ARGS__)
+
+#define\
+ stdc_first_trailing_one_(...)\
+ stdc_first_trailing_one\
+(__VA_ARGS__)
+
+#define\
+ stdc_count_zeros_(...)\
+ stdc_count_zeros\
+(__VA_ARGS__)
+
+#define\
+ stdc_count_ones_(...)\
+ stdc_count_ones\
+(__VA_ARGS__)
+
+#define\
+ stdc_has_single_bit_(...)\
+ stdc_has_single_bit\
+(__VA_ARGS__)
+
+#define\
+ stdc_bit_width_(...)\
+ stdc_bit_width\
+(__VA_ARGS__)
+
+#define\
+ stdc_bit_floor_(...)\
+ stdc_bit_floor\
+(__VA_ARGS__)
+
+#define\
+ stdc_bit_ceil_(...)\
+ stdc_bit_ceil\
+(__VA_ARGS__)
+
+#endif

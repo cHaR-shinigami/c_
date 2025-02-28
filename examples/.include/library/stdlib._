@@ -1,0 +1,70 @@
+#ifndef STDLIB__
+#define STDLIB__
+
+#include <stdlib.h>
+
+#include   <types._>
+
+#include  <size_c._>
+
+#include <wchar_c._>
+
+#include  <once_c._>
+
+typedef_c_
+(Div,
+ div_t)
+
+typedef_c_
+(LDiv,
+ ldiv_t)
+
+typedef_c_
+(LLDiv,
+ lldiv_t)
+
+public Void_ *malloc2(let Size _nmemb, let Size _size)
+{	guard_2_(_nmemb &&   _size    &&
+	_nmemb  <=  (Size)-1 / _size, NULL)
+	return malloc(_nmemb * _size);
+}
+
+public UInt_ uabs(let Int _n)
+{	return _n >= 0
+	? (UInt)_n
+	: (UInt)-(_n + 1) + 1;
+}
+#define uabs_(...) (has_sign_(typeof (__VA_ARGS__))\
+      ? uabs (__VA_ARGS__)  :  (UInt)(__VA_ARGS__))
+
+public ULong_ ulabs(let Long _n)
+{	return _n >= 0
+	? (ULong)_n
+	: (ULong)-(_n + 1) + 1;
+}
+#define ulabs_(...) (has_sign_(typeof (__VA_ARGS__))\
+      ? ulabs(__VA_ARGS__)  :  (ULong)(__VA_ARGS__))
+
+public ULLong_ ullabs(let LLong _n)
+{	return _n >= 0
+	? (ULLong)_n
+	: (ULLong)-(_n + 1) + 1;
+}
+#define ullabs_(...) (has_sign_(typeof (__VA_ARGS__))\
+      ? ullabs (__VA_ARGS__) : (ULLong)(__VA_ARGS__))
+
+#endif
+
+#ifdef  __STDC_LIB_EXT1__
+#ifdef  __STDC_WANT_LIB_EXT1__
+
+#include <errno_c._>
+
+#include <rsize_c._>
+
+typedef_c_
+(Constraint_handler,
+ constraint_handler_t)
+
+#endif
+#endif

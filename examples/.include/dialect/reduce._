@@ -1,0 +1,40 @@
+#ifndef REDUCE__
+#define REDUCE__
+
+#include <hof_c._>
+
+#define reduce_3_(result, fun, ...) \
+begin\
+	Var _result = &(result);\
+	guard_1_(notnull_c_(_result, #result, REDUCE__))\
+	hof_funcn_c_(echo_(fun), #fun, REDUCE__)\
+	hof_array_c_(echo_(__VA_ARGS__), #__VA_ARGS__, REDUCE__, _arr)\
+	Var_ _tmp_ = *_result;\
+	for (Var_ _i_ = _len_arr; _i_--)\
+		 _tmp_ = _f((*_arr)[_i_], _tmp_);\
+	*_result = _tmp_; \
+end
+
+#define reduce_4_(result, fun, arr, ...) \
+begin\
+	Var _result = &(result);\
+	guard_1_(notnull_c_(_result, #result, REDUCE__))\
+	hof_funcn_c_(echo_(fun), #fun, REDUCE__)\
+	hof_array_c_(echo_(arr), #arr, REDUCE__, _arr)\
+	hof_range_c_(echo_(__VA_ARGS__), #__VA_ARGS__, REDUCE__, #arr, _len_arr)\
+	Var_ _tmp_ = *_result;\
+	for (Var_ _i_ = _a_; _n_--; _i_ += _d_)\
+		 _tmp_ = _f((*_arr)[_i_], _tmp_);\
+	*_result = _tmp_; \
+end
+
+#define reduce_(...) poly_3_(reduce_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  REDUCE__
+#ifndef DEBUG
+#define REDUCE__ 0
+#else
+#define REDUCE__ 1
+#endif

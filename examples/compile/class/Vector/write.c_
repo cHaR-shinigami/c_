@@ -1,0 +1,10 @@
+#include "Vector._"
+
+procedure_(LLong_, (Vector, write),
+(let Ptr (Vector), this),
+(let Stream, out))
+	guard_(this->species, -1)
+	Vector_ list[1] = {*this};
+	list->type = (Type)typex_(Collection, Vector);
+	return solver_(Collection, write)(abstract_(Collection, list), out);
+end

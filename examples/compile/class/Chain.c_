@@ -1,0 +1,5 @@
+#include "Chain._"
+
+ define_ (Chain)
+
+ define_ (Chain implements Iterable)

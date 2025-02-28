@@ -1,0 +1,83 @@
+#ifndef LIMITS__
+#define LIMITS__
+
+#include <limits.h>
+
+#define bitmax_(...) ((1ULL << (__VA_ARGS__)-1)-1 << 1  |  1)
+
+#define floor_c_(n, d) (n/(n%d + 1) / d  %  d)
+
+#define bitlen__(...)\
+ (64 * floor_c_((__VA_ARGS__) , 0xffffffffffffffffULL)  +\
+   5 * floor_c_((__VA_ARGS__) % 0xffffffffffffffffULL , 31) +\
+    4  -  12 / ((__VA_ARGS__) % 0xffffffffffffffffULL % 31  +  3))
+
+#define bitlen_(...) ({ Var _ = (__VA_ARGS__); bitlen__(_); })
+
+#ifndef   BOOL_WIDTH
+#define   BOOL_WIDTH  1
+#endif
+
+#ifndef   CHAR_WIDTH
+#if!      CHAR_MIN
+#define   CHAR_WIDTH  CHAR_BIT
+#else
+#define   CHAR_WIDTH (bitlen__(  CHAR_MAX) + 1)
+#endif
+#endif
+
+#ifndef  UCHAR_WIDTH
+#define  UCHAR_WIDTH  CHAR_BIT
+#endif
+
+#define  UBYTE_MAX   UCHAR_MAX
+#define  UBYTE_WIDTH UCHAR_WIDTH
+
+#ifndef  SCHAR_WIDTH
+#define  SCHAR_WIDTH (bitlen__( SCHAR_MAX) + 1)
+#endif
+
+#define   BYTE_MAX   SCHAR_MAX
+#define   BYTE_MIN   SCHAR_MIN
+#define   BYTE_WIDTH SCHAR_WIDTH
+
+#ifndef  USHRT_WIDTH
+#define  USHRT_WIDTH  bitlen__( USHRT_MAX)
+#endif
+
+#define USHORT_MAX   USHRT_MAX
+#define USHORT_WIDTH USHRT_WIDTH
+
+#ifndef   SHRT_WIDTH
+#define   SHRT_WIDTH (bitlen__(  SHRT_MAX) + 1)
+#endif
+
+#define  SHORT_MAX    SHRT_MAX
+#define  SHORT_MIN    SHRT_MIN
+#define  SHORT_WIDTH  SHRT_WIDTH
+
+#ifndef   UINT_WIDTH
+#define   UINT_WIDTH  bitlen__(  UINT_MAX)
+#endif
+
+#ifndef    INT_WIDTH
+#define    INT_WIDTH (bitlen__(   INT_MAX) + 1)
+#endif
+
+#ifndef  ULONG_WIDTH
+#define  ULONG_WIDTH  bitlen__( ULONG_MAX)
+#endif
+
+#ifndef   LONG_WIDTH
+#define   LONG_WIDTH (bitlen__(  LONG_MAX) + 1)
+#endif
+
+#ifndef ULLONG_WIDTH
+#define ULLONG_WIDTH  bitlen__(ULLONG_MAX)
+#endif
+
+#ifndef  LLONG_WIDTH
+#define  LLONG_WIDTH (bitlen__( LLONG_MAX) + 1)
+#endif
+
+#endif

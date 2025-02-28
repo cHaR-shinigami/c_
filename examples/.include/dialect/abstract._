@@ -1,0 +1,254 @@
+#ifndef ABSTRACT__
+#define ABSTRACT__
+
+#include <object._>
+
+#define Abstract_EXTENDS Object, validate,\
+ init, compare,  read, parse, decode, add, mul,\
+ free, copy   , write,  text, encode, sub, div
+
+#define SELF_IMPLEMENTS_Abstract
+
+typedef_c_ ( Typex (Abstract),
+const struct Typex (Abstract)
+{ struct Type base[1]; } *)
+
+typedef_c_(Abstract, struct Abstract
+{	union
+	{	Object_ base[1];
+		Type_   type;
+	};
+	union
+	{	Void  *concrete ;
+		Void_ *concrete_;
+		union
+		{	Type_ type;
+			Typex_(Abstract) typex;
+		}	*_concrete;
+	};
+})
+
+#define abstract_1_(...)       abstract_2_(Abstract, echo_(__VA_ARGS__))
+
+#define abstract_2_(T, ...) (&(cat_(T, _)){.type = type_(T), {__VA_ARGS__}})
+
+#define abstract_(...) poly_3_(abstract_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define concrete_(...) ((typeof ((__VA_ARGS__)->_concrete))\
+ (__VA_ARGS__)->concrete_)
+
+solvers_c_(Abstract)
+
+extern const struct Type property_c_(Abstract, Type)[];
+
+#ifdef  LIB_C
+
+procedure_0_1_(Bool_, (Abstract, validate),
+(let Ptr_c(Abstract), this))
+	return is(this->type, type_(Abstract))
+	&& validate_1_(this->concrete);
+end
+
+procedure_0_1_(Abstract_ *, (Abstract, init),
+(let Type, type),
+(let Tape, tape))
+	guard_2_(is(type, type_(Abstract)), NULL)
+	guard_2_(*tape, NULL)
+	let Type typex = *(Type *)*tape;
+	guard_2_(is_typex(typex), NULL)
+	let Ptr_c(Abstract_) _abs = new_1_c_(Abstract_);
+	guard_2_(_abs, NULL)
+	let Ptr_c(Object_) concrete = init_2_(typex, tape + 1);
+	guard_2_(concrete, (free(_abs), NULL))
+	_abs->type = type;
+	_abs->concrete = concrete;
+	return _abs;
+end
+
+procedure_0_2_((Abstract, free),
+(let Ptr_c(Abstract_), this))
+	guard_1_(this &&  is(this->type, type_(Abstract)))
+	let Ptr_c(Object_) _this = this->concrete_;
+	if (_this &&  is_type(_this->type)) _this->type->free(_this);
+	free(this);
+end
+
+procedure_0_1_(LLong_, (Abstract, compare),
+(let Ptr_c(Abstract ), this),
+(let Ptr_c(Abstract ), that))
+	guard_2_(is(this->type, type_(Abstract)), 1)
+	guard_2_(is(that->type, type_(Abstract)), 1)
+	let Ptr_c(Object) _this = this->concrete;
+	let Ptr_c(Object) _that = that->concrete;
+	return super(_this->type,_that->type)->compare(_this, _that);
+end
+
+procedure_0_1_(Abstract_ *, (Abstract, copy),
+(let Ptr_c(Abstract_), this),
+(let Ptr_c(Abstract ), that))
+	guard_2_(is(that->type, type_(Abstract)), NULL)
+	let Ptr_c(Object_) _this = this? this->concrete_ : NULL;
+	let Ptr_c(Object ) _that = that->concrete;
+	guard_2_( _this != _that, this)
+	guard_2_((_this implies  is_type(_this->type)), NULL)
+	guard_2_((_this implies  is(_this->type, _that->type)), NULL)
+	let Ptr_c(Abstract_) copy = new_1_c_(Abstract_);
+	guard_2_(((this implies  _this) implies  copy), NULL)
+	let Ptr_c(Object_) concrete = _that->type->copy(_this, _that);
+	guard_2_(concrete, (free(copy), NULL))
+	guard_2_(concrete != _this, (free(copy), this))
+	copy->type = that->type;
+	copy->concrete = concrete;
+	return copy;
+end
+
+procedure_0_1_(Abstract_ *, (Abstract, read),
+(let Ptr_c(Abstract_), this),
+(let Stream, in))
+	guard_2_(is(this->type, type_(Abstract)), NULL)
+	let Ptr_c(Object_) _this = this->concrete_;
+	guard_2_(_this, NULL)
+	guard_2_(is_type(_this->type), NULL)
+	let Ptr_c(Abstract_) _abs = new_1_c_(Abstract_);
+	guard_2_(_abs, NULL)
+	let Ptr_c(Object_) concrete = _this->type->read(_this, in);
+	guard_2_(concrete, (free(_abs), NULL))
+	guard_2_(concrete != _this, (free(_abs), this))
+	_abs->type = this->type;
+	_abs->concrete = concrete;
+	return _abs;
+end
+
+procedure_0_1_(LLong_, (Abstract, write),
+(let Ptr_c(Abstract), this),
+(let Stream, out))
+	guard_2_(is(this->type, type_(Abstract)), -1)
+	let Ptr_c(Object) _this = this->concrete;
+	return _this->type->write(_this, out);
+end
+
+procedure_0_1_(Abstract_ *, (Abstract, parse),
+(let Ptr_c(Abstract_), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Void ), in))
+	guard_2_(is(this->type, type_(Abstract)), NULL)
+	let Ptr_c(Object_) _this = this->concrete_;
+	guard_2_(_this, NULL)
+	guard_2_(is_type(_this->type), NULL)
+	let Ptr_c(Abstract_) _abs = new_1_c_(Abstract_);
+	guard_2_(_abs, NULL)
+	let Ptr_c(Object_) concrete = _this->type->parse(_this, length, in);
+	guard_2_(concrete, (free(_abs), NULL))
+	guard_2_(concrete != _this, (free(_abs), this))
+	_abs->type = this->type;
+	_abs->concrete = concrete;
+	return _abs;
+end
+
+procedure_0_1_(Void_ *, (Abstract, text),
+(let Ptr_c(Abstract), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Void_), out))
+	guard_2_(is(this->type, type_(Abstract)), NULL)
+	let Ptr_c(Object) _this = this->concrete;
+	return _this->type->text(_this, length, out);
+end
+
+procedure_0_1_(Abstract_ *, (Abstract, decode),
+(let Ptr_c(Abstract_), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Encoding ), in ))
+	guard_2_(is(this->type, type_(Abstract)), NULL)
+	let Ptr_c(Object_) _this = this->concrete_;
+	guard_2_(_this, NULL)
+	guard_2_(is_type(_this->type), NULL)
+	let Ptr_c(Abstract_) _abs = new_1_c_(Abstract_);
+	guard_2_(_abs, NULL)
+	let Ptr_c(Object_) concrete = _this->type->decode(_this, length, in);
+	guard_2_(concrete, (free(_abs), NULL))
+	guard_2_(concrete != _this, (free(_abs), this))
+	_abs->type = this->type;
+	_abs->concrete = concrete;
+	return _abs;
+end
+
+procedure_0_1_(Encoding_ *, (Abstract, encode),
+(let Ptr_c(Abstract ), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Encoding_), out))
+	guard_2_(is(this->type, type_(Abstract)), NULL)
+	let Ptr_c(Object) _this = this->concrete;
+	return _this->type->encode(_this, length, out);
+end
+
+#define abstract_arithmetic_c_(method, result, left, right)\
+ procedure_0_1_(Abstract_*, (Abstract, method),\
+ (let Ptr_c (Abstract_), result),\
+ (let Ptr_c (Abstract ), left),\
+ (let Ptr_c (Abstract ), right))\
+	guard_2_(is( left->type, type_(Abstract)), NULL)\
+	guard_2_(is(right->type, type_(Abstract)), NULL)\
+	let Ptr_c (Object_) _result = result ? result->concrete_ : NULL;\
+	let Ptr_c (Object ) _left   =   left->concrete;\
+	let Ptr_c (Object ) _right  =  right->concrete;\
+	let Type _super = super(_left->type, _right->type);\
+	guard_2_((_result implies  is_type(_result->type)), NULL)\
+	guard_2_((_result implies  is(_result->type, _super)), NULL)\
+	let Ptr_c(Abstract_) _abs = new_1_c_(Abstract_);\
+	guard_2_(((result implies  _result) implies  _abs), NULL)\
+	let Ptr_c(Object_) concrete = _super->method(_result, _left, _right);\
+	guard_2_(concrete, (free(_abs), NULL))\
+	guard_2_(concrete != _result, (free(_abs), result))\
+	_abs->type = super(left->type, right->type);\
+	_abs->concrete = concrete;\
+	return _abs;\
+ end
+
+abstract_arithmetic_c_(add, sum, augend, addend)
+
+abstract_arithmetic_c_(sub, difference, minuend, subtrahend)
+
+abstract_arithmetic_c_(mul, product, multiplier, multiplicand)
+
+abstract_arithmetic_c_(div, result, dividend, divisor)
+
+const struct Type property_c_(Abstract, Type)[] =
+{{
+.self     =   type_(Abstract),
+.base     =   type_(Object),
+.name     =        "Abstract",
+.validate = (Bool_ (*)(Object  *))
+			solver_(Abstract, validate),
+.init     = (Object_ *(*)(Type, Tape))
+			solver_(Abstract, init),
+.free     = (Void_ (*)(Object_ *))
+			solver_(Abstract, free),
+.compare  = (LLong_   (*)(Object  *, Object *))
+			solver_(Abstract, compare),
+.copy     = (Object_ *(*)(Object_ *, Object *))
+			solver_(Abstract, copy),
+.read     = (Object_ *(*)(Object_ *, Stream))
+			solver_(Abstract, read),
+.write    = (LLong_   (*)(Object  *, Stream))
+			solver_(Abstract, write),
+.parse    = (Object_ *(*)(Object_ *, Size_  *, Void *))
+			solver_(Abstract, parse),
+.text     = (Void_   *(*)(Object  *, Size_  *, Void_*))
+			solver_(Abstract, text),
+.decode   = (Object_ *(*)(Object_ *, Size_  *, Encoding *))
+			solver_(Abstract, decode),
+.encode = (Encoding_ *(*)(Object  *, Size_  *, Encoding_*))
+			solver_(Abstract, encode),
+.add      = (Object_ *(*)(Object_ *, Object *, Object *))
+			solver_(Abstract, add),
+.sub      = (Object_ *(*)(Object_ *, Object *, Object *))
+			solver_(Abstract, sub),
+.mul      = (Object_ *(*)(Object_ *, Object *, Object *))
+			solver_(Abstract, mul),
+.div      = (Object_ *(*)(Object_ *, Object *, Object *))
+			solver_(Abstract, div),
+}};
+
+#endif
+
+#endif

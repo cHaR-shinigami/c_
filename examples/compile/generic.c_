@@ -1,0 +1,41 @@
+#include <c._>
+
+UInt_ add2(let UInt l, let UInt r)
+begin
+	print_("Adding two integers", l, "and", r);
+	return l + r;
+end
+
+Char_ *append(let Ptr(Char_) l, let Ptr(Char) r)
+begin
+	output__(stdout, "", "Joining two strings \"", l, "\" and \"", r, "\"\n");
+	Char_ *strcat(String_, String);
+	return strcat(l, r);
+end
+
+UInt_ add3(let UInt l, let UInt m, let UInt r)
+begin
+	print_("Adding three integers", l, ",", m, ",", r);
+	return l + m  +  r;
+end
+
+Void_ def(...)
+begin
+	print_("Useless default function hides error");
+end
+
+#define adder_(...) generic_((__VA_ARGS__), (def),\
+ (String_, String , append), (UInt, UInt, add2),\
+ (String_, String_, append), (UInt, UInt, UInt, add3))\
+(__VA_ARGS__)
+
+Int_ main()
+begin
+{	Var sum = adder_(1U, 2U);
+	print_("Sum is", sum);
+}{	Var cat = adder_((Char_ [20]){"static "}, "polymorphism");
+	print_("Function overloading is a form of", cat);
+}{	Var sum = adder_(4U, 8U, 16U);
+	print_("Sum is", sum);
+}	adder_("Bad call");
+end

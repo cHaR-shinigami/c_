@@ -1,0 +1,18 @@
+#include  "Vector._"
+
+procedure_(Vector_ *, (Vector, init),
+(let Type, type),
+(let Tape, tape))
+	Var species = (Type *)*tape;
+	guard_(((species &&  *species) implies  is_type(*species)), NULL)
+	Var capacity = (species &&  tape[1])? *(Size *) tape[1] : BUFSIZ;
+	guard_(capacity >= 0, NULL)
+	Var vector = new__(Vector);
+	guard_(vector, NULL)
+	guard_(vector->array = *new__(Void * [capacity]), (free(vector), NULL))
+	vector->type = type;
+	vector->capacity = capacity;
+	vector->count = 0;
+	vector->species = species? *species : NULL;
+	return vector;
+end

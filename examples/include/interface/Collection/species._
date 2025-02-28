@@ -1,0 +1,26 @@
+#ifndef   COLLECTION__SPECIES__
+#define   COLLECTION__SPECIES__
+
+#include "Collection._"
+
+private
+protocol_(Type_, (Collection, species),
+(let Ptr (Collection), this),
+(let Type, species))
+	pre_(validate_(Collection, this));
+	pre_((species implies is_type(species)));
+	Var concrete = this->concrete;
+	Var    typex = concrete_(this)->typex;
+	Var   priori = typex->species(concrete, NULL);
+	Var   update = solver_(Collection, species)(this, species);
+	post_(is_type(update));
+	post_(update == typex->species(concrete, NULL));
+	post_((!species implies  update == priori));
+	guard_( species, update)
+	Var count = typex->base->count(concrete);
+	post_((!count implies  update == species));
+	post_ ((count implies  update == super(priori, species)));
+	return update;
+end
+
+#endif

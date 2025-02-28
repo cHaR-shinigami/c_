@@ -1,0 +1,8 @@
+#include "Vector/cursor._"
+
+procedure_(Cursor_ *, (Vector, cursor),
+(let Ptr (Vector), this))
+	Var cursor = new__(Cursor);
+	if (cursor) *cursor = (Cursor){.vector = this};
+	return cursor;
+end

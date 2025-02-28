@@ -1,0 +1,13 @@
+#ifndef   CHAIN__DUPLICATE__
+#define   CHAIN__DUPLICATE__
+
+#include "Chain._"
+
+protocol_(Node_*, (Chain, duplicate),
+(let Typex (Iterable), typex),
+(let Ptr (Node), node))
+	pre_ (node != NULL);
+	return solver_(Chain, duplicate)(typex, node);
+end
+
+#endif

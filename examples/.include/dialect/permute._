@@ -1,0 +1,73 @@
+#ifndef PERMUTE__
+#define PERMUTE__
+
+#include <hof_c._>
+
+#define prm_c_(des, _per, _src) \
+{	let typeof (""-"" + **_prm) _p_ = (*_prm)[_i_];\
+	if (_p_ < 0)\
+	{	if ((_p_ += _len_src) < 0)\
+			debug_c_(permute_, PERMUTE__)(_per,">= -",_src);\
+	}\
+	elif ((Size)_p_ >= _len_src) debug_c_(permute_, PERMUTE__)(_per,"< ",_src);\
+	else (*des)[_i_] = (*_cp)[_p_];\
+}
+
+#define permute_0_c_(...)
+
+#define permute_1_c_(_prm, _rel, _src) fprintf(stderr, "Assertion failed: "\
+"(*("_prm"))[%zu] "_rel"length_("_src"), function %s, file %s, line %d.\n",\
+ (Size)_i_, SITE_C), fflush(stderr), exit(1)
+
+#define permute_2_(prm, ...) \
+begin\
+	hof_array_c_(echo_(prm), #prm, PERMUTE__, _prm)\
+	hof_array_c_(echo_(__VA_ARGS__), #__VA_ARGS__, PERMUTE__, _src)\
+	Var _cp = new__1__(*_src);\
+	notnull_c_(_cp, "new_(*("#__VA_ARGS__"))", 1);\
+	memcpy(_cp,_src, sizeof *_src);\
+	Var _i_ = _len_prm <= _len_src ? _len_prm : _len_src;\
+	while (_i_--)  prm_c_(_src, #prm, __VA_ARGS__)\
+	free(_cp);\
+end
+
+#define permute_3_(des, prm, ...) \
+begin\
+	hof_array_c_(echo_(des), #des, PERMUTE__, _des)\
+	hof_array_c_(echo_(prm), #prm, PERMUTE__, _prm)\
+	hof_array_c_(echo_(__VA_ARGS__), #__VA_ARGS__, PERMUTE__, _src)\
+	Var _cp = new__1__(*_src);\
+	notnull_c_(_cp, "new_(*("#__VA_ARGS__"))", 1);\
+	memcpy(_cp,_src, sizeof *_src);\
+	Var _len = _len_des <= _len_src ? _len_des : _len_src;\
+	Var _min = _len_prm <= _len     ? _len_prm : _len;\
+	for (Var_ _i_ = _min; _i_--) prm_c_(_des, #prm, #__VA_ARGS__)\
+	free(_cp);\
+	for (Var_ _i_ = _min; _i_ < _len; _i_++) (*_des)[_i_] = (*_src)[_i_];\
+end
+
+#define permute_4_(des, prm, src, ...) \
+begin\
+	hof_array_c_(echo_(des), #des, PERMUTE__, _des)\
+	hof_array_c_(echo_(prm), #prm, PERMUTE__, _prm)\
+	hof_array_c_(echo_(src), #src, PERMUTE__, _src)\
+	Var _cp = new__1__(*_src);\
+	notnull_c_(_cp, "new_(*("#src"))", 1);\
+	memcpy(_cp,_src, sizeof *_src);\
+	Var _len = _len_des <= _len_src ? _len_des : _len_src;\
+	Var _min = _len_prm <= _len     ? _len_prm : _len;\
+	hof_range_c_(echo_(__VA_ARGS__), #__VA_ARGS__, PERMUTE__, #src, _min)\
+	for (Var_ _i_ = _a_; _n_--; _i_ += _d_) prm_c_(_des,#prm, #src)\
+	free(_cp);\
+end
+
+#define permute_(...) poly_3_(permute_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  PERMUTE__
+#ifndef DEBUG
+#define PERMUTE__ 0
+#else
+#define PERMUTE__ 1
+#endif

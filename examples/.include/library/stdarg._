@@ -1,0 +1,28 @@
+#ifndef STDARG__
+#define STDARG__
+
+#include <stdarg.h>
+
+#include <specifiers._>
+
+typedef_c_
+(VA_list,
+ va_list)
+
+#define\
+ va_arg_(ap, ...)\
+ va_arg (ap, typeof (__VA_ARGS__))
+
+#define\
+  va_copy_(...)\
+  va_copy (__VA_ARGS__)
+
+#define\
+   va_end_(...)\
+   va_end (__VA_ARGS__)
+
+#define\
+ va_start_(...)\
+ va_start (__VA_ARGS__)
+
+#endif

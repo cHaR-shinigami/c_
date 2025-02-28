@@ -1,0 +1,16 @@
+#include "Vector/append._"
+
+procedure_(Bool_, (Vector, append),
+(let Ptr (Vector_), this),
+(let Ptr (Void), data))
+	Var arr = this->array;
+	Var cap = this->capacity;
+	stop_(this->count < cap, (arr[this->count++] = data, TRUE_()))
+	Var_ arr_ = NULLPTR;
+	Var_ ext_ = (cap <= SIZE_MAX-cap)?  cap : SIZE_MAX-cap;
+	while (ext_ &&  !(arr_ = realloc(arr, cap + ext_))) ext_ >>= 1;
+	guard_(ext_, FALSE_())
+	this->capacity += ext_;
+	this->count++[this->array = arr_] = data;
+	return TRUE_();
+end

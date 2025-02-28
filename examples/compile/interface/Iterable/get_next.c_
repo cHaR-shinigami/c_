@@ -1,0 +1,7 @@
+#include  "Iterable/get_next._"
+
+procedure_(Void *, (Iterable, get_next),
+(let Typex(Iterable ), typex),
+(let Ptr  (Iterator_), iterator))
+	return typex->get_next(typex, iterator);
+end

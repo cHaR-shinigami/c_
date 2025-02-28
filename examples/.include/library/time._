@@ -1,0 +1,24 @@
+#ifndef TIME__
+#define TIME__
+
+#include <size_c._>
+
+#include <tm_c._>
+
+typedef_c_
+(Clock,
+ clock_t)
+
+typedef_c_
+(Time,
+ time_t)
+
+typedef_c_
+(Timespec, struct
+ timespec)
+
+#endif
+
+#include <errno_c._>
+
+#include <rsize_c._>

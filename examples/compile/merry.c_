@@ -1,0 +1,34 @@
+#include     "List._"
+#include "Rational._"
+#include   "Signed._"
+#include     "Text._"
+#include "Unsigned._"
+#include   "Vector._"
+
+Int_ main()
+begin
+	Var  year = init__(type_(Unsigned), 2023ULL);
+	guard_(year)
+	Var month = init__(type_(  Signed), 12LL);
+	guard_(month)
+	Var   day = init__(type_(Rational), 24.F);
+	guard_(day)
+	Var  poem = init__(Text);
+	guard_(poem)
+	guard_(parse__(poem, &"'Twas the night before Christmas ..."))
+	Var  list = (Collection_ *)
+	init__(type_(Collection), typex_(Collection, List));
+	guard_(list)
+	guard_(call_((Collection, append), list, year))
+	guard_(call_((Collection, append), list, month))
+	guard_(call_((Collection, append), list, day))
+	guard_(call_((Collection, append), list, poem))
+	print_("Initial concrete type:", concrete_(list)->type->name);
+	write_(list);
+	Var vector= (Collection_ *)
+	init__(type_(Collection), typex_(Collection, Vector), type_(Object));
+	guard_(vector)
+	guard_(copy_(vector, list) == vector)
+	print_("After re-concretization:", concrete_(vector)->type->name);
+	write_(vector);
+end

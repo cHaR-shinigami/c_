@@ -1,0 +1,12 @@
+#ifndef SIGNAL__
+#define SIGNAL__
+
+#include <signal.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Sig_atomic,
+ sig_atomic_t)
+
+#endif

@@ -1,0 +1,37 @@
+//
+#ifndef C__
+
+#define  DEBUG
+#undef  NDEBUG
+#define TODO
+
+/*/
+#ifndef C__
+
+#undef   DEBUG
+#define NDEBUG
+#undef  TODO
+
+/**/
+
+#define C__
+
+#define LOGGER
+
+#include <class._>
+#include <defer._>
+#include <environment._>
+#include <interface._>
+
+#endif
+
+#include <array._>
+#include <bits._>
+#include <call._>
+#include <io._>
+#include <iterators._>
+#include <logger._>
+#include <method._>
+#include <pointer._>
+#include <range._>
+#include <shift._>

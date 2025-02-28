@@ -1,0 +1,33 @@
+#ifndef __STDC_NO_COMPLEX__
+
+#ifndef COMPLEX__
+#define COMPLEX__
+
+#include <complex.h>
+
+#include <lib_c._>
+
+#define\
+ cmplxf_(...)\
+ CMPLXF (__VA_ARGS__)
+
+#define\
+ cmplx_( ...)\
+ CMPLX  (__VA_ARGS__)
+
+#define\
+ cmplxl_(...)\
+ CMPLXL (__VA_ARGS__)
+
+#define     cpowf_(...) extend_c_\
+( Fcomplex, cpowf, echo_(__VA_ARGS__))
+
+#define     cpow_( ...) extend_c_\
+( Dcomplex, cpow , echo_(__VA_ARGS__))
+
+#define     cpowl_(...) extend_c_\
+(LDcomplex, cpowl, echo_(__VA_ARGS__))
+
+#endif
+
+#endif

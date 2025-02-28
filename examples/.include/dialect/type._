@@ -1,0 +1,803 @@
+#ifndef TYPE__
+#define TYPE__
+
+#ifndef   CALL__
+#include <call._>
+#endif
+
+#include <procedure._>
+#include <protocol._>
+#include <prototype._>
+
+#define property_c_(T, p) cat_c_(T,___, p)
+
+#define property_(  T, p) cat_c_(T, __, p)
+
+#define typex_(I, C) (&*property_c_(C, I))
+
+#define type_( T) typex_(Type, T)
+
+#define Typex( I) cat_(I, __0)
+
+#define Typex_(I) cat_(I, __0_)
+
+typedef UByte  Encoding [];
+typedef UByte_ Encoding_[];
+
+typedef Ptr_c (Void) Tape [];
+typedef Ptr_c_(Void) Tape_[];
+
+#define solvers__c_(T, T_)\
+    Bool_  solver_(T,validate)(T  *);\
+       T_ *solver_(T, init   )(Type,Tape);\
+    Void_  solver_(T, free   )(T_ *);\
+   LLong_  solver_(T, compare)(T  *, T *);\
+       T_ *solver_(T, copy   )(T_ *, T *);\
+       T_ *solver_(T, read   )(T_ *, Stream);\
+   LLong_  solver_(T, write  )(T  *, Stream);\
+       T_ *solver_(T, parse  )(T_ *, Size_  *, Void  *);\
+    Void_ *solver_(T, text   )(T  *, Size_  *, Void_ *);\
+       T_ *solver_(T, decode )(T_ *, Size_  *, Encoding  *); \
+Encoding_ *solver_(T, encode )(T  *, Size_  *, Encoding_ *);\
+       T_ *solver_(T, add    )(T_ *, T *, T *);\
+       T_ *solver_(T, sub    )(T_ *, T *, T *);\
+       T_ *solver_(T, mul    )(T_ *, T *, T *);\
+       T_ *solver_(T, div    )(T_ *, T *, T *);
+
+#define solvers_c_(T) solvers__c_(T, cat_(T, _))
+
+#define cleanup_c_(_args_) echo_ _args_
+
+#define eval_c_(o) o
+
+#define L_C_() (
+#define R_C_() )
+
+#define declare3_c_(C, f) Procedure_c(C, f) solver_(C, f);
+
+#define declare2_c_(C, I, _f_) C, I, (pop_ _f_\
+ declare3_c_(C, echo_(top_ C_(turn_(peel_(top_ _f_)),))))
+
+#define declare1_c_(...) declare2_c_(__VA_ARGS__)
+
+#define declare0_c_(args, C, I, decl) mux_(DEC_(COUNT_(args)))\
+( echo_(declare__c, top_(args), top_ C_(I##_EXTENDS), decl\
+ peel_(echo_(pop_ C_(echo_(pop_ C_(mux_0_c_(, o__(declare1_c_,\
+ COUNT_(pop_(args)), (C, I, (pop_(args),)))))))))),\
+ ECHO_C, C, I, decl)
+
+#define declare__c_(_, C, I, decl) declare0_c_(C##_IMPLEMENTS_##I, C, I, decl)
+
+#define declare_c_(...) top_(cat_ C_(top_(__VA_ARGS__), _),)(__VA_ARGS__)
+
+#define define_9_c_(C, I, f) .top_(f,) = \
+(typeof (((Typex (I)) 0)->top_(f,)))\
+ solver_(C, echo_(top_ C_(pop_(f, f),)))
+
+#define define_8_c_(C, I, f, ...) C, I,\
+ __VA_ARGS__ define_9_c_(C, I, peel_(f)),
+
+#define define_7_c_(...) define_8_c_(__VA_ARGS__)
+
+#define define_6_c_(n, C, I, T) mux_(n)\
+(pop_ C_(echo_(pop_ C_(mux_1_c_(o__(define_7_c_, n,\
+ (C, I,  echo_(pop_ C_(C##_IMPLEMENTS_##I)),)),)))),\
+ .self = type_(T),\
+ .base = type_(echo_(top_ C_(T##_EXTENDS,))),\
+ .name = #T,\
+ cleanup_c_(echo_c_(pop_ C_(echo_c_(o__\
+(define_c_, PP_MAX, (define1_c_(T), ()))))))}})}}
+
+#define define_5_c_(f, C, I, T, braces) define_6_c_\
+(DEC_(COUNT_(C##_IMPLEMENTS_##I)), C, I, T)
+
+#define define_4_c_(args) define_5_c_(args)
+
+#define define_3_c_(f, C, I, T, braces) mux_(DEC_(COUNT_(C##_IMPLEMENTS_##I)))\
+((define_1_c, top_ C_(C##_IMPLEMENTS_##I), top_ C_(I##_EXTENDS,), T, {braces{),\
+ (define_0_c,,,, {{braces{{))
+
+#define define_2_c_(args) define_3_c_(args)
+
+#define define_1_c_(_l_, _r_) define_2_c_(echo_ _l_),\
+(R_C_ C_(), define_4_c_(echo_ _l_)echo_ _r_ echo_ L_C_ C_())
+
+#define define_0_c_(_l_, _r_) _l_, (R_C_ C_() echo_ _r_ echo_ L_C_ C_())
+
+#define define__c_(...) echo_(cat_ C_(echo_\
+(top_ top_(__VA_ARGS__)), _))(__VA_ARGS__)
+
+#define define9_c_(f, C, I, T, braces) braces 0
+
+#define define8_c_(o) echo_(define9_c_ C_(peel_(top_(o)))) cleanup_c_(pop_(o))
+
+#define define7_c_(C, I, ...) C, __VA_ARGS__\
+ pop_ C_(echo_(pop_ C_(echo_(pop_ C_(eval_c_\
+(o__(declare_c_, PP_MAX, (declare__c, C, I,))))))))\
+ const struct Typex (I) property_c_(C, I)[] = define8_c_\
+(eval_c_(o__(define__c_, PP_MAX, ((define_1_c, C, I, C,), ()))));
+
+#define define6_c_(...) define7_c_(__VA_ARGS__)
+
+#define define5_c_(o) echo_(pop_ C_(o))
+
+#define define4_c_(T, f, ...) T, __VA_ARGS__\
+ .f = (typeof (((Type)0)->f)) solver_(T, f),
+
+#define define3_c_(...) define4_c_(__VA_ARGS__)
+
+#define define2_c_(n,  T, ...) pop_ C_(pop_\
+ (, o__(define3_c_,n, (T, pop_(__VA_ARGS__,)))))
+
+#define define1_c_(T) (T, cat_(T, _EXTENDS))
+
+#define define0_c_(_T_extends_, _args_)\
+ define1_c_(echo_(top_ C_(pop_ _T_extends_,))),\
+ (R_C_ C_() top_(define2_c_ C_(DEC_(COUNT_(pop_ _T_extends_)),\
+ echo_ _T_extends_),) echo_ _args_ echo_ L_C_ C_())
+
+#define define_c_(...) define0_c_(__VA_ARGS__)
+
+#define define_0_(C, ...) define5_c_(o__\
+(define6_c_, COUNT_(__VA_ARGS__), (C, __VA_ARGS__,)))
+
+#define define_1_(T) const struct Type property_c_(T, Type)[] = \
+{{	.self = type_(T),\
+	.base = type_(echo_(top_ C_(cat_(T, _EXTENDS),))),\
+	.name = quote_(T),\
+	cleanup_c_(echo_c_(pop_ C_(echo_c_(o__\
+	(define_c_, PP_MAX, (define1_c_(T), ()))))))\
+}};
+
+#define define_(...) get_(COUNT_(__VA_ARGS__),\
+ define_0_,, define_1_)(__VA_ARGS__)
+
+typedef_c_(Type, const struct Type *)
+
+typedef_c_(Typex (Type), Type_)
+
+typedef_c_(Object, struct Object { Type_ type; })
+
+struct Type
+{	Type_ self;
+	Type_ base;
+	Char *name;
+	  Bool_  (*validate)(Object  *);
+	Object_ *(* init   )(Type,Tape);
+	  Void_  (* free   )(Object_ *);
+	 LLong_  (* compare)(Object  *, Object *);
+	Object_ *(* copy   )(Object_ *, Object *);
+	Object_ *(* read   )(Object_ *, Stream);
+	 LLong_  (* write  )(Object  *, Stream);
+	Object_ *(* parse  )(Object_ *, Size_  *, Void  *);
+	  Void_ *(* text   )(Object  *, Size_  *, Void_ *);
+	Object_ *(* decode )(Object_ *, Size_  *, Encoding  *);
+  Encoding_ *(* encode )(Object  *, Size_  *, Encoding_ *);
+	Object_ *(* add    )(Object_ *, Object *, Object *);
+	Object_ *(* sub    )(Object_ *, Object *, Object *);
+	Object_ *(* mul    )(Object_ *, Object *, Object *);
+	Object_ *(* div    )(Object_ *, Object *, Object *);
+};
+
+extern const struct Type property_c_(Object, Type)[];
+
+public Bool_ is_type(let Type_ type_)
+{	for (let UInt_ _i_ = PP_MAX;
+		_i_-- && type_ &&
+		type_ != type_->base;
+		type_  = type_->base)
+		guard_2_
+		(  type_->self    && type_->name
+		&& type_->validate
+		&& type_->init    && type_->free
+		&& type_->compare && type_->copy
+		&& type_->read    && type_->write
+		&& type_->parse   && type_->text
+		&& type_->decode  && type_->encode
+		&& type_->add     && type_->sub
+		&& type_->mul     && type_->div
+		, 0)
+	return type_ (Object) == type_;
+}
+
+public Bool_ is_typex(let Ptr_c(Void) _type)
+{	let Type type = _type;
+	return is_type(type)
+	&&	type->self != type
+	&&	is_type(type->self);
+}
+
+prototype_0_1_c_(Bool_, (Type, is), (Type, descendant), (Type, ancestor))
+
+#define is(descendant, ...) call_0_2_\
+((Type, is), echo_(descendant), echo_(__VA_ARGS__))
+
+#define is_c__(iz, T, ...) iz &&  is(type_(T), type_(top_(__VA_ARGS__,))),\
+ __VA_ARGS__
+
+#define is__c_(...) is_c__(__VA_ARGS__)
+
+#define is_(...) (echo_(top_ C_(echo_c_(o__(is__c_,\
+ DEC_(COUNT_(__VA_ARGS__)), (1, __VA_ARGS__))))))
+
+#define is_c_( iz, t, ...) iz &&  is(t, top_(__VA_ARGS__,)), __VA_ARGS__
+
+#define is__c__(...) is_c_(__VA_ARGS__)
+
+#define is__(...) (echo_(top_ C_(echo_c_(o__(is__c__,\
+ DEC_(COUNT_(__VA_ARGS__)), (1, __VA_ARGS__))))))
+
+prototype_0_1_c_(Type_, (Type, super), (Type, this), (Type, that))
+
+#define super(this,...) call_0_2_((Type,super), echo_(this), echo_(__VA_ARGS__))
+
+#define super_c_(this, that) super(type_(this), that)
+
+#define super_(...) reduce__(super_c_,\
+ pop_(__VA_ARGS__, type_(top_(__VA_ARGS__,))))
+
+prototype_0_1_c_(Void_ *, (Type, init), (Type, type), (Ptr_c(Void) *, tape))
+
+#define init_1_(T) ((cat_(T,_)*) call_0_2_((Type,init), type_(T), (Tape){NULL}))
+
+#define init_2_(...) call_0_2_((Type, init), echo_(__VA_ARGS__))
+
+#define init_(...) poly_3_(init_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define init__0__(type, ...) init_2_(echo_(type),\
+ (Tape){ map__(&lvalue__, __VA_ARGS__), NULL })
+
+#define init__1_(T) init_1_(T)
+
+#define init__(...) get_(COUNT_(__VA_ARGS__), init__0__,, init__1_)(__VA_ARGS__)
+
+prototype_0_2_c_((Type, free), (Void_ *, this))
+
+#define free_(...) call_0_2_((Type, free), echo_(__VA_ARGS__))
+
+prototype_0_1_c_(LLong_, (Type, compare), (Void *, this), (Void *, that))
+
+#define compare_(this, ...) call_0_2_\
+((Type, compare), echo_(this), echo_(__VA_ARGS__))
+
+prototype_0_1_c_(Bool_ , (Type, comparable), (Void *, this), (Void *, that))
+
+#define comparable_(this, ...) call_0_2_\
+((Type, comparable), echo_(this), echo_(__VA_ARGS__))
+
+prototype_0_1_c_(Void_ *, ( Type, copy ), (Void_*, this), (Void *, that))
+
+#define copy_1_(...) copy_2_(NULL, echo_(__VA_ARGS__))
+
+#define copy_2_(this, ...) ((typeof (unqual__(__VA_ARGS__)))\
+ call_0_2_((Type, copy) , echo_(this) , echo_(__VA_ARGS__)))
+
+#define copy_(...) poly_3_(copy_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+prototype_0_1_c_(Void_ *, (Type, read ), (Void_ *, this), (Stream, in ))
+
+#define read_1_(...) read_2_(echo_(__VA_ARGS__), stdin)
+
+#define read_2_(this, ...) ((typeof_c_(this)) call_0_2_\
+((Type, read ), echo_(this), echo_(__VA_ARGS__)))
+
+#define read_(...)  poly_3_( read_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+prototype_0_1_c_(LLong_ , (Type, write), (Void  *, this), (Stream, out))
+
+#define write_1_(...) write_2_(echo_(__VA_ARGS__), stdout)
+
+#define write_2_(this, ...) call_0_2_\
+((Type, write), echo_(this), echo_(__VA_ARGS__))
+
+#define write_(...) poly_3_(write_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+prototype_0_1_c_(Void_ *, (Type, parse),
+(Void_*, this), (Size_ *, length), (Void *, in ))
+
+#define parse_2_(this,...) ({ Var _ = __VA_ARGS__; parse__2__(echo_(this),_); })
+
+#define parse_3_(this, length, ...) ((typeof_c_(this)) call_0_2_\
+((Type, parse), echo_(this), echo_(length), echo_(__VA_ARGS__)))
+
+#define parse_(...) poly_3_(parse_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define parse__2__(this, ...) parse_3_(echo_(this),\
+ &(Size_){length_c_(__VA_ARGS__)}, echo_(__VA_ARGS__))
+
+#define parse__3_(this, length, ...) parse_3_\
+(echo_(this), echo_(length), echo_(__VA_ARGS__))
+
+#define parse__(...) get_(COUNT_(__VA_ARGS__),,,,\
+ parse__2__, parse__3_)(__VA_ARGS__)
+
+prototype_0_1_c_(Void_ *, (Type, text),
+(Void *, this), (Size_ *, length), (Void_*, out))
+
+#define text_1_(...) text_3_(echo_(__VA_ARGS__), &(Size_){1}, NULL)
+
+#define text_2_(this, ...) ({ Var _ = __VA_ARGS__; text__2__(echo_(this), _); })
+
+#define text_3_(this, length, ...) call_0_2_\
+((Type, text), echo_(this), echo_(length), echo_(__VA_ARGS__))
+
+#define text_(...) poly_3_(text_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define text__1_(...) text_1_(__VA_ARGS__)
+
+#define text__2__(this, ...) text_3_(echo_(this),\
+ &(Size_){length_c_(__VA_ARGS__)}, echo_(__VA_ARGS__))
+
+#define text__3_(this, length, ...) text_3_\
+(echo_(this), echo_(length), echo_(__VA_ARGS__))
+
+#define text__(...) get_(COUNT_(__VA_ARGS__),,,\
+ text__1_, text__2__, text__3_)(__VA_ARGS__)
+
+prototype_0_1_c_(Void_ *, (Type, decode),
+(Void_*, this), (Size_ *, length), (Encoding *, in ))
+
+#define decode_2_(this, ...) \
+({ Var _ = __VA_ARGS__; decode__2__(echo_(this), _); })
+
+#define decode_3_(this, length, ...) ((typeof_c_(this)) call_0_2_\
+((Type, decode), echo_(this), echo_(length), echo_(__VA_ARGS__)))
+
+#define decode_(...) poly_3_(decode_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define decode__2__(this, ...) decode_3_(echo_(this),\
+ &(Size_){length_c_(__VA_ARGS__)}, echo_(__VA_ARGS__))
+
+#define decode__3_(this, length, ...) decode_3_\
+(echo_(this), echo_(length), echo_(__VA_ARGS__))
+
+#define decode__(...) get_(COUNT_(__VA_ARGS__),,,,\
+ decode__2__, decode__3_)(__VA_ARGS__)
+
+prototype_0_1_c_(Encoding_ *, (Type, encode),
+(Void *, this), (Size_ *, length), (Encoding_*, out))
+
+#define encode_1_(...) encode_3_(echo_(__VA_ARGS__), &(Size_){1}, NULL)
+
+#define encode_2_(this, ...) \
+({ Var _ = __VA_ARGS__; encode__2__(echo_(this), _); })
+
+#define encode_3_(this, length, ...) call_0_2_\
+((Type, encode), echo_(this), echo_(length), echo_(__VA_ARGS__))
+
+#define encode_(...) poly_3_(encode_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define encode__1_(...) encode_1_(__VA_ARGS__)
+
+#define encode__2__(this, ...) encode_3_(echo_(this),\
+ &(Size_){length_c_(__VA_ARGS__)}, echo_(__VA_ARGS__))
+
+#define encode__3_(this, length, ...) encode_3_\
+(echo_(this), echo_(length), echo_(__VA_ARGS__))
+
+#define encode__(...) get_(COUNT_(__VA_ARGS__),,,\
+ encode__1_, encode__2__, encode__3_)(__VA_ARGS__)
+
+prototype_0_1_c_(Void_ *, (Type, add),
+(Void_ *, sum), (Void  *, augend), (Void *, addend))
+
+#define add_2_( augend, ...) add_3_(NULLPTR, echo_( augend), echo_(__VA_ARGS__))
+
+#define add_3_(sum, augend, ...) ((typeof_c_(sum)) call_0_2_\
+((Type, add), echo_(sum), echo_(augend), echo_(__VA_ARGS__)))
+
+#define add_(...) poly_3_(add_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+prototype_0_1_c_(Void_ *, (Type, sub),
+(Void_ *, difference), (Void *, minuend), (Void *, subtrahend))
+
+#define sub_2_(minuend, ...) sub_3_(NULLPTR, echo_(minuend), echo_(__VA_ARGS__))
+
+#define sub_3_(difference, minuend, ...) ((typeof_c_(difference)) call_0_2_\
+((Type, sub), echo_(difference), echo_(minuend) , echo_(__VA_ARGS__)))
+
+#define sub_(...) poly_3_(sub_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+prototype_0_1_c_(Void_ *, (Type, mul),
+(Void_ *, product), (Void *, multiplier), (Void *, multiplicand))
+
+#define mul_2_(multiplier, ...) mul_3_(NULLPTR,\
+ echo_(multiplier), echo_(__VA_ARGS__))
+
+#define mul_3_(product, multiplier, ...) ((typeof_c_(product)) call_0_2_\
+((Type, mul), echo_(product), echo_(multiplier) , echo_(__VA_ARGS__)))
+
+#define mul_(...) poly_3_(mul_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+prototype_0_1_c_(Void_ *, (Type, div),
+(Void_ *, result), (Void *, dividend), (Void *, divisor))
+
+#define div_2_(dividend, ...) div_3_(NULLPTR,echo_(dividend),echo_(__VA_ARGS__))
+
+#define div_3_(result, dividend, ...) ((typeof_c_(result)) call_0_2_\
+((Type, div), echo_(result), echo_(dividend), echo_(__VA_ARGS__)))
+
+#define div_(...) poly_3_(div_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+ public Bool_ validate(let Type type, let Ptr_c(Void) this)
+{	guard_2_(this &&  (type implies  is_type(type)), 0)
+	let Type_ type_ = ((Object *)this)->type;
+	Type_ _lineage_[PP_MAX];
+	guard_2_(is_type(*_lineage_ = type_), 0)
+	guard_2_((type implies  is(*_lineage_, type)), 0)
+	let Size_ _i_ = 0;
+	do if ((type_ = type_->base)->validate != _lineage_[_i_]->validate)
+		_lineage_[++_i_] = type_ ;
+	until ( type_->base == type_);
+	while (_i_--) guard_2_(_lineage_[_i_]->validate(this), 0)
+	return 1;
+}
+
+#define validate_1_(...)       validate(NULLPTR , __VA_ARGS__)
+
+#define validate_2_(T, ...)    validate(type_(T), __VA_ARGS__)
+
+#define validate_(...) poly_3_(validate_ , COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#ifdef  LIB_C
+
+private
+protocol_0_1_(Bool_, (Type, is),
+(let Type, descendant),
+(let Type,  ancestor))
+	pre_1_(is_type(descendant));
+	pre_1_(is_type( ancestor ));
+	return solver_(Type, is)(descendant, ancestor);
+end
+
+procedure_0_1_(Bool_, (Type, is),
+(let Type, descendant),
+(let Type,  ancestor))
+	guard_2_(is_type(descendant), 0)
+	guard_2_(is_type( ancestor ), 0)
+	let Type  fore  =   ancestor->self;
+	let Type_ type_ = descendant->self;
+	until (fore == type_  ||   type_->base == type_) type_ = type_->base;
+	return fore == type_;
+end
+
+private
+protocol_0_1_(Type_, (Type, super),
+(let Type, this),
+(let Type, that))
+	pre_1_(is_type(this));
+	pre_1_(is_type(that));
+	return solver_(Type, super)(this, that);
+end
+
+procedure_0_1_(Type_, (Type, super),
+(let Type, this),
+(let Type, that))
+	guard_2_(is_type(this), type_(Object))
+	guard_2_(is_type(that), type_(Object))
+	guard_2_(this != that, this)
+	Type_ _this_[PP_MAX], _that_[PP_MAX];
+	let Size_ _i_ = 0, _j_ = 0;
+	let Type_ type_ = this->self;
+	begin
+		_this_[_i_++] = type_;
+		 type_ = type_->base ;
+	end_(type_->base == type_)
+	type_ = that->self;
+	begin
+		_that_[_j_++] = type_;
+		 type_ = type_->base ;
+	end_(type_->base == type_)
+	until (_this_[--_i_] != _that_[--_j_]);
+	return _this_[_i_-1];
+end
+
+private
+protocol_0_1_(Void_ *, (Type, init),
+(let Type, type),
+(let Tape, tape))
+	pre_1_(is_type(type));
+	pre_1_(tape != NULL);
+	let Ptr_c(Object_) _object = solver_(Type, init)(type, tape);
+	post_1_((_object implies  validate(type, _object)));
+	return   _object;
+end
+
+procedure_0_1_(Void_ *, (Type, init),
+(let Type, type),
+(let Tape, tape))
+	guard_2_(is_type(type), NULL)
+	return type->init(type, tape? tape : (Tape){NULL});
+end
+
+private
+protocol_0_2_((Type, free),
+(let Ptr_c(Void_), this))
+	let Ptr_c(Object_)_this = this;
+	let Ptr_c(Object_) this =_this;
+	pre_1_((this implies  is_type(this->type)));
+	solver_(Type, free)(this);
+end
+
+procedure_0_2_((Type, free),
+(let Ptr_c(Void_), this))
+	guard_1_(this)
+	let Type type = ((Object *)this)->type;
+	guard_1_(is_type(type))
+	type->free(this);
+end
+
+private
+protocol_0_1_(LLong_, (Type, compare),
+(let Ptr_c(Void), this),
+(let Ptr_c(Void), that))
+	pre_1_(validate_1_(this));
+	pre_1_(validate_1_(that));
+	return solver_(Type, compare)(this, that);
+end
+
+procedure_0_1_(LLong_, (Type, compare),
+(let Ptr_c(Void), this),
+(let Ptr_c(Void), that))
+	guard_2_(this != that, 0)
+	guard_2_(validate_1_(this), 1)
+	guard_2_(validate_1_(that), 1)
+	return super(((Object *)this)->type, ((Object *)that)->type)
+	->compare(this, that);
+end
+
+private
+protocol_0_1_(Bool_, (Type, comparable),
+(let Ptr_c(Void), this),
+(let Ptr_c(Void), that))
+	pre_1_(validate_1_(this));
+	pre_1_(validate_1_(that));
+	return solver_(Type, comparable)(this, that);
+end
+
+procedure_0_1_(Bool_, (Type, comparable),
+(let Ptr_c(Void), this),
+(let Ptr_c(Void), that))
+	guard_2_(this != that, 1)
+	guard_2_(validate_1_(this), 0)
+	guard_2_(validate_1_(that), 0)
+	let LLong _cmp = solver_(Type, compare)(this, that);
+	return (_cmp implies  (_cmp<0 iff solver_(Type, compare)(that, this)>0));
+end
+
+private
+protocol_0_1_(Void_ *, (Type, copy),
+(let Ptr_c(Void_), this),
+(let Ptr_c(Void ), that))
+	pre_1_(this != that);
+	pre_1_(validate_1_(that));
+	let Ptr_c(Object_)_this = this;
+	let Ptr_c(Object_) this =_this;
+	pre_1_ ((this implies  is_type(this->type)));
+	let Ptr_c(Object )_that = that;
+	let Ptr_c(Object ) that =_that;
+	pre_1_ ((this implies  is(this->type, that->type)));
+	let Ptr_c(Object_) copy = solver_(Type, copy)(this, that);
+	post_1_((copy implies  validate(that->type, copy)));
+	post_1_((copy implies  !  solver_(Type, compare)(copy, that)));
+	return   copy;
+end
+
+procedure_0_1_(Void_ *, (Type, copy),
+(let Ptr_c(Void_), this),
+(let Ptr_c(Void ), that))
+	guard_2_(this != that, this)
+	guard_2_(validate_1_(that), NULL)
+	let Ptr_c(Object_)_this = this;
+	guard_2_((this implies  is_type(_this->type)), NULL)
+	let Ptr_c(Object )_that = that;
+	guard_2_((this implies  is(_this->type, _that->type)), NULL)
+	return _that->type->copy(this, that);
+end
+
+private
+protocol_0_1_(Void_ *, (Type, read),
+(let Ptr_c(Void_), this),
+(let Stream, in))
+	pre_1_(this != NULL);
+	pre_1_(  in != NULL);
+	let Type type = ((Object *)this)->type;
+	pre_1_(is_type(type));
+	let Ptr_c(Object_) _object = solver_(Type, read)(this, in);
+	post_1_((_object implies  validate(type, _object)));
+	return   _object;
+end
+
+procedure_0_1_(Void_ *, (Type, read),
+(let Ptr_c(Void_), this),
+(let Stream, in))
+	guard_2_(this, NULL)
+	guard_2_( in , NULL)
+	let Type type = ((Object *)this)->type;
+	guard_2_(is_type(type), NULL)
+	return type->read(this, in);
+end
+
+private
+protocol_0_1_(LLong_ , (Type, write),
+(let Ptr_c(Void ), this),
+(let Stream, out))
+	pre_1_(validate_1_(this));
+	pre_1_(out != NULL);
+	return solver_(Type, write)(this, out);
+end
+
+procedure_0_1_(LLong_ , (Type, write),
+(let Ptr_c(Void ), this),
+(let Stream, out))
+	guard_2_(validate_1_(this), -1)
+	guard_2_(out, -1)
+	return ((Object *)this)->type->write(this, out);
+end
+
+private
+protocol_0_1_(Void_ *, (Type, parse),
+(let Ptr_c(Void_), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Void ), in))
+	pre_1_(this != NULL);
+	pre_1_(  in != NULL);
+	let Type type = ((Object *)this)->type;
+	pre_1_(is_type(type));
+	pre_1_( length != NULL);
+	pre_1_(*length != 0);
+	let Size _length = *length;
+	let Ptr_c(Object_) _object = solver_(Type, parse)(this, length, in);
+	post_2_(*length <= _length, "*length <= length_(in)");
+	post_1_((_object implies  validate(type, _object)));
+	return   _object;
+end
+
+procedure_0_1_(Void_ *, (Type, parse),
+(let Ptr_c(Void_), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Void ), in))
+	guard_2_(this, NULL)
+	guard_2_( in , NULL)
+	let Type type = ((Object *)this)->type;
+	guard_2_(is_type(type), NULL)
+	guard_2_( length, NULL)
+	guard_2_(*length, NULL)
+	return type->parse(this, length, in);
+end
+
+private
+protocol_0_1_(Void_ *, (Type, text),
+(let Ptr_c(Void ), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Void_), out))
+	pre_1_(validate_1_(this));
+	pre_1_( length != NULL);
+	pre_1_(*length != 0);
+	let Size _length = *length;
+	let Ptr_c(Void_) text = solver_(Type, text)(this, length, out);
+	post_1_(*length != 0);
+	post_1_((text && out && *length <= _length  implies   text == out));
+	return   text;
+end
+
+procedure_0_1_(Void_ *, (Type, text),
+(let Ptr_c(Void ), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Void_), out))
+	guard_2_(validate_1_(this), NULL)
+	guard_2_( length, NULL)
+	guard_2_(*length, NULL)
+	return ((Object *)this)->type->text(this, length, out);
+end
+
+private
+protocol_0_1_(Void_ *, (Type, decode),
+(let Ptr_c(Void_), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Encoding), in))
+	pre_1_(this != NULL);
+	pre_1_(  in != NULL);
+	let Type type = ((Object *)this)->type;
+	pre_1_(is_type(type));
+	pre_1_( length != NULL);
+	pre_1_(*length != 0);
+	let Size _length = *length;
+	let Ptr_c(Object_) _object = solver_(Type, decode)(this, length, in);
+	post_2_(*length <= _length, "*length <= length_(in)");
+	post_1_((_object implies  validate(type, _object)));
+	return   _object;
+end
+
+procedure_0_1_(Void_ *, (Type, decode),
+(let Ptr_c(Void_), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Encoding), in))
+	guard_2_(this, NULL)
+	guard_2_( in , NULL)
+	let Type type = ((Object *)this)->type;
+	guard_2_(is_type(type), NULL)
+	guard_2_( length, NULL)
+	guard_2_(*length, NULL)
+	return type->decode(this, length, in);
+end
+
+private
+protocol_0_1_(Encoding_ *, (Type, encode),
+(let Ptr_c(Void ), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Encoding_), out))
+	pre_1_(validate_1_(this));
+	pre_1_( length != NULL);
+	pre_1_(*length != 0);
+	let Size _length = *length;
+	let Ptr_c(Encoding_) _enc = solver_(Type, encode)(this, length, out);
+	post_1_(*length != 0);
+	post_1_((_enc && out && *length <= _length  implies   _enc == out));
+	return _enc;
+end
+
+procedure_0_1_(Encoding_ *, (Type, encode),
+(let Ptr_c(Void ), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Encoding_), out))
+	guard_2_(validate_1_(this), NULL)
+	guard_2_( length, NULL)
+	guard_2_(*length, NULL)
+	return ((Object *)this)->type->encode(this, length, out);
+end
+
+#define arithmetic_c_(method, res, left, right) private \
+protocol_0_1_(Void_ *, (Type, method),\
+ (let Ptr_c(Void_), res),\
+ (let Ptr_c(Void ), left),\
+ (let Ptr_c(Void ), right))\
+	pre_1_(validate_1_(left));\
+	pre_1_(validate_1_(right));\
+	let Type super = super(((Object *)left)->type, ((Object *)right)->type);\
+	let Ptr_c(Object_) _res =  res;\
+	let Ptr_c(Object_)  res = _res;\
+	pre_1_((res implies  is_type(res->type)));\
+	pre_1_((res implies  is(res->type, super)));\
+	let Ptr_c(Object_) _##res = solver_(Type, method)(res, left, right);\
+	post_1_((_##res implies  validate(super, _##res)));\
+	return   _##res;\
+ end
+
+#define type_arithmetic_c_(method, res, left, right)\
+ procedure_0_1_(Void_ *, (Type, method),\
+ (let Ptr_c(Void_), res),\
+ (let Ptr_c(Void ), left),\
+ (let Ptr_c(Void ), right))\
+	guard_2_(validate_1_(left), NULL)\
+	guard_2_(validate_1_(right), NULL)\
+	let Type super = super(((Object *)left)->type, ((Object *)right)->type);\
+	let Ptr_c(Object_) _res = res;\
+	guard_2_((res implies  is_type(_res->type)), NULL)\
+	guard_2_((res implies  is(_res->type, super)), NULL)\
+	return super->method(res, left, right);\
+ end
+
+arithmetic_c_(add, sum, augend, addend)
+
+type_\
+arithmetic_c_(add, sum, augend, addend)
+
+arithmetic_c_(sub, difference, minuend, subtrahend)
+
+type_\
+arithmetic_c_(sub, difference, minuend, subtrahend)
+
+arithmetic_c_(mul, product, multiplier, multiplicand)
+
+type_\
+arithmetic_c_(mul, product, multiplier, multiplicand)
+
+arithmetic_c_(div, result, dividend, divisor)
+
+type_\
+arithmetic_c_(div, result, dividend, divisor)
+
+#endif
+
+#endif

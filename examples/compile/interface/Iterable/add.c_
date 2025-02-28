@@ -1,0 +1,42 @@
+#include  "Iterable._"
+
+procedure_(Iterable_*, (Iterable, add),
+(let  Ptr (Iterable_), sum),
+(let  Ptr (Iterable ), augend),
+(let  Ptr (Iterable ), addend))
+	Var aug = concrete_(augend)->typex->iterator(augend->concrete);
+	guard_(aug, NULL)
+	Var add = concrete_(addend)->typex->iterator(addend->concrete);
+	guard_(add, (free(aug), NULL))
+	Var cat = validate_(sum)
+	&&  sum->concrete != augend->concrete
+	&&  sum->concrete != addend->concrete
+	?   sum : (Iterable_ *) init__(type_(Iterable), concrete_(augend)->type);
+	guard_(cat, (free(aug), free(add), NULL))
+	Var   append = concrete_(cat)->typex->append;
+	Var concrete = cat->concrete_;
+{	Var    typex = concrete_(augend)->typex;
+	Var get_next = typex->get_next;
+	for_(Var_ count_ = typex->count(augend->concrete); count_--;)
+		continue_(append(concrete, get_next(typex, aug)))
+		free_(concrete);
+		if (cat == sum) cat->concrete = NULL;
+		else free(cat);
+		free(aug);
+		free(add);
+		return NULL;
+	end
+}	free(aug);
+{	Var typex  = concrete_(addend)->typex;
+	Var get_next = typex->get_next;
+	for_(Var_ count_ = typex->count(addend->concrete); count_--;)
+		continue_(append(concrete, get_next(typex, add)))
+		free_(concrete);
+		if (cat == sum) cat->concrete = NULL;
+		else free(cat);
+		free(add);
+		return NULL;
+	end
+}	free(add);
+	return cat;
+end

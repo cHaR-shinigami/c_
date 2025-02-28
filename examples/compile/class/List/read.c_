@@ -1,0 +1,11 @@
+#include  "List._"
+
+procedure_(List_*, (List, read),
+(let Ptr  (List_), this),
+(let Stream, in))
+	Var   type = this->type;
+	this->type = (Type)typex_(Collection, List);
+	Var    col = solver_(Collection, read)(abstract_(Collection, this), in);
+	this->type = type;
+	return col? col->concrete_ : NULL;
+end

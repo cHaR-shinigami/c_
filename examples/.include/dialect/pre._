@@ -1,0 +1,49 @@
+#ifndef PRE__
+#define PRE__
+
+#ifndef   ASSERT__
+#include <assert._>
+#endif
+
+ public Void_  pre_c
+(	let Char   _text[const],
+	let Stream _stream,
+	let Site   _site,
+	let Site   _call
+)
+{	let Stream _sink = _stream? _stream : stderr;
+	fprintf(_sink, "Pre-condition "
+			"failed: %s, function %s, file %s, line %d.\n"
+			"Called from function %s, file %s, line %d.\n",
+			_text? _text : "",
+			_site.func,
+			_site.file,
+			_site.line,
+			_call.func? _call.func : "",
+			_call.file? _call.file : "",
+			_call.line);
+	fflush (_sink);
+	exit(1);
+}
+#define pre_c_(test, text, stream)\
+  (faux_(Bool, echo_(test)), (Bool_){0}\
+ = (test)? (Void)(text), (Void)(stream), 1\
+ : (pre_c(text , stream , SITE , _site), 0))
+
+#define pre_1_(...)       pre_1_c_(#__VA_ARGS__, echo_(__VA_ARGS__))
+
+#define pre_2_(test, ...) pre_c_(echo_(test)   , echo_(__VA_ARGS__), stderr)
+
+#define pre_3_(test, text, ...) pre_c_\
+(echo_(test), echo_(text), echo_(__VA_ARGS__))
+
+#define pre_1_c_(_t, ...) pre_c_(echo_(__VA_ARGS__), _t, stderr)
+
+#define pre_2_c_(_ , ...) pre_2_(__VA_ARGS__)
+
+#define pre_3_c_(_ , ...) pre_3_(__VA_ARGS__)
+
+#define pre_(...) poly_3_(pre_, COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__, __VA_ARGS__)
+
+#endif

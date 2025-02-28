@@ -1,0 +1,61 @@
+#ifndef MULTIPLICATIVE__
+#define MULTIPLICATIVE__
+
+#include <selection._>
+
+#define ECHO_C_ echo_
+
+#define DIV_(n, d) mux_(d)(mux_c_(GE_(n, d))(mux_(DEC_(d))\
+(COUNT_(RANGE_3_ (d, n, d)), n), 0),)
+
+#define MOD_(n, d) mux_(INC_(d))(cycle_(n , RANGE_C_(d)), mux_(INC_(n))(n, 0))
+
+#define MUL_(m, n) mux_c_(NAND_(m)(n))(0, mux_c_(NOR_(DEC_(m))(DEC_(n)))(1,\
+ mux_c_(LE_(m, DIV_(PP_MAX,n)))(INC_(COUNT_(pop_ C_(repeat__(m,unary_(n))))),)))
+
+#define log0_c_(o) COUNT_(pop_ C_(o))
+
+#define log__c_(log__c, _n_, b, ...) mux_c_(LE_(COUNT_ _n_, b))\
+(ECHO_C,log__c, (select_(b, echo_ _n_)), b,), __VA_ARGS__
+
+#define log_c_(...) top_(cat_ C_(top_(__VA_ARGS__), _),)(__VA_ARGS__)
+
+#define LOG_(n, b)  mux_c_(AND_(n)(AND_(b)(DEC_(b))))(mux_c_(LT_(n, b))(0,\
+ log0_c_(o__(log_c_, PP_LOG2, (log__c, (unary_(DIV_(n, b)),), b,)))),)
+
+#define pow__c_(o)  INC_(COUNT_(pop_ pop_ C_(o)))
+
+#define pow_c_(...) top_(__VA_ARGS__),\
+(repeat__(top_(__VA_ARGS__), echo_ pop_(__VA_ARGS__)))
+
+#define POW_(n, p)  mux_(n)(mux_(p)(mux_c_(LE_(p, LOG_(PP_MAX, n)))\
+(pow__c_(o__(pow_c_, p, (n, ()))),), 1), mux_(p)(0,))
+
+#define root2_c_(o)    echo_(top_ C_(echo_\
+(pop_ C_(echo_(pop_ C_(echo_(pop_ C_(o))))))))
+
+#define root1_c_(root1_c,  p , n, r, i, ...)\
+ mux_c_(OR_(GT_(p, LOG_(PP_MAX, i)))(LT_(n, pow__c_(o__(pow_c_, p, (i, ()))))))\
+(echo_(ECHO_C,,, r), root1_c, p, n, i), __VA_ARGS__
+
+#define root0_c_(root0_c, _i_, n, r, i, ...)\
+ mux_c_(LT_(n, INC_(COUNT_(pop_ C_(repeat__(i, echo_ _i_))))))\
+(echo_(ECHO_C,,, r), root0_c, (echo_ _i_,), n, i), __VA_ARGS__
+
+#define root__c_(...) top_(cat_ C_(top_(__VA_ARGS__), _),)(__VA_ARGS__)
+
+#define root_c_(n, p, r)    root2_c_(o__(root__c_, COUNT_(r), (mux_(DEC_\
+(DEC_(p)))(root1_c COMMA p, root0_c, (unary_(top_(r)),)), n, r, PP_SQRT,)))
+
+#define ROOT_(n, p) mux_(p)\
+(mux_(n)(mux_(DEC_(p))(mux_c_(AND_(DEC_(n))(LE_(p, PP_LOG2)))(root_c_(n, p,\
+ xhead_(pow__c_(o__(pow_c_, DIV_(LOG_(n, 2), p), (2,()))), RANGE_C_(PP_SQRT))),\
+ 1), n), 0),)
+
+#define LSH_(n, s) mux_c_(LT_(s, PP_LOG2))\
+(MUL_(n, POW_(2, s)), mux_(DEC_(n))(, POW_(2, s)))
+
+#define RSH_(n, s) mux_c_(LT_(s, PP_LOG2))(DIV_(n, POW_(2, s)),\
+ AND_(NOR_(INC_(n))(NE_(s, PP_LOG2)))(EQ_(LOG_(PP_MAX, 2), PP_LOG2)))
+
+#endif

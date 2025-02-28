@@ -1,0 +1,80 @@
+#ifndef PROTOCOL__
+#define PROTOCOL__
+
+#ifndef   METHOD__
+#include <method._>
+#endif
+
+#define PROXY_C mux_c_(METHOD__)(verifier_, solver_c_)
+
+#define protocol_c_(R_, T, f, params)\
+ enum {  proxy_c_(T, f##__) = sizeof & proxy_c_(T, f##_) };\
+ enum { verify_c_(T, f##__) = sizeof &verify_c_(T, f##_) };\
+ Method_(T, f)\
+ * const  proxy_(T, f)   =   PROXY_C(T, f),\
+ * const method_(T, f)[] = { PROXY_C(T, f), verifier_(T, f) };\
+ R_ verifier_(T, f)(Site _site, params) begin (Void)_site;
+
+#define solver0_c_(R_, T, f, store, return)\
+ private  R_ solver_c_(T, f)(Site _site, ...) \
+{	(Void) _site;\
+	VA_list_  _args_;\
+	va_start_(_args_, _site);\
+	store solver_(T, f)(_args_);\
+	va_end_  (_args_);\
+	return \
+}
+
+#define protocol0_c_(R_, T, f, store, return_r)\
+ R_ solver_(T, f)(VA_list);\
+ private inline R_  proxy_c_(T, f##_)(let Site _s, let Wrapper_c(T, f) _)\
+ { (Void) _s; return solver_(T, f)(_._args_); }\
+ private inline R_ verify_c_(T, f##_)(let Site _s, let Wrapper_c(T, f) _)\
+ { (Void) _s; return solver_(T, f)(_._args_); }\
+ mux_c_(METHOD__)(, solver0_c_(R_, T, f, store, return_r))\
+ Method_(T, f)\
+ * const  proxy_c_(T, f)  =  PROXY_C(T, f),\
+ * const verify_c_(T, f) = verifier_(T, f);\
+ protocol_c_(R_, T, f, ...)
+
+#define solver1_c_(R_, T, f, params, args, return)\
+ private  R_ solver_c_(T, f)(let Site _s , params)\
+ { (Void) _s; return solver_(T, f)(args); }
+
+#define protocol1_c_(R_, T, f, params, members, args, return)\
+ R_ solver_(T, f)(params);\
+ private inline R_  proxy_c_(T, f##_)(let Site _s, let Wrapper_c(T, f) _)\
+ { (Void) _s; return solver_(T, f)(members); }\
+ private inline R_ verify_c_(T, f##_)(let Site _s, let Wrapper_c(T, f) _)\
+ { (Void) _s; return solver_(T, f)(members); }\
+ mux_c_(METHOD__)(, solver1_c_(R_, T, f, echo_(params), echo_(args), return))\
+ R_  proxy_c_(T, f)(Site, Wrapper_c(T, f));\
+ R_ verify_c_(T, f)(Site, Wrapper_c(T, f));\
+ protocol_c_(R_, T, f, echo_(params))
+
+#define protocol_0_c_(R_, T_f, args, return) protocol1_c_(R_, T_f,\
+ map__(param_c_, args), map__(_.arg_c_, args), map__(arg_c_, args), return)
+
+#define protocol_0_1_(R_, _T_f_, ...) protocol_0_c_(R_,\
+ echo_ _T_f_, echo_(__VA_ARGS__), return)
+
+#define protocol_0_2_(_T_f_, ...)   protocol_0_c_(Void_,\
+ echo_ _T_f_, echo_(__VA_ARGS__),)
+
+#define protocol_0_(t, ...) poly_3_(protocol_0_, COUNT_(peel_(t)), _)\
+(t, __VA_ARGS__)
+
+#define protocol_1_(_T_f_) \
+echo_c_(protocol0_c_ C_(Void_, echo_ _T_f_,,))
+
+#define protocol_2_1_(R_, _T_f_) \
+echo_c_(protocol0_c_ C_(R_, echo_ _T_f_, let R_ const _ret =, return _ret;))
+
+#define protocol_2_2_(_T_f_, param) protocol_0_2_(_T_f_, param)
+
+#define protocol_2_(t, arg) poly_3_(protocol_2_, COUNT_(peel_(t)), _)(t, arg)
+
+#define protocol_(...) get_(COUNT_(__VA_ARGS__),\
+ protocol_0_,, protocol_1_, protocol_2_)(__VA_ARGS__)
+
+#endif

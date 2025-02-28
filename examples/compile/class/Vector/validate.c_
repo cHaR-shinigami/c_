@@ -1,0 +1,12 @@
+#include "Vector._"
+
+procedure_(Bool_, (Vector, validate),
+(let Ptr (Vector), this))
+	guard_(this->array , FALSE_())
+	guard_(this->count <= this->capacity, FALSE_())
+	guard_(this->type->self == this->type, TRUE_())
+	guard_(this->species, TRUE_())
+	Vector_ vector[1] = {*this};
+	vector->type = (Type)typex_(Collection, Vector);
+	return solver_(Collection, validate)(abstract_(Collection, vector));
+end

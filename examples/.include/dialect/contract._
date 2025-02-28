@@ -1,0 +1,7 @@
+#ifndef CONTRACT__
+#define CONTRACT__
+
+#include<pre._>
+#include<post._>
+
+#endif

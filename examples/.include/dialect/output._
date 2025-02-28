@@ -1,0 +1,122 @@
+#ifndef OUTPUT__
+#define OUTPUT__
+
+#include <io_c._>
+
+#define bool_c_(text, _arg_) (& text[(Bool)_arg_ << 3])
+
+#define  text_BOOL_(...) bool_c_( "FALSE\0  TRUE", (__VA_ARGS__))
+#define  text_Bool_(...) bool_c_( "False\0  True", (__VA_ARGS__))
+#define  text_bool_(...) bool_c_( "false\0  true", (__VA_ARGS__))
+
+#define wtext_BOOL_(...) bool_c_(L"FALSE\0  TRUE", (__VA_ARGS__))
+#define wtext_Bool_(...) bool_c_(L"False\0  True", (__VA_ARGS__))
+#define wtext_bool_(...) bool_c_(L"false\0  true", (__VA_ARGS__))
+
+ public Int_  fprintf__c
+(	let Stream _stream,
+	let Size _ign,
+	Ptr_c( Char) _format, ...
+)
+{	(Void)_ign;
+	guard_2_(_stream, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _r =  vfprintf(_stream, _format, _args_);
+	va_end_(_args_);
+	return  _r;
+}
+
+ public Int_ fwprintf__c
+(	let Stream _stream,
+	let Size _ign,
+	Ptr_c(WChar) _format, ...
+)
+{	(Void)_ign;
+	guard_2_(_stream, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _r = vfwprintf(_stream, _format, _args_);
+	va_end_(_args_);
+	return  _r;
+}
+
+#define strlen_c_(...) sizeof (__VA_ARGS__) /\
+ _Generic (__VA_ARGS__, WChar_ * : sizeof L"", default : 1)
+
+#define sfmt_c_(wide, ...) mux_c_(wide)("%ls", "%s")
+
+#define output_c_(...) io_c_(echo_(__VA_ARGS__), PRI, sfmt_c_)
+
+#define printf_c_(des, sep) _Generic (des,\
+ Char_ * : snprintf_c, WChar_ * : swprintf_c,\
+ Stream_ : _Generic (*(sep), Char_ : fprintf__c, WChar_ : fwprintf__c))
+
+#define output_0_c_(des,_des, sep, _sep, ...) printf_c_(echo_(des), echo_(sep))\
+(notnull_c_(echo_(des), _des, OUTPUT__), strlen_c_(des), format_c_(sep)\
+((typeof_unqual (*(sep)) [(COUNT_(__VA_ARGS__) - 1) *\
+ (3 + sizeof (sep) / sizeof *(sep)) + 5]){0},\
+ notnull_c_(echo_(sep), _sep, OUTPUT__),\
+ (Char *[]){ map__(output_c_, __VA_ARGS__), NULL }\
+), __VA_ARGS__)
+
+#define output_1_(...) printf(output_c_(__VA_ARGS__), __VA_ARGS__)
+
+#define output_2_c_(des, _des, arg) printf_c_(echo_(des), "")\
+(notnull_c_(echo_(des), _des, OUTPUT__), strlen_c_(des), format_c_(des)\
+((typeof_unqual (*_Generic (*(des), WChar_ : L"", default : "")) [5]){0},\
+ NULL, (Char *[]){ output_c_(arg), NULL }\
+), arg)
+
+#define output_3_c_(des, _des, sep, arg) ((Void)(sep),\
+  printf_c_(echo_(des), echo_(sep)))\
+(notnull_c_(echo_(des), _des, OUTPUT__), strlen_c_(des), format_c_(sep)\
+((typeof_unqual (*(sep)) [5]){0},\
+ NULL, (Char *[]){ output_c_(arg), NULL }\
+), arg)
+
+#define output__0__(des, sep, ...) output_0_c_\
+(echo_(des), #des, echo_(sep), #sep, __VA_ARGS__)
+
+#define output__1_( ...) output_1_(__VA_ARGS__)
+
+#define output__2__(des, ...) output_2_c_(echo_(des), #des, echo_(__VA_ARGS__))
+
+#define output__3__(des, sep, ...) output_3_c_\
+(echo_(des), #des, echo_(sep), echo_(__VA_ARGS__))
+
+#define output__(...) get_(COUNT_(__VA_ARGS__),\
+ output__0__,, output__1_, output__2__, output__3__)(__VA_ARGS__)
+
+#define output_0_(des, sep, ...) \
+({ Var _ = des; output_0_c_(_, #des, echo_(sep), #sep, __VA_ARGS__); })
+
+#define output_2_(des, ...) \
+({ Var _ = des; output_2_c_(_, #des, echo_(__VA_ARGS__)); })
+
+#define output_3_(des, sep, ...) \
+({ Var _ = des; output_3_c_(_, #des, echo_(sep), echo_(__VA_ARGS__)); })
+
+#define output_( ...) get_(COUNT_(__VA_ARGS__),\
+ output_0_,, output_1_, output_2_, output_3_)(__VA_ARGS__)
+
+#define print_c_(...) ((Int_ (*)(String, ...))printf)(format_c\
+((Char_ [(COUNT_(__VA_ARGS__) << 2) + 1]){0}, " ",\
+ (Char *[]){ map__(output_c_, __VA_ARGS__), NULL }\
+), __VA_ARGS__)
+
+public Int_ print_c(let Int _r)
+{	return _r < 0 ? _r : putchar('\n') > 0 ? _r + 1 : EOF;
+}
+
+#define print_(...) print_c(get_(COUNT_(__VA_ARGS__),\
+ print_c_,, output_1_)(__VA_ARGS__))
+
+#endif
+
+#undef  OUTPUT__
+#ifndef DEBUG
+#define OUTPUT__ 0
+#else
+#define OUTPUT__ 1
+#endif

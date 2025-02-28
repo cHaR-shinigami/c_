@@ -1,0 +1,79 @@
+#ifndef RSHIFT__
+#define RSHIFT__
+
+#include <widths._>
+
+ public UIntmax_ ursh_0_c
+(	let UIntmax _n,
+	let ULLong  _s
+)
+{	guard_2_(_s < UINTMAX_WIDTH, 0)
+	return   _n >> _s;
+}
+#define ursh_0_c_(n,s,...) ursh_0_c(0|(n), s)
+
+ public UIntmax_ ursh_1_c
+(	let UIntmax _n,
+	let ULLong  _s,
+	let ULLong  _w,
+	let Site _site,
+	let Ptr_c(Char) _l,
+	let Ptr_c(Char) _r
+)
+{	if   (_s >= _w) fprintf
+	(stderr, "Assertion failed: (ULLong)(%s) < width_(typeof (%s))", _r, _l);
+	elif (_s >= UINTMAX_WIDTH) fprintf
+	(stderr, "Assertion failed: (ULLong)(%s) < width_(UIntmax)"    , _r);
+	else return _n >> _s;
+	fprintf(stderr, ", function %s, file %s, line %d.\n",
+		_site.func, _site.file, _site.line);
+	fflush (stderr);
+	exit(1);
+}
+#define ursh_1_c_(n,s,...) ursh_1_c(n, s, width_(typeof (n)), SITE, __VA_ARGS__)
+
+#define ursh_(n, ...) ((typeof (n)) debug_c_(ursh_, RSHIFT__)\
+(echo_(n), 0|(__VA_ARGS__), #n, #__VA_ARGS__))
+
+ public  Intmax_  rsh_0_c
+(	let  Intmax _n,
+	let ULLong  _s
+)
+{	guard_2_(_s < INTMAX_WIDTH, 0)
+	stop_2_((_s implies   _n >= 0), _n >> _s)
+	return -(Intmax)((UIntmax)-(_n + 1) + 1  >>  _s);
+}
+#define  rsh_0_c_(n,s,...)  rsh_0_c(0|(n), s)
+
+ public  Intmax_  rsh_1_c
+(	let  Intmax _n,
+	let ULLong  _s,
+	let ULLong  _w,
+	let Site _site,
+	let Ptr_c(Char) _l,
+	let Ptr_c(Char) _r
+)
+{	if   (_s >= _w) fprintf
+	(stderr, "Assertion failed: (ULLong)(%s) < width_(typeof (%s))", _r, _l);
+	elif (_s >= INTMAX_WIDTH) fprintf
+	(stderr, "Assertion failed: (ULLong)(%s) < width_(Intmax)"     , _r);
+	elif ((_s implies  _n >= 0)) return _n >> _s;
+	else return -(Intmax)((UIntmax)-(_n + 1) + 1  >>  _s);
+	fprintf(stderr, ", function %s, file %s, line %d.\n",
+		_site.func, _site.file, _site.line);
+	fflush (stderr);
+	exit(1);
+}
+#define  rsh_1_c_(n,s,...)  rsh_1_c(n, s, width_(typeof (n)), SITE, __VA_ARGS__)
+
+#define  rsh_(n, ...) ((typeof (n)) debug_c_( rsh_, RSHIFT__)\
+(echo_(n), 0|(__VA_ARGS__), #n, #__VA_ARGS__))
+
+#endif
+
+#undef  RSHIFT__
+#ifndef DEBUG
+#define RSHIFT__ 0
+#else
+#define RSHIFT__ 1
+#endif

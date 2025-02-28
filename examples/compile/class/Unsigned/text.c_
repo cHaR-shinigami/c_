@@ -1,0 +1,13 @@
+#include  "Unsigned._"
+
+procedure_(Void_  *, (Unsigned, text),
+(let  Ptr (Unsigned), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Void_), out))
+	Var buflen  =  output__((String_){0}, this->value) + 1U;
+	Var buf = (out &&  *length >= buflen)? (String_*)out : new__(Char_[buflen]);
+	*length = buflen;
+	guard_(buf, NULL)
+	output__(*buf, this->value);
+	return buf;
+end

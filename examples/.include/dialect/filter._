@@ -1,0 +1,40 @@
+#ifndef FILTER__
+#define FILTER__
+
+#include <hof_c._>
+
+#define filter_4_(des, fun, src,...)\
+begin\
+	hof_array_c_(echo_(des), #des, FILTER__,_des)\
+	hof_funcn_c_(echo_(fun), #fun, FILTER__)\
+	hof_array_c_(echo_(src), #src, FILTER__,_src)\
+	guard_1_(_len_des)\
+	for (let Size_ _i_ = 0, _c_ = 0; _i_ < _len_src; _i_++)\
+		if (_f((*_src)[_i_],\
+		get_(COUNT_(peel_(__VA_ARGS__)),peel_,)(__VA_ARGS__)))\
+			break_((*_des)[_c_++] = (*_src)[_i_], _len_des == _c_)\
+end
+
+#define filter_5_(des, fun, src, rng,...)\
+begin\
+	hof_array_c_(echo_(des), #des, FILTER__,_des)\
+	hof_funcn_c_(echo_(fun), #fun, FILTER__)\
+	hof_array_c_(echo_(src), #src, FILTER__,_src)\
+	hof_range_c_(echo_(rng), #rng, FILTER__,#src, _len_src)\
+	guard_1_(_len_des)\
+	for (let Size_ _i_ = _a_, _c_ = 0; _n_--; _i_ += _d_)\
+		if (_f((*_src)[_i_],\
+		get_(COUNT_(peel_(__VA_ARGS__)),peel_,)(__VA_ARGS__)))\
+			break_((*_des)[_c_++] = (*_src)[_i_], _len_des == _c_)\
+end
+
+#define filter_(...) poly_3_(filter_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  FILTER__
+#ifndef DEBUG
+#define FILTER__ 0
+#else
+#define FILTER__ 1
+#endif

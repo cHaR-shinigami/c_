@@ -1,0 +1,13 @@
+#include <c._>
+
+Size_ finder
+(	let Size len,
+	let Ptr (Int [len]) arr,
+	let Int  key
+)
+begin
+	loop_(0, len - 1)
+		stop_((*arr)[_i_] == key, _i_)
+	end
+	return len;
+end

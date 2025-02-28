@@ -1,0 +1,14 @@
+#include "Chain/append._"
+
+procedure_(Bool_ , (Chain, append),
+(let Ptr (Chain_), this),
+(let Ptr ( Void ), data))
+	Var node = new__(Node);
+	guard_(node, FALSE_())
+	node->data = data;
+	node->next = NULL;
+	if  (this->length++) this->tail->next = node;
+	else this->head = node;
+	this->tail = node;
+	return TRUE_();
+end

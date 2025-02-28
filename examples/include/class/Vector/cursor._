@@ -1,0 +1,16 @@
+#ifndef   VECTOR__CURSOR__
+#define   VECTOR__CURSOR__
+
+#include "Vector._"
+
+protocol_(Cursor_ *, (Vector, cursor),
+(let Ptr (Vector), this))
+	pre_(validate_(Vector, this));
+	Var    cursor = solver_(Vector, cursor)(this);
+	guard_(cursor, NULL)
+	post_ (cursor->vector == this);
+	post_ (cursor->index  == 0);
+	return cursor;
+end
+
+#endif

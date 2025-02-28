@@ -1,0 +1,33 @@
+#include  "Collection._"
+
+procedure_(Collection_*, (Collection, parse),
+(let  Ptr (Collection_), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Void), in))
+	guard_(validate_(Collection, this), NULL)
+	Var concrete = this->concrete_;
+	Var    typex = concrete_(this)->typex;
+	Var   append = typex->append;
+	Var  species = typex->species(concrete, NULL);
+	Var     init = species->init;
+	Var    parse = species->parse;
+	Var     free = species->free;
+	Var_  count_ = (Size)0;
+{	Var_ object_ = NULL;
+	Var text = (Char *)in;
+	for_(Var len = *length; text[count_];)
+		guard_(object_ ||  (object_ = init(species, (Tape){NULL})))
+		Size_ length_  =  len - count_;
+	{	Var data = parse(object_, &length_, text + count_);
+		Var next  =  (count_ += length_)<len &&  text[count_] == '\n';
+		count_ += next;
+		guard_(data)
+		if (data == object_) object_ = NULL;
+		if (append(concrete, data)) continue_(next)
+		else free(data);
+	}	break;
+	end
+	if (object_) free(object_);
+}	*length = count_;
+	return this;
+end

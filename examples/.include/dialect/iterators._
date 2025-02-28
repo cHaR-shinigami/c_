@@ -1,0 +1,14 @@
+#ifndef  ITERATORS__
+#define  ITERATORS__
+#endif
+
+#include <filter._>
+#include   <fold._>
+#include   <join._>
+#include    <map._>
+#include   <omni._>
+#include     <op._>
+#include<permute._>
+#include <reduce._>
+#include    <rel._>
+#include <search._>

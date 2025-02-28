@@ -1,0 +1,14 @@
+#include <c._>
+
+Int_ main()
+deferrable
+	defer_(puts("All's well that ends well"))
+	puts("Before block");
+	start
+		defer_(puts("leaving block"))
+		defer_(printf("\tPrint before "))
+		puts("\tInside block");
+	refed
+	defer_(puts("Yet another defer"))
+	puts("After block");
+refed

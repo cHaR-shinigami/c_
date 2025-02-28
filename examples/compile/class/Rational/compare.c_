@@ -1,0 +1,8 @@
+#include "Rational._"
+
+procedure_(LLong_ , (Rational, compare),
+(let Ptr (Rational), this),
+(let Ptr (Rational), that))
+	return this->value < that->value
+	? -1 : this->value > that->value;
+end

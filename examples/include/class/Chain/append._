@@ -1,0 +1,19 @@
+#ifndef   CHAIN__APPEND__
+#define   CHAIN__APPEND__
+
+#include "Chain._"
+
+protocol_( Bool_ , (Chain, append),
+(let Ptr (Chain_), this),
+(let Ptr ( Void ), data))
+	pre_(validate_(Chain, this));
+	Var   type = this->type;
+	this->type = (Type)typex_(Iterable, Chain);
+	Var success= verifier_(Iterable, append)
+	(_site, abstract_(Iterable, this), data);
+	this->type = type;
+	post_((success implies  data == this->tail->data));
+	return success;
+end
+
+#endif

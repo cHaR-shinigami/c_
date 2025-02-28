@@ -1,0 +1,14 @@
+#ifndef   VECTOR__COUNT__
+#define   VECTOR__COUNT__
+
+#include "Vector._"
+
+protocol_(Size_, (Vector, count),
+(let Ptr (Vector), this))
+	pre_(validate_(Vector, this));
+	Var count = solver_(Vector, count)(this);
+	post_ (count == this->count);
+	return count;
+end
+
+#endif

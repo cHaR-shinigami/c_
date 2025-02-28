@@ -1,0 +1,13 @@
+#include  "Unsigned._"
+
+procedure_(Unsigned_*, (Unsigned, div),
+(let  Ptr (Unsigned_), output),
+(let  Ptr (Unsigned ), dividend),
+(let  Ptr (Unsigned ), divisor))
+	guard_(divisor->value, NULL)
+	Var result = need__(output);
+	guard_(result, NULL)
+	if (!output) result->type = type_(Unsigned);
+	result->value  =  dividend->value / divisor->value;
+	return result;
+end

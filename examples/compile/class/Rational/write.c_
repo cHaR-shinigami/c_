@@ -1,0 +1,7 @@
+#include "Rational._"
+
+procedure_(LLong_, (Rational, write),
+(let Ptr (Rational), this),
+(let Stream, out))
+	return output__(out, this->value);
+end

@@ -1,0 +1,7 @@
+#include "Collection/species._"
+
+procedure_(Type_, (Collection, species),
+(let Ptr (Collection), this),
+(let Type, species))
+	return concrete_(this)->typex->species(this->concrete, species);
+end

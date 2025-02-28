@@ -1,0 +1,18 @@
+#include  "Text._"
+
+procedure_(Text_*, (Text, decode),
+(let  Ptr (Text_), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Encoding), in))
+	Var_ i_ = (Size)0;
+	while (i_<*length &&  (*in)[i_] <= 255) i_++;
+	Var nul  =  i_<*length ||  (*in)[i_ - 1];
+	if_(this->length < (*length = i_)+nul)
+		Var    buffer = realloc(this->buffer , i_+nul + 1);
+		guard_(buffer, NULL)
+		(this->buffer = buffer)[this->length = i_+nul] = '\0';
+	end
+	memcpy(this->buffer, *in, i_);
+	if (nul) this->buffer[i_] = '\0';
+	return this;
+end

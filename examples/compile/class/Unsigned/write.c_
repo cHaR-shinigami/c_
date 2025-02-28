@@ -1,0 +1,7 @@
+#include "Unsigned._"
+
+procedure_(LLong_, (Unsigned, write),
+(let Ptr (Unsigned), this),
+(let Stream, out))
+	return output__(out, this->value);
+end

@@ -1,0 +1,7 @@
+#include  "Iterable/duplicate._"
+
+procedure_(Iterator_ *, (Iterable, duplicate),
+(let Typex(Iterable), typex),
+(let Ptr  (Iterator), iterator))
+	return typex->duplicate(typex, iterator);
+end

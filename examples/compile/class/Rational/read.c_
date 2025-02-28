@@ -1,0 +1,8 @@
+#include  "Rational/validate._"
+
+procedure_(Rational_*, (Rational, read),
+(let Ptr  (Rational_), this),
+(let Stream, in))
+	return input__(in, this->value) == 1
+	&& validator(this->value) ? this : NULL;
+end

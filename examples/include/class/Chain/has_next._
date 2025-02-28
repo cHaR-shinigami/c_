@@ -1,0 +1,13 @@
+#ifndef   CHAIN__HAS_NEXT__
+#define   CHAIN__HAS_NEXT__
+
+#include "Chain._"
+
+protocol_(Bool_, (Chain, has_next),
+(let Typex (Iterable), typex),
+(let Ptr (Node), node))
+	pre_ (node != NULL);
+	return solver_(Chain, has_next)(typex, node);
+end
+
+#endif

@@ -1,0 +1,15 @@
+#include  "Signed._"
+
+procedure_(Signed_*, (Signed, mul),
+(let  Ptr (Signed_), product),
+(let  Ptr (Signed ), multiplier),
+(let  Ptr (Signed ), multiplicand))
+	Var result = need__(product);
+	guard_(result, NULL)
+	if (!product) result->type = type_(Signed);
+	Var l = multiplier->value;
+	Var r = multiplicand->value;
+	result->value = ((ULLong)(l<0 ? -l:l) * (ULLong)(r<0 ? -r:r)) & SIGNED_MAX;
+	if (l && (0<l iff 0>r) && r) result->value = -result->value;
+	return result;
+end

@@ -1,0 +1,11 @@
+#include  "Vector._"
+
+procedure_(Encoding_*, (Vector, encode),
+(let  Ptr (Vector), this),
+(let  Ptr (Size_ ), length),
+(let  Ptr (Encoding_), out))
+	guard_(this->species, NULL)
+	Vector_ list[1] = {*this};
+	list->type = (Type)typex_(Collection, Vector);
+	return solver_(Collection,encode)(abstract_(Collection, list), length, out);
+end

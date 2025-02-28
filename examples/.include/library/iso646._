@@ -1,0 +1,6 @@
+#ifndef ISO646__
+#define ISO646__
+
+#include <iso646.h>
+
+#endif

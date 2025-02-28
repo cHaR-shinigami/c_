@@ -1,0 +1,16 @@
+#include "Integers/sort._"
+
+procedure_((Integers,sort),
+(let Size, len),
+(let Ptr (Int_ [len]), arr))
+	guard_(len &&  arr)
+	Var_  last_  =  len - 1;
+	Var_ omega_  =  (Size)0;
+	do for (Var_ i_  =  omega_ = 0; i_ < last_; i_++)
+		if_((*arr)[i_] > (*arr)[i_ + 1])
+			Var tmp = (*arr)[omega_ = i_];
+			(*arr)[i_] = (*arr)[i_ + 1];
+			(*arr)[i_ + 1] = tmp;
+		end
+	while ((last_ = omega_));
+end

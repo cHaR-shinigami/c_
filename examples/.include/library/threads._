@@ -1,0 +1,36 @@
+#ifndef __STDC_NO_THREADS__
+
+#ifndef THREADS__
+#define THREADS__
+
+#include <time._>
+
+#include <once_c._>
+
+typedef_c_
+(Cnd,
+ cnd_t)
+
+typedef_c_
+(Thrd,
+ thrd_t)
+
+typedef_c_
+(Tss,
+ tss_t)
+
+typedef_c_
+(Mtx,
+ mtx_t)
+
+typedef_c_
+(Tss_dtor,
+ tss_dtor_t)
+
+typedef_c_
+(Thrd_start,
+ thrd_start_t)
+
+#endif
+
+#endif

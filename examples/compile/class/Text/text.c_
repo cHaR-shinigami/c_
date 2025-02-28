@@ -1,0 +1,16 @@
+#include  "Text._"
+
+procedure_(Void_*, (Text, text),
+(let  Ptr (Text ), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Void_), out))
+	guard_(this->buffer, NULL)
+	Size_ strlen(String);
+	Var buflen  =  strlen(this->buffer) + 1;
+	Var buf = (out &&  *length >= buflen)? (String_*)out : new__(Char_[buflen]);
+	*length = buflen;
+	guard_(buf, NULL)
+	Void_ *memmove(Void_ *, Void *, Size);
+	memmove(*buf, this->buffer, buflen);
+	return buf;
+end

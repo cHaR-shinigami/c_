@@ -1,0 +1,8 @@
+#include  "Signed/validate._"
+
+procedure_(Signed_*, (Signed, read),
+(let Ptr  (Signed_), this),
+(let Stream, in))
+	return input__(in, this->value) == 1
+	&& validator(this->value) ? this : NULL;
+end

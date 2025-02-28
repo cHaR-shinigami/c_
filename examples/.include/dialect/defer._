@@ -1,0 +1,54 @@
+#ifndef DEFER__
+#define DEFER__
+
+#ifndef   POINTER__
+#include <pointer._>
+#endif
+
+#define DEFER_MAX 128
+
+#define line_c_(__LINE__) cat_(_,__LINE__)
+
+#define deferrable \
+{	Void *_defer[DEFER_MAX];\
+	let Size_ _bot = 0, _top = 0;\
+	goto _defer_;\
+	_defer : goto* _defer[--_top];\
+	_defer_: _defer[_top++] = &&_defer;\
+	do {
+
+#define start \
+{	Var_ _bot = _top;\
+	assert_c_(_top < DEFER_MAX, "_top < DEFER_MAX", SITE, 1);\
+	_defer[_top++] = &&_defer;\
+	do {
+
+#define defer_(...) \
+{	goto line_c_(echo_(cat_ C_(__LINE__, _)));\
+	line_c_(__LINE__) : ; __VA_ARGS__;\
+	goto* _defer[--_top];\
+	line_c_(echo_(cat_ C_(__LINE__,_))) :\
+	assert_c_(_top < DEFER_MAX, "_top < DEFER_MAX", SITE, 1);\
+	_defer[_top++] = &&line_c_(__LINE__);\
+}
+
+#define yield \
+{	*_defer = &&line_c_(__LINE__);\
+	goto* _defer[--_top];\
+	line_c_(__LINE__) : return;\
+}
+
+#define return_(...) \
+{	Var _ = (__VA_ARGS__);\
+	*_defer = &&line_c_(__LINE__);\
+	goto* _defer[--_top];\
+	line_c_(__LINE__) : return _;\
+}
+
+#define refed } while(0);\
+	_defer[_bot] = &&line_c_(__LINE__);\
+	goto* _defer[--_top];\
+	line_c_(__LINE__) : ;\
+}
+
+#endif

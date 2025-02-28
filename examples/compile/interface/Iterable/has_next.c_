@@ -1,0 +1,7 @@
+#include  "Iterable/has_next._"
+
+procedure_(Bool_, (Iterable, has_next),
+(let Typex(Iterable), typex),
+(let Ptr  (Iterator), iterator))
+	return typex->has_next(typex, iterator);
+end

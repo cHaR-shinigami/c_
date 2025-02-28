@@ -1,0 +1,12 @@
+#ifndef TM_C__
+#define TM_C__
+
+#include <time.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Tm, struct
+ tm)
+
+#endif

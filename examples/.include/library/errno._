@@ -1,0 +1,10 @@
+#ifndef ERRNO__
+#define ERRNO__
+
+#define errnum (+errno)
+
+#define errnum_  errno
+
+#endif
+
+#include <errno_c._>

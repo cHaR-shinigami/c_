@@ -1,0 +1,92 @@
+#ifndef ALLOCATION__
+#define ALLOCATION__
+
+#ifndef   ARRAY__
+#include <array._>
+#endif
+
+Void_ free(Void_ *),
+*malloc (Size),
+*malloc2(Size, Size),
+*realloc(Void_ *, Size),
+*memcpy (Void_ *, Void *, Size);
+
+ public Void_ *alloc_c
+(	let Ptr_c(Void_) _old,
+	let Size _size,
+	let Size _olen,
+	let Size _nlen,
+	let Ptr_c(Void) _filler
+)
+{	guard_2_(_nlen  <=  (Size)-1 / _size, NULL)
+	let Char_ (* const _new)[_size] = realloc(_old, _size * _nlen);
+	guard_2_(_new &&  _olen < _nlen, _new)
+	if (!_filler)
+	{	if (_size == 1) (*_new)[_olen]  =  (*_new)[_nlen - 1] = 0;
+		return _new;
+	}
+	for (let Size_  _i_ = _olen; _i_ < _nlen;)
+		memcpy(_new[_i_++], _filler, _size);
+	return _new;
+}
+
+#define new_1_c_(type) ((type *) malloc(sizeof (type)))
+
+#define new__1__(...) new_1_c_(typeof_unqual (__VA_ARGS__))
+
+#define new_2_c_(type, len) ((type (*)[(Size)(0|(len))])\
+ malloc2(len, sizeof (type)))
+
+#define new__2__(type, ...) new_2_c_(typeof_unqual (type), __VA_ARGS__)
+
+#define new_3_c_(type, len, filler)  ((type (*)[(Size)(0|(len))])\
+ alloc_c(NULL, sizeof (type), 0, len, (type []){filler}))
+
+#define new__3__(type, len, ...) new_3_c_\
+(typeof_unqual (type), len, echo_(__VA_ARGS__))
+
+#define new__(...) poly_3_(new__, poly_2_(COUNT_(__VA_ARGS__), _), _)\
+(__VA_ARGS__)
+
+#define new_1_(...) \
+({ Var _ = (typeof_unqual (__VA_ARGS__) *)0; new__1__(*_); })
+
+#define new_2_(type, ...) \
+({ Var _ = (typeof_unqual (type) *)0; Var _0 = __VA_ARGS__; new__2__(*_, _0); })
+
+#define new_3_(type, len, ...) \
+({ Var _ = (typeof_unqual (type) *)0; Var _0 = len;\
+ new__3__(*_, _0, echo_(__VA_ARGS__)); })
+
+#define new_( ...) poly_3_(new_ , COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define renew__2__(arr,...)     ((typeof (**(arr))(*)[(Size)(0|(__VA_ARGS__))])\
+ alloc_c(arr, sizeof **(arr), length_c_(arr), __VA_ARGS__, NULL))
+
+#define renew__3__(arr,len,...) ((typeof (**(arr))(*)[(Size)(0|(len))])\
+ alloc_c(arr, sizeof **(arr), length_c_(arr),\
+ len, (typeof (**(arr)) []){__VA_ARGS__}))
+
+#define renew__(...) poly_3_(renew__, poly_2_(COUNT_(__VA_ARGS__), _), _)\
+(__VA_ARGS__)
+
+#define renew_2_(arr, ...) \
+({ Var _ = arr; Var _0 = __VA_ARGS__; renew__2__(_, _0); })
+
+#define renew_3_(arr, len, ...) \
+({ Var _ = arr; Var _0 = len; renew__3__(_, _0, echo_(__VA_ARGS__)); })
+
+#define renew_( ...) poly_3_(renew_ , COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+ public Void_ *need_c
+(	let Ptr_c(Void_) _ptr,
+	let Size _size
+)
+{	return _ptr? _ptr : malloc(_size);
+}
+#define need__(...) ((typeof_c_(__VA_ARGS__))\
+ need_c((__VA_ARGS__), sizeof *(__VA_ARGS__)))
+
+#define need_( ...) ({ Var _ = (__VA_ARGS__); need__(_); })
+
+#endif

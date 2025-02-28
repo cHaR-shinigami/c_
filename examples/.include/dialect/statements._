@@ -1,0 +1,19 @@
+#ifndef STATEMENTS__
+#define STATEMENTS__
+
+#include <branching._>
+#include <iteration._>
+
+#define spares_c_(id) id ## ____ = sizeof ((void)0, id)
+
+#define spares_(...)  enum { map__(spares_c_, __VA_ARGS__) };
+
+#define static_assert_1_(...) _Static_assert (__VA_ARGS__, #__VA_ARGS__);
+
+#define static_assert_2_(...) _Static_assert (__VA_ARGS__);
+
+#define static_assert_c_(test, text, ...) _Static_assert (test, text);
+
+#define static_assert_(...)  static_assert_c_(__VA_ARGS__, #__VA_ARGS__,)
+
+#endif

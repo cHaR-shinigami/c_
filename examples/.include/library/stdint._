@@ -1,0 +1,142 @@
+#ifndef STDINT__
+#define STDINT__
+
+#include <int_c._>
+
+typedef_c_(UInt_fast8 , uint_fast8_t)
+#ifndef    UINT_FAST8_WIDTH
+#define    UINT_FAST8_WIDTH   bitlen__( UINT_FAST8_MAX)
+#endif
+
+typedef_c_( Int_fast8 ,  int_fast8_t)
+#ifndef     INT_FAST8_WIDTH
+#define     INT_FAST8_WIDTH  (bitlen__(  INT_FAST8_MAX) + 1)
+#endif
+
+typedef_c_(UInt_fast16, uint_fast16_t)
+#ifndef    UINT_FAST16_WIDTH
+#define    UINT_FAST16_WIDTH  bitlen__(UINT_FAST16_MAX)
+#endif
+
+typedef_c_( Int_fast16,  int_fast16_t)
+#ifndef     INT_FAST16_WIDTH
+#define     INT_FAST16_WIDTH (bitlen__( INT_FAST16_MAX) + 1)
+#endif
+
+typedef_c_(UInt_fast32, uint_fast32_t)
+#ifndef    UINT_FAST32_WIDTH
+#define    UINT_FAST32_WIDTH  bitlen__(UINT_FAST32_MAX)
+#endif
+
+typedef_c_( Int_fast32,  int_fast32_t)
+#ifndef     INT_FAST32_WIDTH
+#define     INT_FAST32_WIDTH (bitlen__( INT_FAST32_MAX) + 1)
+#endif
+
+typedef_c_(UInt_fast64, uint_fast64_t)
+#ifndef    UINT_FAST64_WIDTH
+#define    UINT_FAST64_WIDTH  bitlen__(UINT_FAST64_MAX)
+#endif
+
+typedef_c_( Int_fast64,  int_fast64_t)
+#ifndef     INT_FAST64_WIDTH
+#define     INT_FAST64_WIDTH (bitlen__( INT_FAST64_MAX) + 1)
+#endif
+
+# ifdef    UINTPTR_MAX
+typedef_c_(UIntptr, uintptr_t)
+#ifndef    UINTPTR_WIDTH
+#define    UINTPTR_WIDTH  bitlen__(UINTPTR_MAX)
+#endif
+#endif
+
+# ifdef     INTPTR_MAX
+typedef_c_( Intptr,  intptr_t)
+#ifndef     INTPTR_WIDTH
+#define     INTPTR_WIDTH (bitlen__( INTPTR_MAX) + 1)
+#endif
+#endif
+
+typedef_c_(UIntmax, uintmax_t)
+#ifndef    UINTMAX_WIDTH
+#define    UINTMAX_WIDTH  bitlen__(UINTMAX_MAX)
+#endif
+
+typedef_c_( Intmax,  intmax_t)
+#ifndef     INTMAX_WIDTH
+#define     INTMAX_WIDTH (bitlen__( INTMAX_MAX) + 1)
+#endif
+
+#ifndef    PTRDIFF_WIDTH
+#define    PTRDIFF_WIDTH (bitlen__(PTRDIFF_MAX) + 1)
+#endif
+
+#ifndef SIG_ATOMIC_WIDTH
+#if!    SIG_ATOMIC_MIN
+#define SIG_ATOMIC_WIDTH  bitlen__(SIG_ATOMIC_MAX)
+#else
+#define SIG_ATOMIC_WIDTH (bitlen__(SIG_ATOMIC_MAX) + 1)
+#endif
+#endif
+
+#ifndef  SIZE_WIDTH
+#define  SIZE_WIDTH  bitlen__( SIZE_MAX)
+#endif
+
+#ifndef WCHAR_WIDTH
+#if!    WCHAR_MIN
+#define WCHAR_WIDTH  bitlen__(WCHAR_MAX)
+#else
+#define WCHAR_WIDTH (bitlen__(WCHAR_MAX) + 1)
+#endif
+#endif
+
+#ifndef  WINT_WIDTH
+#if!     WINT_MIN
+#define  WINT_WIDTH  bitlen__( WINT_MAX)
+#else
+#define  WINT_WIDTH (bitlen__( WINT_MAX) + 1)
+#endif
+#endif
+
+#define\
+  UINT8_C_(...)\
+  UINT8_C (__VA_ARGS__)
+
+#define\
+   INT8_C_(...)\
+   INT8_C (__VA_ARGS__)
+
+#define\
+ UINT16_C_(...)\
+ UINT16_C (__VA_ARGS__)
+
+#define\
+  INT16_C_(...)\
+  INT16_C (__VA_ARGS__)
+
+#define\
+ UINT32_C_(...)\
+ UINT32_C (__VA_ARGS__)
+
+#define\
+  INT32_C_(...)\
+  INT32_C (__VA_ARGS__)
+
+#define\
+ UINT64_C_(...)\
+ UINT64_C (__VA_ARGS__)
+
+#define\
+  INT64_C_(...)\
+  INT64_C (__VA_ARGS__)
+
+#define \
+UINTMAX_C_(...) \
+UINTMAX_C (__VA_ARGS__)
+
+#define\
+ INTMAX_C_(...)\
+ INTMAX_C (__VA_ARGS__)
+
+#endif

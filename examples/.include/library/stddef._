@@ -1,0 +1,34 @@
+#ifndef STDDEF__
+#define STDDEF__
+
+#include  <size_c._>
+
+#include <wchar_c._>
+
+typedef_c_
+(Ptrdiff,
+ ptrdiff_t)
+
+typedef_c_
+(Max_align,
+ max_align_t)
+
+#ifdef  __STDC_VERSION_STDDEF_H__
+
+typedef_c_
+(Nullptr,
+ nullptr_t)
+
+#endif
+
+#define\
+ offsetof_(type, member)\
+ offsetof (typeof (type), member)
+
+#define\
+ UNREACHABLE\
+ unreachable()
+
+#endif
+
+#include <rsize_c._>

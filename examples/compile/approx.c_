@@ -1,0 +1,34 @@
+#include <c._>
+
+Int_ main()
+begin
+	Var_  count_ = 0UL ;
+	Var_ maxabs_ = 0UL ;
+	Var_ maxerr_ = 0L  ;
+	Var_  worst_ = 0UL ;
+	Var_    sqr_ = 0ULL;
+	Var_    sum_ = 0ULL;
+	Var limit  =  (1ULL << 32) - 1;
+	loop_(1, limit)
+		Float approx = _i_;
+		Var err  =  (LLong)approx - (LLong)_i_;
+		continue_(!err)
+		count_++;
+		sqr_ += err*err;
+		Var abs  =  err<0 ?  -err : err;
+		sum_ += abs;
+		continue_(abs <= maxabs_)
+		maxabs_ = abs;
+		maxerr_ = err;
+		 worst_ = _i_;
+	end
+	print_("Number of approximations is", count_, "out of", limit);
+	print_("Maximum error is", maxerr_, "for", worst_);
+	Var arv  =  (Float)sum_ / limit;
+	print_("Average rectified value of error is", arv);
+	Double_ sqrt(Double);
+	Var rms  =  sqrt((Float)sqr_ / limit);
+	print_("Root mean square of error is", rms);
+	Var per  =  100.0f*count_ / limit;
+	print_("Percentage of approximations is", per,"%");
+end

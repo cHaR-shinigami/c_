@@ -1,0 +1,12 @@
+#ifndef WINT_C__
+#define WINT_C__
+
+#include <wchar.h>
+
+#include <specifiers._>
+
+typedef_c_
+(WInt,
+ wint_t)
+
+#endif

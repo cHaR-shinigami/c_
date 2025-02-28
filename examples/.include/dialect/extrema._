@@ -1,0 +1,39 @@
+#ifndef  EXTREMA__
+#define  EXTREMA__
+
+#ifndef  POINTER__
+#include<pointer._>
+#endif
+
+#include  <float._>
+#include <signal._>
+#include <stdint._>
+#include  <wchar._>
+
+#define big_c_(code, _i_, ...) code ((union \
+{	struct {__VA_ARGS__ _val; UByte _[PP_MAX/CHAR_BIT];};\
+	UByte _pun[sizeof (__VA_ARGS__) + PP_MAX/CHAR_BIT];\
+}) {._pun[sizeof (__VA_ARGS__) - 1] = 1,\
+	._pun[top_ _i_/CHAR_BIT]   =   1U << top_ _i_%CHAR_BIT  |  1}\
+._val)<0 ?  top_ _i_ - (top_ _i_%CHAR_BIT << 1) :, (pop_ _i_,), __VA_ARGS__
+
+#define big__c_(...) big_c_(__VA_ARGS__)
+
+#define ltl_c_(code, _i_, ...) code ((union \
+{	struct { UByte _[PP_MAX/CHAR_BIT]; __VA_ARGS__ _val; };\
+	UByte _pun[sizeof (struct {UByte _[PP_MAX/CHAR_BIT]; __VA_ARGS__ _val;})];\
+}) {._pun[0] = 1,\
+	._pun[sizeof (struct { UByte _[PP_MAX/CHAR_BIT]; __VA_ARGS__ _val; })\
+- 1  -  top_ _i_/CHAR_BIT]   =   1U << top_ _i_%CHAR_BIT  |  1}\
+._val)<0 ?  top_ _i_ - (top_ _i_%CHAR_BIT << 1) :, (pop_ _i_,), __VA_ARGS__
+
+#define ltl__c_(...) ltl_c_(__VA_ARGS__)
+
+#define swidth_c_(...) (CHAR_BIT * (sizeof (__VA_ARGS__) - 1) + 1 -\
+ (isNBO_(__VA_ARGS__)?\
+ echo_(top_ C_(echo_(o__(big__c_, PP_MAX,\
+ (, (0, PP_RANGE, PP_MAW), __VA_ARGS__))))) PP_MAX :\
+ echo_(top_ C_(echo_(o__(ltl__c_, PP_MAX,\
+ (, (0, PP_RANGE, PP_MAW), __VA_ARGS__))))) PP_MAX))
+
+#endif

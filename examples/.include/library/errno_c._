@@ -1,0 +1,18 @@
+#include <errno.h>
+
+#ifdef  __STDC_LIB_EXT1__
+#ifdef  __STDC_WANT_LIB_EXT1__
+
+#ifndef ERRNO_C__
+#define ERRNO_C__
+
+#include <specifiers._>
+
+typedef_c_
+(Errno,
+ errno_t)
+
+#endif
+
+#endif
+#endif

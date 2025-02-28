@@ -1,0 +1,26 @@
+#ifndef RELATION__
+#define RELATION__
+
+#include <logic._>
+
+#define  GT_(l, r) mux_(l)(mux_(INC_(l))\
+(get_(r, 0, repeat__(l, 1)), BOOL_(INC_(r))), 0)
+
+#define  LE_(l, r) mux_(l)(mux_(INC_(l))\
+(get_(r, 1, repeat__(l, 0)),  NOT_(INC_(r))), 1)
+
+#define  LT_(l, r) GT_(r, l)
+
+#define  GE_(l, r) LE_(r, l)
+
+#define  EQ_(l, r) mux_(l)(mux_(INC_(l))\
+(get_(DEC_(r), repeat__(l, 0), 1), NOT_(INC_(r))), NOT_(r))
+
+#define  NE_(l, r) mux_(l)(mux_(INC_(l))\
+(get_(DEC_(r), repeat__(l, 1), 0),BOOL_(INC_(r))),BOOL_(r))
+
+#define MAX_(l, r) mux_(l)(mux_(INC_(l))(get_(r, r, repeat__(l, l)), l), r)
+
+#define MIN_(l, r) mux_(l)(mux_(INC_(l))(get_(r, l, repeat__(l, r)), r), l)
+
+#endif

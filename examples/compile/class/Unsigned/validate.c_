@@ -1,0 +1,6 @@
+#include "Unsigned/validate._"
+
+procedure_(Bool_, (Unsigned, validate),
+(let Ptr (Unsigned), this))
+	return validator(this->value);
+end

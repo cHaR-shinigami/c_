@@ -1,0 +1,10 @@
+#include "Vector/duplicate._"
+
+procedure_(Cursor_ *, (Vector, duplicate),
+(let Typex(Iterable), typex),
+(let Ptr  (Cursor), cursor))
+	(Void) typex;
+	Var dup = new__ (Cursor);
+	if (dup) *dup = *cursor ;
+	return dup;
+end

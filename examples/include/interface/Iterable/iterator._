@@ -1,0 +1,13 @@
+#ifndef   ITERABLE__ITERATOR__
+#define   ITERABLE__ITERATOR__
+
+#include "Iterable._"
+
+private
+protocol_(Iterator_ *, (Iterable, iterator),
+(let Ptr (Iterable), this))
+	pre_(validate_(Iterable, this));
+	return solver_(Iterable, iterator)(this);
+end
+
+#endif

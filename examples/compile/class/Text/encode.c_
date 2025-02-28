@@ -1,0 +1,13 @@
+#include  "Text._"
+
+procedure_(Encoding_*, (Text, encode),
+(let  Ptr (Text ), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Encoding_), out))
+	Var enc = (out&& this->length<=*length)? out : new__(UByte_ [this->length]);
+	*length = this->length;
+	guard_(enc, NULL)
+	if ((Char*)*enc != this->buffer)
+		memcpy(*enc ,  this->buffer, this->length);
+	return enc;
+end

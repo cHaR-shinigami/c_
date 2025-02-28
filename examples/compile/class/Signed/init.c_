@@ -1,0 +1,13 @@
+#include  "Signed/validate._"
+
+procedure_(Signed_ *, (Signed, init),
+(let Type, type),
+(let Tape, tape))
+	Var value = *tape? *(LLong *)*tape : 0;
+	guard_(validator(value), NULL)
+	Var object = new__(Signed);
+	guard_(object, NULL)
+	object->type  = type ;
+	object->value = value;
+	return object;
+end

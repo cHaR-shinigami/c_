@@ -1,0 +1,96 @@
+#ifndef LOGGER__
+#define LOGGER__
+
+#ifndef  OUTPUT__
+#include<output._>
+#endif
+
+#include<time.h>
+
+#define  LOGFMT_C "\n%sfunction %s, file %s, line %d\n"
+
+#define wlogfmt_c_(LOGFMT_C) cat_(L, LOGFMT_C)
+
+#define  logfmt_c_(...) {_Generic (*(__VA_ARGS__),\
+ Char_ : LOGFMT_C, default : wlogfmt_c(LOGFMT_C))} + LOGFMT_LEN_C
+
+enum {LOGFMT_LEN_C = sizeof LOGFMT_C - 1};
+
+Char_ *strcpy(String_, String);
+
+#define LOGARGS_C ctime(&(time_t){time(NULL)}), SITE_C
+
+#define logargs_c_(...) strcpy((Char_ [LOGFMT_LEN_C + 5]){LOGFMT_C}\
+ + LOGFMT_LEN_C, output_c_(__VA_ARGS__)) - LOGFMT_LEN_C, LOGARGS_C,__VA_ARGS__
+
+#define logger_c_(...) _Generic (*(__VA_ARGS__),\
+ Char_ : fprintf_c, WChar_ : fwprintf_c)
+
+#define logger_0_0_c_(des, sep, ...)\
+ (eval_(Stream, notnull_c_(echo_(des), #des, LOGGER__)),\
+ (Void) notnull_c_(_Generic (*(sep), Char_: sep, WChar_: sep), #sep, LOGGER__),\
+ map__((Void), __VA_ARGS__))
+
+#define logger_0_1_c_(des, sep, ...) logger_c_(sep)\
+(notnull_c_(echo_(des), #des, LOGGER__), format_c_(sep)\
+((typeof_unqual (*(sep)) [LOGFMT_LEN_C + (COUNT_(__VA_ARGS__) - 1) *\
+ (3 + sizeof (sep) / sizeof *(sep)) + 5])logfmt_c_(sep),\
+ notnull_c_(echo_(sep), #sep, LOGGER__),\
+ (Char *[]){map__(output_c_, __VA_ARGS__), NULL}\
+) - LOGFMT_LEN_C, LOGARGS_C, __VA_ARGS__)
+
+#define logger_1_0_c_(...) ((Void)(__VA_ARGS__))
+
+#define logger_1_1_c_(...) ((Int_ (*)(Stream, String, ...))fprintf)\
+(stderr, logargs_c_(__VA_ARGS__))
+
+#define logger_2_0_c_(des, ...)\
+ (eval_(Stream, notnull_c_(echo_(des), #des, LOGGER__)),\
+ (Void)(__VA_ARGS__))
+
+#define logger_2_1_c_(des, ...) \
+((Int_ (*)(Stream, String, ...))f_c_(fprintf, LOGGER__))\
+(notnull_c_(echo_(des), #des, LOGGER__), logargs_c_(__VA_ARGS__))
+
+#define logger_3_0_c_(des, sep, ...)\
+ (eval_(Stream, notnull_c_(echo_(des), #des, LOGGER__)),\
+ (Void)_Generic (*(sep), Char_ : sep, WChar_ : sep),\
+ (Void)(__VA_ARGS__))
+
+#define logger_3_1_c_(des, sep, ...) ((Void)(sep), logger_c_(sep))\
+(notnull_c_(echo_(des), #des, LOGGER__), format_c_(sep)\
+((typeof_unqual (*(sep)) [LOGFMT_LEN_C + 5])logfmt_c_(sep),\
+ NULL, (Char * []){output_c_(__VA_ARGS__), NULL}\
+) - LOGFMT_LEN_C, LOGARGS_C, __VA_ARGS__)
+
+#define logger_0_ debug_c_(logger_0_, LOGGER)
+
+#define logger_1_ debug_c_(logger_1_, LOGGER)
+
+#define logger_2_ debug_c_(logger_2_, LOGGER)
+
+#define logger_3_ debug_c_(logger_3_, LOGGER)
+
+#define logger_(...) get_(COUNT_(__VA_ARGS__),\
+ logger_0_,, logger_1_, logger_2_, logger_3_)(__VA_ARGS__)
+
+#endif
+
+#undef  LOGGER__
+#ifndef DEBUG
+#define LOGGER__ 0
+#else
+#define LOGGER__ 1
+#endif
+
+#ifndef LOGGER
+#define LOGGER 0
+#else
+#if echo_(cat_ C_(LOGGER, 10)) == 8
+#undef  LOGGER
+#define LOGGER 0
+#else
+#undef  LOGGER
+#define LOGGER 1
+#endif
+#endif

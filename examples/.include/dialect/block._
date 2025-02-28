@@ -1,0 +1,26 @@
+#ifndef BLOCK__
+#define BLOCK__
+
+#include <ellipsis._>
+
+#define begin { do {
+
+#define    break_(...) { if (__VA_ARGS__) break; }
+
+#define continue_(...) { if (__VA_ARGS__) continue; }
+
+#define guard_1_( ...) break_(!((__VA_ARGS__)))
+
+#define guard_2_(test,...) stop_2_(!((test)), echo_(__VA_ARGS__))
+
+#define guard_(...)    poly_3_(guard_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define  stop_1_( ...) break_   (__VA_ARGS__)
+
+#define  stop_2_(test,...) { if (test) return __VA_ARGS__; }
+
+#define  stop_(...)    poly_3_( stop_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define end  } while (0); }
+
+#endif

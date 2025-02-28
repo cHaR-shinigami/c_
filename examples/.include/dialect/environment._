@@ -1,0 +1,22 @@
+#ifndef ENVIRONMENT__
+#define ENVIRONMENT__
+
+#include <maxima._>
+#include <minima._>
+#include <widths._>
+
+public Bool_ upstack_c(let Ptr_c(Char) _p)
+{	return
+#ifdef UINTPTR_WIDTH
+	(UIntptr)_p < (UIntptr)
+#else
+	_p <
+#endif
+	&(Char){0};
+}
+
+#define UPSTACK ((Bool_ (*volatile)(Char *)){upstack_c})(&(Char){0})
+
+#define DNSTACK ((Bool)!UPSTACK)
+
+#endif

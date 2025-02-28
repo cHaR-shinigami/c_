@@ -1,0 +1,44 @@
+#ifndef MAP__
+#define MAP__
+
+#include<hof_c._>
+
+#define map_2_(fun, ...) \
+begin\
+	hof_funcn_c_(echo_(fun), #fun, MAP__)\
+	hof_array_c_(echo_(__VA_ARGS__), #__VA_ARGS__, MAP__, _arr)\
+	for (Var_ _i_ = _len_arr; _i_--;)\
+		(*_arr)[_i_] = _f((*_arr)[_i_]); \
+end
+
+#define map_3_(des, fun, ...) \
+begin\
+	hof_array_c_(echo_(des), #des, MAP__, _des)\
+	hof_funcn_c_(echo_(fun), #fun, MAP__)\
+	hof_array_c_(echo_(__VA_ARGS__), #__VA_ARGS__, MAP__, _src)\
+	Var_ _i_ = _len_des <= _len_src ? _len_des : _len_src;\
+	while (_i_--)\
+		(*_des)[_i_] = _f((*_src)[_i_]); \
+end
+
+#define map_4_(des, fun, src, ...) \
+begin\
+	hof_array_c_(echo_(des), #des, MAP__, _des)\
+	hof_funcn_c_(echo_(fun), #fun, MAP__)\
+	hof_array_c_(echo_(src), #src, MAP__, _src)\
+	Var _len = _len_des <= _len_src ? _len_des : _len_src;\
+	hof_range_c_(echo_(__VA_ARGS__), #__VA_ARGS__, MAP__, #src, _len)\
+	for (Var_ _i_ = _a_; _n_--; _i_ += _d_)\
+		(*_des)[_i_] = _f((*_src)[_i_]); \
+end
+
+#define map_(...) poly_3_(map_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  MAP__
+#ifndef DEBUG
+#define MAP__ 0
+#else
+#define MAP__ 1
+#endif

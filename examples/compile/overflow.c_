@@ -1,0 +1,9 @@
+#include <c._>
+
+Int_ main()
+begin
+	let Int max = max_(Int);
+	for_(Var_ i_ = -max; i_ <= max; i_ += max)
+		print_(i_);
+	end
+end

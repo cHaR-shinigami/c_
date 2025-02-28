@@ -1,0 +1,39 @@
+#ifndef  METHOD__
+#define  METHOD__
+
+#include <allocation._>
+#include <contract._>
+#include <stdarg._>
+
+#define      arg_c_(_Tp_) pop_ _Tp_
+
+#define    param_c_(_Tp_) top_ _Tp_ pop_ _Tp_
+
+#define    proxy_c_(T, f) cat_c_(T, __0, f)
+
+#define   verify_c_(T, f) cat_c_(T, __1, f)
+
+#define     method_(T, f) cat_c_(T, __2, f)
+
+#define     Method_(T, f) cat_c_(T, __3, f)
+
+#define      proxy_(T, f) cat_c_(T, __4, f)
+
+#define     solver_(T, f) cat_c_(T, __5, f)
+
+#define   verifier_(T, f) cat_c_(T, __6, f)
+
+#define   solver_c_(T, f) cat_c_(T, __7, f)
+
+#define Procedure_c(T, f) cat_c_(T, __8, f)
+
+#define   Wrapper_c(T, f) cat_c_(T, __9, f)
+
+#endif
+
+#undef  METHOD__
+#ifndef DEBUG
+#define METHOD__  0
+#else
+#define METHOD__  1
+#endif

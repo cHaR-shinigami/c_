@@ -1,0 +1,7 @@
+#include "Text._"
+
+procedure_((Text, free),
+(let Ptr (Text_), this))
+	free(this->buffer);
+	free(this);
+end

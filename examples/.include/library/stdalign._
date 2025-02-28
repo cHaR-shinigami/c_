@@ -1,0 +1,6 @@
+#ifndef STDALIGN__
+#define STDALIGN__
+
+#include <stdalign.h>
+
+#endif

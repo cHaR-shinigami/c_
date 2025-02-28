@@ -1,0 +1,21 @@
+#include  "Chain._"
+
+procedure_(Chain_*, (Chain, copy),
+(let  Ptr (Chain_), this),
+(let  Ptr (Chain ), that))
+	Var copy = (validate_(this) &&  ! this->length)? this : new__(*this);
+	guard_(copy, NULL)
+	if (copy != this) *copy = (Chain){.type = type_(Chain)};
+	Chain_ _src[1] = {*that};
+	_src->type = (Type)typex_(Iterable, Chain);
+	Var   type = copy->type;
+	copy->type = (Type)typex_(Iterable, Chain);
+	Var it
+	=  solver_(Iterable, copy)
+	(abstract_(Iterable, copy),
+	 abstract_(Iterable, _src));
+	copy->type = type;
+	guard_(it, (test_(copy != this, free(copy)), NULL))
+	post_ (it->concrete == copy);
+	return copy;
+end

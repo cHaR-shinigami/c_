@@ -1,0 +1,18 @@
+#include  "Signed._"
+
+procedure_(Signed_*, (Signed, add),
+(let  Ptr (Signed_), sum),
+(let  Ptr (Signed ), augend),
+(let  Ptr (Signed ), addend))
+	Var result = need__(sum);
+	guard_(result, NULL)
+	if (!sum) result->type = type_(Signed);
+	Var_ l_ = augend->value;
+	Var_ r_ = addend->value;
+	Var sign  =  0>l_ &&  0>r_;
+	if (sign) l_ = -l_, r_ = -r_;
+	else guard_(0<l_ &&  0<r_, (result->value = l_+r_, result))
+	result->value  =  ((ULLong)l_ + (ULLong)r_) & SIGNED_MAX;
+	if (sign) result->value = -result->value;
+	return result;
+end

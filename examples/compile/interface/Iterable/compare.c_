@@ -1,0 +1,34 @@
+#include "Iterable._"
+
+procedure_(LLong_, (Iterable, compare),
+(let Ptr (Iterable), this),
+(let Ptr (Iterable), that))
+	Var this_typex = concrete_(this)->typex;
+	Var that_typex = concrete_(that)->typex;
+	Var this_count = this_typex->count(this->concrete);
+	Var that_count = that_typex->count(that->concrete);
+	guard_(this_count == that_count, this_count - that_count)
+	guard_(this_count, 0)
+	Var this_array = new__(Void *[this_count]);
+	post_(this_array != NULL);
+{	Var   iterator = this_typex->iterator(this->concrete);
+	post_(iterator != NULL);
+	Var get_next = this_typex->get_next;
+	for (Var_ i_ = this_count; i_--;)
+		(*this_array)[i_] = get_next(this_typex, iterator);
+	free (iterator);
+}{	Var   iterator = that_typex->iterator(that->concrete);
+	post_(iterator != NULL);
+	Var get_next = that_typex->get_next;
+	for_(Var_ count_ = that_count; count_--;)
+		Var next = get_next(that_typex, iterator);
+		Var_ i_ = count_;
+		do	if (next == (*this_array)[i_])
+		{	(*this_array)[i_] = (*this_array)[count_];
+			break;
+		}	while (i_--);
+		guard_(i_ + 1, 1)
+	end
+	free (iterator);
+}	return 0;
+end

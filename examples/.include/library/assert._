@@ -1,0 +1,96 @@
+#ifndef ASSERT__
+#define ASSERT__
+
+#include <stdio.h>
+
+#include <expression._>
+
+typedef_c_(Stream, FILE *)
+
+typedef_c_(Site, struct Site
+{	Char  *func;
+	Char  *file;
+	Int_   line;
+})
+
+#define SITE_C __func__, __FILE__, __LINE__
+
+#define SITE   ((Site){SITE_C})
+
+Void_ exit(Int);
+
+ public Void_   assert_c
+(	let Char   _text[const],
+	let Site   _site
+)
+{	fprintf(stderr, "Assertion failed: %s, function %s, file %s, line %d.\n",
+	_text, _site.func, _site.file, _site.line);
+	fflush (stderr);
+	exit(1);
+}
+#define assert_c_(test, text, site, DEBUG) ((Bool_){0} = mux_c_(DEBUG)\
+((test) ? 1 : (assert_c(text, site), 0), (test)))
+
+ public Void_   assertion_c
+(	let Char   _text[const],
+	let Site   _site,
+	let Stream _stream
+)
+{	let Stream _sink = _stream? _stream : stderr;
+	fprintf(_sink, "Assertion failed: %s, function %s, file %s, line %d.\n",
+			_text ? _text : "",
+			_site.func ? _site.func : "",
+			_site.file ? _site.file : "",
+			_site.line);
+	fflush (_sink);
+	exit(1);
+}
+
+#define assert_1_(...) (faux_(Bool, echo_(__VA_ARGS__)),\
+ assert_1_c_(#__VA_ARGS__, echo_(__VA_ARGS__)))
+
+#define assert_2_(test, ...)\
+ (faux_(Bool, echo_(test)), (Bool_){0} = mux_c_(ASSERT__)\
+ ((test) ? ((Void)(__VA_ARGS__), 1)\
+ : (assertion_c(__VA_ARGS__, SITE, stderr), 0),\
+ (eval_(Char *, echo_(__VA_ARGS__)), test)))
+
+#define assert_3_(test, text, ...)\
+ (faux_(Bool, echo_(test)), (Bool_){0} = mux_c_(ASSERT__)\
+ ((test) ? ((Void)(text), (Void)(__VA_ARGS__), 1)\
+ : (assertion_c(text, __VA_ARGS__, stderr), 0),\
+ (eval_(Char *, echo_(text)), eval_(Site, echo_(__VA_ARGS__)), test)))
+
+#define assert_4_(test, text, site, ...) assert_5_\
+ (echo_(test) , echo_(text), echo_(site), echo_(__VA_ARGS__), ASSERT__)
+
+#define assert_5_(test, text, site, stream, DEBUG)\
+ (faux_(Bool  , echo_(test)), (Bool_){0} = mux_c_(DEBUG)\
+ ((test) ? ((Void)(text), (Void)(site), (Void)(stream), 1)\
+ : (assertion_c(text, site, stream), 0),\
+ (eval_(Char *, echo_(text)), eval_(Site, echo_(site)),\
+  eval_(Stream, echo_(stream)), test)))
+
+#define assert_1_c_(_t,test) assert_c_(echo_(test), _t, SITE, ASSERT__)
+
+#define assert_2_c_(_ , ...) assert_2_(__VA_ARGS__)
+
+#define assert_3_c_(_ , ...) assert_3_(__VA_ARGS__)
+
+#define assert_4_c_(_ , ...) assert_4_(__VA_ARGS__)
+
+#define assert_5_c_(_ , ...) assert_5_(__VA_ARGS__)
+
+#define assert_(...) poly_3_(assert_, COUNT_(__VA_ARGS__), _c_)\
+(#__VA_ARGS__ , __VA_ARGS__)
+
+#endif
+
+#undef  ASSERT__
+#ifndef DEBUG
+#define ASSERT__ 0
+#else
+#define ASSERT__ 1
+#endif
+
+#include <assert.h>

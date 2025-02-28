@@ -1,0 +1,12 @@
+#include  "Unsigned._"
+
+procedure_(Unsigned_*, (Unsigned, sub),
+(let  Ptr (Unsigned_), difference),
+(let  Ptr (Unsigned ), minuend),
+(let  Ptr (Unsigned ), subtrahend))
+	Var result = need__(difference);
+	guard_(result, NULL)
+	if (!difference) result->type = type_(Unsigned);
+	result->value  =  minuend->value - subtrahend->value;
+	return result;
+end

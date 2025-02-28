@@ -1,0 +1,183 @@
+#ifndef TYPES__
+#define TYPES__
+
+#include <specifiers._>
+
+typedef_c_
+( Void
+, void
+)
+
+typedef_c_
+( Bool
+,_Bool
+)
+
+typedef_c_
+( Char
+, char
+)
+
+typedef_c_
+(UByte
+, char  unsigned
+)
+
+typedef_c_
+( Byte
+, char    signed
+)
+
+typedef_c_
+(UShort
+, short unsigned
+)
+
+typedef_c_
+( Short
+, short
+)
+
+typedef_c_
+(UInt
+, int   unsigned
+)
+
+typedef_c_
+( Int
+, int
+)
+
+typedef_c_
+(ULong
+, long  unsigned
+)
+
+typedef_c_
+( Long
+, long
+)
+
+typedef_c_
+(ULLong
+,  long long unsigned
+)
+
+typedef_c_
+( LLong
+,  long long
+)
+
+typedef_c_
+( Float
+, float
+)
+
+typedef_c_
+( Double
+, double
+)
+
+typedef_c_
+(LDouble
+, double long
+)
+
+#ifdef  __STDC_IEC_60559_DFP__
+
+typedef_c_
+( Decimal32
+,_Decimal32
+)
+
+typedef_c_
+( Decimal64
+,_Decimal64
+)
+
+typedef_c_
+( Decimal128
+,_Decimal128
+)
+
+#endif
+
+#ifndef __STDC_NO_COMPLEX__
+
+#include <complex._>
+
+typedef_c_
+( Fcomplex
+,  complex float
+)
+
+typedef_c_
+( Dcomplex
+,  complex double
+)
+
+typedef_c_
+(LDcomplex
+,  complex double long
+)
+
+#ifdef  imaginary
+
+typedef_c_
+( Fimaginary
+,  imaginary float
+)
+
+typedef_c_
+( Dimaginary
+,  imaginary double
+)
+
+typedef_c_
+(LDimaginary
+,  imaginary double long
+)
+
+#endif
+
+#endif
+
+#define\
+ UBitInt_(...) unsigned\
+ _BitInt (__VA_ARGS__)
+
+#define\
+ UBitInt( ...) typeof (const\
+ UBitInt_(__VA_ARGS__))
+
+#define\
+  BitInt_(...)\
+ _BitInt (__VA_ARGS__)
+
+#define\
+  BitInt( ...) typeof (const\
+  BitInt_(__VA_ARGS__))
+
+typedef_c_
+(False , enum
+ False { FALSE }
+)
+
+#define  FALSE ((False)+0U)
+
+typedef_c_
+( True , enum
+  True { TRUE = 1 }
+)
+
+#define  TRUE  ((True) +1U)
+
+typedef_c_
+( Pointer
+, volatile Void *
+)
+
+typedef Char  String [];
+typedef Char_ String_[];
+
+#endif

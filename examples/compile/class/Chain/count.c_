@@ -1,0 +1,6 @@
+#include "Chain/count._"
+
+procedure_(Size_, (Chain, count),
+(let Ptr (Chain), this))
+	return this->length;
+end

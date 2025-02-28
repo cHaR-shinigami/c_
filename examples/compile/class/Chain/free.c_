@@ -1,0 +1,10 @@
+#include "Chain._"
+
+procedure_((Chain, free),
+(let Ptr (Chain_), this))
+	if (!validate_(this)) this->head = NULL;
+	for (let Ptr_(Node_) node_,
+	next_ = this->head; (node_ = next_); free(node_))
+		next_ = node_->next;
+	free(this);
+end

@@ -1,0 +1,7 @@
+#include "Signed._"
+
+procedure_(LLong_, (Signed, write),
+(let Ptr (Signed), this),
+(let Stream, out))
+	return output__(out, this->value);
+end

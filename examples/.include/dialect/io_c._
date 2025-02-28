@@ -1,0 +1,134 @@
+#ifndef IO_C__
+#define IO_C__
+
+#include <allocation._>
+
+#include <inttypes._>
+
+#ifndef   STDIO__
+#include <stdio._>
+#endif
+
+#ifndef   WCHAR__
+#include <wchar._>
+#endif
+
+#define PRI_C 0
+#define SCN_C 1
+
+#ifndef __STDC_IEC_60559_DFP__
+#define DFP_C
+#else
+#define DFP_C\
+ Decimal32_ : "%Hg",\
+ Decimal64_ : "%Dg",\
+ Decimal128_:"%DDg",
+#endif
+
+#define least_c_(IO, w)\
+UInt_least##w##_ : "%"IO##uLEAST##w,\
+ Int_least##w##_ : "%"IO##iLEAST##w,
+
+#define  fast_c_(IO, w)\
+UInt_fast ##w##_ : "%"IO##uFAST ##w,\
+ Int_fast ##w##_ : "%"IO##iFAST ##w,
+
+#define   int_c_(IO, w)\
+UInt##w##_ : "%"IO##u##w,\
+ Int##w##_ : "%"IO##i##w,
+
+#ifndef  INT8_WIDTH
+#define  int8_c_(IO)
+#else
+#define  int8_c_(IO) int_c_(IO, 8)
+#endif
+
+#ifndef INT16_WIDTH
+#define int16_c_(IO)
+#else
+#define int16_c_(IO) int_c_(IO, 16)
+#endif
+
+#ifndef INT32_WIDTH
+#define int32_c_(IO)
+#else
+#define int32_c_(IO) int_c_(IO, 32)
+#endif
+
+#ifndef INT64_WIDTH
+#define int64_c_(IO)
+#else
+#define int64_c_(IO) int_c_(IO, 64)
+#endif
+
+#ifndef INTPTR_WIDTH
+#define intptr_c_(IO)
+#else
+#define intptr_c_(IO)\
+UIntptr_ : "%"IO##uPTR,\
+ Intptr_ : "%"IO##iPTR,
+#endif
+
+#define io_c_(a, IO, f) _Generic(a,\
+  UByte_ : "%hhu",  Byte_ : "%hhi",\
+ UShort_ : "%hu" , Short_ : "%hi",\
+   UInt_ : "%u"  ,   Int_ : "%i",\
+  ULong_ : "%lu" ,  Long_ : "%li",\
+ ULLong_ : "%llu", LLong_ : "%lli",\
+ Double_ : "%lg" , Float_ : "%g",\
+LDouble_ : "%Lg" , DFP_C\
+    mux_c_(IO##_C)(Char_  : "% c",\
+   Bool_ : "%d"  , Char_  : "%c",\
+ WChar * : "%ls" , Char * : "%s"),\
+ WChar_* : f(1,a), Char_* : f(0,a),\
+ default : _Generic (a, int8_c_(IO) int16_c_(IO) int32_c_(IO) int64_c_(IO)\
+ default : _Generic (a, least_c_(IO, 8) default : _Generic (a, fast_c_(IO, 8)\
+ default : _Generic (a, least_c_(IO,16) default : _Generic (a, fast_c_(IO,16)\
+ default : _Generic (a, least_c_(IO,32) default : _Generic (a, fast_c_(IO,32)\
+ default : _Generic (a, least_c_(IO,64) default : _Generic (a, fast_c_(IO,64)\
+ default : _Generic (a, UIntmax_ : "%ju",  Intmax_ : "%ji",\
+ default : _Generic (a,    Size_ : "%zu", Ptrdiff_ : "%ti",\
+ default : _Generic (a, intptr_c_(IO)\
+ default : "%p"\
+)))))))))))))
+
+ public  Char * format_c
+(	let Ptr_c( Char_) _fmt,
+	let Ptr_c( Char ) _sep,
+	let Ptr_c( Char ) _arr[const]
+)
+{	let Size_ _i_ = 0;
+	if (_sep) while (_sep[_i_])
+		guard_2_((_sep[_i_++] == '%'  implies   _sep[_i_++] == '%'), "")
+	_i_ = 0;
+	let Ptr_c(Char)  _glue = _sep? _sep : " ";
+	for (let  Char_ *_fmt_ = _fmt;;)
+	{	for (let  Char *_f_ = _arr[_i_]; *_fmt_ = _f_++[0]; _fmt_++){}
+		break_(! _arr[++_i_])
+		for (let  Char *_s_ = _glue; *_fmt_ = _s_++[0]; _fmt_++);
+	}
+	return _fmt;
+}
+
+ public WChar *wformat_c
+(	let Ptr_c(WChar_) _fmt,
+	let Ptr_c(WChar ) _sep,
+	let Ptr_c( Char ) _arr[const]
+)
+{	let Size_ _i_ = 0;
+	if (_sep) while (_sep[_i_])
+		guard_2_((_sep[_i_++] == L'%'  implies   _sep[_i_++] == L'%'), L"")
+	_i_ = 0;
+	let Ptr_c(WChar) _glue = _sep? _sep : L" ";
+	for (let WChar_ *_fmt_ = _fmt;;)
+	{	for (let  Char *_f_ = _arr[_i_]; *_fmt_ = btowc(_f_++[0]); _fmt_++){}
+		break_(! _arr[++_i_])
+		for (let WChar *_s_ = _glue; *_fmt_ = _s_++[0]; _fmt_++);
+	}
+	return _fmt;
+}
+
+#define  format_c_(...) _Generic (*(__VA_ARGS__), \
+default: format_c, WChar_ : wformat_c)
+
+#endif

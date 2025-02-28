@@ -1,0 +1,9 @@
+#include "List._"
+
+procedure_(LLong_, (List, write),
+(let Ptr (List), this),
+(let Stream, out))
+	List_ list[1] = {*this};
+	list->type = (Type)typex_(Collection, List);
+	return solver_(Collection, write)(abstract_(Collection, list), out);
+end

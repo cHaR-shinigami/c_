@@ -1,0 +1,71 @@
+#ifndef INTTYPES__
+#define INTTYPES__
+
+#include <inttypes.h>
+
+#include <stdint._>
+
+#include <types._>
+
+#include <lib_c._>
+
+typedef_c_
+(Imaxdiv,
+ imaxdiv_t)
+
+ public UIntmax_ uimaxabs(let Intmax _n)
+{	return _n >= 0
+	?  (UIntmax)_n
+	:  (UIntmax)-(_n + 1) + 1;
+}
+#define uimaxabs_(...) (has_sign_(typeof (__VA_ARGS__))\
+      ? uimaxabs(__VA_ARGS__) : (UIntmax)(__VA_ARGS__))
+
+ public UIntmax_ gcd
+(	let UIntmax_ _l_,
+	let UIntmax_ _r_
+)
+{	for(UIntmax_ _t_; _r_; _r_ = _t_)
+		_t_ = _l_%_r_, _l_ = _r_;
+	return _l_;
+}
+#define   gcd_(...) extend_c_\
+(UIntmax, gcd, echo_(__VA_ARGS__))
+
+ public UIntmax_ umax
+(	let UIntmax_ _l_,
+	let UIntmax_ _r_
+)
+{	return _l_>=_r_ ?  _l_ : _r_;
+}
+#define   umax_(...) extend_c_\
+(UIntmax, umax, echo_(__VA_ARGS__))
+
+ public UIntmax_ umin
+(	let UIntmax_ _l_,
+	let UIntmax_ _r_
+)
+{	return _l_<=_r_ ?  _l_ : _r_;
+}
+#define   umin_(...) extend_c_\
+(UIntmax, umin, echo_(__VA_ARGS__))
+
+ public  Intmax_ smax
+(	let  Intmax_ _l_,
+	let  Intmax_ _r_
+)
+{	return _l_>=_r_ ?  _l_ : _r_;
+}
+#define   smax_(...) extend_c_\
+( Intmax, smax, echo_(__VA_ARGS__))
+
+ public  Intmax_ smin
+(	let  Intmax_ _l_,
+	let  Intmax_ _r_
+)
+{	return _l_<=_r_ ?  _l_ : _r_;
+}
+#define   smin_(...) extend_c_\
+( Intmax, smin, echo_(__VA_ARGS__))
+
+#endif

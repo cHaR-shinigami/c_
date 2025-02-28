@@ -1,0 +1,10 @@
+#include "Chain/get_next._"
+
+procedure_(Void *, (Chain, get_next),
+(let Typex (Iterable), typex),
+(let Ptr (Node_), node))
+	(Void) typex;
+	Var data = node->data;
+	*node = node->next? * node->next : (Node){.next = node};
+	return data;
+end

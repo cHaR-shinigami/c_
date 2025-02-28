@@ -1,0 +1,8 @@
+#include "Signed._"
+
+procedure_(LLong_, (Signed, compare),
+(let Ptr (Signed), this),
+(let Ptr (Signed), that))
+	return this->value < that->value
+	? -1 : this->value > that->value;
+end

@@ -1,0 +1,10 @@
+#include <c._>
+
+Int_ main()
+begin
+	switch_(0)
+		case_(0) print_("zero");
+		begin case_(1) end
+		print_("one");
+	end
+end

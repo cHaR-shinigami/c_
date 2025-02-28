@@ -1,0 +1,15 @@
+#ifndef WCHAR_C__
+#define WCHAR_C__
+
+#include <stddef.h>
+
+#include <specifiers._>
+
+typedef_c_
+(WChar,
+ wchar_t)
+
+typedef WChar  WString [];
+typedef WChar_ WString_[];
+
+#endif

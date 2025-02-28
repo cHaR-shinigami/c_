@@ -1,0 +1,16 @@
+#ifndef PRIMITIVES__
+#define PRIMITIVES__
+
+#define C_
+
+#define COMMA ,
+
+#define cat_( l , r) l ## r
+
+#define echo_(  ...) __VA_ARGS__
+
+#define pop_(t, ...) __VA_ARGS__
+
+#define top_(t, ...) t
+
+#endif

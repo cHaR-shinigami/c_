@@ -1,0 +1,12 @@
+#include <c._>
+
+Size_ find(Site _site, Size len, Ptr (Int [len]) arr, Int key);
+#define find__(arr, key) find(SITE, length__(arr), arr, key)
+
+Int_ main()
+begin
+	Int arr[] = {10, 20, 30, 40, 50,};
+	Var pos = find__(&arr, 40);
+	if (pos == length__(&arr)) puts("Element not found");
+	else print_("Element found at index", pos);
+end

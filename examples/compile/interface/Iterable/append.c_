@@ -1,0 +1,7 @@
+#include "Iterable/append._"
+
+procedure_(Bool_, (Iterable, append),
+(let Ptr (Iterable), this),
+(let Ptr (Void), data))
+	return concrete_(this)->typex->append(this->concrete, data);
+end

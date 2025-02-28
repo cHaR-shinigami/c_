@@ -1,0 +1,75 @@
+#ifndef WCHAR__
+#define WCHAR__
+
+#ifndef   POINTER__
+#include <pointer._>
+#endif
+
+#include  <limits._>
+
+#include  <stdarg._>
+
+#include <wchar_c._>
+
+#include  <size_c._>
+
+#include   <mbs_c._>
+
+#include  <wint_c._>
+
+#include    <tm_c._>
+
+ public Int_ fwprintf_c
+(	let Stream   _stream,
+	Ptr_c(WChar) _format, ...
+)
+{	guard_2_(_stream &&  _format, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _ret = vfwprintf(_stream, _format, _args_);
+	va_end_(_args_);
+	return  _ret;
+}
+
+ public Int_ fwscanf_c
+(	let Stream   _stream,
+	Ptr_c(WChar) _format, ...
+)
+{	guard_2_(_stream &&  _format, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _ret = vfwscanf (_stream, _format, _args_);
+	va_end_(_args_);
+	return  _ret;
+}
+
+ public Int_ swprintf_c
+(	let Ptr_c(WChar_) _s,
+	let Size _n,
+	Ptr_c(WChar) _format, ...
+)
+{	guard_2_(((_n implies  _s)) &&  _format, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _ret = vswprintf(_s, _n <= INT_MAX ? _n : INT_MAX, _format, _args_);
+	va_end_(_args_);
+	return  _ret;
+}
+
+ public Int_ swscanf_c
+(	let Ptr_c(WChar)  _s,
+	Ptr_c(WChar) _format, ...
+)
+{	guard_2_(_s &&  _format, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _ret = vswscanf(_s, _format, _args_);
+	va_end_(_args_);
+	return  _ret;
+}
+
+#endif
+
+#include <errno_c._>
+
+#include <rsize_c._>

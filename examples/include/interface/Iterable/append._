@@ -1,0 +1,20 @@
+#ifndef   ITERABLE__APPEND__
+#define   ITERABLE__APPEND__
+
+#include "Iterable._"
+
+private
+protocol_(Bool_, (Iterable, append),
+(let Ptr (Iterable), this),
+(let Ptr (Void), data))
+	pre_ (validate_(Iterable, this));
+	Var count   = concrete_(this)->typex->count;
+	Var priori  = count(this->concrete);
+	Var success = solver_(Iterable, append)(this, data);
+	post_(validate_(Iterable, this));
+	post_((!success implies  count(this->concrete) == priori));
+	post_ ((success implies  count(this->concrete) == priori+1));
+	return  success;
+end
+
+#endif

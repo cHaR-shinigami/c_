@@ -1,0 +1,20 @@
+#include  "Text._"
+
+procedure_(Text_*, (Text, parse),
+(let  Ptr (Text_), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Void ), in))
+	Var_  i_ = (Size)0;
+	Var text = (Char *)in;
+	for (Var len = *length; i_ < len; i_++)
+		guard_(text[i_] &&  (UByte) text[i_]  <=  255)
+	if_(this->length <= (*length = i_))
+		Var    buffer = realloc(this->buffer , i_+2);
+		guard_(buffer, NULL)
+		(this->buffer = buffer)[this->length = i_+1] = '\0';
+	end
+	Void_ *memmove(Void_ *, Void *, Size);
+	memmove(this->buffer, in, i_);
+	this->buffer[i_] = '\0';
+	return  this;
+end

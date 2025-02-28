@@ -1,0 +1,48 @@
+#ifndef CALL__
+#define CALL__
+
+#ifndef   METHOD__
+#include <method._>
+#endif
+
+typedef Void_(*F_c_)(void);
+typedef const  F_c_ * const M_c;
+
+ public F_c_ call_c
+(	let M_c  _m,
+	let Site _site,
+	let Ptr_c(Char) _mp,
+	let Ptr_c(Char) _m1
+)
+{	if (!_m)    notnull_c(NULL, _mp, _site);
+	if (!_m[1]) notnull_c(NULL, _m1, _site);
+	return _m[1];
+}
+
+#define call_0_c_(m, _m) (*(m))
+
+#define call_1_c_(m, _m) ((typeof (*(m)))call_c((M_c)(m), SITE,_m, "("_m")[1]"))
+
+#define call_0_1_(m,...) debug_c_(call_,CALL__)(echo_(m), #m)(SITE, __VA_ARGS__)
+
+#define call_0_2_(_T_f_, ...) echo_(mux_c_(CALL__)(verify_c_, proxy_c_)\
+C_(echo_ _T_f_))(SITE, (top_(Wrapper_c C_(echo_ _T_f_),)){__VA_ARGS__})
+
+#define call_0_(m, ...) poly_3_(call_0_, COUNT_(peel_(m)), _)(m, __VA_ARGS__)
+
+#define call_1_1_(m)     debug_c_(call_,CALL__)(echo_(m), #m)(SITE)
+
+#define call_1_2_(_T_f_) call_0_2_(_T_f_, 0)
+
+#define call_1_(m) poly_3_(call_1_, COUNT_(peel_(m)), _)(m)
+
+#define call_(...) get_(COUNT_(__VA_ARGS__), call_0_,, call_1_)(__VA_ARGS__)
+
+#endif
+
+#undef  CALL__
+#ifndef DEBUG
+#define CALL__ 0
+#else
+#define CALL__ 1
+#endif

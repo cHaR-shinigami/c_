@@ -1,0 +1,17 @@
+#include  "Text._"
+
+procedure_(Text_ *, (Text, init),
+(let Type, type),
+(let Tape, tape))
+	Var object = new__(Text);
+	guard_(object, NULL)
+	object->type = type;
+	Var length = *tape? *(Size *)*tape : 0;
+	guard_(object->length = length, (object->buffer = NULL, object))
+	guard_(object->length + 1, (free(object), NULL))
+	guard_(object->buffer = malloc(object->length + 1), (free(object), NULL))
+	object->buffer[0] = '\0';
+	object->buffer[length-1] = '\0';
+	object->buffer[length  ] = '\0';
+	return  object;
+end

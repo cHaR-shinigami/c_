@@ -1,0 +1,7 @@
+#include "Text._"
+
+procedure_(LLong_, (Text, write),
+(let Ptr (Text), this),
+(let Stream, out))
+	return output__(out, this->buffer);
+end

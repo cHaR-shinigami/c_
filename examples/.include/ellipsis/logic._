@@ -1,0 +1,27 @@
+#ifndef LOGIC__
+#define LOGIC__
+
+#include  <utilities._>
+
+#define FALSE_(n) 0
+#define  TRUE_(n) 1
+
+#define  BOOL_(n) mux_(n)(1, 0)
+#define   NOT_(n) mux_(n)(0, 1)
+
+#define   AND_(n) mux_(n)( BOOL_, FALSE_)
+#define  NAND_(n) mux_(n)(  NOT_,  TRUE_)
+
+#define    OR_(n) mux_(n)( TRUE_,  BOOL_)
+#define   NOR_(n) mux_(n)(FALSE_,   NOT_)
+
+#define   XOR_(n) mux_(n)(  NOT_,  BOOL_)
+#define  XNOR_(n) mux_(n)( BOOL_,   NOT_)
+
+#define   IMPLY_(n) mux_(n)(BOOL_,  TRUE_)
+#define  NIMPLY_(n) mux_(n)( NOT_, FALSE_)
+
+#define  CIMPLY_(n) mux_(n)( TRUE_,  NOT_)
+#define CNIMPLY_(n) mux_(n)(FALSE_, BOOL_)
+
+#endif

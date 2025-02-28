@@ -1,0 +1,6 @@
+#ifndef SHIFT__
+#define SHIFT__
+#endif
+
+#include <lshift._>
+#include <rshift._>

@@ -1,0 +1,146 @@
+#ifndef OBJECT__
+#define OBJECT__
+
+#include <type._>
+
+#define SELF_C_EXTENDS SELF_C
+
+#define Object_EXTENDS SELF_C,\
+ validate, init, free, compare, copy, read, write,\
+ parse, text, decode, encode, add, sub, mul, div
+
+solvers_c_(Object)
+
+#ifdef  LIB_C
+
+procedure_0_1_(Bool_, (Object, validate),
+(let Ptr_c(Object), this))
+	return this &&  is_type(this->type);
+end
+
+procedure_0_1_(Object_ *, (Object, init),
+(let Type, type),
+(let Tape, tape))
+	(Void) type;
+	(Void) tape;
+	return NULL;
+end
+
+procedure_0_2_((Object, free),
+(let Ptr_c(Object_), this))
+	free(this);
+end
+
+procedure_0_1_(LLong_, (Object, compare),
+(let Ptr_c(Object ), this),
+(let Ptr_c(Object ), that))
+	return this != that;
+end
+
+procedure_0_1_(Object_ *, (Object, copy),
+(let Ptr_c(Object_), this),
+(let Ptr_c(Object ), that))
+	return this == that ? this : NULL;
+end
+
+procedure_0_1_(Object_ *, (Object, read),
+(let Ptr_c(Object_), this),
+(let Stream, in))
+	(Void) this;
+	(Void) in;
+	return NULL;
+end
+
+procedure_0_1_(LLong_, (Object, write),
+(let Ptr_c(Object), this),
+(let Stream, out))
+	let Int _ret = fprintf(out, "%s@%p\n", this->type->name, (Void *)this);
+	return fflush(out) ? EOF : _ret;
+end
+
+procedure_0_1_(Object_ *, (Object, parse),
+(let Ptr_c(Object_), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Void ), in))
+	(Void) this;
+	*length = 0;
+	(Void) in;
+	return NULL;
+end
+
+procedure_0_1_(Void_ *, (Object, text),
+(let Ptr_c(Object), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Void_), out))
+	let Ptr_c(Char ) name = this->type->name;
+	let Size _len = snprintf(NULL, 0, "%s@%p\n0", name, (Void *)this);
+	let Ptr_c(Char_) _out = (out &&  _len <= *length)? out : malloc(_len);
+	*length = _len;
+	guard_2_(_out, NULL)
+	sprintf (_out, "%s@%p\n", name, (Void *)this);
+	return _out;
+end
+
+procedure_0_1_(Object_ *, (Object, decode),
+(let Ptr_c(Object_), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Encoding), in))
+	(Void) this;
+	*length = 0;
+	(Void) in;
+	return NULL;
+end
+
+procedure_0_1_(Encoding_ *, (Object, encode),
+(let Ptr_c(Object), this),
+(let Ptr_c(Size_), length),
+(let Ptr_c(Encoding_), out))
+	(Void) this;
+	(Void) length;
+	(Void) out;
+	return NULL;
+end
+
+#define object_arithmetic_c_(method, res, left, right)\
+ procedure_0_1_(Object_*, (Object, method),\
+ (let Ptr_c (Object_), res),\
+ (let Ptr_c (Object ), left),\
+ (let Ptr_c (Object ), right))\
+	(Void) res;\
+	(Void) left;\
+	(Void) right;\
+	return NULL;\
+ end
+
+object_arithmetic_c_(add, sum, augend, addend)
+
+object_arithmetic_c_(sub, difference, minuend, subtrahend)
+
+object_arithmetic_c_(mul, product, multiplier, multiplicand)
+
+object_arithmetic_c_(div, result, dividend, divisor)
+
+const struct Type property_c_(Object, Type)[] =
+{{	.self    =   type_(Object),
+	.base    =   type_(Object),
+	.name    = "Object",
+	.validate= solver_(Object, validate),
+	.init    = solver_(Object, init),
+	.free    = solver_(Object, free),
+	.compare = solver_(Object, compare),
+	.copy    = solver_(Object, copy),
+	.read    = solver_(Object, read),
+	.write   = solver_(Object, write),
+	.parse   = solver_(Object, parse),
+	.text    = solver_(Object, text),
+	.decode  = solver_(Object, decode),
+	.encode  = solver_(Object, encode),
+	.add     = solver_(Object, add),
+	.sub     = solver_(Object, sub),
+	.mul     = solver_(Object, mul),
+	.div     = solver_(Object, div),
+}};
+
+#endif
+
+#endif

@@ -1,0 +1,14 @@
+#include <c._>
+#include <stdlib._>
+
+Int_ main()
+begin
+	typedef_(Color, enum { RED, GREEN, BLUE, })
+	srand(time(NULL));
+	switch_((Color)(rand() & 3))
+		print_("Mixed");
+		case_(RED)   print_("Red");
+		case_(GREEN) print_("Green");
+		case_(BLUE)  print_("Blue");
+	end
+end

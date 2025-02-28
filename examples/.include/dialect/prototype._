@@ -1,0 +1,67 @@
+#ifndef PROTOTYPE__
+#define PROTOTYPE__
+
+#ifndef   METHOD
+#include <method._>
+#endif
+
+#define member_c_(_T_p_) typeof_c_((top_ _T_p_){0}) pop_ _T_p_
+
+#define members_c_(...)  pop_(__VA_ARGS__) top_(__VA_ARGS__);
+
+#define prototype0_c_(R_, T, f, pars, members)\
+ typedef const struct { members } Wrapper_c(T, f), Wrapper_c(T, f##_);\
+ typedef R_ Method_(T, f)(Site, pars);\
+ extern  Method_(T, f) verifier_(T, f),\
+ * const  proxy_(T, f),\
+ * const method_(T, f)[2];
+
+#define prototype__c_(R_, T, f)\
+ prototype0_c_(R_, T, f, ..., VA_list_ _args_;)\
+ extern    Method_(T, f) \
+ * const  proxy_c_(T, f),\
+ * const verify_c_(T, f);\
+ typedef R_ Procedure_c(T, f)(VA_list);
+
+#define prototype_c_(R_, T, f, pars, args, return)\
+ prototype0_c_(R_, T, f, echo_(pars), o__\
+(members_c_, COUNT_(pars), (pars,)))\
+ inline R_ verify_c_(T, f)(let Site _s, let Wrapper_c(T, f) _)\
+ { return  verifier_(T, f)(_s, args); }\
+ inline R_  proxy_c_(T, f)(let Site _s, let Wrapper_c(T, f) _)\
+ { return   proxy_  (T, f)(_s, args); }\
+ typedef R_ Procedure_c(T, f)(pars);
+
+#define prototype___c_(R_, T_f, args, return) prototype_c_\
+(R_, T_f, map__(param_c_ , args), map__(_.arg_c_, args), return)
+
+#define prototype_0_c_(R_, T_f, args, return) prototype_c_\
+(R_, T_f, map__(member_c_, args), map__(_.arg_c_, args), return)
+
+#define prototype_0_1_c_(R_, _T_f_, ...) prototype___c_\
+(R_   , echo_ _T_f_, echo_(__VA_ARGS__), return)
+
+#define prototype_0_1_(  R_, _T_f_, ...) prototype_0_c_\
+(R_   , echo_ _T_f_, echo_(__VA_ARGS__), return)
+
+#define prototype_0_2_c_(_T_f_, ...) prototype___c_\
+(Void_, echo_ _T_f_, echo_(__VA_ARGS__),)
+
+#define prototype_0_2_(  _T_f_, ...) prototype_0_c_\
+(Void_, echo_ _T_f_, echo_(__VA_ARGS__),)
+
+#define prototype_0_(t, ...) poly_3_(prototype_0_, COUNT_(peel_(t)), _)\
+(t, __VA_ARGS__)
+
+#define prototype_1_(_T_f_) prototype_2_1_(Void_, _T_f_)
+
+#define prototype_2_1_(R_, _T_f_) pop_(, prototype__c_ C_(R_, echo_ _T_f_))
+
+#define prototype_2_2_(_T_f_, param) prototype_0_2_(_T_f_, param)
+
+#define prototype_2_(t, par) poly_3_(prototype_2_, COUNT_(peel_(t)), _)(t, par)
+
+#define prototype_(...) get_(COUNT_(__VA_ARGS__),\
+ prototype_0_,, prototype_1_, prototype_2_)(__VA_ARGS__)
+
+#endif

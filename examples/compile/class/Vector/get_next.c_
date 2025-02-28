@@ -1,0 +1,10 @@
+#include "Vector/get_next._"
+
+procedure_(Void *, (Vector, get_next),
+(let Typex (Iterable), typex),
+(let Ptr (Cursor_), cursor))
+	(Void) typex;
+	Var vector = cursor->vector;
+	return cursor->index < vector->count ?
+	vector->array[cursor->index++] : NULL;
+end

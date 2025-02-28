@@ -1,0 +1,16 @@
+#ifndef UNSIGNED__
+#define UNSIGNED__
+
+#include <c._>
+
+#define UNSIGNED_MAX 18446744073709551615ULL
+
+#define Unsigned_EXTENDS Object,\
+ validate, init, compare, copy, read, write,\
+ parse, text, decode, encode, add, sub, mul, div
+
+class_ (Unsigned)
+	ULLong_ value;
+fin
+
+#endif

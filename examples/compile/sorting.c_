@@ -1,0 +1,12 @@
+#include "Integers._"
+
+Int_ main()
+begin
+	Int_ arr_[] = {8, 6, 4, 2, 0, 9, 7, 5, 3, 1};
+	call_((Integers, sort), puts("not printed"),
+	.arr = &arr_, .len = length__(&arr_));
+	print_("Sorted array is");
+	loop_(0, length__(&arr_) - 1)
+		print_(arr_[_i_]);
+	end
+end

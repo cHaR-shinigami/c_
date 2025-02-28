@@ -1,0 +1,16 @@
+#ifndef WCTYPE__
+#define WCTYPE__
+
+#include <wctype.h>
+
+#include <wint_c._>
+
+typedef_c_
+(WCtrans,
+ wctrans_t)
+
+typedef_c_
+(WCtype,
+ wctype_t)
+
+#endif

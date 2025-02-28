@@ -1,0 +1,8 @@
+#include "Unsigned._"
+
+procedure_(LLong_  , (Unsigned, compare),
+(let Ptr (Unsigned), this),
+(let Ptr (Unsigned), that))
+	return this->value < that->value
+	? -1 : this->value > that->value;
+end

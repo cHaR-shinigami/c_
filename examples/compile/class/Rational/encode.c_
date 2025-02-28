@@ -1,0 +1,13 @@
+#include  "Rational._"
+
+procedure_(Encoding_*, (Rational, encode),
+(let  Ptr (Rational), this),
+(let  Ptr (Size_ ), length),
+(let  Ptr (Encoding_), out))
+	Var len = snprintf(NULL, 0, "%a", this->value) + 1U;
+	Var enc = (out &&  len <= *length)? out : new__(UByte_ [len]);
+	*length = len;
+	guard_(enc, NULL)
+	sprintf((Char_ *)*enc, "%a", this->value);
+	return enc;
+end

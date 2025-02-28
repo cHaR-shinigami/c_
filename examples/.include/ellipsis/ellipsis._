@@ -1,0 +1,84 @@
+#ifndef ELLIPSIS__
+#define ELLIPSIS__
+
+#include <templates._>
+
+#define gcd1_c_(lo, hi) mux_(lo)(echo_(gcd0_c, lo, hi), echo,, hi)
+
+#define gcd0_c_(gcd0_c, lo, hi) gcd1_c_(MOD_(hi, lo), lo)
+
+#define gcd__c_(...)  top_(cat_ C_(top_(__VA_ARGS__), _),)(__VA_ARGS__)
+
+#define gcd_c_(args) echo_(pop_ C_(echo_(pop_ C_\
+(echo_c_(o__(gcd__c_, top_(args), (gcd0_c, args)))))))
+
+#define GCD_(l, r) gcd_c_(mux_c_(LE_(l, r))(echo_(l, r), r, l))
+
+#define ARE_COPRIME_(l, r) EQ_(GCD_(l, r), 1)
+
+#define is_prime0_c_(f, _1, n, d, ...) mux_(MOD_(n, d))\
+(echo_(f, 1, n), ECHO_C, 0), __VA_ARGS__
+
+#define is_prime__c_(...) top_(cat_ C_(top_(__VA_ARGS__), _),)(__VA_ARGS__)
+
+#define is_prime_c_(n, r) echo_(top_ C_(echo_(pop_ C_(echo_c_(o__\
+(is_prime__c_, DIV_(DEC_(r), 2), (is_prime0_c, 1, n, RANGE_3_(3, r, 2),)))))))
+
+#define IS_PRIME_(n) NAND_(DEC_(DEC_(n)))\
+(NAND_(MOD_(n, 2))(is_prime_c_(n, ROOT_(n, 2))))
+
+#define sort4_c_(_c_,_s_,args) (turn_ top_(args)echo_ _c_ echo_ _s_), pop_(args)
+
+#define sort3_c_(_l_, _i_, _s_, _r_, _c_, n, key) (pop_ _l_), (pop_ _i_),\
+ mux_c_(LE_(key(echo_(top_ C_(echo_ _s_,))), key(top_ _l_)))\
+(echo_((top_ _l_, turn_ _s_), _r_, _c_, n), (top_ C_(echo_ _s_,)),\
+ (top_ _l_, echo_(pop_ C_(echo_ _s_,)) echo_ _r_), (,), top_ _i_), key
+
+#define sort2_c_(...) sort3_c_(__VA_ARGS__)
+
+#define sort1_c_(_s_, _l_, _c_, n, key, _i_) sort4_c_\
+(_c_, _s_, echo_c_(pop_ C_(echo_c_(pop_ C_(echo_c_(o__\
+(sort2_c_, n, ((pop_ _l_), _i_, (top_ _l_), (,), (), 0, key)))))))), _i_
+
+#define sort0_c_(...) sort1_c_(__VA_ARGS__)
+
+#define sort__c_(o) peel_(echo_(top_ C_(o)))
+
+#define sort_c_(key, n, args) sort__c_(o__(sort0_c_,\
+ n, ((), (args,), (), DEC_(n), key, (RANGE_C_(n)))))
+
+#define sort_(key, ...) sort_c_(key, COUNT_(__VA_ARGS__), echo_(__VA_ARGS__))
+
+#define permute__c_(_p_, _args_, _a_, _i_) (echo_ _p_, get_(echo_(top_ C_\
+(echo_ _i_,)), top_ _a_, echo_ _args_)), _args_, (pop_ _a_), (turn_ _i_)
+
+#define permute_c_(...) permute__c_(__VA_ARGS__)
+
+#define permute__(_args_, ...) echo_(pop_ echo_(top_ C_(echo_c_(o__\
+(permute_c_, COUNT_ _args_, ((), _args_, (echo_ _args_,), (__VA_ARGS__)))))))
+
+#define transpose__c_(_l_r_, _l_, _r_) (echo_ _l_r_, (top_(echo_ echo_\
+(top_ C_(echo_ _l_,)),), top_ C_(echo_ _r_,))), (turn_ _l_), (turn_ _r_)
+
+#define transpose_c_(...) transpose__c_(__VA_ARGS__)
+
+#define transposer_c_(_l_, _r_) (echo_(pop_ echo_(top_ C_(echo_c_(o__\
+(transpose_c_, MAX_(COUNT_ _l_, COUNT_ _r_), ((), _l_, _r_)))))))
+
+#define transpose__(...) peel_\
+(fold__(transposer_c_, (map__(, echo_ top_(__VA_ARGS__)))\
+mux_(DEC_(COUNT_(__VA_ARGS__)))(COMMA pop_(__VA_ARGS__),)))
+
+#define project_c_(_args_, _az_)  (slice_(top_ _az_, pop_ _az_, echo_ _args_))
+
+#define project_(a, z, ...) omni__((__VA_ARGS__), project_c_, ((a, z)))
+
+#define   eject_c_(_args_, _az_) (xslice_(top_ _az_, pop_ _az_, echo_ _args_))
+
+#define   eject_(a, z, ...) omni__((__VA_ARGS__),   eject_c_, ((a, z)))
+
+#define quote_(...) #__VA_ARGS__
+
+#define stringize_(...) map__(quote_, __VA_ARGS__)
+
+#endif

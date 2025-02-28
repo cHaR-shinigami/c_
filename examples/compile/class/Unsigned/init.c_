@@ -1,0 +1,13 @@
+#include  "Unsigned/validate._"
+
+procedure_(Unsigned_ *, (Unsigned, init),
+(let Type, type),
+(let Tape, tape))
+	Var value = *tape? *(ULLong *)*tape : 0;
+	guard_(validator(value), NULL)
+	Var object = new__(Unsigned);
+	guard_(object, NULL)
+	object->type  = type ;
+	object->value = value;
+	return object;
+end

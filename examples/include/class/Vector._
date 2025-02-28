@@ -1,0 +1,48 @@
+#ifndef VECTOR__
+#define VECTOR__
+
+#include "Collection._"
+
+#define Vector_EXTENDS Object,\
+ validate, init, free, compare, copy, read,\
+ write, parse, text, decode, encode, add
+
+#define Vector_IMPLEMENTS_Iterable SELF,\
+ append, count, duplicate, get_next, has_next, (iterator, cursor)
+
+#define Vector_IMPLEMENTS_Collection Vector,\
+ append, species
+
+class_ (Vector implements Iterable, Collection)
+	Void  **array;
+	Size_ capacity, count;
+	Type_ species;
+fin
+
+typedef_(Cursor, struct Cursor
+{	Vector *vector;
+	Size_   index ;
+})
+
+prototype_(Bool_ , (Vector, append),
+(Vector_ *, this), (Void *, data))
+
+prototype_(Size_ , (Vector, count),
+(Vector  *, this))
+
+prototype_(Cursor_ *, (Vector, cursor),
+(Vector  *, this))
+
+prototype_(Cursor_ *, (Vector, duplicate),
+(Typex (Iterable), typex), (Cursor  *, cursor))
+
+prototype_(Void *, (Vector, get_next),
+(Typex (Iterable), typex), (Cursor_ *, cursor))
+
+prototype_(Bool_ , (Vector, has_next),
+(Typex (Iterable), typex), (Cursor  *, cursor))
+
+prototype_(Type_ , (Vector, species),
+(Vector_ *, this), (Type  , species))
+
+#endif

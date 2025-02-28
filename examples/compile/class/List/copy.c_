@@ -1,0 +1,14 @@
+#include  "List._"
+
+procedure_(List_*, (List, copy),
+(let  Ptr (List_), this),
+(let  Ptr (List ), that))
+	Var copy = (validate_(this) &&  ! this->base->length)? this : new__(*this);
+	guard_(copy, NULL)
+	if (copy != this) *copy = (List){.type = type_(List)};
+	Var cpy = solver_(Chain, copy)(copy->base, that->base);
+	guard_(cpy, (test_(copy != this, free(copy)), NULL))
+	post_ (cpy == copy->base);
+	copy->species = that->species;
+	return copy;
+end

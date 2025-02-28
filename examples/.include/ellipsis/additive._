@@ -1,0 +1,15 @@
+#ifndef ADDITIVE__
+#define ADDITIVE__
+
+#include <selection._>
+
+#define DIF_(l, r) mux_c_(EQ_(l,r))(0, mux_(l)(mux_(r)(COUNT_(mux_c_(GT_(l,r))\
+(xhead_(DEC_(r), unary_(DEC_(l))), xhead_(DEC_(l), unary_(DEC_(r))))), l), r))
+
+#define MINUS_(l,r) mux_c_(LT_(l,r))(-,)DIF_(l,r)
+
+#define SUB_(l, r) mux_c_(GE_(l,r))(DIF_(l,r), DIF_(PP_MAX, DIF_(r, INC_(l))))
+
+#define ADD_(l, r) SUB_(l, SUB_(0,r))
+
+#endif

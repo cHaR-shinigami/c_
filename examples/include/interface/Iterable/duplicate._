@@ -1,0 +1,16 @@
+#ifndef   ITERABLE__DUPLICATE__
+#define   ITERABLE__DUPLICATE__
+
+#include "Iterable._"
+
+private
+protocol_(Iterator_ *, (Iterable, duplicate),
+(let Typex (Iterable), typex),
+(let Ptr (Iterator), iterator))
+	pre_(is_typex(typex));
+	pre_(typex->duplicate != NULL);
+	pre_(iterator != NULL);
+	return solver_(Iterable, duplicate)(typex, iterator);
+end
+
+#endif

@@ -1,0 +1,8 @@
+#include "Chain/has_next._"
+
+procedure_(Bool_, (Chain, has_next),
+(let Typex (Iterable), typex),
+(let Ptr (Node), node))
+	(Void) typex;
+	return node->next != node;
+end

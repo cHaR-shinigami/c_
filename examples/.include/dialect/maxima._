@@ -1,0 +1,75 @@
+#ifndef MAXIMA__
+#define MAXIMA__
+
+#include <extrema._>
+
+#ifndef __STDC_IEC_60559_DFP__
+#define DEC_MAX_C
+#else
+#define DEC_MAX_C\
+ Decimal32_ : DEC32_MAX,\
+ Decimal64_ : DEC64_MAX,\
+ Decimal128_:DEC128_MAX,
+#endif
+
+#ifndef   INT8_MAX
+#define   INT8_MAX_C
+#else
+#define   INT8_MAX_C Int8_  : INT8_MAX,
+#endif
+
+#ifndef  INT16_MAX
+#define  INT16_MAX_C
+#else
+#define  INT16_MAX_C Int16_ : INT16_MAX,
+#endif
+
+#ifndef  INT32_MAX
+#define  INT32_MAX_C
+#else
+#define  INT32_MAX_C Int32_ : INT32_MAX,
+#endif
+
+#ifndef  INT64_MAX
+#define  INT64_MAX_C
+#else
+#define  INT64_MAX_C Int64_ : INT64_MAX,
+#endif
+
+#ifndef INTPTR_MAX
+#define INTPTR_MAX_C
+#else
+#define INTPTR_MAX_C Intptr_: INTPTR_MAX,
+#endif
+
+#define max_c_(T) ((T)(!has_sign_(T) ?  (T)-1 : _Generic ((T)0,\
+    Char_ :  CHAR_MAX,\
+    Byte_ :  BYTE_MAX,\
+   Short_ : SHORT_MAX,\
+     Int_ :   INT_MAX,\
+    Long_ :  LONG_MAX,\
+   LLong_ : LLONG_MAX,\
+   Float_ :   FLT_MAX,\
+  Double_ :   DBL_MAX,\
+ LDouble_ :  LDBL_MAX, DEC_MAX_C\
+ default : _Generic ((T)0, INT8_MAX_C INT16_MAX_C INT32_MAX_C INT64_MAX_C\
+ default : _Generic ((T)0, Int_least8_  : INT_LEAST8_MAX ,\
+ default : _Generic ((T)0, Int_least16_ : INT_LEAST16_MAX,\
+ default : _Generic ((T)0, Int_least32_ : INT_LEAST32_MAX,\
+ default : _Generic ((T)0, Int_least64_ : INT_LEAST64_MAX,\
+ default : _Generic ((T)0, Int_fast8_   : INT_FAST8_MAX ,\
+ default : _Generic ((T)0, Int_fast16_  : INT_FAST16_MAX,\
+ default : _Generic ((T)0, Int_fast32_  : INT_FAST32_MAX,\
+ default : _Generic ((T)0, Int_fast64_  : INT_FAST64_MAX,\
+ default : _Generic ((T)0, Intmax_      :     INTMAX_MAX,\
+ default : _Generic ((T)0, Ptrdiff_     :    PTRDIFF_MAX,\
+ default : _Generic ((T)0, Sig_atomic_  : SIG_ATOMIC_MAX,\
+ default : _Generic ((T)0, WChar_       :      WCHAR_MAX,\
+ default : _Generic ((T)0, WInt_        :       WINT_MAX,\
+ default : _Generic ((T)0, INTPTR_MAX_C\
+ default : (((T)1 << (swidth_c_(T) - 2)) - 1) << 1  |  1\
+))))))))))))))))))
+
+#define max_(...) max_c_(echo_(__VA_ARGS__))
+
+#endif

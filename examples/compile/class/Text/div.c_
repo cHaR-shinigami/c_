@@ -1,0 +1,26 @@
+#include  "Text._"
+
+procedure_(Text_*, (Text, div),
+(let  Ptr (Text_), result),
+(let  Ptr (Text ), dividend),
+(let  Ptr (Text ), divisor))
+	Var div = need__(result);
+	guard_(div, NULL)
+	if (!result) *div = (Text){.type = type_(Text)};
+	Size_ strlen(String);
+	Var length = strlen(dividend->buffer)+1;
+	if_(div->length < length)
+		Var    buffer = realloc(div->buffer , length + 1);
+		guard_(buffer, (test_(!result, free(div)), NULL))
+		( div->buffer = buffer)[div->length = length] = '\0';
+	end
+	Var divider = divisor->buffer;
+	Bool_ found_[256] = {FALSE_()};
+	for (Var_ i_ = strlen(divider); i_--;)
+		found_[(UByte) divider[i_]] = TRUE_();
+	Var string = dividend->buffer;
+	Var buffer = div->buffer;
+	for (let Size_ i_ = 0, j_ = 0; i_ <= length; i_++)
+		buffer[j_++] = found_[(UByte) string[i_]]? '\0' : string[i_];
+	return div;
+end

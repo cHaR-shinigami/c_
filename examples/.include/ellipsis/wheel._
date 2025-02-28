@@ -1,0 +1,14 @@
+#ifndef WHEEL__
+#define WHEEL__
+
+#include <relation._>
+
+#define turn_(    ...)  pop_(__VA_ARGS__, top_(__VA_ARGS__,))
+
+#define left_( n, ...)  echo_(o__(turn_ , n , (__VA_ARGS__)))
+
+#define cycle_(i, ...)  echo_(top_ C_(left_(i, __VA_ARGS__),))
+
+#define right_(n, ...)  reverse_(left_(n, reverse_(__VA_ARGS__)))
+
+#endif

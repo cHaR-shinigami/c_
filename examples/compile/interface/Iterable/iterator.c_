@@ -1,0 +1,6 @@
+#include  "Iterable/iterator._"
+
+procedure_(Iterator_ *, (Iterable, iterator),
+(let  Ptr (Iterable), this))
+	return concrete_(this)->typex->iterator(this->concrete);
+end

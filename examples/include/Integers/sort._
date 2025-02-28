@@ -1,0 +1,14 @@
+#include  "Integers._"
+
+private
+protocol_((Integers, sort),
+(let Size, len),
+(let Ptr (Int_ [len]), arr))
+	pre_(len != 0);
+	pre_(arr != NULL);
+	solver_(Integers, sort)(len, arr);
+	guard_(len > 1)
+	loop_(1, len - 1)
+		post_((*arr)[_i_ - 1] <= (*arr)[_i_]);
+	end
+end

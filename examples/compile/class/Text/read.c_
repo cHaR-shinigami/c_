@@ -1,0 +1,8 @@
+#include  "Text._"
+
+procedure_(Text_*, (Text, read),
+(let Ptr  (Text_), this),
+(let Stream, in))
+	let Ptr(Char_ [this->length]) buffer = (Void_ *) this->buffer;
+	return input__(in, *buffer)? this : NULL;
+end

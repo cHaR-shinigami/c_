@@ -1,0 +1,6 @@
+#include "Vector/count._"
+
+procedure_(Size_ , (Vector, count),
+(let Ptr (Vector), this))
+	return this->count;
+end

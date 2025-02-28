@@ -1,0 +1,16 @@
+#include  "Text._"
+
+procedure_(Text_*, (Text, copy),
+(let  Ptr (Text_), this),
+(let  Ptr (Text ), that))
+	Var copy = need__(this);
+	guard_(copy, NULL)
+	if (!this) *copy = (Text){.type = type_(Text)};
+	if_(this->length < that->length)
+		Var    buffer = realloc(copy->buffer , that->length + 1);
+		guard_(buffer, (test_(!this, free(copy)), NULL))
+		(this->buffer = buffer)[this->length = that->length] = '\0';
+	end
+	memcpy(this->buffer, that->buffer, that->length);
+	return copy;
+end

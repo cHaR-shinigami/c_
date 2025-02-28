@@ -1,0 +1,9 @@
+#ifndef LIB_C__
+#define LIB_C__
+
+#include <ellipsis._>
+
+#define  extend_c_(type, f, args) mux_(DEC_(COUNT_(args)))\
+(reduce__(f, args), ((type)(args)))
+
+#endif

@@ -1,0 +1,19 @@
+#include  "Unsigned/validate._"
+
+#include  <errno._>
+
+procedure_(Unsigned_*, (Unsigned, parse),
+(let  Ptr (Unsigned_), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Void ), in))
+	Void_ *memchr(Void *, Int, Size);
+	guard_(memchr(in, '\0', *length), NULL)
+	Auto_  endptr_ = (Char_ *)unqual__(in);
+	errnum_ = 0;
+	ULLong_ strtoull(String, Char_ **, Int);
+	Var value = strtoull(in, &endptr_, 0);
+	guard_((*length = endptr_-(Char *)in) &&  !errnum
+	&& validator(value), (errnum_ = 0, NULL))
+	this->value = value;
+	return this;
+end

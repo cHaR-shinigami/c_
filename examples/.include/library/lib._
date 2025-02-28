@@ -1,0 +1,41 @@
+#ifndef LIB__
+#define LIB__
+
+#include <assert._>
+#include <complex._>
+#include <ctype._>
+#include <errno._>
+#include <fenv._>
+#include <float._>
+#include <inttypes._>
+#include <iso646._>
+#include <limits._>
+#include <locale._>
+#include <math._>
+#include <setjmp._>
+#include <signal._>
+#include <stdalign._>
+#include <stdarg._>
+#include <stdatomic._>
+#include <stdbool._>
+#include <stddef._>
+#include <stdint._>
+#include <stdio._>
+#include <stdlib._>
+#include <stdnoreturn._>
+#include <string._>
+#include <tgmath._>
+#include <threads._>
+#include <time._>
+#include <uchar._>
+#include <wchar._>
+#include <wctype._>
+
+#if __STDC_VERSION__ >= 202311
+
+#include <stdbit._>
+#include <stdckdint._>
+
+#endif
+
+#endif

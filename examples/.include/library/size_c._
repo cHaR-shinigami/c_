@@ -1,0 +1,12 @@
+#ifndef SIZE_C__
+#define SIZE_C__
+
+#include <stddef.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Size,
+ size_t)
+
+#endif

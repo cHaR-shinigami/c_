@@ -1,0 +1,6 @@
+#include "Rational/validate._"
+
+procedure_(Bool_, (Rational, validate),
+(let Ptr (Rational), this))
+	return validator(this->value);
+end

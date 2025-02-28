@@ -1,0 +1,273 @@
+#ifndef META__
+#define META__
+
+#include <primitives._>
+
+#define c_c_(n) o##n##__
+#define o_c_(...) __VA_ARGS__
+
+#define l_c_(f) o_c_(f)C_(
+#define r_c_(_) )
+
+#define o__(f,n,a) c_c_(n)(l_c_,f)o_c_(o_c_ a)c_c_(n)(r_c_,)
+
+#define meta_c_(o) o
+#define meta__(f,n,a) meta_c_(o__(f,n,a))
+
+#define o0__(  F,f)
+
+#define o1__(  F,f) F(f)
+
+#define o2__(  F,f) F(f)o1__  (F,f)
+
+#define o3__(  F,f) F(f)o2__  (F,f)
+
+#define o4__(  F,f) F(f)o3__  (F,f)
+
+#define o5__(  F,f) F(f)o4__  (F,f)
+
+#define o6__(  F,f) F(f)o5__  (F,f)
+
+#define o7__(  F,f) F(f)o6__  (F,f)
+
+#define o8__(  F,f) F(f)o7__  (F,f)
+
+#define o9__(  F,f) F(f)o8__  (F,f)
+
+#define o10__( F,f) F(f)o9__  (F,f)
+
+#define o11__( F,f) F(f)o10__ (F,f)
+
+#define o12__( F,f) F(f)o11__ (F,f)
+
+#define o13__( F,f) F(f)o12__ (F,f)
+
+#define o14__( F,f) F(f)o13__ (F,f)
+
+#define o15__( F,f) F(f)o14__ (F,f)
+
+#define o16__( F,f) F(f)o15__ (F,f)
+
+#define o17__( F,f) F(f)o16__ (F,f)
+
+#define o18__( F,f) F(f)o17__ (F,f)
+
+#define o19__( F,f) F(f)o18__ (F,f)
+
+#define o20__( F,f) F(f)o19__ (F,f)
+
+#define o21__( F,f) F(f)o20__ (F,f)
+
+#define o22__( F,f) F(f)o21__ (F,f)
+
+#define o23__( F,f) F(f)o22__ (F,f)
+
+#define o24__( F,f) F(f)o23__ (F,f)
+
+#define o25__( F,f) F(f)o24__ (F,f)
+
+#define o26__( F,f) F(f)o25__ (F,f)
+
+#define o27__( F,f) F(f)o26__ (F,f)
+
+#define o28__( F,f) F(f)o27__ (F,f)
+
+#define o29__( F,f) F(f)o28__ (F,f)
+
+#define o30__( F,f) F(f)o29__ (F,f)
+
+#define o31__( F,f) F(f)o30__ (F,f)
+
+#define o32__( F,f) F(f)o31__ (F,f)
+
+#define o33__( F,f) F(f)o32__ (F,f)
+
+#define o34__( F,f) F(f)o33__ (F,f)
+
+#define o35__( F,f) F(f)o34__ (F,f)
+
+#define o36__( F,f) F(f)o35__ (F,f)
+
+#define o37__( F,f) F(f)o36__ (F,f)
+
+#define o38__( F,f) F(f)o37__ (F,f)
+
+#define o39__( F,f) F(f)o38__ (F,f)
+
+#define o40__( F,f) F(f)o39__ (F,f)
+
+#define o41__( F,f) F(f)o40__ (F,f)
+
+#define o42__( F,f) F(f)o41__ (F,f)
+
+#define o43__( F,f) F(f)o42__ (F,f)
+
+#define o44__( F,f) F(f)o43__ (F,f)
+
+#define o45__( F,f) F(f)o44__ (F,f)
+
+#define o46__( F,f) F(f)o45__ (F,f)
+
+#define o47__( F,f) F(f)o46__ (F,f)
+
+#define o48__( F,f) F(f)o47__ (F,f)
+
+#define o49__( F,f) F(f)o48__ (F,f)
+
+#define o50__( F,f) F(f)o49__ (F,f)
+
+#define o51__( F,f) F(f)o50__ (F,f)
+
+#define o52__( F,f) F(f)o51__ (F,f)
+
+#define o53__( F,f) F(f)o52__ (F,f)
+
+#define o54__( F,f) F(f)o53__ (F,f)
+
+#define o55__( F,f) F(f)o54__ (F,f)
+
+#define o56__( F,f) F(f)o55__ (F,f)
+
+#define o57__( F,f) F(f)o56__ (F,f)
+
+#define o58__( F,f) F(f)o57__ (F,f)
+
+#define o59__( F,f) F(f)o58__ (F,f)
+
+#define o60__( F,f) F(f)o59__ (F,f)
+
+#define o61__( F,f) F(f)o60__ (F,f)
+
+#define o62__( F,f) F(f)o61__ (F,f)
+
+#define o63__( F,f) F(f)o62__ (F,f)
+
+#define o64__( F,f) F(f)o63__ (F,f)
+
+#define o65__( F,f) F(f)o64__ (F,f)
+
+#define o66__( F,f) F(f)o65__ (F,f)
+
+#define o67__( F,f) F(f)o66__ (F,f)
+
+#define o68__( F,f) F(f)o67__ (F,f)
+
+#define o69__( F,f) F(f)o68__ (F,f)
+
+#define o70__( F,f) F(f)o69__ (F,f)
+
+#define o71__( F,f) F(f)o70__ (F,f)
+
+#define o72__( F,f) F(f)o71__ (F,f)
+
+#define o73__( F,f) F(f)o72__ (F,f)
+
+#define o74__( F,f) F(f)o73__ (F,f)
+
+#define o75__( F,f) F(f)o74__ (F,f)
+
+#define o76__( F,f) F(f)o75__ (F,f)
+
+#define o77__( F,f) F(f)o76__ (F,f)
+
+#define o78__( F,f) F(f)o77__ (F,f)
+
+#define o79__( F,f) F(f)o78__ (F,f)
+
+#define o80__( F,f) F(f)o79__ (F,f)
+
+#define o81__( F,f) F(f)o80__ (F,f)
+
+#define o82__( F,f) F(f)o81__ (F,f)
+
+#define o83__( F,f) F(f)o82__ (F,f)
+
+#define o84__( F,f) F(f)o83__ (F,f)
+
+#define o85__( F,f) F(f)o84__ (F,f)
+
+#define o86__( F,f) F(f)o85__ (F,f)
+
+#define o87__( F,f) F(f)o86__ (F,f)
+
+#define o88__( F,f) F(f)o87__ (F,f)
+
+#define o89__( F,f) F(f)o88__ (F,f)
+
+#define o90__( F,f) F(f)o89__ (F,f)
+
+#define o91__( F,f) F(f)o90__ (F,f)
+
+#define o92__( F,f) F(f)o91__ (F,f)
+
+#define o93__( F,f) F(f)o92__ (F,f)
+
+#define o94__( F,f) F(f)o93__ (F,f)
+
+#define o95__( F,f) F(f)o94__ (F,f)
+
+#define o96__( F,f) F(f)o95__ (F,f)
+
+#define o97__( F,f) F(f)o96__ (F,f)
+
+#define o98__( F,f) F(f)o97__ (F,f)
+
+#define o99__( F,f) F(f)o98__ (F,f)
+
+#define o100__(F,f) F(f)o99__ (F,f)
+
+#define o101__(F,f) F(f)o100__(F,f)
+
+#define o102__(F,f) F(f)o101__(F,f)
+
+#define o103__(F,f) F(f)o102__(F,f)
+
+#define o104__(F,f) F(f)o103__(F,f)
+
+#define o105__(F,f) F(f)o104__(F,f)
+
+#define o106__(F,f) F(f)o105__(F,f)
+
+#define o107__(F,f) F(f)o106__(F,f)
+
+#define o108__(F,f) F(f)o107__(F,f)
+
+#define o109__(F,f) F(f)o108__(F,f)
+
+#define o110__(F,f) F(f)o109__(F,f)
+
+#define o111__(F,f) F(f)o110__(F,f)
+
+#define o112__(F,f) F(f)o111__(F,f)
+
+#define o113__(F,f) F(f)o112__(F,f)
+
+#define o114__(F,f) F(f)o113__(F,f)
+
+#define o115__(F,f) F(f)o114__(F,f)
+
+#define o116__(F,f) F(f)o115__(F,f)
+
+#define o117__(F,f) F(f)o116__(F,f)
+
+#define o118__(F,f) F(f)o117__(F,f)
+
+#define o119__(F,f) F(f)o118__(F,f)
+
+#define o120__(F,f) F(f)o119__(F,f)
+
+#define o121__(F,f) F(f)o120__(F,f)
+
+#define o122__(F,f) F(f)o121__(F,f)
+
+#define o123__(F,f) F(f)o122__(F,f)
+
+#define o124__(F,f) F(f)o123__(F,f)
+
+#define o125__(F,f) F(f)o124__(F,f)
+
+#define o126__(F,f) F(f)o125__(F,f)
+
+#define o127__(F,f) F(f)o126__(F,f)
+
+#endif

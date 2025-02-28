@@ -1,0 +1,12 @@
+#include  "Unsigned._"
+
+procedure_(Unsigned_*, (Unsigned, mul),
+(let  Ptr (Unsigned_), product),
+(let  Ptr (Unsigned ), multiplier),
+(let  Ptr (Unsigned ), multiplicand))
+	Var result = need__(product);
+	guard_(result, NULL)
+	if (!product) result->type = type_(Unsigned);
+	result->value  =  (multiplier->value * multiplicand->value) & UNSIGNED_MAX;
+	return result;
+end

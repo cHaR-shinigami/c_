@@ -1,0 +1,18 @@
+#ifndef RATIONAL__
+#define RATIONAL__
+
+#include <c._>
+
+#define RATIONAL_MAX     (1e+37)
+#define RATIONAL_MIN (-RATIONAL_MAX)
+#define RATIONAL_MIN_ABS (1e-37)
+
+#define Rational_EXTENDS Object,\
+ validate, init, compare, copy, read, write,\
+ parse, text, decode, encode, add, sub, mul, div
+
+class_ (Rational)
+	Float_ value;
+fin
+
+#endif

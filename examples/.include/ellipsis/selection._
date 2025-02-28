@@ -1,0 +1,76 @@
+#ifndef SELECTION__
+#define SELECTION__
+
+#include <tools._>
+
+#define compress__c_(_c_, ...) (turn_ _c_),\
+ mux_c_(echo_(top_ C_(echo_ _c_,)))(turn_,pop_)(__VA_ARGS__)
+
+#define compress_c_(...) compress__c_(__VA_ARGS__)
+
+#define compress_(_a_, ...) echo_(pop_ C_(echo_c_(o__\
+(compress_c_, COUNT_ _a_, ((__VA_ARGS__), echo_ _a_)))))
+
+#define select_(n, ...) mux_(n)(mux_(DEC_(n))\
+(mux_(INC_(n))(compress_((__VA_ARGS__), 1, pop_ C_(repeat__(n,0))),\
+ top_(__VA_ARGS__,)), __VA_ARGS__),)
+
+#define except_(n, ...) mux_(n)(mux_(AND_(DEC_(n))(DEC_(COUNT_(__VA_ARGS__))))\
+(mux_(INC_(n))(compress_((__VA_ARGS__), 0, pop_ C_(repeat__(n,1))),\
+ pop_(__VA_ARGS__)),),__VA_ARGS__)
+
+#define cat_c_(l, m, r) l##m##r
+
+#define poly_2_(f, n) cat_c_(f, n,)
+
+#define poly_3_(f, n, s) cat_c_(f, n, s)
+
+#define poly_4_(f, n, s, u) poly_3_(f, get_(DEC_(n), head_(u, 0,PP_RANGE)), s)
+
+#define poly_(...) echo_(cat_c_ C_(poly_, COUNT_(__VA_ARGS__), _))(__VA_ARGS__)
+
+#define RANGE_C_(n) head_(n, 0,PP_RANGE)
+
+#define RANGE_1_(n) RANGE_C_(n)mux_(INC_(n))(,, PP_MAW)
+
+#define RANGE_2_(a, z) echo_(a)\
+mux_c_(EQ_(a, z))\
+(,	mux_c_(LT_(a, z))\
+	(	mux_c_(EQ_(INC_(a), z))\
+		(,, xhead_(a, pop_ C_(RANGE_1_(z)))),\
+		mux_c_(EQ_(DEC_(a), z))\
+		(,, reverse_(xhead_(z, pop_ C_(RANGE_1_(a)))))\
+	), z\
+)
+
+#define RANGE_3_(a, z, d) mux_(d)\
+(	mux_(DEC_(d))\
+	(	mux_c_(LE_(a, z))\
+		(	mux_(a)\
+			(	mux_(DEC_(a))\
+				(	select_(d, RANGE_2_(a, z)),\
+					echo_(1)mux_c_(GT_(d, DEC_(z)))\
+					(,, select_(d, RANGE_2_(INC_(d), z)))\
+				),\
+				echo_(0)mux_c_(GT_(d, z))\
+				(,, select_(d, RANGE_2_(d, z)))\
+			),\
+			mux_(z)\
+			(	mux_(DEC_(z))\
+				(	select_(d, RANGE_2_(a, z)),\
+					echo_(a)mux_c_(GT_(d, DEC_(a)))\
+					(,, select_(d, xhead_(DEC_(d),\
+					reverse_(pop_ C_(RANGE_1_(a))))))\
+				),\
+				echo_(a)mux_c_(GT_(d, a))\
+				(,, select_(d, xhead_(DEC_(DEC_(d)),\
+				reverse_(RANGE_C_(DEC_(a))))))\
+			)\
+		),\
+ 		RANGE_2_(a, z)\
+	),\
+)
+
+#define RANGE_(...) poly_3_(RANGE_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif

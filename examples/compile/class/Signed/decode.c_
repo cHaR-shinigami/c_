@@ -1,0 +1,20 @@
+#include  "Signed._"
+
+procedure_(Signed_*, (Signed, decode),
+(let  Ptr (Signed_), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Encoding), in))
+	guard_(8 <= *length, NULL)
+	*length = 8;
+	this->value =
+	 ((*in)[0] & 255) +
+	(((*in)[1] & 255U ) << 8 ) +
+	(((*in)[2] & 255UL) << 16) +
+	(((*in)[3] & 255UL) << 24) +
+	(((*in)[4] & 255LL) << 32) +
+	(((*in)[5] & 255LL) << 40) +
+	(((*in)[6] & 255LL) << 48) +
+	(((*in)[7] & 127LL) << 56) ;
+	if ((*in)[7] & 128) this->value = -this->value;
+	return this;
+end

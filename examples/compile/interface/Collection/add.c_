@@ -1,0 +1,19 @@
+#include  "Collection._"
+
+procedure_(Collection_*, (Collection, add),
+(let  Ptr (Collection_), sum),
+(let  Ptr (Collection ), augend),
+(let  Ptr (Collection ), addend))
+	Var result = validate_(sum)
+	&&  sum->concrete != augend->concrete
+	&&  sum->concrete != addend->concrete
+	?   sum : (Collection_*) init__(type_(Collection), concrete_(augend)->type);
+	guard_(result, NULL)
+	concrete_(result)->typex->species(result->concrete, super(
+	concrete_(augend)->typex->species(augend->concrete, NULL),
+	concrete_(addend)->typex->species(addend->concrete, NULL)));
+	Var join = solver_(Iterable, add)(result->base, augend->base, addend->base);
+	guard_(join, (test_(result != sum, free(result)), NULL))
+	post_ (join == result->base);
+	return result;
+end

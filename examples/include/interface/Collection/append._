@@ -1,0 +1,16 @@
+#ifndef   COLLECTION__APPEND__
+#define   COLLECTION__APPEND__
+
+#include "Collection._"
+
+private
+protocol_(Bool_, (Collection, append),
+(let Ptr (Collection), this),
+(let Ptr (Void), data))
+	pre_(validate_(Collection, this));
+	Var  species = concrete_(this)->typex->species(this->concrete, NULL);
+	pre_(validate (species, data));
+	return verifier_(Iterable, append)(_site, this->base, data);
+end
+
+#endif

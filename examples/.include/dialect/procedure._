@@ -1,0 +1,31 @@
+#ifndef PROCEDURE__
+#define PROCEDURE__
+
+#ifndef   METHOD__
+#include <method._>
+#endif
+
+#define procedure_c_(R_, T_f, params) R_ solver_(T_f)(params) begin
+
+#define procedure_0_1_(R_, _T_f_, ...) procedure_c_\
+(R_, echo_ _T_f_, map__(param_c_, __VA_ARGS__))
+
+#define procedure_0_2_(_T_f_, ...)   procedure_0_1_\
+(Void_, _T_f_, echo_(__VA_ARGS__))
+
+#define procedure_0_(t, ...) poly_3_(procedure_0_, COUNT_(peel_(t)), _)\
+(t, __VA_ARGS__)
+
+#define procedure_1_(_T_f_) procedure_2_1_(Void_, _T_f_)
+
+#define procedure_2_1_(R_,_T_f_) procedure_c_\
+(R_, echo_ _T_f_, VA_list_ _args_) (Void)_args_;
+
+#define procedure_2_2_(_T_f_, p) procedure_0_2_(_T_f_, p)
+
+#define procedure_2_(t, arg) poly_3_(procedure_2_, COUNT_(peel_(t)), _)(t, arg)
+
+#define procedure_(...) get_(COUNT_(__VA_ARGS__),\
+ procedure_0_,, procedure_1_, procedure_2_)(__VA_ARGS__)
+
+#endif

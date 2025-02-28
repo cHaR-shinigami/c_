@@ -1,0 +1,6 @@
+#ifndef STDBOOL__
+#define STDBOOL__
+
+#include <stdbool.h>
+
+#endif

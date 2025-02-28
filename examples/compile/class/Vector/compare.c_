@@ -1,0 +1,13 @@
+#include "Vector._"
+
+procedure_(LLong_, (Vector, compare),
+(let Ptr (Vector), this),
+(let Ptr (Vector), that))
+	Vector_ _this[1] = {*this};
+	Vector_ _that[1] = {*that};
+	_this->type = (Type)typex_(Iterable, Vector);
+	_that->type = (Type)typex_(Iterable, Vector);
+	return solver_(Iterable, compare)
+		(abstract_(Iterable,_this),
+		 abstract_(Iterable,_that));
+end

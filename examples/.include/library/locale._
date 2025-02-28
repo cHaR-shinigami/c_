@@ -1,0 +1,12 @@
+#ifndef LOCALE__
+#define LOCALE__
+
+#include <locale.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Lconv, struct
+ lconv)
+
+#endif

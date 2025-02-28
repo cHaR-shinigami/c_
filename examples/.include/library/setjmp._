@@ -1,0 +1,16 @@
+#ifndef SETJMP__
+#define SETJMP__
+
+#include <setjmp.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Jmp_buf,
+ jmp_buf)
+
+#define\
+ setjmp_(...)\
+ setjmp (__VA_ARGS__)
+
+#endif

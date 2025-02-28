@@ -1,0 +1,10 @@
+#include  "Chain._"
+
+procedure_(Chain_ *, (Chain, init),
+(let Type, type),
+(let Tape, tape))
+	(Void) tape;
+	Var chain = new__(Chain);
+	if (chain) *chain = (Chain){.type = type};
+	return chain;
+end

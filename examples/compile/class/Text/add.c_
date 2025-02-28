@@ -1,0 +1,23 @@
+#include  "Text._"
+
+procedure_(Text_*, (Text, add),
+(let  Ptr (Text_), sum),
+(let  Ptr (Text ), augend),
+(let  Ptr (Text ), addend))
+	Var cat = need__(sum);
+	guard_(cat, NULL)
+	if (!sum) *cat = (Text){.type = type_(Text)};
+	Size_ strlen(String);
+	Var offset = strlen(augend->buffer);
+	Var length = strlen(addend->buffer)+1 + offset;
+	if_(cat->length < length)
+		Var    buffer = realloc(cat->buffer , length + 1);
+		guard_(buffer, (test_(!sum, free(cat)), NULL))
+		( cat->buffer = buffer)[cat->length = length] = '\0';
+	end
+	Void_ *memmove(Void_ *, Void *, Size);
+	(cat != addend  ?  memcpy : memmove)
+	(cat->buffer + offset, addend->buffer, length - offset);
+	if (cat != augend) memcpy(cat->buffer, augend->buffer, offset);
+	return cat;
+end

@@ -1,0 +1,72 @@
+#ifndef HOF_C__
+#define HOF_C__
+
+#include <allocation._>
+
+#ifndef   RANGE__
+#include <range._>
+#endif
+
+ public Void_ hof_c
+(	let Void_ (* const _cbf_ptr)(void),
+	let Ptr_c(Char) _text,
+	let Site _site
+)
+{	guard_2_(_cbf_ptr,)
+	fprintf(stderr, "Assertion failed: (%s) != NULL, function %s, "
+	"file %s, line %d.\n", _text, _site.func, _site.file, _site.line);
+	fflush (stderr);
+	exit(1);
+}
+
+#define hof_array_c_(arr, _arr, DEBUG, var)\
+	Var var = arr;\
+	guard_1_(notnull_c_(var, _arr, DEBUG))\
+	Var _len##var = length_c_(var);
+
+#define hof_funcn_c_(fun, _fun, DEBUG)\
+	Var _f = fun;\
+	mux_c_(DEBUG)(hof_c(_f, _fun, SITE);, guard_1_(_f))
+
+#define hof_range_c_(rng, _rng, DEBUG, _arr, len)\
+	Var _azd = range_c_(rng);\
+	guard_1_(notnull_c_(_azd, _rng, DEBUG))\
+	typedef typeof (""-"" + *_azd) _T_;\
+	let _T_ _a_ = _azd[0];\
+	if (_a_ < 0)\
+		test_2_(! assert_c_((_a_ += len) >= 0,\
+		"alpha_("_rng") >= -length_("_arr")", SITE, DEBUG), _a_ = 0);\
+	else\
+		test_2_(! assert_c_( _a_  <  (_T_)len,\
+		"alpha_("_rng") <"" length_("_arr")", SITE, DEBUG), _a_ = len - 1);\
+	let _T_ _z_ = _azd[1];\
+	if (_z_ < 0)\
+		test_2_(! assert_c_((_z_ += len) >= 0,\
+		"omega_("_rng") >= -length_("_arr")", SITE, DEBUG), _z_ = 0);\
+	else\
+		test_2_(! assert_c_( _z_  <  (_T_)len,\
+		"omega_("_rng") <"" length_("_arr")", SITE, DEBUG), _z_ = len - 1);\
+	let _T_ _d_ = _azd[2];\
+	let Size_ _n_ = 0;\
+	if (!len)  ;\
+	elif (+_a_ == _z_)\
+		_n_ = 1;\
+	elif (!_d_)\
+	{	_n_ = 2;\
+		_d_ = _z_ - _a_;\
+	}\
+	elif (_a_ < _z_  &&   _d_ > 0\
+	||    _a_ > _z_  &&   _d_ < 0)\
+		_n_  =  (_z_ - _a_)/_d_ + 1;\
+	elif (_a_ > _z_  &&   !has_sign_(_T_))\
+	{	_n_  =  (_a_ - _z_)/_d_ + 1;\
+		_d_ = -_d_;\
+	}
+
+#define omni_c_(value, lvalue__)\
+ _Generic (is_pointer_c_(echo_(value)),\
+ True_ : value, False_ : (typeof (value) (*)[1])&\
+ _Generic (is_pointer_c_(echo_(value)),\
+ True_ : (typeof (value) [1]){0}, False_ : lvalue__(value)))
+
+#endif

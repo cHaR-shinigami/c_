@@ -1,0 +1,9 @@
+#include "Chain._"
+
+procedure_(Bool_, (Chain, validate),
+(let Ptr (Chain), this))
+	guard_(this->type->self == this->type, TRUE_())
+	Chain_ chain[1] = {*this};
+	chain->type = (Type)typex_(Iterable, Chain);
+	return solver_(Iterable, validate)(abstract_(Iterable, chain));
+end

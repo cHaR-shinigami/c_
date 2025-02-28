@@ -1,0 +1,13 @@
+#include  "Rational/validate._"
+
+procedure_(Rational_ *, (Rational, init),
+(let Type, type),
+(let Tape, tape))
+	Var value = *tape? *(Float *)*tape : 0;
+	guard_(validator(value), NULL)
+	Var object = new__(Rational);
+	guard_(object, NULL)
+	object->type  = type ;
+	object->value = value;
+	return object;
+end

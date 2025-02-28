@@ -1,0 +1,13 @@
+#ifndef   VECTOR__DUPLICATE__
+#define   VECTOR__DUPLICATE__
+
+#include "Vector._"
+
+protocol_(Cursor_ *, (Vector, duplicate),
+(let Typex (Iterable), typex),
+(let Ptr (Cursor), cursor))
+	pre_ (cursor != NULL);
+	return solver_(Vector, duplicate)(typex, cursor);
+end
+
+#endif

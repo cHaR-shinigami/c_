@@ -1,0 +1,38 @@
+#ifndef SEARCH__
+#define SEARCH__
+
+#include <hof_c._>
+
+#define search_4_(pos_, fun, arr, ...) \
+begin\
+	hof_funcn_c_(echo_(fun), #fun, SEARCH__)\
+	hof_array_c_(echo_(arr), #arr, SEARCH__, _arr)\
+	Var_   _i_ = (Size)0;\
+	for (; _i_ < _len_arr; _i_++)\
+		break_ (_f((*_arr)[_i_],\
+		get_(COUNT_(peel_(__VA_ARGS__)), peel_,)(__VA_ARGS__)))\
+	pos_ = _i_; \
+end
+
+#define search_5_(pos_, fun, arr, rng, ...) \
+begin\
+	hof_funcn_c_(echo_(fun), #fun, SEARCH__)\
+	hof_array_c_(echo_(arr), #arr, SEARCH__, _arr)\
+	hof_array_c_(echo_(rng), #rng, SEARCH__, #arr, _len_arr)\
+	Var_ _i_ = _a_;\
+	for (; _n_--; _i_ += _d_)\
+		break_ (_f((*_arr)[_i_],\
+		get_(COUNT_(peel_(__VA_ARGS__)), peel_,)(__VA_ARGS__)))\
+	pos_ = _n_+1 ? _i_ : _len_arr; \
+end
+
+#define search_(...) poly_3_(search_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#endif
+
+#undef  SEARCH__
+#ifndef DEBUG
+#define SEARCH__ 0
+#else
+#define SEARCH__ 1
+#endif

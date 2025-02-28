@@ -1,0 +1,71 @@
+#ifndef EXPRESSION__
+#define EXPRESSION__
+
+#include <types._>
+
+#define debug_c_(f, DEBUG) cat_c_(f, DEBUG, _c_)
+
+#define f_c_(f, DEBUG) mux_c_(DEBUG)(f, cat_(f, _c))
+
+#define faux_(T, ...) ((Void) sizeof ((Char_ (*)(T))0)(__VA_ARGS__))
+
+#define eval_(T, ...) (faux_(echo_(T), echo_(__VA_ARGS__)), (Void)(__VA_ARGS__))
+
+#define case_c_(args) Void_ (*)(pop_(args)) : top_(args)
+
+#define generic0_c_(...) pop_(__VA_ARGS__), typeof (top_(__VA_ARGS__))
+
+#define generic__c_(n, _args_) mux_(n)(case_c_(echo_\
+   (o__(generic0_c_,n, _args_))), default : echo_ _args_)
+
+#define generic_c_(_args_) generic__c_(DEC_(COUNT_ _args_), _args_)
+
+#define generic_(_args_, ...) _Generic ((Void_ (*)(map__\
+(typeof  , peel_(_args_))))0, map__(generic_c_, __VA_ARGS__))
+
+#define typof_c_(arg) typeof (arg) *
+
+#define generiq0_c_(...) generic0_c_(__VA_ARGS__) *
+
+#define generiq__c_(n, _args_) mux_(n)(case_c_(echo_\
+   (o__(generiq0_c_,n, _args_))) , default : echo_ _args_)
+
+#define generiq_c_(_args_) generiq__c_(DEC_(COUNT_ _args_), _args_)
+
+#define generiq_(_args_, ...) _Generic ((Void_ (*)(map__\
+(typof_c_, peel_(_args_))))0, map__(generiq_c_, __VA_ARGS__))
+
+#define has_qualifier_1_(...)    _Generic ((typeof (__VA_ARGS__) *)0,\
+ typeof_unqual (__VA_ARGS__) * : FALSE, default : TRUE)
+
+#define has_qualifier_2_(q, ...) _Generic ((typeof (__VA_ARGS__) *)0,\
+      q typeof (__VA_ARGS__) * : TRUE, default : FALSE)
+
+#define has_qualifier_(...) poly_3_(has_qualifier_, COUNT_(__VA_ARGS__), _)\
+(__VA_ARGS__)
+
+#define has_sign_(...) ((Bool)((__VA_ARGS__)-1 < 0))
+
+#define iff     )==0 == !(
+
+#define implies )==0 ||  (
+
+#define isNBO_(...) ((Bool)!(union {__VA_ARGS__ _one; UByte _pun;}){1}._pun)
+
+#define no_inline_(...) (*(typeof (*(__VA_ARGS__)) *volatile){(__VA_ARGS__)})
+
+#define test_2_(t, ...) test_3_(echo_(t), echo_(__VA_ARGS__), 0)
+
+#define test_3_(t, y, ...) ((t)? (Void)(y) : (Void)(__VA_ARGS__))
+
+#define test_(...) poly_3_(test_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)
+
+#define value_(...) ((Void)0, __VA_ARGS__)
+
+#define typeof_c_(...) typeof (value_(__VA_ARGS__))
+
+#define typeof_(...) typeof_c_(*(typeof (__VA_ARGS__) *)0)
+
+#define lvalue__(...) (*(typeof_c_(__VA_ARGS__) []){(__VA_ARGS__)})
+
+#endif

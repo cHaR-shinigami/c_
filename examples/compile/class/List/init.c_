@@ -1,0 +1,14 @@
+#include  "List._"
+
+procedure_(List_ *, (List, init),
+(let Type, type),
+(let Tape, tape))
+	Var species = (Type *)*tape;
+	guard_((species implies  is_type(*species)), NULL)
+	Var list  =  new__(List);
+	if (list) *list = (List)
+	{	.type    = type,
+		.species = species? *species : type_(Object),
+	};
+	return list;
+end

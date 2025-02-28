@@ -1,0 +1,16 @@
+#include  "Collection._"
+
+procedure_(Collection_*, (Collection, copy),
+(let  Ptr (Collection_), this),
+(let  Ptr (Collection ), that))
+	Var copy =
+	validate_(this) &&  ! concrete_(this)->typex->base->count(this->concrete)
+	? this : (Collection_ *) init__(type_(Collection), concrete_(that)->type);
+	guard_(copy, NULL)
+	concrete_(copy)->typex->species(copy->concrete,
+	concrete_(that)->typex->species(that->concrete, NULL));
+	Var cpy = solver_(Iterable, copy)(copy->base, that->base);
+	guard_(cpy, (test_(copy != this, free(copy)), NULL))
+	post_ (cpy == copy->base);
+	return copy;
+end

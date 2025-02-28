@@ -1,0 +1,9 @@
+#include "List._"
+
+procedure_(Type_, (List, species),
+(let Ptr (List_), this),
+(let Type, species))
+	guard_(species, this->species)
+	return this->species = this->base->length?
+	 super(this->species, species) : species;
+end

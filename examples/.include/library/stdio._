@@ -1,0 +1,96 @@
+#ifndef STDIO__
+#define STDIO__
+
+#ifndef   POINTER__
+#include <pointer._>
+#endif
+
+#include <limits._>
+
+#include <stdarg._>
+
+typedef_c_
+(File,
+ FILE)
+
+typedef_c_
+(Fpos,
+ fpos_t)
+
+#define\
+ L_TMPNAM\
+ L_tmpnam
+
+#define STDIN\
+ value_(stdin)
+
+#define STDOUT\
+ value_(stdout)
+
+#define STDERR\
+ value_(stderr)
+
+ public Int_ fprintf_c
+(	let Stream  _stream,
+	Ptr_c(Char) _format, ...
+)
+{	guard_2_(_stream &&  _format, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _ret = vfprintf(_stream, _format, _args_);
+	va_end_(_args_);
+	return  _ret;
+}
+
+ public Int_ fscanf_c
+(	let Stream  _stream,
+	Ptr_c(Char) _format, ...
+)
+{	guard_2_(_stream &&  _format, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _ret = vfscanf (_stream, _format, _args_);
+	va_end_(_args_);
+	return  _ret;
+}
+
+ public Int_ snprintf_c
+(	let Ptr_c(Char_) _s,
+	let Size _n,
+	Ptr_c(Char) _format, ...
+)
+{	guard_2_(((_n implies  _s)) &&  _format, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _ret = vsnprintf(_s, _n <= INT_MAX ? _n : INT_MAX, _format, _args_);
+	va_end_(_args_);
+	return  _ret;
+}
+
+ public Int_ sscanf_c
+(	let Ptr_c(Char ) _s,
+	Ptr_c(Char) _format, ...
+)
+{	guard_2_(_s &&  _format, EOF)
+	VA_list_  _args_;
+	va_start_(_args_, _format);
+	let Int _ret = vsscanf (_s, _format, _args_);
+	va_end_(_args_);
+	return  _ret;
+}
+
+#endif
+
+#ifdef  __STDC_LIB_EXT1__
+#ifdef  __STDC_WANT_LIB_EXT1__
+
+#define\
+ L_TMPNAM_S\
+ L_tmpnam_s
+
+#include <errno_c._>
+
+#include <rsize_c._>
+
+#endif
+#endif

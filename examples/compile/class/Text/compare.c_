@@ -1,0 +1,8 @@
+#include "Text._"
+
+procedure_(LLong_ , (Text, compare),
+(let Ptr (Text), this),
+(let Ptr (Text), that))
+	Int_   strcmp(String, String);
+	return strcmp(this->buffer, that->buffer);
+end

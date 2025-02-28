@@ -1,0 +1,180 @@
+#ifndef __STDC_NO_ATOMICS__
+
+#ifndef STDATOMIC__
+#define STDATOMIC__
+
+#include <stdatomic.h>
+
+#include <specifiers._>
+
+typedef_c_
+(Memory_order,
+ memory_order)
+
+typedef_c_
+(Atomic_flag,
+ atomic_flag)
+
+#define\
+ kill_dependency_(...)\
+ kill_dependency (__VA_ARGS__)
+
+typedef_c_
+(Atomic_Bool,
+ atomic_bool)
+
+typedef_c_
+(Atomic_Char,
+ atomic_char)
+
+typedef_c_
+(Atomic_UByte,
+ atomic_uchar)
+
+typedef_c_
+(Atomic_Byte ,
+ atomic_schar)
+
+typedef_c_
+(Atomic_UShort,
+ atomic_ushort)
+
+typedef_c_
+(Atomic_Short,
+ atomic_short)
+
+typedef_c_
+(Atomic_UInt,
+ atomic_uint)
+
+typedef_c_
+(Atomic_Int,
+ atomic_int)
+
+typedef_c_
+(Atomic_ULong,
+ atomic_ulong)
+
+typedef_c_
+(Atomic_Long,
+ atomic_long)
+
+typedef_c_
+(Atomic_ULLong,
+ atomic_ullong)
+
+typedef_c_
+(Atomic_LLong,
+ atomic_llong)
+
+#ifdef  __STDC_VERSION_STDATOMIC_H__
+
+typedef_c_
+(Atomic_Char8,
+ atomic_char8_t)
+
+#endif
+
+typedef_c_
+(Atomic_Char16,
+ atomic_char16_t)
+
+typedef_c_
+(Atomic_Char32,
+ atomic_char32_t)
+
+typedef_c_
+(Atomic_WChar,
+ atomic_wchar_t)
+
+typedef_c_
+(Atomic_UInt_least8,
+ atomic_uint_least8_t)
+
+typedef_c_
+(Atomic_Int_least8,
+ atomic_int_least8_t)
+
+typedef_c_
+(Atomic_UInt_least16,
+ atomic_uint_least16_t)
+
+typedef_c_
+(Atomic_Int_least16,
+ atomic_int_least16_t)
+
+typedef_c_
+(Atomic_UInt_least32,
+ atomic_uint_least32_t)
+
+typedef_c_
+(Atomic_Int_least32,
+ atomic_int_least32_t)
+
+typedef_c_
+(Atomic_UInt_least64,
+ atomic_uint_least64_t)
+
+typedef_c_
+(Atomic_Int_least64,
+ atomic_int_least64_t)
+
+typedef_c_
+(Atomic_UInt_fast8,
+ atomic_uint_fast8_t)
+
+typedef_c_
+(Atomic_Int_fast8,
+ atomic_int_fast8_t)
+
+typedef_c_
+(Atomic_UInt_fast16,
+ atomic_uint_fast16_t)
+
+typedef_c_
+(Atomic_Int_fast16,
+ atomic_int_fast16_t)
+
+typedef_c_
+(Atomic_UInt_fast32,
+ atomic_uint_fast32_t)
+
+typedef_c_
+(Atomic_Int_fast32,
+ atomic_int_fast32_t)
+
+typedef_c_
+(Atomic_UInt_fast64,
+ atomic_uint_fast64_t)
+
+typedef_c_
+(Atomic_Int_fast64,
+ atomic_int_fast64_t)
+
+typedef_c_
+(Atomic_UIntptr,
+ atomic_uintptr_t)
+
+typedef_c_
+(Atomic_Intptr,
+ atomic_intptr_t)
+
+typedef_c_
+(Atomic_Size,
+ atomic_size_t)
+
+typedef_c_
+(Atomic_Ptrdiff,
+ atomic_ptrdiff_t)
+
+typedef_c_
+(Atomic_UIntmax,
+ atomic_uintmax_t)
+
+typedef_c_
+(Atomic_Intmax,
+ atomic_intmax_t)
+
+#endif
+
+#endif

@@ -1,0 +1,6 @@
+#include "Signed/validate._"
+
+procedure_(Bool_ , (Signed, validate),
+(let Ptr (Signed), this))
+	return validator(this->value);
+end

@@ -1,0 +1,15 @@
+#ifndef TEXT__
+#define TEXT__
+
+#include <c._>
+
+#define Text_EXTENDS Object,\
+ validate, init, free, compare, copy, read, write,\
+ parse, text, decode, encode, add, sub, div
+
+class_ (Text)
+	Char_ *buffer;
+	Size_  length;
+fin
+
+#endif

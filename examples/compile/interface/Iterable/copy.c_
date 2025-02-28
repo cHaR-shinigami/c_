@@ -1,0 +1,25 @@
+#include  "Iterable._"
+
+procedure_(Iterable_*, (Iterable, copy),
+(let  Ptr (Iterable_), this),
+(let  Ptr (Iterable ), that))
+	Var typex = concrete_(that)->typex;
+	Var iterator = typex->iterator(that->concrete);
+	guard_(iterator, NULL)
+	Var copy = validate_(this) &&  ! concrete_(this)->typex->count(this->concrete)
+	? this : (Iterable_ *) init__(type_(Iterable), typex);
+	guard_(copy, (free(iterator), NULL))
+	Var   append = concrete_(copy)->typex->append;
+	Var concrete = copy->concrete_;
+	Var get_next = typex->get_next;
+	for_(Var_ count_ = typex->count(that->concrete); count_--;)
+		continue_(append(concrete, get_next(typex, iterator)))
+		free_(concrete);
+		if (copy == this) copy->concrete = NULL;
+		else free(copy);
+		free (iterator);
+		return NULL;
+	end
+	free(iterator);
+	return copy;
+end

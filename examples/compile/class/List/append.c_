@@ -1,0 +1,8 @@
+#include "List/append._"
+
+procedure_(Bool_, (List, append),
+(let Ptr (List_), this),
+(let Ptr (Void ), data))
+	Bool_  solver_(Chain, append)(Chain_ *, Void *);
+	return solver_(Chain, append)(this->base, data);
+end

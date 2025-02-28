@@ -1,0 +1,11 @@
+#ifndef   UNSIGNED__VALIDATE__
+#define   UNSIGNED__VALIDATE__
+
+#include "Unsigned._"
+
+private inline Bool_ validator(let ULLong value)
+begin
+	return value <= UNSIGNED_MAX;
+end
+
+#endif

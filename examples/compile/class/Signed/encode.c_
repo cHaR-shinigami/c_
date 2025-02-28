@@ -1,0 +1,21 @@
+#include  "Signed._"
+
+procedure_(Encoding_*, (Signed, encode),
+(let  Ptr (Signed), this),
+(let  Ptr (Size_ ), length),
+(let  Ptr (Encoding_), out))
+	Var enc = (out &&  8 <= *length)? out : new__(UByte_ [8]);
+	*length = 8;
+	guard_(enc, NULL);
+	Var value = (ULLong)(this->value<0 ?  -this->value : this->value);
+	(*enc)[0]  =  value     & 255;
+	(*enc)[1]  =  value>>8  & 255;
+	(*enc)[2]  =  value>>16 & 255;
+	(*enc)[3]  =  value>>24 & 255;
+	(*enc)[4]  =  value>>32 & 255;
+	(*enc)[5]  =  value>>40 & 255;
+	(*enc)[6]  =  value>>48 & 255;
+	(*enc)[7]  =  value>>56 & 127;
+	if (this->value < 0) (*enc)[7] |= 128;
+	return enc;
+end

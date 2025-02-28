@@ -1,0 +1,8 @@
+#include "Vector/has_next._"
+
+procedure_(Bool_, (Vector, has_next),
+(let Typex (Iterable), typex),
+(let Ptr (Cursor), cursor))
+	(Void) typex;
+	return cursor->index < cursor->vector->count;
+end

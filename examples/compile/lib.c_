@@ -1,0 +1,12 @@
+#include <specifiers._>
+
+#undef   public
+#define  public
+
+#define  LIB_C
+
+#include <abstract._>
+
+#include <c._>
+
+#include <lib._>

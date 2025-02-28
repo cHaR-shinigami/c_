@@ -1,0 +1,20 @@
+#ifndef   CHAIN__ITERATOR__
+#define   CHAIN__ITERATOR__
+
+#include "Chain._"
+
+protocol_(Node_*, (Chain, iterator),
+(let Ptr (Chain), this))
+	pre_(validate_(Chain, this));
+	Var node = solver_(Chain, iterator)(this);
+	guard_(node, NULL)
+	Var head = this->head;
+	post_ (node != head);
+	post_((!head implies  node->data == NULL));
+	post_((!head implies  node->next == node));
+	post_(( head implies  node->data == head->data));
+	post_(( head implies  node->next == head->next));
+	return node;
+end
+
+#endif

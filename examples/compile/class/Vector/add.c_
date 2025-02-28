@@ -1,0 +1,28 @@
+#include  "Vector._"
+
+procedure_(Vector_*, (Vector, add),
+(let  Ptr (Vector_), sum),
+(let  Ptr (Vector ), augend),
+(let  Ptr (Vector ), addend))
+	guard_(augend->count  <=  SIZE_MAX - addend->count, NULL)
+	Var join = validate_(sum)? sum : solver_(Vector, init)(type_(Vector),
+	(Tape){ &(Type){NULL}, &(Size){augend->count + addend->count} });
+	guard_(join, NULL)
+	Var   species = super(augend->species, addend->species);
+	join->species = join->species? super(join->species, species) : species;
+	Vector_ _augend[1] = {*augend};
+	Vector_ _addend[1] = {*addend};
+	_augend->type = (Type)typex_(Iterable, Vector);
+	_addend->type = (Type)typex_(Iterable, Vector);
+	Var   type = join->type;
+	join->type = (Type)typex_(Iterable, Vector);
+	Var it
+	=  solver_(Iterable, add)
+	(abstract_(Iterable, join),
+	 abstract_(Iterable,_augend),
+	 abstract_(Iterable,_addend));
+	join->type = type;
+	guard_(it, (test_(join != sum, free(join)), NULL))
+	post_ (it->concrete == join);
+	return join;
+end

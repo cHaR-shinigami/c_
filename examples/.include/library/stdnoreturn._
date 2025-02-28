@@ -1,0 +1,10 @@
+#ifndef STDNORETURN__
+#define STDNORETURN__
+
+#include <stdnoreturn.h>
+
+#define\
+ NORETURN\
+ noreturn
+
+#endif

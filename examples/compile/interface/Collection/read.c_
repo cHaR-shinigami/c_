@@ -1,0 +1,26 @@
+#include  "Collection._"
+
+procedure_(Collection_*, (Collection, read),
+(let Ptr  (Collection_), this),
+(let Stream, in))
+	guard_(validate_(Collection, this), NULL)
+	Var concrete = this->concrete_;
+	Var    typex = concrete_(this)->typex;
+	Var   append = typex->append;
+	Var  species = typex->species(concrete, NULL);
+	Var     init = species->init;
+	Var     read = species->read;
+	Var     free = species->free;
+{	Var_ object_ = NULL;
+	begin
+		guard_(object_ ||  (object_ = init(species, (Tape){NULL})))
+	{	Var data = read(object_, in);
+		guard_(data)
+		if (data == object_) object_ = NULL;
+		if (append(concrete, data)) continue_(fgetc(in) == '\n')
+		else free(data);
+	}	break;
+	again
+	if (object_) free(object_);
+}	return this;
+end

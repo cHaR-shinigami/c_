@@ -1,0 +1,12 @@
+#ifndef   RATIONAL__VALIDATE__
+#define   RATIONAL__VALIDATE__
+
+#include "Rational._"
+
+private inline Bool_ validator(let Float value)
+begin
+	return value >= RATIONAL_MIN  &&   value <= -RATIONAL_MIN_ABS
+	||     value <= RATIONAL_MAX  &&   value >=  RATIONAL_MIN_ABS;
+end
+
+#endif

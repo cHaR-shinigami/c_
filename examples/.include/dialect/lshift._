@@ -1,0 +1,87 @@
+#ifndef LSHIFT__
+#define LSHIFT__
+
+#include <widths._>
+
+ public UIntmax_ ulsh_0_c
+(	let UIntmax _n,
+	let ULLong  _s,
+	let ULLong  _w
+)
+{	guard_2_(_s < _w, 0)
+	guard_2_(_s < UINTMAX_WIDTH, 0)
+	return _n << _s;
+}
+#define ulsh_0_c_(n,s,...) ulsh_0_c(n, s, width_(typeof (n)))
+
+ public UIntmax_ ulsh_1_c
+(	let UIntmax _n,
+	let ULLong  _s,
+	let ULLong  _w,
+	let Site _site,
+	let Ptr_c(Char) _l,
+	let Ptr_c(Char) _r
+)
+{	if (_s >= _w) fprintf
+	(stderr, "Assertion failed: (ULLong)(%s) < width_(typeof (%s))", _r, _l);
+	elif (_s >= UINTMAX_WIDTH) fprintf
+	(stderr, "Assertion failed: (ULLong)(%s) < width_(UIntmax)",_r);
+	else return _n << _s;
+	fprintf(stderr,", function %s, file %s, line %d.\n",
+	_site.func, _site.file, _site.line);
+	fflush (stderr);
+	exit(1);
+}
+#define ulsh_1_c_(n,s,...) ulsh_1_c(n, s, width_(typeof (n)), SITE, __VA_ARGS__)
+
+#define ulsh_(n, ...) ((typeof (n)) debug_c_(ulsh_, LSHIFT__)\
+(echo_(n), 0|(__VA_ARGS__), #n, #__VA_ARGS__))
+
+ public  Intmax_  lsh_0_c
+(	let  Intmax _n,
+	let ULLong  _s,
+	let ULLong  _w
+)
+{	guard_2_(_s < _w, 0)
+	guard_2_(_s < INTMAX_WIDTH, 0)
+	let Intmax _mask = ((UIntmax)1 << _w-1)-1;
+	stop_2_ (_n >= 0, (UIntmax)_n << _s  &  _mask)
+	return -(Intmax)(((UIntmax)-(_n+1) + 1)<<_s & _mask);
+}
+#define  lsh_0_c_(n,s,...)  lsh_0_c(n, s, width_(typeof (n)))
+
+ public  Intmax_  lsh_1_c
+(	let  Intmax _n,
+	let ULLong  _s,
+	let ULLong  _w,
+	let Site _site,
+	let Ptr_c(Char) _l,
+	let Ptr_c(Char) _r
+)
+{	if (_s >= _w) fprintf
+	(stderr, "Assertion failed: (ULLong)(%s) < width_(typeof (%s))", _r, _l);
+	elif (_s >= INTMAX_WIDTH) fprintf
+	(stderr, "Assertion failed: (ULLong)(%s) < width_(Intmax)", _r);
+	else
+	{	let Intmax _mask = ((UIntmax)1 << _w-1)-1;
+		stop_2_ (_n >= 0, (UIntmax)_n << _s  &  _mask)
+		return -(Intmax)(((UIntmax)-(_n+1) + 1)<<_s & _mask);
+	}
+	fprintf(stderr,", function %s, file %s, line %d.\n",
+	_site.func, _site.file, _site.line);
+	fflush (stderr);
+	exit(1);
+}
+#define  lsh_1_c_(n,s,...)  lsh_1_c(n, s, width_(typeof (n)), SITE, __VA_ARGS__)
+
+#define  lsh_(n, ...) ((typeof (n)) debug_c_( lsh_, LSHIFT__)\
+(echo_(n), 0|(__VA_ARGS__), #n, #__VA_ARGS__))
+
+#endif
+
+#undef  LSHIFT__
+#ifndef DEBUG
+#define LSHIFT__ 0
+#else
+#define LSHIFT__ 1
+#endif

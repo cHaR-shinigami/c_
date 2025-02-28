@@ -1,0 +1,50 @@
+#include  "Collection._"
+
+procedure_(Encoding_ *, (Collection, encode),
+(let  Ptr (Collection), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Encoding_) , out))
+	Var concrete = this->concrete;
+	Var    typex = concrete_(this)->typex->base;
+	Var    count = typex->count(concrete);
+	if_(!count)
+		Var enc = out? out : malloc(1);
+		if (enc) *(UByte_ *)enc = '\0';
+		return enc;
+	end
+	Var parts = new__(Encoding_ * [count]);
+	guard_(parts, NULL)
+	Var sizes = new__(Size_ [count]);
+	guard_(sizes, (free(parts), NULL))
+	Var_ len_ = (Size)1;
+{	Var iterator = typex->iterator(concrete);
+	guard_(iterator, (free(parts), free(sizes), NULL))
+	Var get_next = typex->get_next;
+	for_(Var_ i_ = (Size)0; i_ < count; i_++)
+		Size_ length_ = 1;
+		if_(!((*parts)[i_] = encode__(get_next(typex, iterator),&length_,NULL)))
+			while (i_--) free((*parts)[i_]);
+			free(iterator);
+			free(sizes);
+			free(parts);
+			return NULL;
+		end
+		len_ += ((*sizes)[i_] = length_);
+	end
+	free(iterator);
+}	Var enc = (out &&  *length >= len_)? out : new__(UByte_ [len_]);
+	*length = len_;
+	if_(enc)
+		Var_ enc_ = *enc;
+		for_(Var_ i_ = (Size)0; i_ < count; i_++)
+			Var size  =  (*sizes)[i_];
+			memcpy(enc_, (*parts)[i_], size);
+			enc_ += size;
+		end
+		*enc_ = '\0';
+	end
+	for (Var_ i_ = count; i_--;) free((*parts)[i_]);
+	free(sizes);
+	free(parts);
+	return enc ;
+end

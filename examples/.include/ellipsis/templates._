@@ -1,0 +1,128 @@
+#ifndef TEMPLATES__
+#define TEMPLATES__
+
+#include <abacus._>
+
+#define  apply_c_(l, f, r) (f(l, r))
+
+#define   turn_c_(...)   mux_0_c_(__VA_ARGS__, mux_1_c_(__VA_ARGS__,))
+
+#define   wrap_c_(args) (pop_ top_(args,)), pop_(args,) (top_ top_(args,))
+
+#define unwrap_c_(args) (pop_ top_(args,)), pop_(args,)\
+ top_(echo_ echo_(top_ top_(args,)),)
+
+#define omni3_c_(n, o, max) echo_(pop_ C_(echo_c_(o__\
+(unwrap_c_, n, ((right_(MOD_(max, n), echo_ top_ C_(o)),))))))
+
+#define omni2_c_(_l_, _f_, _r_) (pop_ C_(echo_ _l_,\
+ apply_c_(peel_(echo_(top_ C_(echo_ _l_,))),\
+  echo_c_(mux_1_c_ C_(echo_c_ _f_,)),\
+  echo_c_(mux_1_c_ C_(echo_c_ _r_,))))),\
+ (turn_c_ _f_), (turn_c_ _r_)
+
+#define omni1_c_(...) omni2_c_(__VA_ARGS__)
+
+#define omni0_c_(n, _l_, _f_, _r_, max) omni3_c_\
+(n, o__(omni1_c_, max , (_l_, _f_, _r_)), max)
+
+#define omni__c_(n, _l_, _f_, _r_) omni0_c_(n, (pop_ C_(echo_\
+(o__(wrap_c_, n, ((echo_ _l_,)))))), _f_, _r_, MAX_(n, COUNT_ _r_))
+
+#define omni__(args, f, ...) omni__c_(COUNT_(peel_(args)), (peel_(args)),\
+ (f), (echo_c_(peel_c_ C_(echo_c_(thing_c_)__VA_ARGS__))))
+
+#define lgate_c_(_l_f_, r) pop_ _l_f_(top_ _l_f_)(r)
+
+#define rgate_c_(l, _r_f_) pop_ _r_f_(l)(top_ _r_f_)
+
+#define gate_c_(lc, l, f, rc, r) mux_c_(GE_(lc, rc))\
+(omni__((omni__(echo_(l),, (head_(lc, f)))), lgate_c_, echo_(r)),\
+ omni__(echo_(l), rgate_c_, (omni__(echo_(r),, (head_(rc, f))))))
+
+#define gate__(args, f, ...) gate_c_(COUNT_(peel_(args)), peel_(args),\
+ echo_(f), COUNT_(peel_(__VA_ARGS__)), peel_(__VA_ARGS__))
+
+#define FILTER_(f, args, ...) compress_((__VA_ARGS__),\
+ omni__((__VA_ARGS__), echo_c_(f), echo_(args)))
+
+#define SEARCH_(f, args, ...) compress_((RANGE_C_(COUNT_(__VA_ARGS__))),\
+ omni__((__VA_ARGS__), echo_c_(f), echo_(args)))
+
+#define REL_0_(args, f, ...) gate__(1, AND_,\
+  omni__(echo_(args), peel_(f), echo_(__VA_ARGS__)))
+
+#define REL_2_(f, ...) mux_(DEC_(COUNT_(peel_(__VA_ARGS__))))(REL_0_\
+((xtail_(1, peel_(__VA_ARGS__))), echo_c_(f), (pop_ C_(peel_(__VA_ARGS__)))), 1)
+
+#define REL_(args, ...) get_(COUNT_(__VA_ARGS__),\
+     REL_0_, , REL_2_)(echo_(args), __VA_ARGS__)
+
+#define lr_c_(l, r) l r
+
+#define rl_c_(l, r) r l
+
+#define glue__(glue, ...) mux_(DEC_(COUNT_(__VA_ARGS__)))\
+(omni__((top_(__VA_ARGS__)), lr_c_,\
+(omni__((pop_(__VA_ARGS__)), rl_c_,\
+     glue))), __VA_ARGS__)
+
+#define mapper_c_(f, arg) f(arg)
+
+#define map0_c_(o) echo_(pop_ C_(o))
+
+#define map__c_(_f_, ...) (turn_c_ _f_) , pop_(__VA_ARGS__,\
+     mapper_c_(mux_1_c_ C_(echo_c_ _f_,), top_(__VA_ARGS__,)))
+
+#define map_c_(...)   map__c_(__VA_ARGS__)
+
+#define map__(f, ...) map0_c_(o__(map_c_,\
+  COUNT_(__VA_ARGS__) , ((f), __VA_ARGS__)))
+
+#define wrap__c_(_arg_, f) (echo_c_(f)_arg_)
+
+#define wrap__(f, ...) omni__((__VA_ARGS__), wrap__c_, (f))
+
+#define fold__(f, ...) mux_(DEC_(COUNT_(__VA_ARGS__)))\
+(omni__((top_(__VA_ARGS__)), echo_c_(f), (pop_(__VA_ARGS__))), __VA_ARGS__)
+
+#define reduce__c_(_f_, _arg_, ...) (turn_c_ _f_),\
+ apply_c_(peel_(top_(__VA_ARGS__,)), mux_1_c_ C_(echo_c_ _f_,), echo_ _arg_),\
+ pop_(__VA_ARGS__,)
+
+#define reduce_c_(...) reduce__c_(__VA_ARGS__)
+
+#define reduce1_c_(o) peel_(echo_(top_ C_(echo_(pop_ C_(o)))))
+
+#define reduce0_c_(_f_, n, _args_) mux_(n)\
+(reduce1_c_(o__(reduce_c_, n, (_f_, map__(, reverse_ _args_),))), _args_)
+
+#define reduce__(f, ...) reduce0_c_((f),\
+ DEC_(COUNT_(__VA_ARGS__)), (__VA_ARGS__))
+
+#define  op_c_(lc, l, op, rc, r) map__(, mux_c_(GE_(lc, rc))\
+(omni__((omni__((map__(, l)), lr_c_, (head_(lc, op)))), lr_c_, (map__(, r))),\
+ omni__((map__(, l)), lr_c_, (omni__((map__(, r)), rl_c_, (head_(rc, op)))))))
+
+#define  op__0__(args, op, ...)  op_c_(COUNT_(peel_(args)), peel_(args),\
+ peel_(op), COUNT_(peel_(__VA_ARGS__)), peel_(__VA_ARGS__))
+
+#define  op__2__(op, ...) map__(, map__(peel_(op), peel_(__VA_ARGS__)))
+
+#define  op__(arg, ...) get_(COUNT_(__VA_ARGS__),\
+   op__0__, ,  op__2__)(echo_(arg), __VA_ARGS__)
+
+#define rel_c_(lc, l, op, rc, r) (glue__(&&, mux_c_(GE_(lc, rc))\
+(omni__((omni__((map__(, l)), lr_c_, (head_(lc, op)))), lr_c_, (map__(, r))),\
+ omni__((omni__((map__(, r)), rl_c_, (head_(rc, op)))), rl_c_, (map__(, l))))))
+
+#define rel__0__(args, op, ...) rel_c_(COUNT_(peel_(args)), peel_(args),\
+ peel_(op), COUNT_(peel_(__VA_ARGS__)), peel_(__VA_ARGS__))
+
+#define rel__2__(op, ...) mux_(DEC_(COUNT_(peel_(__VA_ARGS__))))(rel__0__\
+((xtail_(1, peel_(__VA_ARGS__))), echo_(op), (pop_ C_(peel_(__VA_ARGS__)))), 1)
+
+#define rel__(arg, ...) get_(COUNT_(__VA_ARGS__),\
+  rel__0__, , rel__2__)(echo_(arg), __VA_ARGS__)
+
+#endif

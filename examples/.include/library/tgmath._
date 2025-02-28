@@ -1,0 +1,10 @@
+#ifndef TGMATH__
+#define TGMATH__
+
+#include <tgmath.h>
+
+#include <math._>
+
+#include <complex._>
+
+#endif

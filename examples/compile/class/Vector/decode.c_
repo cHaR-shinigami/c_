@@ -1,0 +1,12 @@
+#include  "Vector._"
+
+procedure_(Vector_*, (Vector, decode),
+(let  Ptr (Vector_), this),
+(let  Ptr (Size_), len),
+(let  Ptr (Encoding), in))
+	Var   type = this->type;
+	this->type = (Type)typex_(Collection, Vector);
+	Var col = solver_(Collection, decode)(abstract_(Collection, this), len, in);
+	this->type = type;
+	return col? col->concrete_ : NULL;
+end

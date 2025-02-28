@@ -1,0 +1,379 @@
+#ifndef MATH__
+#define MATH__
+
+#include <math.h>
+
+#include <specifiers._>
+
+#include <lib_c._>
+
+typedef_c_
+( Float_t,
+  float_t)
+
+typedef_c_
+(Double_t,
+ double_t)
+
+#define\
+  fpclassify_(...)\
+  fpclassify (__VA_ARGS__)
+
+#define\
+ iscanonical_(...)\
+ iscanonical (__VA_ARGS__)
+
+#define\
+    isfinite_(...)\
+    isfinite (__VA_ARGS__)
+
+#define\
+       isinf_(...)\
+       isinf (__VA_ARGS__)
+
+#define\
+       isnan_(...)\
+       isnan (__VA_ARGS__)
+
+#define\
+    isnormal_(...)\
+    isnormal (__VA_ARGS__)
+
+#define\
+ issignaling_(...)\
+ issignaling (__VA_ARGS__)
+
+#define\
+ issubnormal_(...)\
+ issubnormal (__VA_ARGS__)
+
+#define\
+      iszero_(...)\
+      iszero (__VA_ARGS__)
+
+#define\
+     signbit_(...)\
+     signbit (__VA_ARGS__)
+
+#define   powf_( ...) extend_c_\
+( Float , powf , echo_(__VA_ARGS__))
+
+#define   pow_(  ...) extend_c_\
+( Double, pow  , echo_(__VA_ARGS__))
+
+#define   powl_( ...) extend_c_\
+(LDouble, powl , echo_(__VA_ARGS__))
+
+#define   pownf_(...) extend_c_\
+( Float , pownf, echo_(__VA_ARGS__))
+
+#define   pown_( ...) extend_c_\
+( Double, pown , echo_(__VA_ARGS__))
+
+#define   pownl_(...) extend_c_\
+(LDouble, pownl, echo_(__VA_ARGS__))
+
+#define   powrf_(...) extend_c_\
+( Float , powrf, echo_(__VA_ARGS__))
+
+#define   powr_( ...) extend_c_\
+( Double, powr , echo_(__VA_ARGS__))
+
+#define   powrl_(...) extend_c_\
+(LDouble, powrl, echo_(__VA_ARGS__))
+
+#define   fmaxf_(...) extend_c_\
+( Float , fmaxf, echo_(__VA_ARGS__))
+
+#define   fmax_( ...) extend_c_\
+( Double, fmax , echo_(__VA_ARGS__))
+
+#define   fmaxl_(...) extend_c_\
+(LDouble, fmaxl, echo_(__VA_ARGS__))
+
+#define   fminf_(...) extend_c_\
+( Float , fminf, echo_(__VA_ARGS__))
+
+#define   fmin_( ...) extend_c_\
+( Double, fmin , echo_(__VA_ARGS__))
+
+#define   fminl_(...) extend_c_\
+(LDouble, fminl, echo_(__VA_ARGS__))
+
+#define   fmaximumf_(...) extend_c_\
+( Float , fmaximumf, echo_(__VA_ARGS__))
+
+#define   fmaximum_( ...) extend_c_\
+( Double, fmaximum , echo_(__VA_ARGS__))
+
+#define   fmaximuml_(...) extend_c_\
+(LDouble, fmaximuml, echo_(__VA_ARGS__))
+
+#define   fminimumf_(...) extend_c_\
+( Float , fminimumf, echo_(__VA_ARGS__))
+
+#define   fminimum_( ...) extend_c_\
+( Double, fminimum , echo_(__VA_ARGS__))
+
+#define   fminimuml_(...) extend_c_\
+(LDouble, fminimuml, echo_(__VA_ARGS__))
+
+#define   fmaximum_magf_(...) extend_c_\
+( Float , fmaximum_magf, echo_(__VA_ARGS__))
+
+#define   fmaximum_mag_( ...) extend_c_\
+( Double, fmaximum_mag , echo_(__VA_ARGS__))
+
+#define   fmaximum_magl_(...) extend_c_\
+(LDouble, fmaximum_magl, echo_(__VA_ARGS__))
+
+#define   fminimum_magf_(...) extend_c_\
+( Float , fminimum_magf, echo_(__VA_ARGS__))
+
+#define   fminimum_mag_( ...) extend_c_\
+( Double, fminimum_mag , echo_(__VA_ARGS__))
+
+#define   fminimum_magl_(...) extend_c_\
+(LDouble, fminimum_magl, echo_(__VA_ARGS__))
+
+#define   fmaximum_numf_(...) extend_c_\
+( Float , fmaximum_numf, echo_(__VA_ARGS__))
+
+#define   fmaximum_num_( ...) extend_c_\
+( Double, fmaximum_num , echo_(__VA_ARGS__))
+
+#define   fmaximum_numl_(...) extend_c_\
+(LDouble, fmaximum_numl, echo_(__VA_ARGS__))
+
+#define   fminimum_numf_(...) extend_c_\
+( Float , fminimum_numf, echo_(__VA_ARGS__))
+
+#define   fminimum_num_( ...) extend_c_\
+( Double, fminimum_num , echo_(__VA_ARGS__))
+
+#define   fminimum_numl_(...) extend_c_\
+(LDouble, fminimum_numl, echo_(__VA_ARGS__))
+
+#define   fmaximum_mag_numf_(...) extend_c_\
+( Float , fmaximum_mag_numf, echo_(__VA_ARGS__))
+
+#define   fmaximum_mag_num_( ...) extend_c_\
+( Double, fmaximum_mag_num , echo_(__VA_ARGS__))
+
+#define   fmaximum_mag_numl_(...) extend_c_\
+(LDouble, fmaximum_mag_numl, echo_(__VA_ARGS__))
+
+#define   fminimum_mag_numf_(...) extend_c_\
+( Float , fminimum_mag_numf, echo_(__VA_ARGS__))
+
+#define   fminimum_mag_num_( ...) extend_c_\
+( Double, fminimum_mag_num , echo_(__VA_ARGS__))
+
+#define   fminimum_mag_numl_(...) extend_c_\
+(LDouble, fminimum_mag_numl, echo_(__VA_ARGS__))
+
+#define   fadd_( ...) extend_c_\
+(  Float, fadd , (__VA_ARGS__))
+
+#define   faddl_(...) extend_c_\
+(  Float, faddl, (__VA_ARGS__))
+
+#define   daddl_(...) extend_c_\
+( Double, daddl, (__VA_ARGS__))
+
+#define   fmul_( ...) extend_c_\
+(  Float, fmul , (__VA_ARGS__))
+
+#define   fmull_(...) extend_c_\
+(  Float, fmull, (__VA_ARGS__))
+
+#define   dmull_(...) extend_c_\
+( Double, dmull, (__VA_ARGS__))
+
+#ifdef  __STDC_IEC_60559_DFP__
+
+#define      powd32_(  ...) extend_c_\
+(Decimal32 , powd32  , echo_(__VA_ARGS__))
+
+#define      powd64_(  ...) extend_c_\
+(Decimal64 , powd64  , echo_(__VA_ARGS__))
+
+#define      powd128_( ...) extend_c_\
+(Decimal128, powd128 , echo_(__VA_ARGS__))
+
+#define      pownd32_( ...) extend_c_\
+(Decimal32 , pownd32 , echo_(__VA_ARGS__))
+
+#define      pownd64_( ...) extend_c_\
+(Decimal64 , pownd64 , echo_(__VA_ARGS__))
+
+#define      pownd128_(...) extend_c_\
+(Decimal128, pownd128, echo_(__VA_ARGS__))
+
+#define      powrd32_( ...) extend_c_\
+(Decimal32 , powrd32 , echo_(__VA_ARGS__))
+
+#define      powrd64_( ...) extend_c_\
+(Decimal64 , powrd64 , echo_(__VA_ARGS__))
+
+#define      powrd128_(...) extend_c_\
+(Decimal128, powrd128, echo_(__VA_ARGS__))
+
+#define      fmaxd32_( ...) extend_c_\
+(Decimal32 , fmaxd32 , echo_(__VA_ARGS__))
+
+#define      fmaxd64_( ...) extend_c_\
+(Decimal64 , fmaxd64 , echo_(__VA_ARGS__))
+
+#define      fmaxd128_(...) extend_c_\
+(Decimal128, fmaxd128, echo_(__VA_ARGS__))
+
+#define      fmind32_( ...) extend_c_\
+(Decimal32 , fmind32 , echo_(__VA_ARGS__))
+
+#define      fmind64_( ...) extend_c_\
+(Decimal64 , fmind64 , echo_(__VA_ARGS__))
+
+#define      fmind128_(...) extend_c_\
+(Decimal128, fmind128, echo_(__VA_ARGS__))
+
+#define      fmaximumd32_( ...) extend_c_\
+(Decimal32 , fmaximumd32 , echo_(__VA_ARGS__))
+
+#define      fmaximumd64_( ...) extend_c_\
+(Decimal64 , fmaximumd64 , echo_(__VA_ARGS__))
+
+#define      fmaximumd128_(...) extend_c_\
+(Decimal128, fmaximumd128, echo_(__VA_ARGS__))
+
+#define      fminimumd32_( ...) extend_c_\
+(Decimal32 , fminimumd32 , echo_(__VA_ARGS__))
+
+#define      fminimumd64_( ...) extend_c_\
+(Decimal64 , fminimumd64 , echo_(__VA_ARGS__))
+
+#define      fminimumd128_(...) extend_c_\
+(Decimal128, fminimumd128, echo_(__VA_ARGS__))
+
+#define      fmaximum_magd32_( ...) extend_c_\
+(Decimal32 , fmaximum_magd32 , echo_(__VA_ARGS__))
+
+#define      fmaximum_magd64_( ...) extend_c_\
+(Decimal64 , fmaximum_magd64 , echo_(__VA_ARGS__))
+
+#define      fmaximum_magd128_(...) extend_c_\
+(Decimal128, fmaximum_magd128, echo_(__VA_ARGS__))
+
+#define      fminimum_magd32_( ...) extend_c_\
+(Decimal32 , fminimum_magd32 , echo_(__VA_ARGS__))
+
+#define      fminimum_magd64_( ...) extend_c_\
+(Decimal64 , fminimum_magd64 , echo_(__VA_ARGS__))
+
+#define      fminimum_magd128_(...) extend_c_\
+(Decimal128, fminimum_magd128, echo_(__VA_ARGS__))
+
+#define      fmaximum_numd32_( ...) extend_c_\
+(Decimal32 , fmaximum_numd32 , echo_(__VA_ARGS__))
+
+#define      fmaximum_numd64_( ...) extend_c_\
+(Decimal64 , fmaximum_numd64 , echo_(__VA_ARGS__))
+
+#define      fmaximum_numd128_(...) extend_c_\
+(Decimal128, fmaximum_numd128, echo_(__VA_ARGS__))
+
+#define      fminimum_numd32_( ...) extend_c_\
+(Decimal32 , fminimum_numd32 , echo_(__VA_ARGS__))
+
+#define      fminimum_numd64_( ...) extend_c_\
+(Decimal64 , fminimum_numd64 , echo_(__VA_ARGS__))
+
+#define      fminimum_numd128_(...) extend_c_\
+(Decimal128, fminimum_numd128, echo_(__VA_ARGS__))
+
+#define      fmaximum_mag_numd32_( ...) extend_c_\
+(Decimal32 , fmaximum_mag_numd32 , echo_(__VA_ARGS__))
+
+#define      fmaximum_mag_numd64_( ...) extend_c_\
+(Decimal64 , fmaximum_mag_numd64 , echo_(__VA_ARGS__))
+
+#define      fmaximum_mag_numd128_(...) extend_c_\
+(Decimal128, fmaximum_mag_numd128, echo_(__VA_ARGS__))
+
+#define      fminimum_mag_numd32_( ...) extend_c_\
+(Decimal32 , fminimum_mag_numd32 , echo_(__VA_ARGS__))
+
+#define      fminimum_mag_numd64_( ...) extend_c_\
+(Decimal64 , fminimum_mag_numd64 , echo_(__VA_ARGS__))
+
+#define      fminimum_mag_numd128_(...) extend_c_\
+(Decimal128, fminimum_mag_numd128, echo_(__VA_ARGS__))
+
+#define      d32addd64_( ...) extend_c_\
+( Decimal32, d32addd64 , (__VA_ARGS__))
+
+#define      d32addd128_(...) extend_c_\
+( Decimal32, d32addd128, (__VA_ARGS__))
+
+#define      d64addd128_(...) extend_c_\
+( Decimal64, d64addd128, (__VA_ARGS__))
+
+#define      d32muld64_( ...) extend_c_\
+( Decimal32, d32muld64 , (__VA_ARGS__))
+
+#define      d32muld128_(...) extend_c_\
+( Decimal32, d32muld128, (__VA_ARGS__))
+
+#define      d64muld128_(...) extend_c_\
+( Decimal64, d64muld128, (__VA_ARGS__))
+
+#endif
+
+#define\
+      isgreater_(...)\
+      isgreater (__VA_ARGS__)
+
+#define\
+ isgreaterequal_(...)\
+ isgreaterequal (__VA_ARGS__)
+
+#define\
+         isless_(...)\
+         isless (__VA_ARGS__)
+
+#define\
+    islessequal_(...)\
+    islessequal (__VA_ARGS__)
+
+#define\
+  islessgreater_(...)\
+  islessgreater (__VA_ARGS__)
+
+#define\
+    isunordered_(...)\
+    isunordered (__VA_ARGS__)
+
+#define\
+        iseqsig_(...)\
+        iseqsig (__VA_ARGS__)
+
+#endif
+
+#ifdef  __STDC_IEC_60559_DFP__
+#ifdef  __STDC_WANT_IEC_60559_EXT__
+
+#ifndef MATH_C
+#define MATH_C
+
+typedef_c_
+(Decimal32_t,
+_Decimal32_t)
+
+typedef_c_
+(Decimal64_t,
+_Decimal64_t)
+
+#endif
+
+#endif
+#endif

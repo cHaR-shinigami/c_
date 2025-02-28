@@ -1,0 +1,15 @@
+#include  "Rational/validate._"
+
+procedure_(Rational_*, (Rational, div),
+(let  Ptr (Rational_), output),
+(let  Ptr (Rational ), dividend),
+(let  Ptr (Rational ), divisor))
+	guard_(divisor->value , NULL)
+	Var value  =  dividend->value / divisor->value;
+	guard_(validator(value), NULL)
+	Var result = need__(output);
+	guard_(result, NULL)
+	if (!output) result->type = type_(Rational);
+	result->value = value;
+	return result;
+end

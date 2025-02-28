@@ -1,0 +1,19 @@
+#include  "Unsigned._"
+
+procedure_(Unsigned_*, (Unsigned, decode),
+(let  Ptr (Unsigned_), this),
+(let  Ptr (Size_), length),
+(let  Ptr (Encoding), in))
+	guard_(8 <= *length, NULL)
+	*length = 8;
+	this->value =
+	 ((*in)[0] & 255)  +
+	(((*in)[1] & 255U  ) << 8 ) +
+	(((*in)[2] & 255UL ) << 16) +
+	(((*in)[3] & 255UL ) << 24) +
+	(((*in)[4] & 255ULL) << 32) +
+	(((*in)[5] & 255ULL) << 40) +
+	(((*in)[6] & 255ULL) << 48) +
+	(((*in)[7] & 255ULL) << 56) ;
+	return this;
+end

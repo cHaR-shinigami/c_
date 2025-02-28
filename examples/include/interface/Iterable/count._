@@ -1,0 +1,13 @@
+#ifndef   ITERABLE__COUNT__
+#define   ITERABLE__COUNT__
+
+#include "Iterable._"
+
+private
+protocol_(Size_, (Iterable, count),
+(let Ptr (Iterable), this))
+	pre_ (validate_(Iterable, this));
+	return solver_(Iterable, count)(this);
+end
+
+#endif

@@ -1,0 +1,7 @@
+#include "Collection/append._"
+
+procedure_(Bool_, (Collection, append),
+(let Ptr (Collection), this),
+(let Ptr (Void), data))
+	return concrete_(this)->typex->append(this->concrete, data);
+end

@@ -1,0 +1,6 @@
+#ifndef FLOAT__
+#define FLOAT__
+
+#include <float.h>
+
+#endif

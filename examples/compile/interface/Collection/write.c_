@@ -1,0 +1,17 @@
+#include "Collection._"
+
+procedure_(LLong_, (Collection, write),
+(let Ptr (Collection), this),
+(let Stream, out))
+	Var  concrete = this->concrete;
+	Var     typex = concrete_(this)->typex->base;
+	Var_ written_ = 0LL;
+{	Var  iterator = typex->iterator(concrete);
+	guard_(iterator, -1)
+	Var get_next = typex->get_next;
+	for (Var_  count_ = typex->count(concrete); count_--; written_++)
+		guard_(write_(get_next(typex, iterator), out) >= 0
+		&&  fputc('\n', out) > 0)
+	free(iterator);
+}	return written_;
+end
