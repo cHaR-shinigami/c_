@@ -1,3 +1,5 @@
+#ifndef __STDC_NO_THREADS__
+
 #ifndef ONCE_C__
 #define ONCE_C__
 
@@ -8,5 +10,7 @@
 typedef_c_
 (Once_flag,
  once_flag)
+
+#endif
 
 #endif
