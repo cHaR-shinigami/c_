@@ -1,0 +1,8 @@
+\tt{<join._>} defines the type synonyms \type{Sentence} and \type{WSentence}:
+\tt{Sentence} is a non-modifiable array of \tt{Ptr(Char)}, and
+\tt{WSentence} is a non-modifiable array of \tt{Ptr(WChar)};
+the modifiable counterparts are \tt{Sentence_} and \tt{WSentence_}.
+
+\note For both array types, the element type is pointer to non-modifiable
+data (\tt{Char} or \tt{WChar}); in particular, other similar arrays of pointer
+to modifiable data (\tt{Char_} or \tt{WChar_}) will not be compatible by type.

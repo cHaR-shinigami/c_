@@ -1,0 +1,65 @@
+\head{Syntax}
+
+\tt{# include <join._>}
+
+\idx{join__}\s\s\s\s\tt{(} $sentence$
+[\tt{,} $separator$ [\tt{,} $range$]] \tt{)}
+
+\idx{join__1__}\s\tt{(} $sentence$ \tt{)}
+
+\idx{join__2__}\s\tt{(} $sentence$
+\phantom{[}\tt{,} $separator$\phantom{]} \tt{)}
+
+\idx{join__3__}\s\tt{(} $sentence$
+\phantom{[}\tt{,} $separator$ \phantom{[}\tt{,} $range$\phantom{]]} \tt{)}
+
+\head{Constraints}
+
+$sentence$ shall be a pointer to \tt{Sentence} or \tt{WSentence}.
+
+If $sentence$ is a pointer to \tt{Sentence}, then $separator$
+shall be of type \tt{String} or pointer to \tt{Char};\\
+otherwise $sentence$ is a pointer to \tt{WSentence}, and
+$separator$ shall be of type \tt{WString} or pointer to \tt{WChar}.
+
+$range$ shall be an expression whose type is \tt{Range (Int)}.
+
+\head{Semantics}
+
+\tt{join__} invokes \tt{join__}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+\tt{join__1__} concatenates the (wide) strings pointed to by the elements
+of $sentence$, with a space between every pair of consecutive elements.
+\tt{join__3__} concatenates only the elements at
+indices specified by $range$, and in the given order.
+For \tt{join__2__} and \tt{join__3__}, $separator$
+is placed between every pair of consecutive elements.
+In all cases, a newline is placed after the concatenated (wide)
+string, followed by a null (wide) character to mark the end.
+
+If $sentence$ is a pointer to \tt{Sentence}, the outcome is a pointer to
+\tt{String_} (modifiable array of characters); otherwise $sentence$ is a
+pointer to \tt{WSentence}, and the outcome is a pointer to \tt{WString_}
+(modifiable array of wide characters).
+In both cases, the array allocation is obtained with \tt{malloc} (or equivalent),
+and it can be deallocated by passing the pointer to  \tt{free};
+the pointer is null if the required allocation is not available.
+The array is of incomplete type, and if the outcome is not null, then the
+array length can be obtained by calling \tt{strlen} or \tt{wcslen} function.
+
+If an element of $sentence$ is a null pointer, that element is ignored.
+The behavior is undefined if $separator$ or any non-null element of $sentence$
+points to a (wide) character array that is not terminated by a null (wide) character.
+
+When compiled with \tt{JOIN__} expanding to \tt{1}, only the argument
+pointers are asserted to be not null, as done by \tt{notnull__}.
+When compiled with \tt{JOIN__} expanding to \tt{0},
+the outcome is null if $sentence$ is null.
+If $separator$ is null, a (wide) space is placed between elements.
+If $range$ is null, all non-null elements of $sentence$ array are joined.
+
+\note If the element type of $sentence$ array is a pointer
+to \tt{Char_} or \tt{WChar_}, then $sentence$ should be cast
+to \tt{Ptr (Sentence)} or \tt{Ptr (WSentence)}; the cast is
+safe and it is used to avoid qualifier mismatch in element type.

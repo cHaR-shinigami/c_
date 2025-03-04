@@ -1,0 +1,53 @@
+The header \tt{<omni._>} defines the macro \tt{OMNI__} that configures
+the behavior of \tt{omni_} family; \tt{OMNI__} records the \tt{defined}
+state of \tt{DEBUG} macro whenever \tt{<omni._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <omni._>}
+
+\idx{omni_}\s\s\s\tt{(} [$destination$ \tt{,}]
+\it{left-operand} \tt{,} $function$ \tt{,} \it{right-operand} \tt{)}
+
+\idx{omni_3_}\s\tt{(} \phantom{[}\it{left-operand} \tt{,}\phantom{]}
+$function$ \tt{,} \it{right-operand} \tt{)}
+
+\idx{omni_4_}\s\tt{(} \phantom{[}$destination$ \tt{,}\phantom{]}
+\it{left-operand} \tt{,} $function$ \tt{,} \it{right-operand} \tt{)}
+
+\head{Constraints}
+
+$destination$, \it{left-operand}, and \it{right-operand} shall have
+scalar types: if the type is a pointer type, then it shall be pointer
+to a complete array; otherwise the type shall be an arithmetic type.
+\it{left-operand} (for \tt{omni_3_}) and $destination$ (for \tt{omni_4_})
+shall be pointer to a modifiable array, or a modifiable lvalue whose
+address can be obtained with the \tt{&} operator, interpreted as
+pointer to an array having a single element of arithmetic type.
+
+$function$ shall be a function type expression that can be called with an element
+of \it{left-operand} as the first argument and an element of \it{right-operand}
+as the second argument, without requiring type cast for each argument.
+
+\head{Semantics}
+
+\tt{omni_} invokes \tt{omni_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+These features are modeled after  \tt{omni__} macro from the ellipsis
+framework (provided by the header \tt{<templates._>}), and their operational
+semantics are identical (the precise behavior is described in chapter 4).
+If $destination$, \it{left-operand}, or \it{right-operand} has an
+arithmetic type, it is interpreted as an array having a single element.
+\tt{omni_3_} stores the return values in \it{left-operand} itself, whereas
+\tt{omni_4_} stores them in $destination$ (so \it{left-operand} can be pointer
+to a non-modifiable array or an arithmetic expression that is not an lvalue).
+If length of $destination$ is $n$ and $n$ is less than length of
+\it{right-operand}, then only the first $n$ elements of \it{right-operand}
+are used; all elements of \it{right-operand} are utilized.
+
+\note If \it{left-operand} array is shorter than \it{right-operand} array,
+then elements will be reused from \it{left-operand} in a round-robin sequence
+(going back to the first element after using the last one);
+however, \tt{omni_4_} stores the return values in $destination$, so the earlier
+results will be used instead of the original value(s) from \it{left-operand}.

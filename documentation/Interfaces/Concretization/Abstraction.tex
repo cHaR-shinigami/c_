@@ -1,0 +1,44 @@
+The \tt{abstract_} family can be used to wrap a class
+instance within a new instance of an interface that is
+concretized by the class, or by one of its ancestor classes;
+this wrapped class instance can be used with methods of the interface.
+
+\note Since all interfaces inherit from the \tt{Abstract} type
+(either directly or indirectly), the concretizing class of any
+interface must have an ancestor class that concretizes a direct
+descendant of \tt{Abstract} (it can be the same class itself).
+Therefore, the instance of any class can be wrapped as
+the \tt{concrete} member of an \tt{Abstract} instance.
+
+\head{Syntax}
+
+\idx{abstract_}\s\s\s\tt{(} [\it{interface-name}\tt{=Abstract} \tt{,}] \it{expression} \tt{)}
+
+\idx{abstract_1_}\s\tt{(} \it{expression} \tt{)}
+
+\idx{abstract_2_}\s\tt{(} \phantom{[}\it{interface-name} \tt{,}\phantom{]} \it{expression} \tt{)}
+
+\head{Constraints}
+
+\it{expression} shall be pointer to an object type.
+
+\head{Semantics}
+
+\tt{abstract_} invokes \tt{abstract_}$n$\_ if the
+expanded argument sequence contains  $n$ arguments.
+
+\tt{abstract_1_(}\it{expression}\tt{)} is equivalent to
+\tt{abstract_2_(Abstract,} \it{expression}\tt{)}.
+
+\tt{abstract_2_} creates an lvalue of type \tt{struct} \it{interface-name},
+whose \tt{type} member is initialized with \tt{type_(}\\\it{interface-name}\tt{)},
+and \tt{concrete} member is initialized with $expression$.
+This lvalue has automatic storage duration, and its lifetime
+is limited to the nearest enclosing block where it is created.
+
+\note If \it{expression} points to an instance of class \it{class-name},
+then the wrapped instance can be correctly used with methods of
+\it{interface-name} only if \tt{(}\it{expression}\tt{)->type} points to
+\tt{typex_(}\it{interface-name}\tt{,} \it{class-name}\tt{)},
+which provides the necessary concrete procedures (as function pointers);
+otherwise the behavior is undefined.

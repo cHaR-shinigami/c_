@@ -1,0 +1,14 @@
+\head{Syntax}
+
+\tt{break_ (} \it{condition} \tt{)}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression.
+\tt{break_} shall be used only within an iteration block, a switch block,
+or a C\_ block that can be lexically closed with \tt{end} or \tt{refed}.
+
+\head{Semantics}
+
+\tt{break_} executes the \tt{break} statement
+only if \it{condition} does not evaluate to zero.

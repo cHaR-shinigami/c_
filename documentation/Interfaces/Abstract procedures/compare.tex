@@ -1,0 +1,12 @@
+\head{Declaration}
+
+\tt{LLong_ solver_(Abstract, compare)(Abstract *this, Abstract *that);}
+
+\head{Description}
+
+If either \tt{this->type} or \tt{that->type} is not a descendant
+of \tt{type_(Abstract)}, then the return value is one.
+Let $super$ denote the nearest common ancestor given by
+\tt{super(concrete_(this)->type, concrete_(that)->type)}.
+Then the return value of the comparison is the outcome of
+$super$\tt{->compare(this->concrete, that->concrete)}.

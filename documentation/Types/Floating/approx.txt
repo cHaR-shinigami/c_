@@ -1,0 +1,6 @@
+$ cc_ approx.c_ -lm &&  ./a.out
+Number of approximations is 4211081216 out of 4294967295
+Maximum error is -128 for 2147483776
+Average rectified value of error is 42.666016
+Root mean square of error is 55.865264
+Percentage of approximations is 98.046875 %

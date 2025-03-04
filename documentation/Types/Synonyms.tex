@@ -1,0 +1,37 @@
+Except \tt{False} and \tt{True}, the types discussed so far are
+synonyms for C types, which can be created with \idx{typedef_}.
+
+\head{Syntax}
+
+\tt{typedef\_ (} \it{Synonym} \tt{,} \it{type-name} \tt{)}
+
+\head{Constraints}
+
+\it{Synonym} shall be an identifier;
+if that identifier is redeclared within the same scope,
+then the other declaration shall also be a synonym for the same type.
+\it{type-name} shall be an object type;
+within a single scope, it shall not redefine a tagged enumeration type,
+and shall not provide an incompatible redefinition for a tagged aggregate type.
+
+\head{Semantics}
+
+\tt{typedef_} is syntactically a declaration.
+It creates two synonyms for \it{type-name}:
+\tt{Synonym} is non-modifiable, whereas \tt{Synonym_} is modifiable.
+\it{type-name} can specify any object type, including array or function pointer,
+such as \tt{Char [BUFSIZ]} or \tt{Void_ (*)(Void_)};
+it can also be an incomplete type.
+If \it{type-name} contains the definition of an
+enumeration or aggregate type (\tt{struct} or \tt{union}),
+then that type itself gets defined in the current scope.
+If \it{type-name} is a variably modified type, then it can be evaluated
+to determine sizes of variable length arrays (VLA).
+
+\head{Recommended practice}
+
+For consistency with our naming conventions, the identifier \it{Synonym} should
+begin with an uppercase letter, contain at least one lowercase letter, and
+not end with an underscore; it should also not end with \tt{_C} or \tt{_c}.
+Also, if \it{type-name} is a variably modified type,
+then side effects should be avoided, which can be hoisted outside \tt{typedef_}.

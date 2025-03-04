@@ -1,0 +1,20 @@
+\tt{Bits} is an array of \tt{UInt_fast8},
+and each array element is called a ``word''.
+
+\tt{wordcount_} calculates the minimum number of
+words required to store a given number of bits.
+
+\head{Syntax}
+
+\idx{wordcount_} \tt{(} $bitcount$ \tt{)}
+
+\head{Constraints}
+
+$bitcount$ shall be an expression having integer type.
+
+\head{Semantics}
+
+$bitcount$ is first converted to type \tt{Size}, and
+\tt{wordcount_} gives the number of words necessary to store
+the number of bits given by the converted value of $bitcount$.
+The outcome is of type \tt{Size_}.

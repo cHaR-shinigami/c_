@@ -1,0 +1,12 @@
+Two features can be used to inspect the direction of growth
+for the function call stack in the execution environment.
+If the call stack grows towards lower addresses when a function call pushes a
+new activation record, then \idx{DNSTACK} equals one and \idx{UPSTACK} equals
+zero; otherwise the call stack grows towards higher addresses and the values
+are opposite: \tt{UPSTACK} equals one and \tt{DNSTACK} equals zero.
+Both \tt{DNSTACK} and \tt{UPSTACK} are expressions of type \tt{Bool_};
+they are not required to be constant expressions,
+and need not be suitable for use with \tt{#if} preprocessing directive.
+
+\note The reference implementation provides both
+\tt{UPSTACK} and \tt{DNSTACK} as object-like macros.

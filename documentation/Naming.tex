@@ -1,0 +1,80 @@
+The reference implementation uses name mangling to generate various
+identifiers associated with methods and object-oriented types.
+It is also important to discuss how the name
+mangling scheme works, for two primary reasons:
+firstly, the mangled names are used as identifiers with external linkage,
+so other implementations need to follow the same scheme for portability;
+secondly, some of the mangled names are used as function identifiers, and
+consequently, the predefined identifier \tt{__func__} stores the mangled name.
+\tt{__func__} is used as an initializer by \tt{SITE}, which is in turn used by
+several diagnostic features, including the \tt{pre_} and \tt{post_} families.
+When a pre-condition or post-condition is violated, it is the
+mangled function name that gets printed in the error message.
+Hence it is important to know the name mangling scheme
+for identifying which function a mangled name refers to.
+
+Name mangling is nothing but pasting together two
+identifiers with a ``gluing text'' inserted between them.
+This technique is well-known and employed in many other programming languages.
+For example, Python uses name mangling for class members that are named with
+multiple leading underscores and not ending with multiple trailing underscores,
+such as \tt{__dob}; if the member \tt{__dob} is an attribute of class
+\tt{Person}, then the actual identifier used is \tt{_Person__dob}.
+C\_ is influenced by this scheme, though it uses name mangling
+for a different purpose: emulating the functionality of namespaces.
+However, name mangling by itself cannot capture all the traits of a
+proper namespace, and therefore we refer to it as pseudo-namespace.
+For instance, multiple classes and interfaces can have
+methods with the same name, since the actual identifier
+being used is formed by prefixing the class or interface name.
+
+For this scheme to work as expected, it is necessary that two distinct pairs
+of \tt{(}$prefix$\tt{,} $name$\tt{)} should not generate the same identifier;
+in other words, the mapping must be one-to-one.
+The so-called ``gluing text'' inserted between $prefix$ and $name$
+is intended to prevent name collision, and one of the naming
+restrictions discussed in the introductory chapter requires that
+programmers should not declare identifiers with multiple underscores.
+Also, $prefix$ and $name$ should not have leading or trailing underscores
+(recall that leading underscores have restricted usage in C as well).
+For example, if the consider the naming scheme tabulated below,
+then \tt{property_(Prefix_, name)} and \tt{property_(Prefix, _name)} both
+generate the same identifier \tt{Prefix___name}, leading to name collision.
+
+Assuming that naming restrictions on the use of underscores are
+respected by the programmer, the following name mangling scheme should work
+as expected in creating pseudo-namespaces (mostly for object-oriented types).
+
+\table{rl@{\qquad}|@{\qquad}l}
+
+\multicolumn{2}{c}{\bf Source text} & {\bf Mangled name}\\
+
+\tt  {method_} & \tt{(} $prefix$ \tt{,} $name$ \tt{)} & $prefix$\tt{__2}$name$\\
+
+\tt  {Method_} & \tt{(} $prefix$ \tt{,} $name$ \tt{)} & $prefix$\tt{__3}$name$\\
+
+\tt   {proxy_} & \tt{(} $prefix$ \tt{,} $name$ \tt{)} & $prefix$\tt{__4}$name$\\
+
+\tt  {solver_} & \tt{(} $prefix$ \tt{,} $name$ \tt{)} & $prefix$\tt{__5}$name$\\
+
+\tt{verifier_} & \tt{(} $prefix$ \tt{,} $name$ \tt{)} & $prefix$\tt{__6}$name$\\
+
+\tt{property_} & \tt{(} $prefix$ \tt{,} $name$ \tt{)} & $prefix$\tt{__}$name$\\
+
+\tt  {Typex}\s & \tt{(} $interface$ \tt{)} & $interface$\tt{__0}\\
+
+\tt  {Typex_}  & \tt{(} $interface$ \tt{)} & $interface$\tt{__0_}\\
+
+\elbat
+
+\head{Recommended practice}
+
+For maximum portability, the number of combined characters
+in $prefix$ and $name$ should be less than 29 for method names,
+and should not exceed 29 for property names.
+This is because the mangled names are used as identifiers with external
+linkage for which implementations can consider only the first 31 characters;
+in other words, if two distinct identifiers are identical in
+their initial 31 characters, then they may be considered as same.
+Hence it is recommended that the full length of mangled
+name (with the gluing underscores) should not exceed 31.

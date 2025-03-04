@@ -1,0 +1,8 @@
+The optional decimal floating-point types are \type{Decimal32}, \type{Decimal64},
+and \type{Decimal128}, which if available, conform to the ISO/IEC 60559
+formats \it{decimal32}, \it{decimal64}, and \it{decimal128} (respectively).
+These are listed in increasing order of rank,
+with \tt{Decimal32} having a higher rank than \tt{LDouble}.
+Being a conditionally supported feature introduced in C23,
+these types are provided iff the macro \tt{__STDC_IEC_60559_DFP__}
+is defined by the implementation.

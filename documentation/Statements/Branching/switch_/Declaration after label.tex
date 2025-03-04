@@ -1,0 +1,13 @@
+The formal language grammar specified by older revisions of the C standard
+did not allow a declaration to follow a label, which also applied to \tt{case}:
+as per the earlier syntactic rule,
+the colon after a label could only be followed by a statement.
+C23 updates the grammar to allow both declarations and statements;
+however, C\_ does not require complete C23 support, so for backward
+compatibility with the older rule, the use of \tt{case_} may be preferred.
+
+Both \tt{CASE} and \tt{case_} have an implicit jump preceding them,
+but the difference is that \tt{case_} can be followed by a declaration or
+statement even by the older C rule, but \tt{CASE} expression should be
+followed by a colon and a statement; the latter can have a leading
+declaration if the compiler follows the updated C23 grammar for labels.

@@ -1,0 +1,29 @@
+\def\Subsection#1{\subsection{#1}\input{Classes/Type inheritance/#1}}
+
+C\_ provides support for structural inheritance, which is implemented by
+``embedding'' an instance of the base type as the first member of its derived type.
+This well-known design technique works in C due to the following two rules:
+
+\begin{itemize}[nosep]
+
+\item All structure pointers have identical representation, so pointer to an
+instance of a derived type can be interpreted as pointer to an instance of
+its base type, without causing loss of information or undefined behavior.
+
+\item There is no padding before the first member of a structure: since every
+class structure embeds the structure of its base class as the first member,
+pointer to a derived structure is also a valid pointer to the base structure.
+
+\end{itemize}
+
+Both the rules can be applied recursively, which implies that a valid instance
+of any class is also structurally valid for any of its ancestor classes
+(including the \tt{Object} class, whose sole attribute is the member \tt{type}).
+
+\Subsection{Establishing inheritance}
+
+\Subsection{Base array}
+
+\Subsection{Type validation}
+
+\Subsection{Liskov substitution}

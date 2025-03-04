@@ -1,0 +1,34 @@
+The result of comparison between two distinct instances should follow the same
+convention as prescribed for the comparator function required by standard library
+functions \tt{bsearch} and \tt{qsort} (both are declared in \tt{<stdlib.h>}).
+
+\begin{itemize}[nosep]
+
+\item If the first instance is considered to be less than
+the second instance, then the outcome should be negative.
+
+\item If both instances are considered to be equal (though
+not necessarily same), then the outcome should be zero.
+
+\item If the first instance is considered to be more than
+the second instance, then the outcome should be positive.
+
+\item Otherwise both the instances are considered to be
+incomparable, and the outcome can be any positive value.
+
+\end{itemize}
+
+\vspace{\baselineskip}
+
+If a derived type overrides \tt{compare} procedure of its base type,
+it should be a refinement in the following sense:
+
+\begin{itemize}[nosep]
+
+\item If two instances can be compared with the base type,
+they should remain comparable for the derived type.
+
+\item If two instances are considered unequal by the base type,
+they should remain unequal for the derived type.
+
+\end{itemize}

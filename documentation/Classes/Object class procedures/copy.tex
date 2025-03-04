@@ -1,0 +1,15 @@
+\head{Declaration}
+
+\tt{Object_ *solver_(Object, copy)(Object_ *this, Object *that);}
+
+\head{Description}
+
+The procedure returns \tt{this} if it compares equal to \tt{that};
+otherwise the return value is a null pointer.
+
+\note If a class provides a non-trivial implementation of \tt{copy},
+then the \tt{Object} class \tt{compare} procedure needs to be
+overridden as well (either by the same class or by an ancestor).
+This is because \tt{solver_(Object, compare)} returns 1 for
+two unequal pointers, which would cause a post-condition
+violation in the \tt{Type} protocol for \tt{copy}.

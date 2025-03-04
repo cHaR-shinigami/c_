@@ -1,0 +1,78 @@
+\head{Syntax}
+
+\tt{# include <output._>}
+
+\idx{output__}\s\s\s\s\tt{(} [\it{sink}\tt{=stdout} \tt{,}
+[\it{separator}\tt{=" "} \tt{,}]] \it{expression-list} \tt{)}
+
+\idx{output__0__}\s\tt{(} \it{sink} \tt{,}
+\it{separator} \tt{,} \it{expression-list} \tt{)}
+
+\idx{output__1__}\s\tt{(} \it{expression} \tt{)}
+
+\idx{output__2__}\s\tt{(} \it{sink} \tt{,} \it{expression} \tt{)}
+
+\idx{output__3__}\s\tt{(} \it{sink} \tt{,} \it{separator} \tt{,} \it{expression} \tt{)}
+
+\head{Constraints}
+
+\it{sink} shall be a stream (\tt{File_ *}),
+or an unqualified and complete array of ordinary characters
+(\tt{Char_ [}$n$\tt{]}) or wide characters (\tt{WChar_ [}$n$\tt{]}).
+\it{separator} shall be a string or a wide string: if \it{separator} is a string,
+then \it{sink} shall not be a \tt{WChar_} array; otherwise \it{separator}
+is a wide string, and \it{source} shall not be a \tt{Char_} array.
+\it{expression} and each argument in \it{expression-list} shall have
+precisely the same constraints as those applicable for \tt{print_}.
+
+\head{Semantics}
+
+\tt{output__} invokes \tt{output__0__} if the expanded argument sequence has
+more than three arguments; otherwise it invokes \tt{output__}$n$\tt{__} if the
+expanded argument sequence contains $n$ arguments, with $n$ not exceeding three.
+\tt{output__1__} is similar to \tt{print_} with a single expression,
+except that an extra newline is not printed at the end.
+\tt{output__2__} is an extension of \tt{output__1__} that writes to \it{sink}:
+if sink is a (wide-)character array of length $n$, then at most $n - 1$
+(wide-)characters are written, and a null (wide-)character is appended;
+otherwise \it{sink} is assumed to be a byte-oriented output stream.
+\tt{output__3__} is similar to \tt{output__2__} with some constraints between
+\it{sink} and \it{separator}: if these are not violated and \it{sink} is
+an output stream, then \it{separator} decides how the text is printed:
+if \it{separator} is a string, then \it{sink} is assumed to be byte-oriented;
+otherwise \it{separator} is a wide string and \it{sink} is assumed to be wide-oriented.
+\tt{output__0__} is a customizable variation of \tt{print_} without an extra
+newline: the first argument specifies a \it{sink}, and the second argument
+specifies a text to be printed between every two consecutive expressions.
+\it{separator} should not contain any format specifier: more precisely, any
+percent symbol in \it{separator} should be immediately followed by another
+percent symbol, so that each pairing of \tt{\%\%} prints a literal percent symbol.\\
+If \it{separator} contains a percent symbol not paired with another percent
+symbol just after that, then it is dereferenced but not utilized, and
+an empty string \tt{""} or wide string \tt{L""} is used as the separator.
+The behavior is undefined if \it{sink} is a stream that is not an output stream,
+or its orientation is different from what is indicated by \it{separator}.
+
+\it{sink} can be evaluated more than once only if it is a variable length array
+\tt{Char_ [}$n$\tt{]} or \tt{WChar_ [}$n$\tt{]}, with $n$ not being an
+integer constant expression; rest of the arguments are evaluated once.
+Outcome of the \tt{output__} family is of type \tt{Int_}:
+a non-negative outcome indicates the number of characters printed by that
+invocation; a negative outcome means nothing was printed due to write error.
+If a printable expression results in a pointer to \tt{Char}/\tt{Char_}
+or \tt{WChar}/\tt{WChar_}, the behavior is undefined if it
+does not refer to a null terminated string or wide string.
+
+If \tt{OUTPUT__} expands to \tt{1}, then \it{sink} and \tt{output__0__}
+\it{separator} are asserted to be not null; otherwise \tt{OUTPUT__}
+shall expand to \tt{0}, and null pointers are handled as follows:
+
+\begin{itemize}[nosep]
+
+\item If \it{sink} is null, then the outcome is equal to \tt{EOF},
+and none of the expressions are printed (but all are evaluated).
+
+\item If \it{separator} for \tt{output__0__} is null, it is evaluated
+and replaced by a text with only one space (\tt{" "} or \tt{L" "}).
+
+\end{itemize}

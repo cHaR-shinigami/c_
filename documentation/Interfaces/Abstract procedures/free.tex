@@ -1,0 +1,14 @@
+\head{Declaration}
+
+\tt{Void_ solver_(Abstract, free)(Abstract_ *this);}
+
+\head{Description}
+
+If \tt{this} is a null pointer or \tt{is(this->type, type_(Abstract))}
+is \tt{false}, then the procedure returns immediately.
+Otherwise if the concrete instance is not a null pointer and its \tt{type}
+member is valid (as determined by \tt{is_type}), then the concrete instance
+is deallocated by calling \tt{concrete_(this)->type->free(this->concrete_)}.
+
+In any case, \tt{free(this)} is invoked to
+deallocate the abstract instance before returning.

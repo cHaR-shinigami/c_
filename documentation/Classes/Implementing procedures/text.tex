@@ -1,0 +1,14 @@
+The first invocation of \tt{output__} counts the number of characters
+that would be present in the decimal form of \tt{this->value};
+\tt{1U} is added to make room for a terminating null byte.
+If \tt{out} is not a null pointer, it is expected to be a character array having
+a capacity of (at least) \tt{*length} elements; if \tt{*length} is not less than
+the required buffer length, then \tt{out} is used to store the text representation.
+Otherwise a new character array of length \tt{buflen} is allocated;
+if the allocation fails, then a null pointer is returned.
+However, \tt{*length} is always updated to \tt{buflen}
+regardless of whether the allocation succeeds or not; if it fails,
+then \tt{*length} indicates the capacity that would be required.
+The second invocation of \tt{output__} actually writes the text representation
+of \tt{this->value} to the array, and the latter is returned by the function
+(pointer to an array has the same address as base element of the array).

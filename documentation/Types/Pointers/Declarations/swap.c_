@@ -1,0 +1,11 @@
+#include <c._>
+
+Void_ swap
+(	let Ptr (Char_) this,
+	let Ptr (Char_) that
+)
+begin
+	let Char temp = *this;
+	*this = *that;
+	*that =  temp;
+end

@@ -1,0 +1,37 @@
+\head{Syntax}
+
+\tt{# include <bits._>}
+
+\tt{Void_} \idx{rotate_bits} \tt{( Size} $wordcount$
+\tt{, Ptr ( UInt_fast8_ [}$wordcount$\tt{] )} $bitarray$
+\tt{, LLong} $rotation$ \tt{) ;}
+
+\idx{rotate_bits__}\s\tt{(}
+\it{pointer-to-bits} \tt{,} $rotation$ \tt{)}
+
+\idX{rotate_bits_}\s\s\tt{(}
+\it{pointer-to-bits} \tt{,} $rotation$ \tt{)}
+
+\head{Constraints}
+
+\it{pointer-to-bits} shall be pointer to a complete
+\tt{Bits_} array; the array shall be modifiable.
+
+For \tt{rotate_bits__} and \tt{rotate_bits_}*,
+$rotation$ shall be an expression having integer type.
+
+\head{Semantics}
+
+\tt{rotate_bits__} and \tt{rotate_bits_}* infer $wordcount$ from
+the type of \it{pointer-to-bits} and invoke \tt{rotate_to_bits}.
+If \it{bitarray} is null, the function returns immediately;
+otherwise the bits are index left to right starting at index zero.
+A positive $rotation$ rotates bits to the right, i.e. towards higher index, and a
+negative $rotation$ rotates bit to the left, i.e. towards lower index; the array
+is considered logically circular, so the last bit is followed by the first bit.
+
+More precisely, if $rotation$ is $r$ and bit count is $n$,
+then for each index $i$, the bit is moved to index $(i + r)$ \tt{\%} $n$;
+
+When compiled with \tt{BITS__} expanding to \tt{1},
+\it{pointer-to-bits} is asserted to be not null, as if with \tt{notnull_}.

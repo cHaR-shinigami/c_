@@ -1,0 +1,21 @@
+\head{Syntax}
+
+\tt{lvalue__ (} \it{expression} \tt{)}
+
+\head{Semantics}
+
+The result is an unqualified lvalue initialized to the value of \it{expression},
+with the same type as \tt{value_(}\it{expression}\tt{)}.
+In other words, the same type conversions are performed as done by \tt{value_}:
+if \it{expression} is an array, then the lvalue is a pointer to base element;
+if \it{expression} is a function,
+then the lvalue is a corresponding function pointer.
+The lvalue has automatic storage duration,
+and its lifetime is limited to the innermost block where it is created.
+
+\it{expression} can be evaluated more than
+once only if it has a variably modified type.
+
+\note As the outcome is an lvalue, the address-of operator \tt{&} can be
+applied to it; however, the resulting pointer should not be used outside the
+current block, as the object lifetime expires and the pointer becomes dangling.

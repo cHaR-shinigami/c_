@@ -1,0 +1,68 @@
+\def\Subsection#1{\subsection{#1}\input{Ellipsis/Deferred expansion/#1}}
+
+Deferred expansion is main working principle behind the ellipsis framework.
+A function-like macro is invoked only when the macro name is followed by a left
+parenthesis (with optional whitespace in between); the invocation is suppressed
+if this condition is not satisfied, such as by parenthesizing the macro name.
+As opposed to not invoking a function-like macro at all,
+deferred expansion simply postpones the macro invocation:
+one possible approach is to place a transient token between the
+macro name and the opening parenthesis before the argument sequence.
+
+To illustrate the idea behind deferred expansion, let us consider the \tt{cat_}
+macro which pastes its two arguments without scanning them for macro expansions.
+\tt{cat_(cat_(0, 0), 7)} does not work as expected because
+pasting the arguments verbatim produces \tt{)7} as a bad token.
+We can get the desired outcome by deferring the outer call as:
+
+\begin{center}
+\tt{echo_(cat_ C_(cat_(0, 0), 7))}
+\end{center}
+
+The above expansion works due to a relatively obscure preprocessing rule:
+the substitution of a function-like macro invocation involves two phases
+of scanning for macro expansions in the arguments and the replacement text.
+
+\begin{itemize}[nosep]
+
+\item In the first phase, each occurrence of a macro parameter is replaced by its
+corresponding argument, and if it is not subjected to the operators \tt{#} and
+\tt{##}, then the argument itself is scanned for macros prior to substitution.
+
+\item After substituting the arguments (expanded when applicable), \tt{#} and
+\tt{##} operations are performed (if present), and the resulting replacement
+text is scanned from left to right for macro expansions in the second phase.
+
+\end{itemize}
+
+In our example, the first phase expands the argument
+\tt{cat_ C_(cat_(0, 0), 7)}: the outer invocation of \tt{cat_} is
+deferred by the macro \tt{C_}, which expands to the empty text;
+the second invocation of \tt{cat_} works as usual, producing the token \tt{00}.
+The expanded argument is substituted in the replacement
+text of \tt{echo_}, producing the text \tt{cat_(00, 7)}.
+This text is scanned for macro expansions in the second phase: as the
+obstruction \tt{C_} was erased during the first phase, the outer invocation
+of \tt{cat_} takes place as usual, producing the expected outcome \tt{007}.
+
+In summary, our intent in this example was to expand the argument of \tt{cat_}
+prior to token pasting, as the expansion is suppressed by the \tt{##} operator;
+to accomplish this, we simply deferred the outer invocation of \tt{cat_} until
+its arguments were expanded during the first phase (argument substitution).
+The purpose of \tt{echo_} here is to complete the invocation deferred by \tt{C_};
+without that we would end up with a partially expanded text \tt{cat_(00, 7)}.
+\tt{echo_} and \tt{C_} are nothing special; in fact, we could have used
+any function-like macro other than \tt{cat_} to perform the full expansion.
+For instance, \tt{top_(cat_ C_(cat_(0, 0), 7),)}
+expands to the same text as before: \tt{007}.
+
+\note Deferred expansion came to be realized through a
+slightly different approach with two macros \tt{L} and \tt{R}.
+
+\centerline{\tt{#define L (}}
+\centerline{\tt{#define R )}}
+
+With this alternative technique, the earlier example
+would be written as \tt{echo_(cat_ L cat_(0, 0), 7 R)}.
+
+\Subsection{Liveness}

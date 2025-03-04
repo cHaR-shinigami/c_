@@ -1,0 +1,18 @@
+Historically, C required array lengths to be compile-time constants.
+C99 standardized the practice of variable length arrays (VLA) that allow array
+definitions to specify a length that can be known at runtime; as a consequence,
+applying the \tt{sizeof} operator on a VLA works during process execution,
+and the operand is evaluated as well (side effects can be of concern).
+VLAs with automatic storage duration are typically allocated on the stack,
+which can quickly exhaust the stack space that is often very limited on most
+execution environments; the chances are higher if a function that creates VLAs
+is called recursively in contexts where tail call optimization is not possible.
+
+C11 revised VLAs to be an optionally supported feature;
+however, C23 mandates support for variably modified types.
+The most common example of variably modified types
+is pointer to VLA, which is heavily used in C\_.
+
+\note Automatic creation of VLA continues to remain an optionally
+supported feature, and for portability concerns, they are not used by
+the reference implementation or the examples in this documentation.

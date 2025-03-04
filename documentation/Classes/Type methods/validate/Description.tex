@@ -1,0 +1,26 @@
+\tt{validate} returns \tt{true} if and only if
+all of the following conditions are satisfied:
+
+\begin{itemize}
+
+\item \tt{this} is not null, and
+\tt{is_type(((Object *) this)->type)} is \tt{true}.
+
+\item If \tt{type} is not null, then \tt{is_type(type)}
+and \tt{is(((Object *) this)->type, type)} are \tt{true};
+in other words, \tt{this} should point to an instance whose \tt{type}
+attribute is a descendant or sub-type of the \tt{type} parameter.
+
+\item The \tt{validate} procedure is invoked for each \tt{Type} in the
+lineage from \tt{Object} class to the \tt{type} attribute of \tt{this}
+instance, $i.e.$ starting from the \tt{Object} class and ending with
+\tt{((Object *) this)->type)}; if any of them returns \tt{false},
+then that is the outcome, and successive calls are not performed.
+Also, if a derived type inherits \tt{validate} procedure from its base
+type without overriding it, then that procedure is called only once.
+
+\end{itemize}
+
+\note The order of invoking \tt{validate} procedures is intended to be aligned
+with Liskov substitution principle: every valid instance of a derived type is
+required to be a valid instance for its base type, and this applies transitively.

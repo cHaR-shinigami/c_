@@ -1,0 +1,21 @@
+\head{Syntax}
+
+\tt{xhead_ (} $n$ \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+$n$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX},
+or it shall expand to such a constant.
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Macros in \it{argument-list} are expanded.
+If the resulting number of arguments is greater than $n$,
+then the outcome is  blank; otherwise first $n$ arguments from the
+expanded list are excluded, and rest of them appear in the outcome.
+
+\note \tt{xhead_} is complementary to \tt{head_},
+as it includes precisely those elements that are excluded by \tt{head_}.

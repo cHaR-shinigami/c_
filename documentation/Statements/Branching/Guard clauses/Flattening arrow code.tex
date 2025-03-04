@@ -1,0 +1,16 @@
+Arrow-shaped code is a lexically deep nesting of blocks
+that visually resembles an arrowhead if indented properly.
+
+\example
+The following artificial code snippet highlights the arrow (anti-)pattern.
+
+\code{Statements/Branching/Guard clauses/Flattening arrow code/arrow.txt}
+
+Non-trivial arrow code can be hard to read and maintain in large projects,
+which is why many programmers consider it to be an anti-pattern that should be
+avoided; such code can be easily flattened in C\_ with guard clauses.
+
+\example The arrow-shaped code contrived earlier can
+be restructured to eliminate nesting, as done below.
+
+\code{Statements/Branching/Guard clauses/Flattening arrow code/flat.txt}

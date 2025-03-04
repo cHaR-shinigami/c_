@@ -1,0 +1,9 @@
+\begin{itemize}[nosep]
+
+\item If \tt{validate_(this)} is \tt{false} or \tt{out}
+is a null pointer, then the function returns \tt{-1}.
+
+\item Otherwise, let $type$ be the value of \tt{((Object *) this)->type};
+the return value is $type$\tt{->write(}$this$\tt{,} $out$\tt{)}.
+
+\end{itemize}

@@ -1,0 +1,57 @@
+The defer family allows statements to be postponed, which are executed after
+reaching the end of the innermost block that is lexically closed with \tt{refed}.
+This feature is useful for registering cleanup or release of resources.
+
+\example Consider a function that needs $n$ resources for some task;
+if a resource is not available, then the acquired resources must be released.
+With three resources, we can express this requirement with the following code.
+
+\enlargethispage*{\baselineskip}
+
+\code{Statements/Defer/quadratic.c_}
+
+The crucial observation is that resource $i$ has
+to be released if another resource is available.
+A call to \tt{release} lexically occurs  $i$ times for the $i^{th}$ resource,
+so for $n$ resources there will be $n * (n + 1) / 2$
+instances of \tt{release} calls, even though at most $n$ such
+calls will actually be made (one for each acquired resource).
+This bloats the executable as code size grows at a
+quadratic rate in terms of the number of resources.
+\tt{defer_} offers a more elegant approach by postponing the release of acquired
+resources; deferred statements are executed in reverse order of registration.
+
+\note Before presenting a cleaner alternative with \tt{defer_},
+we shall take another look at the earlier code,
+and observe the use of brace-enclosed nested blocks: the intent is to make
+a released resource unavailable for any subsequent use, which is done by
+making the pointer variable go out of scope just after calling \tt{release}.
+Some programmers advocate setting it to \tt{NULL},
+so that defensive null pointer checks can catch an invalid use;
+however, that means the variable has to be modifiable,
+which opens up the possibility of unintended mutations due to bugs.
+
+We prefer to follow the previous chapter's advice on enforcing
+immutability as much as possible, so we rely on scoping rules instead:
+every resource is associated with its own lexical scope that starts with
+the resource is acquired, and ends when the resource is released; this
+ensures that each pointer variable is no longer accessible once its use is over.
+Plain nested scopes can prove beneficial in the
+long run for functions that manage several resources.
+We consider this practice as a part of structured
+programming that has also been followed in later chapters.
+
+\subsection{\idX{defer_}* and \idX{refed}*}
+\input{Statements/Defer/defer_ and refed}
+
+\enlargethispage*{\baselineskip}
+\pagebreak
+
+\subsection{\idX{deferrable}* and \idX{start}*}
+\input{Statements/Defer/deferrable and start}
+
+\subsection{\idX{return_}* and \idX{yield}*}
+\input{Statements/Defer/return_ and yield}
+
+\subsection{\idx{DEFER_MAX}}
+\input Statements/Defer/DEFER_MAX

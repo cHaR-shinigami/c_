@@ -1,0 +1,35 @@
+\head{Syntax}
+
+\tt{isNBO_ (} \it{type-name} \tt{)}
+
+\head{Constraints}
+
+\it{type-name} shall specify an integer type.
+
+\head{Semantics}
+
+\idx{isNBO_} returns one if \it{type-name} specifies a
+multibyte type that uses network byte ordering or big-endian,
+and it returns zero if the type uses little-endian representation;
+in either case, the outcome is of type \tt{Bool_}.
+The outcome is zero for the single-byte types \tt{UByte}, \tt{Char}, \tt{Byte},
+and it is implementation-defined for any other byte ordering.
+
+\note Endianness refers to the ordering of bytes for types wider than \tt{Byte}:
+big-endian means a byte with more significant value is stored at lower address;
+little-endian is the reverse ordering, where the least
+significant byte comes first, followed by more significant bytes.
+Many networking protocols use big-endian representation for data transmission,
+which can require a conversion (reversal of bytes) if the
+native byte ordering for a host machine is little-endian.
+Very rarely, exotic architectures can support some other permutation of bytes,
+which are collectively grouped as middle-endian or mixed-endian:
+one historical example is the PDP-endian ordering.
+For the reference implementation, \tt{isNBO_} only checks the starting
+byte value when the integer 1 is represented using the given type.
+
+\example Most common architectures natively support
+\tt{width_(Byte) == 8} and \tt{sizeof (Short) == 2}.
+If \tt{Short} uses big-endian, \tt{256} (\tt{0x0100} in hexadecimal) would be
+stored as \tt{0x01 0x00} (\tt{0x01} at starting address, followed by \tt{0x00});
+on the other hand, it would be stored as \tt{0x00 0x01} in little-endian form.

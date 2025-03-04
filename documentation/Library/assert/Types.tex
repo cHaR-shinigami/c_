@@ -1,0 +1,12 @@
+\tt{<assert._>} defines the types \type{Stream} and \type{Site}.
+\tt{Stream_} is a synonym for \tt{Ptr_(File_)}, and \tt{Site_} is
+a synonym for \idx{struct Site}, which has the following members:
+\idxy{struct Site}{func} and \idxy{struct Site}{file} of type
+\tt{Ptr_(Char)}, and \idxy{struct Site}{line} of type \tt{Int_}.
+
+\note \tt{File_} is defined in \tt{<stdio._>} as a synonym
+for the object type \tt{FILE} (from \tt{<stdio.h>}).
+
+\head{Recommended practice}
+
+Portable code should not rely on the order of members in \tt{struct Site}.

@@ -1,0 +1,82 @@
+Searching is a basic functionality that is required for most applications.
+A bare minimum design would require two inputs:
+a collection and an element to find in the collection.
+If the element is found and the collection is a sequence,
+it may be desirable to know the position at which element
+was found; usually the first occurrence is returned.
+
+\code{../compile/search/solver.c_}
+
+The given code looks through an array in increasing order of indices, stopping
+when the element is found, and index of the first occurrence is returned;
+if return value equals array length, it indicates the element was not found.
+
+The function \tt{finder} is an example of solver that
+actually does the work of going through an array and
+comparing each of its elements with the given search value.
+It assumes that \tt{arr} points to a valid
+\tt{Int} array having (at least) \tt{len} elements.
+The implementation uses an iterative approach to
+access the array elements from low to high indices.
+
+To express the behavior of searching without specifying any particular
+implementation detail, we can write another function that verifies the outcome
+of \tt{finder} for a given pair of arguments: this would be a post-condition.
+Additionally, this function would also be responsible for
+argument validation: in this example, it can check that the
+array pointer is not null, which would be a pre-condition.
+The following function \tt{find} concretizes this specification.
+
+\code{../compile/search/verifier.c_}
+
+In a sense, both pre-conditions and post-conditions are a form of guard clauses
+that allow execution to continue only if the given condition is satisfied.
+In this example, there are two pre-conditions: validating that the length is
+non-zero and the array pointer is not null (note that null is just one invalid
+pointer that can be easily diagnosed; there is no general mechanism in C
+to detect whether a pointer refers to a valid object for the given type).
+
+Fulfilling the pre-conditions is a responsibility of the calling function; a
+function can be called from multiple locations, and if any pre-condition is
+unsatisfied, it is important to know the precise invocation that caused a violation.
+The limitation of writing pre-conditions as assertions (such as with the
+\tt{assert} macro from \tt{<assert.h>}) is that it only reports a violation
+for an argument, not the offending invocation that supplied the bad argument.
+In our example, the first parameter \tt{_site} is meant to capture call site
+details, which is used by the \tt{pre_} family to provide additional information
+in the diagnostic message; for an invocation of \tt{find}, the non-modifiable
+lvalue \tt{SITE} can be used as the first argument to capture the values
+of \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__} at the call site.
+
+After the pre-conditions are found to be satisfied, \tt{find} invokes the solver
+\tt{finder} and verifies that the return value satisfies the given post-conditions.
+The first post-condition verifies that the outcome is within a valid range.
+The second post-condition verifies that for all indices less than
+the outcome, none of the elements are equal to the search value;
+this describes the specification of finding the first occurrence
+of search value when moving from low to high indices.
+If outcome is less than array length, it is a valid index, and the third
+post-condition verifies that the corresponding element is equal to search value.
+A verifier should not alter the return value, and treat
+it as read-only: once the post-conditions are satisfied,
+verifier simply returns the unmodified outcome given by solver.
+
+The following code shows how the invocation can be simplified with a wrapper
+macro: the first argument would typically provide call site details with
+\tt{SITE}, and length of a complete array can be inferred with \tt{length__}.
+Most invocations would provide these details in the same manner, so they need
+not be specified for each call: the macro \tt{find__} eliminates such boilerplate
+code in source files by pushing extra arguments necessary for the function call.
+
+\code{../compile/search/main.c_}
+
+\note Throughout the rest of this documentation, we shall use the term
+``validation'' for pre-conditions on the arguments supplied by the caller, and
+``verification'' for post-conditions on the return value given by the solver.
+
+\head{Recommended practice}
+
+Diagnostic messages become meaningful and precise
+when multiple conditions are specified separately;
+if they are written as a single logical conjunction,
+it becomes more tedious to find out which condition was violated.

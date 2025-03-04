@@ -1,0 +1,30 @@
+\head{Syntax}
+
+\tt{proxy_ (} \it{prefix} \tt{,} \it{method-name} \tt{)}
+
+\head{Semantics}
+
+\tt{proxy_} gives pointer to a function having
+the same type as specified by \tt{Method_}.
+
+The header \tt{<method._>} defines an object-like macro \tt{METHOD__} that
+records the \tt{defined} state of \tt{DEBUG} macro every time \tt{<method._>} is
+included: it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+Conventionally, both parts of a method (protocol and procedure) are compiled in one
+translation unit: if the macro \tt{METHOD__} expands to \tt{1} when the protocol
+is defined, the function pointer specified by \tt{proxy_} refers to the protocol;
+otherwise \tt{METHOD__} shall expand to \tt{1}, and the proxy points to a
+\tt{private} function (internal linkage) that ignores the first argument
+of type \tt{Site} and invokes the procedure with rest of the arguments.
+Any return value is forwarded to the caller.
+
+\note Unlike a protocol, function declaration of a procedure is not
+modified to push an extra \tt{Site} parameter at the beginning:
+this causes a mismatch between their function types.
+\tt{proxy_} is an intermediary that provides a
+common type for both the protocol and the procedure.
+However, the protocol can be bypassed only if the translation
+unit containing the method has been compiled in non-debugging mode,
+$i.e.$ proxy points to a function that directly calls the procedure.
+The only purpose of this extra function call
+overhead is to remove the \tt{Site} argument.

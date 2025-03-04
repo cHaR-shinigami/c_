@@ -1,0 +1,28 @@
+\begin{itemize}
+
+\item If \tt{validate_(minuend)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{validate_(subtrahend)} is \tt{false},
+then the function returns a null pointer.
+
+\end{itemize}
+
+Let $super$ denote the value of
+\tt{super(((Object *) minuend)->type, ((Object *) subtrahend)->type)}.
+
+If \tt{difference} is not a null pointer, let $type$
+denote the value of \tt{((Object *) difference)->type}.
+
+\begin{itemize}
+
+\item If \tt{is_type(}$type$\tt{)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{is(}$type$\tt{,} $super$\tt{)} is \tt{false},
+then the function returns a null pointer.
+
+\item Otherwise the function returns the value
+of $super$\tt{->sub(difference, minuend, subtrahend)}.
+
+\end{itemize}

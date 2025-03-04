@@ -1,0 +1,23 @@
+\head{Declaration}
+
+\tt{Abstract_ *solver_(Abstract, add)%
+(Abstract_ *sum, Abstract *augend, Abstract *addend);}
+
+\head{Description}
+
+If \tt{augend->type} or \tt{addend->type} is not a sub-type
+of \tt{type_(Abstract)}, then a null pointer is returned.
+Otherwise let $super$ denote the nearest common ancestor of the
+concrete types for \tt{augend} and \tt{addend}, as given by
+\tt{super(concrete_(augend)->type, concrete_(addend)->type)}.
+If \tt{sum} and \tt{sum->concrete} are not null, and \tt{concrete_(sum)->type} is
+not a valid type or not a sub-type of $super$, then a null pointer is returned.
+Otherwise let $result$ be the outcome of
+$super$\tt{->add(sum->concrete_, augend->concrete, addend->concrete)}
+(if \tt{sum} is null, then a null pointer is used instead of \tt{sum->concrete_}).
+If $result$ is null, then a null pointer is returned;
+if $result$ is same as \tt{sum->concrete}, then \tt{sum} is returned.
+Otherwise a new \tt{Abstract} instance is allocated, whose \tt{type} member is
+initialized with \tt{super(augend->type, addend->type)} (nearest common ancestor
+of abstract types), and \tt{concrete} member is initialized with $result$.
+The return value is a pointer to the initialized \tt{Abstract} instance.

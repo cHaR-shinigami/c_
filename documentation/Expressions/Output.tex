@@ -1,0 +1,33 @@
+\def\Subsection#1{\subsection{#1}\input{Expressions/Output/#1}}
+
+C\_ offers debuggable features that simplify writing formatted input;
+these are complementary to the input features we saw earlier.
+A wide variety of data types are supported, and as with the input counterparts,
+programmers do not need to remember format specifiers for each type; however, the
+semantics of processing semantics for different data types have been described in
+terms of format specifiers: this is because the reference implementation provides
+these features using the \tt{printf} family of standard library functions.
+Other implementations of C\_ can provide them as built-in
+features having the same semantics as described by this document,
+and the textual representation for the value of a permitted \it{expressions}
+should be identical to the one prescribed by a \tt{printf} format specifier.
+
+The reference implementation provides these features in the header \idx{<output._>}.
+An object-like macro \idx{OUTPUT__} determines the debugging
+configuration of all features listed in the following subsections.
+If the macro \tt{DEBUG} remains defined when \tt{<output._>} is included,
+then \tt{OUTPUT__} expands to \tt{1}, and the features provided
+by \tt{<output._>} are collectively configured in debugging mode,
+in which the \it{sink} and \it{separator} pointers are asserted to be not null.
+
+If \tt{DEBUG} is not found to be defined when \tt{<output._>} is included, then
+\tt{OUTPUT__} expands to \tt{0}, which configures the features under consideration
+in production mode, whose behavior with null pointers is described in the semantics.
+
+The header \tt{<io._>} aggregates both \tt{<input._>} and \tt{<output._>}; the
+purpose of including \tt{<io._>} in a source file is to provide a common debugging
+configuration for all input and output facilities based on the \tt{DEBUG} macro.
+
+\Subsection{Default sink}
+
+\Subsection{Custom  sink}

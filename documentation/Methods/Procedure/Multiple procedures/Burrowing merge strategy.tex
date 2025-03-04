@@ -1,0 +1,96 @@
+A simpler and more efficient alternative is to sort each
+side individually, and then merge them into a sorted array.
+The conventional approach for merging two sorted arrays requires a buffer
+array for storing the sorted array, which is later copied back to the original.
+We shall implement a recursive merge strategy
+that eliminates the need of an auxiliary array.
+This approach is a natural extension of the hourglass strategy of comparing
+only the endpoint elements: instead of looking at just the extremities, our
+new approach would gradually ``burrow'' into each side, starting at middle.
+As both sides are sorted before merging, there is
+no need for heaps (they are implicitly present).
+
+We start by positioning a left index at the end of left partition,
+and a right index at the start of right partition; these refer to
+the maximum element on left side and minimum element on right side.
+If left side maximum is greater than right side minimum,
+then left index is decremented (moved further left),
+and right index is incremented (moved further right).
+This process is repeated until the element at left index does not
+exceed the element at right index, or one of the sides is exhausted.
+At this point, pairwise swapping is started from the current
+position of left index (it may have to be incremented once)
+and original right index (start of right side); after each swapping
+between left and right partitions, both indices are incremented.
+The pairwise exchange continues till the end of each side.
+
+At the end of this stage, we end up with identical scenarios in each partition:
+each side has two sub-partitions, which are individually sorted; these can
+be merged recursively by the same strategy on each side, as shown below.
+
+\enlargethispage*{\baselineskip}
+
+\code{../compile/Integers/burrow.c_}
+
+Correctness of this approach can be proved
+based on the following three observations:
+
+\begin{itemize}
+
+\item In the burrowing phase, each pair of index movement characterizes a
+swap operation for out-of-order elements without actually performing it.
+If such a hypothetical exchange is immediately done at left index $i$ (having
+element $l_i$) and right index $j$ (having element $r_j$), then incoming element
+$l_i$ at right index $r$ will be greater than all elements on the left side:
+this is because $l_i$ is trivially greater than all elements $l_0$ through
+$l_{i - 1}$, and $l_i$ was found to be greater than $r_j$, so $l_i$ is
+transitively greater than all elements $r_0$ through $r_{i - 1}$, which were
+earlier swapped (hypothetically) to the left side through burrowing inwards.
+A similar argument can be made for the incoming element $r_j$ at the left index
+$i$, so both elements $l_i$ and $r_j$ are moved to the correct partitions.
+
+\item If burrowing stops at left index $i$ (having element $l_i$)
+and right index $j$ (having element $r_j$) then $l_i \le r_j$.
+Transitively, an element $l_{i - 1}$ before $l_i$ and $r_{j + 1}$ after
+$r_j$ follow the ordering $l_{i - 1} \le l_i \le r_j \le r_{i + 1}$; this
+is also trivially true for all other elements before $l_i$ and after $r_j$.
+Additionally, the current $r_{j - 1}$ was swapped earlier from the left
+side occurring after $l_i$, so $l_i$ and all elements before it cannot
+exceed $r_{j - 1}$ (as both sides were already sorted to begin with).
+The same argument also applies for all right side elements
+before $r_j$, which were swapped from the left side while
+burrowing inwards, all of them originally occurring after $l_i$.
+
+\item In the hypothetical ``eager exchange'' model, elements of the left side are
+guaranteed to not exceed elements on the right side at the end of burrowing; the
+disadvantage is that the incoming elements will be in reverse order on either side.
+The correctness will not be affected if we postpone the swappings
+to a separate phase after finding where the burrowing stops;
+until then only the indices are shifted without moving elements.
+The exchange phase preserves the order of the transferred elements:
+from an abstract perspective of this ``lazy exchange'' model,
+a sorted block from the right side of left partition is swapped with
+an equal-sized sorted block from the left side of right partition.
+Remaining elements were already sorted, so after the exchange phase,
+each side gets sub-divided into two sorted sub-parts
+(though not necessarily into equal-sized halves).
+
+\end{itemize}
+
+\note Despite the absence of an additional buffer array, this approach cannot
+be regarded as truly ``in-place'', which only permits a constant amount
+of space overhead that does not depend on the number of array elements.
+Due to the recursive nature of our code, practical implementations would
+require additional call stack space for each (non-tail) function call, so the
+actual space complexity is $O(\log n)$ (where $n$ is the number of elements).
+However, the merge strategy is naturally adaptive: if the overall array is
+already sorted, then the burrowing does not proceed inwards, and the recursive
+calls for merging are not performed; the initial calls for sorting each partition
+require linear time, as given by the recurrence relation $T(n) = 2T(n/2) + 1$
+(one comparison between endpoint elements at the start of burrowing phase).
+Another benefit worth highlighting is that the approach is highly
+parallelizable, which facilitates efficient practical implementations
+on environments where multiple processing cores are available.
+
+\enlargethispage*{\baselineskip}
+\pagebreak

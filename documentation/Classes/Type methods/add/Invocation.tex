@@ -1,0 +1,27 @@
+\head{Syntax}
+
+\idx{add_}\s\s\s\tt{(} [[\tt{. sum =}] $sum$ \tt{,}]
+[\tt{. augend =}] $augend$ \tt{,} [\tt{. addend =}] $addend$ \tt{)}
+
+\idx{add_2_}\s\tt{(} \phantom{[}[\tt{. augend =}]
+$augend$ \tt{,} [\tt{. addend =}] $addend$ \tt{)}
+
+\idx{add_3_}\s\tt{(} \phantom{[}[\tt{. sum =}] $sum$ \tt{,}\phantom{]}
+[\tt{. augend =}] $augend$ \tt{,} [\tt{. addend =}] $addend$ \tt{)}
+
+\head{Semantics}
+
+\tt{add_} invokes \tt{add_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+\tt{add_2_(}$augend$\tt{,} $addend$\tt{)} is equivalent to
+\tt{add_3_(NULLPTR,} $augend$\tt{,} $addend$\tt{)}.
+
+\tt{add_3_(}$sum$\tt{,} $augend$\tt{,} $addend$\tt{)}
+is equivalent to the following verbose invocation:
+
+\enlargethispage*{\baselineskip}
+\begin{center}
+\tt{( (typeof_(}$sum$\tt{)) call_((Type, add),}
+$sum$\tt{,} $augend$\tt{,} $addend$\tt{) )}
+\end{center}

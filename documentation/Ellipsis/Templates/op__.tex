@@ -1,0 +1,119 @@
+The \tt{op__} family is modeled after the semantics of \tt{omni__},
+except that \tt{op__} is intended to be used with operators.
+Each element in the operand list(s) is parenthesized,
+and each element in the output list is also fully parenthesized.
+
+\head{Syntax}
+
+ \tt{op__}\s\s\s\s\tt{(} \it{left-arg} \tt{,} $op$ \tt{,} \it{right-list} \tt{)}
+
+ \tt{op__}\s\s\s\s\tt{(} $op$ \tt{,} \it{list-arg} \tt{)}
+
+\idx{op__0__}\s\tt{(} \it{left-arg} \tt{,} $op$ \tt{,} \it{right-list} \tt{)}
+
+\idx{op__2__}\s\tt{(} $op$ \tt{,} \it{list-arg} \tt{)}
+
+\head{Constraints}
+
+Number of elements in \it{list-arg} or \it{right-list} shall be
+less than \tt{PP_MAX}, after removal of optional parentheses.
+
+If \it{left-arg} expands to a list with multiple elements,
+the same constraint shall also apply to its element count.
+
+$op$ shall be a single argument that expands to an optionally parenthesized
+list with less than \tt{PP_MAX} elements; $op$ needs to be parenthesized for
+\tt{op__} if the unparenthesized form of $op$ expands to more than one element.
+
+\note \it{list-arg} means a single argument that expands to
+a list after removing optional parentheses with \tt{peel_}.
+
+\head{Semantics}
+
+Arguments to \tt{op__} are counted after excluding the first
+argument in its unexpanded form, and rest of the arguments
+are expanded: if the count is 1, then \tt{op__2__} is invoked;
+otherwise the count is more than one, and  \tt{op__0__} is invoked.
+\tt{op__} considers $op$ to be a singleton list: it should not expand to
+more than one element, as rest of them are considered to be initial elements
+of \it{right-list} ($op$ should be parenthesized if it has multiple elements).
+
+\it{left-arg}, \it{right-list}, and \it{list-arg} are peeled and
+expanded in the way described in the semantics of \tt{omni__}.
+
+$op$ is also subjected to the \tt{peel_} macro, and let
+$P$ be the number of elements after peeling and expansion.
+
+\begin{itemize}
+\item \tt{op__0__ (} \it{left-arg} \tt{,} $op$ \tt{,} \it{right-list} \tt{)}
+\end{itemize}
+
+After peeling \it{left-arg}, each of its elements is parenthesized, and let
+the resulting list be labeled as $l_0$ \tt{,} $\cdots$ \tt{,} $l_{L - 1}$;
+similar steps are also performed for \it{right-list}, whose parenthesized
+elements can be labeled as $r_0$ \tt{,} $\cdots$ \tt{,} $r_{L - 1}$.
+Note that $l_i$ and $r_i$ represent elements
+after they are parenthesized by \tt{op__0__}.
+Let $N$ be the maximum of $L$ and $R$.
+\tt{op__0__} generates a list of the following form:
+its rightmost $L$ elements are parenthesized and retained in output.
+
+\begin{center}
+$l_0\ op_0\ r_0$ \tt{,}
+$l'_{1\%L}\ op_{1\%P}\ r_{1\%R}$ \tt{,}
+$\cdots$ \tt{,}
+$l'_{(N - 1)\%L}\ op_{(N - 1)\%P}\ r_{(N - 1)\%R}$
+\end{center}
+
+$l'$ denotes the current element in \it{left-arg}, which is
+updated in each iteration: initially, each $l'$ is same as
+the parenthesized element from \it{left-arg}, and whenever it
+is used in an iteration, it is replaced with the new element.
+
+\note A newly generated element is not immediately parenthesized to avoid
+a proliferation of excessive \mbox{parentheses} in intermediate steps,
+whenever \it{left-arg} is shorter than \it{right-list}
+and generated elements are used in subsequent iterations.
+Only after the entire output list has been generated,
+its last $L$ elements are parenthesized.
+
+\begin{itemize}
+\item \tt{op__2__ (} $op$ \tt{,} \it{list-arg} \tt{)}
+\end{itemize}
+
+After peeling \it{list-arg}, let its expanded elements be labeled as
+$l_0$ \tt{,} $\cdots$ \tt{,} $l_{N - 1}$; output of \tt{op__2__} has the form:
+
+\begin{center}
+\tt{(} $op_0$ \tt{(} $l_0$ \tt{) ) ,}
+\tt{(} $op_{1\%P}$ \tt{(} $l_1$ \tt{) ) ,}
+$\cdots$ \tt{,}
+\tt{(} $op_{(N - 1)\%P}$ \tt{(} $l_{N - 1}$ \tt{) )}
+\end{center}
+
+Equivalently, the output is a list of $N$ parenthesized elements,
+each having the form \tt{(} $op_{i\%P}$ \tt{(} $l_i$ \tt{) )} ($0 \le i < N$).\\
+
+\textsc{example i}\indent
+When both sides have equal number of elements, \tt{op__2__} pairs each element
+of \it{left-arg} with the index-wise corresponding element in \it{right-list},
+and places (an element of) $op$ in between them.
+For instance, \tt{op__((0 + 1, 2 + 3), (*, /), (4 + 5, 6 + 7))}
+expands to \tt{((0 + 1) * (4 + 5)), ((2 + 3) / (6 + 7))}.
+
+\textsc{example ii}\indent
+All elements of \it{right-list} can be
+aggregated with a single element of \it{left-arg}.
+For instance, \tt{op__(0, +, a, b, c)} generates the
+parenthesized expression \tt{((0) + (a) + (b) + (c))}.
+
+\textsc{example iii}\indent
+The element in a singleton \it{right-list} can
+be applied to each element of \it{left-arg}.
+For instance, \tt{op__((i, j, k), *, p + q)} generates the
+list \tt{((i) * (p + q)), ((j) * (p + q)), ((k) * (p + q))}.
+
+\textsc{example iv}\indent
+\tt{op__2__} can be used to apply a unary operator to each element of a list.
+For instance, \tt{op__(-, (x + 1, y + 2, z + 3))} gives the
+negation of each element as \tt{(-(x + 1)), (-(y + 2)), (-(z + 3))}.

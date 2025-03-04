@@ -1,0 +1,87 @@
+\def\Section#1{\section{#1}\input{Ellipsis/#1}}
+
+The ellipsis framework is a collection of metaprogramming
+facilities that work entirely using the C preprocessor;
+it serves as a foundation for the reference implementation of C\_, as
+the rest of its features are made possible with the help of preprocessing-based
+transpilation performed using macros discussed throughout this chapter.
+
+Technically, the ellipsis framework is nothing but an assortment of
+non-trivial macros, organized into a hierarchy of several header files,
+culminating in the header \idx{<ellipsis._>}.
+All implementations of C\_ are required to provide these headers,
+and unlike the rest of this dialect, all features of the ellipsis
+framework are required to be available as macros, compatible with
+the preprocessing rules of C99 which standardized function-like
+macros accepting a variable number of arguments, defined with a
+parameter list that ends with three dots \tt{...} (known as ``ellipsis'').
+For C99 compatibility, at least one argument must be provided for the ellipsis;
+a macro argument can be blank, and the number of arguments is determined
+from the count of unparenthesized commas that act as argument separator.
+
+This framework essentially provides a mini language within C itself,
+capable of performing any kind of logical and
+mathematical computation using only the preprocessor.
+To give an analogy, the basic use of macros for trivial text substitutions
+is merely the tip of the iceberg: computational capabilities of
+C99 preprocessors have remained largely undiscovered for decades.
+Ellipsis framework is a constructive proof showing that the preprocessor
+can be used as a general computation model using iterated composition,
+which can emulate branching, iteration, and recursion.
+Macros for fundamental operations are modeled on common
+arithmetic and logical instructions of microprocessors.
+
+Basic support for computations is over a limited domain of non-negative
+decimal integer constants, which can be extended to larger integers
+or even fractional numbers if these are represented as tuples;
+for example, a floating-point number can be represented as a pair,
+with the parts before and after the decimal point expressed as integers.
+Larger integers can be broken down into a comma-separated list of
+smaller integers, each of which shall be within the supported domain;
+for example, 1234 can be expressed as the tuple \tt{(12, 34)}.
+Signed integers can also be expressed as a tuple whose first element
+indicates the sign: zero means non-negative and non-zero means negative.
+
+This entire chapter is based on preprocessing,
+so we do not need all options included in the \tt{cc_} alias,
+and warnings about unused options can be safely ignored.
+To see the preprocessed code without actually compiling it, we can
+use the \tt{-E} option with \tt{gcc} and \tt{clang}, so we shall test
+the examples in this chapter with \tt{cc_ -E}; going one step further,
+we can also ensure C99 compatibility with the option \tt{-std=c99}.
+In fact, we can invoke the preprocessor directly with the command
+\tt{cpp} or \tt{clang-cpp}; as noted in the introductory chapter,
+the preprocessor should be able to locate the required headers, whose paths
+can be specified in the same way as shown earlier for \tt{cc_} alias.
+
+\note The reference implementation does not rely on compiler-specific
+extensions for providing the ellipsis framework, as is meant to
+be fully portable with compilers that support C99 (or later).
+Headers of this framework are placed in the \tt{ellipsis/} subdirectory
+within the \tt{.include/} directory that houses the reference implementation.
+
+\Section{Constants}
+
+\Section{Primitives}
+
+\Section{Deferred expansion}
+
+\Section{Iterated composition}
+
+\Section{Counting arguments}
+
+\Section{Utilities}
+
+\Section{Logical operations}
+
+\Section{Relational operations}
+
+\Section{Tools}
+
+\Section{Selection}
+
+\Section{Arithmetic operations}
+
+\Section{Templates}
+
+\Section{Additional utilities}

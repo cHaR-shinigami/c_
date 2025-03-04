@@ -1,0 +1,27 @@
+\def\Subsection#1{\subsection{#1}\input{Introduction/Compilation/#1}}
+
+To compile our first example, we need a concrete implementation of C\_.
+The reference implementation can be freely downloaded from the repository
+\url{https://github.com/cHaR-shinigami/c_}.
+It contains a directory \tt{examples/}, which can be considered as a project
+directory that contains source codes of examples discussed in this document.
+It contains three sub-directories:
+\tt{.include/}, \tt{include/}, and \tt{compile/}.
+\tt{.include/} contains header files which form the core implementation of C\_;
+these files need not be modified by most programmers and their
+contents are likely to change over time, mostly for bug fixes
+and occasionally to accommodate new features in existing headers.
+The directory \tt{include/} contains the header \tt{<c._>},
+which we saw in the previous example, along with several
+other header files that will be discussed in later chapters.
+Files within the directory \tt{compile/} are
+given to the compiler as translation units.
+Both \tt{include/} and \tt{compile/} files
+are meant to be modified by programmers.
+By convention, C\_ header files have \tt{._} as filename extension;
+C\_ translation units are analogous to \tt{.c} files,
+and have \tt{.c_} as extension.
+
+\Subsection{Requirements}
+
+\Subsection{Execution}

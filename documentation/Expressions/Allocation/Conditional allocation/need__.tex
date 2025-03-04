@@ -1,0 +1,18 @@
+\head{Syntax}
+
+\tt{need__ (} \it{expression} \tt{)}
+
+\head{Constraints}
+
+\it{expression} shall be a pointer to a complete object type.
+
+\head{Semantics}
+
+If \it{expression} is not null, then that is the outcome;
+otherwise a non-null outcome is pointer to a dynamically allocated object,
+whose size is same as that of the dereferenced \it{expression}.
+The outcome is of the same type as \it{expression}, which can be null only if
+\it{expression} itself is null and the required size could not be allocated.
+
+\it{expression} can be evaluated more than once
+only if it is pointer to a variably modified type.

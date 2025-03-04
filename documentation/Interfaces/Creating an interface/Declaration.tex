@@ -1,0 +1,129 @@
+\head{Syntax}
+
+\tt{# define} \it{interface-name}\tt{_EXTENDS}
+\it{base-interface} [\tt{,} \it{override-list}]
+
+\idx{Interface_} \tt{(} \it{interface-name} \tt{)}
+
+\tt{prototype_} \tt{(} [\it{return-type} \tt{,}]\s\tt{(} \it{interface-name}
+\tt{,} \it{member-name} \tt{)} [\tt{,} \it{parameter-tuples}]\s\tt{)}
+
+\idx{interface_} \tt{(} \it{interface-name} \tt{,} \it{members-list} \tt{)}
+
+\head{Constraints}
+
+\it{base-interface} shall be the name of another interface that
+has been declared prior to the declaration of \it{class-name}.
+
+\it{members-list} shall be a comma-separated list of names, and for each
+\it{member-name} in \it{member-list}, a \tt{prototype_} declaration with the
+identifier tuple \tt{(}\it{interface-name}\tt{,} \it{member-name}\tt{)}
+shall be visible prior to the use of \tt{interface_}.
+
+\it{members-list} shall be non-empty and the number of elements
+after macro expansions shall be less than \tt{PP_MAX}.
+
+The optional \it{override-list} shall be a comma-separated
+list of method names from the \tt{Type} structure.
+
+\head{Semantics}
+
+Declaring an interface involves the following four
+steps that are required to be done in the given order:
+
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+
+\begin{enumerate}
+
+\item An object-like macro named as \it{interface-name}\tt{_EXTENDS} is
+defined first, which establishes an inheritance relationship with another
+interface named as \it{base-interface}, and if \it{interface-name} overrides
+any of the \tt{Type} procedures inherited from \it{base-interface},
+then those are required to be specified in \it{override-list}.
+
+\item The next step is to declare the interface name with
+\tt{Interface_}, which itself declares types and synonyms:
+
+\begin{itemize}
+
+\item It creates a forward declaration of
+\tt{struct Typex (}\it{interface-name}\tt{)}, along with a pair of type synonyms:
+\tt{Typex (}\it{interface-name}\tt{)} is a synonym for a non-modifiable
+pointer to \tt{const struct Typex (}\it{interface-name}\tt{)}, whereas
+\tt{Typex_(}\it{interface-name}\tt{)} is its modifiable twin
+(the dereferenced object is non-modifiable).
+
+\item It defines the type \tt{struct} \it{interface-name} along with a
+pair of synonyms: \it{interface-name}\_ is declared a synonym for \tt{struct}
+\it{interface-name}, and \tt{interface-name} is its non-modifiable counterpart.
+The structure definition contains precisely the same member names as
+\tt{struct Abstract}, with the following members having different types:
+\tt{base} is declared as a singleton array whose element type is
+\it{base-interface}\_ (which is \tt{struct} \it{base-interface}), and the member
+\tt{typex} of \tt{_concrete} is of type \tt{Typex_(}\it{interface-name}\tt{)}.
+
+\end{itemize}
+
+\item The third step is to declare prototypes for the methods associated with
+the \it{interface-name} being declared; the purpose of declaring the type
+names earlier is to be able to use them as parameters and return types.
+
+\item After declaring the prototypes, \tt{interface_} defines
+the members of \tt{struct Typex (}\it{interface-name}\tt{)},
+whose forward declaration was done by \tt{Interface_}.
+Similar to a \tt{class_} declaration, \tt{interface_} also declares
+procedures for the \tt{Type} methods prefixed with \it{interface-name},
+along with a non-modifiable external array whose name is given by
+\tt{type_(}\it{interface-name}\tt{)}: the array is
+a singleton whose element is a \tt{Type} structure.
+
+\end{enumerate}
+
+\example As with classes, interfaces are typically declared in header files that
+are included in other headers and translation units that require the interface.
+As our first example in this chapter,
+we shall declare an interface named \tt{Iterable}.
+The following interface declaration is available in the header
+\src{include/interface/Iterable._}
+
+The macro \tt{Iterable_EXTENDS} sets \tt{Abstract} as the base
+interface of \tt{Iterable}, and specifies the procedures that are
+overridden by \tt{Iterable}, namely \tt{validate}, \tt{compare},
+\tt{copy}, and \tt{add}; the rest are inherited from the \tt{Abstract} type.
+\tt{Interface_(Iterable)} declares structures and
+type synonyms for use in subsequent prototypes.
+
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+
+Every instance of \tt{Iterable} is an abstract data structure that
+acts as a container for data objects; as their concrete representation
+is not specified, we need a mechanism to iterate over the elements.
+\tt{Iterator} is a synonym for an opaque structure that contains the
+necessary information for iterating over an instance of \tt{Iterable};
+the exact details depend on how the data is actually stored,
+which is decided by the concretizing class.
+
+The \tt{iterator} method is used to obtain an \tt{Iterator}
+that is initialized to traverse through the instance
+of \tt{Iterable} referred by the pointer \tt{this}.
+Each \tt{iterator} maintains an internal state about the current position in
+the \tt{Iterable}: \tt{has_next} checks whether the \tt{iterator} is exhausted,
+and if not, then \tt{get_next} can be used to fetch the next element
+(and also update the internal state of \tt{iterator}).
+As \tt{Iterator} is an opaque structure, the concretizing class needs
+to implement the required procedures for operating with iterators;
+the necessary function pointers for these procedures
+are supplied via the extended type \tt{typex}.
+The \tt{duplicate} method is used clone the internal
+state of an \tt{Iterator} into another object,
+so that iterating through one of them does not affect the other.
+
+As their names suggest, \tt{append} is used to add a new element
+to an \tt{Iterable} instance (though not necessarily at the end),
+and \tt{count} is used to determine the number of elements
+currently present in an instance of \tt{Iterable}.
+
+\note \tt{Iterable} is not required to be a sequence,
+so a concretizing class need not preserve the insertion order.

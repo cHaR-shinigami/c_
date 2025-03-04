@@ -1,0 +1,7 @@
+Following the established conventions expected by functions like
+\tt{bsearch} and \tt{qsort}, the return value is negative if
+left value is less than right value, zero if they are equal,
+and positive if left value is greater than right value.
+
+\note Directly returning the difference between \tt{this->value}
+and \tt{that->value} can cause signed overflow.

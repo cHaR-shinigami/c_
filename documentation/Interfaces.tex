@@ -1,0 +1,80 @@
+\def\Section#1{\section{#1}\input{Interfaces/#1}}
+
+``\it{The psychological profiling [of a programmer] is mostly the
+ability to shift levels of abstraction,\\from low level to high level.
+To see something in the small and to see something in the large.}''
+— Donald Knuth\\
+
+An interface in C\_ defines a structure of function pointers
+for operations permitted on an abstract data type.
+Unlike concrete data types implemented with classes whose data members
+are exposed by the declaration, abstract data types do not specify
+how the data is internally organized or represented.
+Interfaces provide an insulating layer over data that prevents direct
+access and modification: all operations need to be done via functions
+pointers that are part of the interface structure.
+In other words, the behavior is specified, but the representation is opaque.
+
+As an analogy, the powers and functions of a national government
+are described by the constitution of that nation, which
+formalizes what a government can (or cannot) do.
+An interface is something similar, and in C\_, the expected behavior
+is described with pre-conditions and post-conditions in protocols.
+A government is materialized by political parties, who must abide by the
+laws formulated in the constitution.
+Similarly, an interface is an abstract specification of behavior,
+and to actually perform these operations on an object instance,
+we need functions that know how the data is internally represented.
+These functions are provided by classes; more precisely,
+these functions are implemented as procedures of class methods.
+A class that provides the functions required by an interface structure
+is said to ``concretize'' or implement that interface, and instances of that
+class are said to materialize that interface.
+An interface can be concretized by multiple classes, and a single class
+can implement multiple interfaces.
+
+Besides the aesthetic appeal of representation-agnostic code,
+interfaces promote modular design, low coupling, and provide
+opportunities of code reuse through dependency inversion.
+The usual requirement is that every interface depends on a concrete class
+that implements the necessary functions as procedures.
+However, once the basic operations have been defined for an abstract type,
+higher order functionalities can be directly implemented by the interface itself
+using the basic operations.
+If such an interface is concretized by multiple classes, then each
+class can utilize these higher order functionalities without
+having to re-implement the same logic.
+In other words, each implementing class that concretizes the basic operations
+depends on the interface for higher order functionalities that are provided
+by the interface.
+While we refer to this as ``dependency inversion'', it is part of a
+mutual interdependence between abstract and concrete types, and if done correctly,
+it can also reduce the chances of programming bugs.
+
+Recall that each class has an associated \tt{Type} structure that provides
+pointers to procedures implemented by that class (or inherited from its base class).
+The same benefit is also provided to each interface for the basic \tt{Type} methods.
+Additionally, the structure of function pointers declared by an interface
+is actually an extension of the basic \tt{Type} structure discussed in the
+previous chapter, which is done by inheriting from the \tt{Abstract} type.
+
+\note Unlike some object-oriented languages,
+C\_ does not support multiple inheritance among interfaces.
+
+\section{\type{Abstract} type}
+\input{Interfaces/Abstract type}
+
+\section{\tt{Abstract} procedures}
+\input{Interfaces/Abstract procedures}
+
+\Section{Creating an interface}
+
+\Section{Procedures and methods}
+
+\Section{Concretization}
+
+\Section{Dependency inversion}
+
+\Section{Inheritance}
+
+\Section{More examples}

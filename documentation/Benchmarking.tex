@@ -1,0 +1,64 @@
+The noticeable slowness in the compilation of C\_ programs is primarily due to
+the large scale preprocessing overhead incurred by the reference implementation,
+which is by virtue of fundamental limitations in its design itself.
+This appendix chapter explores an approach to quantify
+performance in terms of number of preprocessing operations.
+
+As discussed in the main chapters, the design of the ellipsis framework
+is influenced by microprogramming architecture used in physical processors:
+the function-like macros for arithmetic, logical, and relational
+operations are implemented with the help of primitive macros
+that perform preprocessing micro-operations on argument lists.
+The total number of macro invocations required for a given
+task can be a benchmark parameter, for which a lower bound can
+be estimated by counting how many times the primitive macros
+\tt{cat_}, \tt{echo_}, \tt{pop_}, and \tt{top_} are invoked.
+
+A convenient way to do this is with the help of \tt{__COUNTER__} macro,
+which is predefined as a GNU C extension (also supported by other compilers).
+The unique property of \tt{__COUNTER__} is that it is incremented
+every time it is used, with zero being the initial value.
+We can modify the primitive macros to use \tt{__COUNTER__} in
+such a way that their replacement text is not altered, so that
+\tt{__COUNTER__} gets incremented each time a primitive macro is invoked.
+Here we present one possible way of updating the primitive
+macros without changing their functional behavior.
+
+\code{Benchmarking/primitives._}
+
+A technical subtlety in the incrementation of \tt{__COUNTER__} is that
+it is considered to be ``used'' only when it is scanned and expanded.
+For this reason, we have introduced two additional macros:
+\tt{bean_c_} is invoked by the primitive macros, but as discussed in chapter 4,
+macro arguments are not expanded at the call site, so \tt{bean_c_}
+calls another macro \tt{beanie_c_}, and it is during this invocation
+that \tt{__COUNTER__} is actually expanded and considered to be ``used'',
+thereby causing its value to be incremented by one.
+On the other hand, \tt{__COUNTER__} would not get updated if the primitive macros
+directly invoke \tt{beanie_c_}, as it does not expand its arguments at all.
+
+With this small modification in the header \tt{<primitives._>},
+we can get a conservative estimate of macro invocations
+required for high-level operations done with the preprocessor.
+For example, if we run the preprocessor as \tt{cc_ -E} on the
+text \tt{sort_(echo_, RANGE_(125, 1, 2), RANGE_(126, 2, 2))},
+followed by \tt{__COUNTER__}, the preprocessed text is the sorted
+list of positive integers up to 126, followed by 12157714 as the
+value of \tt{__COUNTER__}, which indicates the number of times the
+primitive macros were invoked by \tt{sort_} and its helper macros.
+
+It is worth mentioning that this underestimated count is much lower than
+the total number of macro invocations; if we consider that each invocation
+of a primitive macro is initiated by some other macro (such as the
+\tt{o}$n$\_\_ family), then the total count would be more than twice
+the value reported by \tt{__COUNTER__}, going well above 24 million.
+
+Such an astonishing scale of macro invocations remains a major
+bottleneck in the transpilation of \tt{C_} programs to \tt{C}.
+While it is hoped that future improvements on the reference
+implementation can lower these numbers, it should be accepted
+that a ``giant leap'' in performance can only be possible with
+the help of a dedicated compiler frontend for the \tt{C\_} dialect.
+Optimistically speaking, this can also open more opportunities for
+a wider adoption of C\_ in real-world projects, beyond its humble
+beginnings as a small recreational exercise in metaprogramming.

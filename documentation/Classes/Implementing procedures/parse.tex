@@ -1,0 +1,21 @@
+Our implementation of \tt{parse} expects \tt{in} to be a valid string;
+the initial value of \tt{*length} is expected to be capacity of the
+character array, and if none of its elements match the null byte,
+then the input is assumed to be invalid, and a null pointer is returned.
+Otherwise the string is interpreted as an unsigned integer using the
+standard library function \tt{strtoull} (declared in \tt{<stdlib.h>});
+the third argument corresponding to base is specified as zero,
+which supports octal (prefixed with \tt{0}) and hexadecimal
+(prefixed with \tt{0X} or \tt{0x}) notations along with decimal form.
+
+The modifiable pointer \tt{endptr_} records the address of the first
+invalid character that could not be converted; consequently, its offset
+relative to the base pointer \tt{in} gives the number of valid characters
+that were correctly interpreted, which is stored in \tt{*length}.
+\tt{errnum_} (an alternative name for \tt{errno} defined in the
+C\_ extension header \tt{<errno._>}) is set to zero before calling
+\tt{strtoull}, and if it becomes non-zero after the call, or if zero
+characters were read, or the converted value exceeds \tt{UNSIGNED_MAX},
+then \tt{errnum_} is reset to zero and a null pointer is returned.
+Otherwise the converted value is assigned to \tt{this->value},
+and a pointer to the instance is returned.

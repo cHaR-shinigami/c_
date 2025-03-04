@@ -1,0 +1,53 @@
+The names \tt{concrete} and \tt{concrete_} pointers to
+\tt{Void} and \tt{Void_} (respectively), whereas \tt{_concrete}
+has a different type, which is pointer to an untagged union.
+The ISO C standard does not disallow union pointers to have a different
+representation than \tt{void} pointer; as a purely artificial example,
+consider a hypothetical execution environment where pointers to union
+are represented with flipped bits, and the actual memory address can
+be obtained by toggling each bit, which is equivalent to taking one's
+complement of the pointer data interpreted as a binary integer.
+Therefore, at least in theory, a \tt{void} pointer representation need not
+be identical to a union pointer, and interpreting one pointer type's binary
+representation as another pointer type would cause undefined behavior.
+
+In practice, virtually all existing environments have identical representations
+for all object pointers; in fact, the POSIX standard has a stronger requirement
+that function pointers must also be representable as \tt{void} pointers.
+This implies that if pointer to a concrete instance is stored using the
+names \tt{concrete} or \tt{concrete_}, the stored representation is
+that of a \tt{void} pointer, and it can be safely interpreted as union
+pointer due to their identical representation (on real-world systems).
+However, out of purely pedantic concerns, it is recommended that
+the name \tt{_concrete} should not be directly accessed, and the
+name \tt{concrete} should be used for storing a concrete instance.
+
+A non-lvalue expression having the same type as \tt{_concrete}
+can be obtained with the macro \tt{concrete_}.
+
+\head{Syntax}
+
+\tt{concrete_ (} $expression$ \tt{)}
+
+\head{Constraints}
+
+Type of $expression$ shall be pointer to \tt{Abstract}, or
+pointer to an interface type that inherits from \tt{Abstract}.
+Equivalently, $expression$ shall be of type ``pointer to $T$'' or
+``pointer to $T$\_'', and \tt{is_(}$T$\tt{, Abstract)} shall be \tt{true}.
+
+\note \tt{is(Abstract, Abstract)} is trivially satisfied
+due to the reflexive nature of ``is-a'' relationship.
+
+\head{Semantics}
+
+\tt{concrete_} dereferences $expression$ to read the member
+name \tt{concrete_} and casts it to the type of \tt{_concrete}.
+
+\tt {concrete_(}$expression$\tt{)} is equivalent to
+\tt{((typeof ((}$expression$\tt{)->_concrete)) (}$expression$\tt{)->concrete_)}.
+
+\note The macro \tt{concrete_} uses the name \tt{_concrete}
+only to get its data type, not for reading the pointer.
+Nevertheless, the cast is a no-op for practically all systems,
+and the outcome is same as \tt{(}$expression$\tt{)->_concrete}.

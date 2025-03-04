@@ -1,0 +1,62 @@
+C\_ is strongly influenced by functional programming and
+object-oriented programming languages; a common feature of
+the latter is polymorphism, which means ``many forms''.
+Several function-like features of C\_ are polymorphic in nature,
+which means their behavior depends on the number of arguments passed,
+and sometimes on the type of arguments as well; most often, additional arguments
+extend the basic functionality by allowing for more fine-grained specification.
+We are already familiar with one such feature:
+the \tt{guard_} statement discussed in the first example.
+
+Polymorphic features follow a particular naming convention:
+if the argument sequence to a polymorphic feature named \tt{multiform} expands
+to \tt{n} arguments (equivalently, \tt{n - 1} unparenthesized commas),
+then a feature named \tt{multiform_n} gets invoked;
+some features may also provide an additional form named
+\tt{multiform_0} that is used if \tt{multiform_n} is not defined.
+In our first example, \tt{guard_(prices)} is resolved to \tt{guard_1_(prices)},
+whereas \tt{guard_(prices, 0)} would be equivalent to \tt{guard_2_(prices, 0)}.
+Most polymorphic features are provided as function-like macros by the
+reference implementation, so as per our conventions, their
+names end with underscore.
+For documenting the syntax, optional arguments are surrounded by square brackets
+(such as [\tt{,} \it{opt}]), and the notation [\tt{,} \it{arg}\tt{=value}]
+indicates that if the optional argument \it{arg} is omitted,
+then \tt{value} acts as a default argument.
+
+If one of the forms is permitted to evaluate some argument more than once,
+then the polymorphic feature is named with two trailing underscores.
+The multiple forms themselves have trailing underscores depending
+on whether they are permitted multiple evaluation of arguments;
+for example, \tt{output__} is a polymorphic feature that has four forms:
+\tt{output__0__}, \tt{output__1_}, \tt{output__2__}, and \tt{output__3__}.
+Only the form \tt{output__1_} is not permitted to evaluate its argument
+more than once; rest of the forms may possibly evaluate only the first
+argument multiple times, and only if it has a variably modified type.
+In summary, the naming convention for multiple argument expansion dominates:
+if at least one of the forms is permitted to evaluate some argument more than
+once, then the polymorphic macro itself is named with two trailing underscores,
+which also appear before the argument count in the names of individual forms.
+\tt{output__} and the complementary \tt{input__} are examples
+of dual polymorphism, whose behavior depends on both number and
+type of arguments; their precise semantics are discussed in chapter 3.
+
+This section only provides a brief introduction to static polymorphism,
+which means that the exact form is resolved at translation time itself;
+as the reference implementation provides these features as function-like macros,
+their name resolution is done by the preprocessor.
+We shall encounter several polymorphic features in the next three chapters,
+before chapter 4 provides a complete picture that also demonstrates how such
+features can be implemented as function-like macros with the ellipsis framework;
+polymorphism based on argument type is commonly
+implemented with \tt{_Generic} selections.
+C\_ also supports a form dynamic polymorphism with runtime binding
+of method calls, which is used with extension or ``inheritance''
+of classes and interfaces (discussed in chapter 7 and 8).
+
+There are certain advantages of directly using a specific form instead of its
+polymorphic generalization: theoretically, the most obvious benefit is that
+the name resolution is skipped, which improves translation time.
+Readers who are interested in the reference implementation will find that it
+does not invoke any of the polymorphic macros; the specific forms are directly
+used instead, which leads to an appreciable decrease in preprocessing time.

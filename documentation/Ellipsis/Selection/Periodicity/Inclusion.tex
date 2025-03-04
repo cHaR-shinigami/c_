@@ -1,0 +1,28 @@
+\head{Syntax}
+
+\idx{select_} \tt{(} \it{period} \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+\it{period} shall be a non-negative decimal integer  constant
+not exceeding \tt{PP_MAX}, or shall expand to such a constant.
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+\it{argument-list} is expanded and if \it{period} is not zero, then
+the first element in the resulting list is included in the outcome;
+thereafter every element at an interval of \it{period} is
+included (from left to right), and the rest are skipped.
+
+Equivalently, \it{argument-list} is expanded and then its
+elements are indexed from the left starting at index 0.
+The outcome contains precisely those elements whose
+index is an integer multiple of a non-zero \it{period}.
+Index 0 is a multiple of any \it{period}; however, if \it{period} is
+zero, then all elements are skipped and the outcome is a blank text.
+
+\example \tt{select_(2, a, e, i, o, u)} expands to \tt{a, i, u};
+it is complementary to the outcome of \tt{except_}.

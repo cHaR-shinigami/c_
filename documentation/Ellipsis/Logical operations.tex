@@ -1,0 +1,46 @@
+The header \idx{<logic._>} provides function-like macros for fundamental
+logical operations, whose syntax and semantics are tabulated below;
+the latter is described in terms of C operators.
+All these macro invocations expand to \tt{0} or \tt{1}.
+
+\head{Constraints}
+
+Except for \tt{FALSE_} and \tt{TRUE_}, $n$ shall be a non-negative decimal
+integer constant not exceeding \tt{PP_MAX}, or it shall expand to such a constant.
+If the result can be determined from $n$, then there is no constraint on $m$;
+otherwise $m$ shall also be a non-negative decimal integer constant
+not exceeding \tt{PP_MAX}, or it shall expand to such a constant.
+
+\table{l|c@{\qquad}||@{\qquad}l|c}
+
+\multicolumn{1}{c}{\bf Syntax}                   & \bf Semantics               & \multicolumn{1}{c}{\bf Syntax}                    & \bf Semantics\\
+
+   \s\idx{FALSE_} \tt{(} $n$ \tt{)}              & \tt{0}                      &  \s\s\s\idx{TRUE_} \tt{(} $n$ \tt{)}              & \tt{1}\\
+
+  \s\s\idx{BOOL_} \tt{(} $n$ \tt{)}              & \tt{!!}$n$                  & \s\s\s\s\idx{NOT_} \tt{(} $n$ \tt{)}              & \tt{!}$n$\\
+
+ \s\s\s\idx{AND_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & $n$ \tt{\&\&}\s\s$m$        &  \s\s\s\idx{NAND_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & \tt{!(}$n$ \tt{\&\&}\s\s$m$\tt{)}\\
+
+\s\s\s\s\idx{OR_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & $n$ \tt{||}\s\s$m$          & \s\s\s\s\idx{NOR_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & \tt{!(}$n$ \tt{||}\s\s$m$\tt{)}\\
+
+ \s\s\s\idx{XOR_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & \tt{!}$n$ \tt{!=} \tt{!}$m$ &  \s\s\s\idx{XNOR_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & \tt{!}$n$ \tt{==} \tt{!}$m$\\
+
+   \s\idx{IMPLY_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & \tt{!}$n$ \tt{||}\s\s$m$    &    \s\idx{NIMPLY_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & \tt{!(!}$n$ \tt{||}\s\s$m$\tt{)}\\
+
+    \idx{CIMPLY_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & $n$ \tt{||}\s\s\tt{!}$m$    &     \idx{CNIMPLY_} \tt{(} $n$ \tt{) (} $m$ \tt{)} & \tt{!(}$n$ \tt{||}\s\s\tt{!}$m$\tt{)}\\
+
+\elbat
+
+Both \tt{FALSE_} and \tt{TRUE_} act as
+constant functions that ignore the argument $n$.
+Binary operations other than exclusive-OR and exclusive-NOR
+are described in terms of logical operators in C,
+whose short-circuit nature is also part of the semantics of these macros:
+$m$ is processed only if outcome cannot be decided on the basis on $n$ alone.
+
+\note An unused argument is entirely discarded,
+so constraints do not apply and it is not checked for violations.
+For example, the invocation \tt{AND_(NOT_(10), cat_())} expands to \tt{0},
+even though \tt{cat_()} would otherwise cause a constraint violation;
+it goes undetected because the outcome becomes known from \tt{NOT_(10)},
+so \tt{cat_()} is ignored.

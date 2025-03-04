@@ -1,0 +1,9 @@
+\head{Declaration}
+
+\tt{LLong_ solver_(Abstract, write)(Abstract *this, Stream out);}
+
+\head{Description}
+
+If \tt{is(this->type, type_(Abstract))} is \tt{false}, then \tt{-1} is returned;
+otherwise the return value is the outcome of calling the \tt{write} procedure of
+\tt{concrete_(this)->type} with \tt{this->concrete} and \tt{out} as arguments.

@@ -1,0 +1,17 @@
+\head{Declaration}
+
+\tt{Abstract_ *solver_(Abstract, read)(Abstract_ *this, Stream in);}
+
+\head{Description}
+
+\noindent If \tt{is(this->type, type_(Abstract))} is \tt{false},
+or \tt{this->concrete} is null, or \tt{is_type(concrete_(this)->type)}
+is \tt{false}, then a null pointer is returned.
+Otherwise the \tt{read} procedure of \tt{concrete_(this)->type}
+is invoked with \tt{this->concrete_} and \tt{in} as arguments.
+If the outcome of the call is null, then a null pointer is returned;
+if the outcome is same as \tt{this->concrete}, then \tt{this} is returned.
+Otherwise a new \tt{Abstract} instance is allocated, whose \tt{type} member
+is initialized with \tt{this->type}, and \tt{concrete} member is initialized
+with the earlier outcome of calling \tt{concrete_(this)->type->read}.
+The return value is a pointer to the initialized \tt{Abstract} instance.

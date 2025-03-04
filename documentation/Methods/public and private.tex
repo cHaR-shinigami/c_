@@ -1,0 +1,19 @@
+\tt{public} and \tt{private} are object-like macros;
+the reference implementation defines them in \tt{<specifiers._>} header.
+\tt{public}  expands to the keyword \tt{inline}, and
+\tt{private} expands to the keyword \tt{static} (for internal linkage).
+
+\note These macros are nothing but alternative names,
+and they do not add anything new to the language.
+However, one advantage of macros is that they can be easily undefined,
+which can be convenient for certain purposes; for example, the reference
+implementation provides inline definitions for several functions in header
+files, using the macro \tt{public} instead of the keyword \tt{inline}.
+The benefit is that the inline definitions can be made visible
+in multiple translation units, which can be used by compilers
+for static analysis and optimizations of function calls.
+An external definition is still required for each such function, so the
+file \tt{lib.c_} first includes the file \tt{<specifiers._>}, then undefines
+the macro \tt{public}, and redefines it with an empty replacement text.
+This ensures that when the header files containing \tt{public} function
+definition are included in \tt{lib.c_}, they are no longer \tt{inline} definitions.

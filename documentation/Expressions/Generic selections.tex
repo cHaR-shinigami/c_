@@ -1,0 +1,57 @@
+\def\Subsection#1{\subsection{#1}\input{Expressions/Generic selections/#1}}
+
+Generic selections use the converted type of an expression to
+select another expression; the former expression is not evaluated.
+They are analogous to \tt{switch}, except that \tt{switch} selections are done at
+runtime using value of the controlling expression, whereas generic selections are
+performed during translation, based on the type of the controlling expression.
+Generic selections were standardized in C11, and they have the following syntax:
+
+\tt{_Generic (} \it{controlling-expression}
+[\tt{,} \it{type-name} \tt{:} \it{expression}] $\cdots$
+[\tt{, default :} \it{expression}]
+\tt{)}
+
+A generic selection consists of a controlling expression
+followed by a comma-separated list of generic associations:
+
+\begin{tabular}{r@{\hskip 0pt}l}
+
+\it{type-name} & \s\tt{:} \it{expression}\\
+
+\tt{default} & \s\tt{:} \it{expression}\\
+
+\end{tabular}
+
+A \tt{_Generic} selection requires at least one generic association having
+one of the above forms; at most one \tt{default} association is permitted.
+As comma is used to separate different parts of a generic selection,
+none of the expressions can be an unparenthesized comma expression.
+Type for the value of \it{controlling-expression} is determined as if with
+\tt{typeof_(}\it{controlling-expression}\tt{)}, which is itself equivalent to
+\tt{typeof (value_(}\it{controlling-expression}\tt{))}.
+
+If the resulting type is compatible with \it{type-name} of a generic association,
+then outcome of the generic selection is the
+\it{expression} for that matching association.
+If the optional \tt{default} association is present, then its \it{expression}
+is selected iff no other generic association matches the resulting type
+of \it{controlling-expression}; it need not be the last in sequence.
+Exactly one generic association must match, and type of a \tt{_Generic}
+expression is same as type of its selected expression, as if the entire generic
+selection is replaced by an implicitly parenthesized form of that expression.
+None of the other expressions are evaluated;
+however, they must all be semantically valid C expressions.
+
+\note Recall that \tt{typeof_} and \tt{value_} perform lvalue conversion,
+array to pointer decay, and function to function pointer conversion;
+if \it{type-name} of an association is qualified,
+then its \it{expression} will never be selected.
+
+\example \tt{_Generic (*"", Char : "error")} causes a compilation error as the
+controlling expression \tt{*""} undergoes lvalue conversion, and its resulting
+type \tt{Char_} does not match the \it{type-name} of any generic association.
+
+\Subsection{Generalized generic}
+
+\Subsection{Qualifier sensitivity}

@@ -1,0 +1,151 @@
+\head{Syntax}
+
+\tt{# include <input._>}
+
+\tt{scan__ (} \it{expression-list} \tt{)}
+
+\head{Constraints}
+
+\it{expression-list} shall be a comma-separated list of expressions,
+and each expression shall be an unqualified lvalue for which
+a pointer can be obtained with address-of operator \tt{&}.
+Each lvalue shall have one of the following types:\\
+
+\noindent
+\begin{tabular}{@{}rrrrrrrr}
+
+\tt{UByte_} &\tt{UShort_} &  \tt{UInt_} & \tt{ULLong_} &\tt{UInt_least8_} &\tt{UInt_least16_} &\tt{UInt_least32_} &\tt{UInt_least64_}\\
+ \tt{Byte_} & \tt{Short_} &   \tt{Int_} &  \tt{LLong_} & \tt{Int_least8_} & \tt{Int_least16_} & \tt{Int_least32_} & \tt{Int_least64_}\\
+
+\tt{UInt8_} &\tt{UInt16_} &\tt{UInt32_} & \tt{UInt64_} & \tt{UInt_fast8_} & \tt{UInt_fast16_} & \tt{UInt_fast32_} & \tt{UInt_fast64_}\\
+ \tt{Int8_} & \tt{Int16_} & \tt{Int32_} &  \tt{Int64_} &  \tt{Int_fast8_} &  \tt{Int_fast16_} &  \tt{Int_fast32_} &  \tt{Int_fast64_}\\
+
+            &\tt{Dec128_} & \tt{Dec32_} &  \tt{Dec64_} &       \tt{Size_} &     \tt{UIntptr_} &       \tt{ULong_} &     \tt{UIntmax_}\\
+ \tt{Char_} & \tt{Float_} &\tt{Double_} &\tt{LDouble_} &    \tt{Ptrdiff_} &      \tt{Intptr_} &        \tt{Long_} &      \tt{Intmax_}\\
+
+&& \tt{Void *} & \tt{Void_ *} & \tt{Char_ [}$n$\tt{]} & \tt{WChar_ [}$n$\tt{]} &&
+
+\end{tabular}\\
+
+\note \tt{Char_ [}$n$\tt{]} and \tt{WChar_ [}$n$\tt{]}
+denote complete array types having $n$ elements.
+Plain pointers to \tt{Char_} or \tt{WChar_} are not supported for storing text
+as string or wide string because length cannot be inferred from the type,
+and a sufficiently long input text can get written past the buffer end,
+thereby corrupting adjacent memory.
+
+Types named as \tt{UInt}$n$\_ and \tt{Int}$n$\_
+are synonyms for exact-width types;
+types named as \tt{UInt_least}$n$\_ and \tt{Int_least}$n$\_
+are synonyms for minimum-width types;
+types named as \tt{UInt_fast}$n$\_ and \tt{Int_fast}$n$\_
+are synonyms for fastest minimum-width types.
+These synonyms are provided by the header \tt{<stdint._>},
+discussed in chapter 9.
+
+Most implementations of C define these types as synonyms for the basic types;
+however, the standard allows them to be extended integer types,
+which can be separately provided by compilers in addition
+to and incompatible with the basic integer types.
+Moreover, the exact-width types along with \tt{UIntptr_} and \tt{Intptr_}
+are optional; these and the conditionally supported decimal floating-point
+types can be used with \tt{scan__} subject to their availability.
+
+Variables defined with \tt{register}, \tt{let}, \tt{Var}, or \tt{Var_}
+are unsuitable for \tt{scan__}, as their address cannot be taken.
+
+\head{Semantics}
+
+\tt{scan__} reads from \tt{stdin} and interprets the text
+as a value in the range of an lvalue in \it{expression-list}.
+Lvalues are assigned from left to right, and all expressions
+are evaluated in an unspecified order before reading starts.
+Input is consumed as long as the unconverted text read so far can
+be interpreted as a valid value as per the specifiers listed below.
+The first non-matching character acts as a delimiter and the unconverted input
+read till then is represented as a value that is stored in the first lvalue.
+If there are subsequent lvalues in \it{expression-list},
+then input text is interpreted and represented as per their types.
+For each lvalue, any whitespace character (as identified by \tt{isspace}
+function) found before the first matching character is consumed and discarded$.$
+An assignment is unsuccessful for an lvalue if a valid value
+cannot be constructed from the matching characters found (if any):
+this can happen if a delimiter is found too early, or if the input
+ends due to end of file (\tt{EOF}), or due to an error or interruption.
+When an lvalue cannot be assigned, reading stops there and subsequent lvalues
+(if any) are also left unassigned; if the interpretation fails due to the early
+occurrence of a non-matching character, then that character is not consumed.
+
+For each lvalue in \it{expression-list}, input text is interpreted as if
+\tt{scanf} is called with a pointer to that lvalue as the second argument,
+the first argument being a format string with a percent symbol \tt{"\%"}
+followed by one of the following format specifiers as per the non-array lvalue
+type; for the array types, \tt{\%} occurs after an opening backtick (\tt{`}).\\
+
+\noindent
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}rl|rl|rl}
+
+       \tt{UByte_} & \tt{"hhu"}       &        \tt{Byte_} & \tt{"hhi"}  & \tt{Char_}                  & \tt{" c"}\\
+
+      \tt{UShort_} & \tt{"hu"}        &       \tt{Short_} & \tt{"hi"}   & \tt{Float_}                 & \tt{"g"}\\
+
+        \tt{UInt_} & \tt{"u"}         &         \tt{Int_} & \tt{"i"}    & \tt{Double_}                & \tt{"lg"}\\
+
+       \tt{ULong_} & \tt{"lu"}        &        \tt{Long_} & \tt{"li"}   & \tt{LDouble_}               & \tt{"Lg"}\\
+
+      \tt{ULLong_} & \tt{"llu"}       &       \tt{LLong_} & \tt{"lli"}  & \tt{Dec32_}                 & \tt{"Hg"}\\
+
+        \tt{Size_} & \tt{"zu"}        &     \tt{Ptrdiff_} & \tt{"ti"}   & \tt{Dec64_}                 & \tt{"Dg"}\\
+
+     \tt{UIntmax_} & \tt{"ju"}        &      \tt{Intmax_} & \tt{"ji"}   & \tt{Dec128_}                & \tt{"DDg"}\\
+
+       \tt{UInt8_} & \tt{SCNu8}       &        \tt{Int8_} & \tt{SCNi8}  & \tt{Void}\s\s\tt{*}         & \tt{"p"}\\
+
+      \tt{UInt16_} & \tt{SCNu16}      &       \tt{Int16_} & \tt{SCNi16} & \tt{Void_ *}                & \tt{"p"}\\
+
+      \tt{UInt32_} & \tt{SCNu32}      &       \tt{Int32_} & \tt{SCNi32} & \tt{\ Char_ [}$n + 1$\tt{]} & \tt{"`\%}$n$\tt{[^`]`"}\\
+
+      \tt{UInt64_} & \tt{SCNu64}      &       \tt{Int64_} & \tt{SCNi64} & \tt {WChar_ [}$n + 1$\tt{]} & \tt{"`\%}$n$\tt{l[^`]`"}\\
+
+ \tt{UInt8_least_} & \tt{SCNuLEAST8}  &  \tt{Int8_least_} & \tt{SCNiLEAST8}\\
+
+\tt{UInt16_least_} & \tt{SCNuLEAST16} & \tt{Int16_least_} & \tt{SCNiLEAST16}\\
+
+\tt{UInt32_least_} & \tt{SCNuLEAST32} & \tt{Int32_least_} & \tt{SCNiLEAST32}\\
+
+\tt{UInt64_least_} & \tt{SCNuLEAST64} & \tt{Int64_least_} & \tt{SCNiLEAST64}\\
+
+  \tt{UInt8_fast_} & \tt{SCNuFAST8}   &   \tt{Int8_fast_} & \tt{SCNiFAST8}\\
+
+ \tt{UInt16_fast_} & \tt{SCNuFAST16}  &  \tt{Int16_fast_} & \tt{SCNiFAST16}\\
+
+ \tt{UInt32_fast_} & \tt{SCNuFAST32}  &  \tt{Int32_fast_} & \tt{SCNiFAST32}\\
+
+ \tt{UInt64_fast_} & \tt{SCNuFAST64}  &  \tt{Int64_fast_} & \tt{SCNiFAST64}\\
+
+     \tt{UIntptr_} & \tt{SCNuPTR}     &      \tt{Intptr_} & \tt{SCNiPTR}\\
+
+\end{tabular*}\\
+
+If an lvalue is of type \tt{Char_ [}$n$\tt{]} or \tt{WChar_ [}$n$\tt{]},
+its matching input text is enclosed within backticks,
+optionally preceded by whitespace.
+For that lvalue, at most $n - 1$ non-backtick characters after the
+opening backtick are stored in the array, and a null character is
+appended (wide null character is used for \tt{WChar_} arrays).
+If a closing backtick is found among the first $n$ characters
+after the opening backtick, it is consumed but not stored;
+otherwise the $n^{th}$ character (if any) is not consumed, and matching
+failure occurs for any subsequent lvalue in the same \it{expression-list}.
+
+An lvalue can be evaluated more than once only if it is a variable length array,
+namely \tt{Char_ [}$n$\tt{]} or \tt{WChar_ [}$n$\tt{]}
+with $n$ not being an integer constant expression.
+Outcome of \tt{scan__} is of type \tt{Int_}: a positive outcome
+indicates number of lvalues assigned in sequence; otherwise
+none were assigned, and a negative outcome indicates read error.
+
+If \tt{INPUT__} is \tt{1}, pointers to lvalues are asserted to be not null;
+otherwise \tt{INPUT__} shall be \tt{0}, and if pointer to a non-array
+lvalue is null, \tt{scan__} proceeds as if it was not null:
+matching text is consumed and counted in outcome.

@@ -1,0 +1,12 @@
+#include <c._>
+
+Char_ *c_strchr
+(	let Ptr_(Char) str_,
+	let Int chr
+)
+begin
+	guard_(str_, NULL)
+	do stop_(*str_ == chr, unqual__(str_))
+	while  (* str_++);
+	return NULL;
+end

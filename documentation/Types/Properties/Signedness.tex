@@ -1,0 +1,13 @@
+\head{Syntax}
+
+\tt{has_sign_ (} \it{type-name} \tt{)}
+
+\head{Constraints}
+
+\it{type-name} shall specify an integer type.
+
+\head{Semantics}
+
+\idx{has_sign_} returns an integer constant expression which equals zero
+if \it{type-name} specifies an unsigned type, and one for signed types;
+the outcome is of type \tt{Bool_}.

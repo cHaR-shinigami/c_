@@ -1,0 +1,27 @@
+\head{Syntax}
+
+\idx{sub_}\s\s\s\tt{(} [[\tt{. difference =}] $difference$ \tt{,}]
+[\tt{. minuend =}] $minuend$ \tt{,} [\tt{. subtrahend =}] $subtrahend$ \tt{)}
+
+\idx{sub_2_}\s\tt{(} \phantom{[}[\tt{. augend =}]
+$minuend$ \tt{,} [\tt{. subtrahend =}] $subtrahend$ \tt{)}
+
+\idx{sub_3_}\s\tt{(} \phantom{[}[\tt{. difference =}] $difference$ \tt{,}\phantom{]}
+[\tt{. minuend =}] $minuend$ \tt{,} [\tt{. subtrahend =}] $subtrahend$ \tt{)}
+
+\head{Semantics}
+
+\tt{sub_} invokes \tt{sub_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+\tt{sub_2_(}$minuend$\tt{,} $subtrahend$\tt{)} is equivalent to
+\tt{sub_3_(NULLPTR,} $minuend$\tt{,} $subtrahend$\tt{)}.
+
+\tt{sub_3_(}$difference$\tt{,} $minuend$\tt{,} $subtrahend$\tt{)}
+is equivalent to the following verbose invocation:
+
+\enlargethispage*{\baselineskip}
+\begin{center}
+\tt{( (typeof_(}$difference$\tt{)) call_((Type, sub),}
+$difference$\tt{,} $minuend$\tt{,} $subtrahend$\tt{) )}
+\end{center}

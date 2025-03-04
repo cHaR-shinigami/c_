@@ -1,0 +1,16 @@
+\head{Definition}
+
+\tt{#define cat_(l, r) l ## r}
+
+\head{Constraints}
+
+The operation shall not generate any invalid preprocessing token.
+
+\head{Semantics}
+
+\tt{cat_} pastes its unexpanded arguments verbatim,
+and the joined section is part of a single preprocessing token.
+
+\example Both \tt{cat_(&, =)} and \tt{cat_(0, _)} produce valid preprocessing
+tokens, but \tt{cat_(&&, =)} causes a constraint violation for the preprocessor,
+as the hypothetical operator \tt{&&=} is not defined by the C grammar.

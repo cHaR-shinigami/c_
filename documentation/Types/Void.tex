@@ -1,0 +1,9 @@
+\tt{Void} is an ``incomplete type'', which means \tt{sizeof (Void)} is
+disallowed, and we cannot declare an object of \tt{Void} type, or an array
+of \tt{Void}; however, pointer to \tt{Void} is a complete object type.
+A function with return type \tt{Void_} does not return any value,
+and a return statement in its definition must not have an expression.
+A function that does not accept any argument can specify \tt{Void_} in
+its parameter list; C23 makes it equivalent to an empty parameter list.
+Also, many compilers do not warn about ``unused result'' if
+it is discarded by casting the expression to \tt{Void}.

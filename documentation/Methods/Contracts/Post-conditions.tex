@@ -1,0 +1,48 @@
+\head{Syntax}
+
+\idx{post_}\s\s\s\tt{(} $condition$
+[\tt{,} $text$\tt{="}$condition$\tt{"}]
+[\tt{,} $site$\tt{=SITE}] \tt{)}
+
+\idx{post_1_}\s\tt{(} $condition$ \tt{)}
+
+\idx{post_2_}\s\tt{(} $condition$
+\phantom{[}\tt{,} $text$\phantom{]} \tt{)}
+
+\idx{post_3_}\s\tt{(} $condition$
+\phantom{[}\tt{,} $text$\phantom{]}
+\tt{,} $site$ \tt{)}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression.
+\it{text} shall be a string.
+\it{site} shall be of type \tt{Site}.
+
+\head{Semantics}
+
+\tt{post_} invokes \tt{post_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+If $condition$ compares equal to zero, \tt{post_1_}
+prints a diagnostic message of the following form:
+
+\begin{center}
+\tt{Post-condition failed:} \it{condition}\tt{, function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}
+\end{center}
+
+\tt{post_2_} and \tt{post_3_} print \it{text}
+instead of \it{condition} in the message.
+\tt{post_1_} and \tt{post_2_} obtain \it{function-identifier}, \it{file-name},
+and \it{line-number} from \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__}
+(respectively), whereas \tt{post_3_} obtains these ``source code
+coordinates'' from \it{site}; if \tt{(}$site$\tt{).func} or
+\tt{(}$site$\tt{).file} is null, an empty string is used.
+
+In all cases, the diagnostic message is written to the standard error stream
+\tt{stderr}, and the process terminates as if by calling \tt{exit(1)}.
+\it{text} and \it{site} are always evaluated once;
+their results are discarded if \it{condition} is non-zero.

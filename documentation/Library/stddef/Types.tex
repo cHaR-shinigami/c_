@@ -1,0 +1,16 @@
+Following type synonyms are defined, and in each case, the
+modifiable twin named $Type$\_ is a synonym for $type$\tt{_t}.
+
+\table{lllll}
+
+\type{Size} & \type{Ptrdiff} & \type{Max_align} & \type{WChar} & \type{Nullptr}\\
+
+\elbat
+
+Additionally, if both the macros \tt{__STDC_LIB_EXT1__} and
+\tt{__STDC_WANT_LIB_EXT1__} remain defined before including \tt{<stddef._>},
+then the type \type{Rsize}  is also defined,
+with its twin   \tt{Rsize_} being a synonym for \tt{rsize_t}.
+
+\note The synonyms \tt{Nullptr} and \tt{Nullptr_} are
+available only if the implementation provides \tt{nullptr_t}.

@@ -1,0 +1,18 @@
+\def\Subsubsection#1{\subsubsection{#1}\input{Types/Optional/Complex/#1}}
+
+For each standard floating-point type,
+a corresponding complex type can be optionally available:
+these are \type{Fcomplex}, \type{Dcomplex}, and \type{LDcomplex},
+in non-decreasing order of precision of increasing order of rank.
+Values for these types have two parts: real and imaginary;
+as always, a higher ranked type can represent all values of a lower ranked type.
+
+Complex types were introduced in C99 as a core part of the language;
+however, the C11 revision relegated them to conditional feature,
+whose support is available iff an implementation
+does not define the macro \tt{__STDC_NO_COMPLEX__}.
+
+\note \tt{<types._>} includes the C\_ library header
+\tt{<complex._>} iff complex types are supported by the compiler.
+
+\Subsubsection{Imaginary}

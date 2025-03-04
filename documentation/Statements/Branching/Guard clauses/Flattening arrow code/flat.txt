@@ -1,0 +1,12 @@
+begin
+	guard_(a)
+	s();
+	guard_(r)
+	h();
+	guard_(r)
+	a();
+	guard_(o)
+	p();
+	guard_(w)
+	e();
+end

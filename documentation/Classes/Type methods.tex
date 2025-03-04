@@ -1,0 +1,70 @@
+\def\Subsection#1{\subsection{\idxy{struct Type}{#1}}
+\index{Type@\tt{Type}!#1@\tt{#1}}\input{Classes/Type methods/#1}}
+
+During instantiation, the \tt{type} attribute inherited from
+\tt{Object} class is initialized to point to the \tt{Type}
+structure associated with the class or interface being instantiated.
+The following subsections describe those \tt{Type} methods
+for which a corresponding function pointer is declared in
+the \tt{Type} structure, whose value is used for callback.
+
+Except for \tt{validate}, each \tt{Type} method defines a pair of functions,
+protocol and procedure: protocol describes the expected behavior with
+pre-conditions and post-conditions, whereas its associated procedure invokes
+a callback function given by the corresponding member of a \tt{Type}
+parameter, or from the \tt{type} attribute of an \tt{Object} pointer.
+
+Except for \tt{comparable}, each subsection lists three declarations.
+Prototype declarations uses generic \tt{Void/Void_} pointers for parameters and
+return type, which is done to avoid boilerplate type casts during invocations.
+Procedure associated with a prototype invokes a
+callback function obtained from a type structure.
+The callback pointer need not have the same function type as the procedure,
+and in all cases, their parameter and return types are different:
+prototypes use \tt{Void}/\tt{Void_} pointers, whereas function pointers
+in the \tt{Type} structure use \tt{Object}/\tt{Object_} pointers.
+
+When a new object-oriented type is created, one procedure
+is declared for each function pointer in the type structure.
+If the new type (class or interface) is named as $T$,
+then its associated procedures use $T/T$\_ pointers instead of
+\tt{Object/Object_} pointers for parameters and return type.
+This is done to allow precise type checking of arguments and return value when
+these procedures are directly invoked; if they are used as callback via function
+pointers in type structure, the arguments and return value are expected to be
+\tt{Object/Object_} pointers, which works correctly because both $T$ and \tt{Object}
+identify structure types, and their pointers have identical representation.
+
+\subsection{\idxy{struct Type}{validate}}
+\input{Classes/Type methods/validate}
+
+\Subsection{init}
+
+\Subsection{free}
+
+\Subsection{compare}
+
+\subsection{\idxy{Type}{comparable}}
+\input{Classes/Type methods/comparable}
+
+\Subsection{copy}
+
+\Subsection{read}
+
+\Subsection{write}
+
+\Subsection{parse}
+
+\Subsection{text}
+
+\Subsection{decode}
+
+\Subsection{encode}
+
+\Subsection{add}
+
+\Subsection{sub}
+
+\Subsection{mul}
+
+\Subsection{div}

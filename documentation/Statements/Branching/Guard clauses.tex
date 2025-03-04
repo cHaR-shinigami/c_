@@ -1,0 +1,18 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Statements/Branching/Guard clauses/#1}}
+
+Guard clauses check if some condition is satisfied or not:
+if yes, then normal control flow is not interrupted; otherwise,
+subsequent statements are skipped till the end of the nearest
+enclosing block that supports the use of \tt{break} statement,
+and control jumps directly to the end of that block.
+Guard clauses are supported by iteration blocks, switch blocks, and any C\_
+block that can be lexically closed with \tt{end} or \tt{refed} (discussed later).
+
+\subsubsection{\tt{guard_}}
+\input{Statements/Branching/Guard clauses/guard_}
+
+\subsubsection{\tt{stop_}}
+\input{Statements/Branching/Guard clauses/stop_}
+
+\Subsubsection{Flattening arrow code}

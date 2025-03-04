@@ -1,0 +1,64 @@
+The header \tt{<op._>} defines the macro \tt{OP__} that configures
+the behavior of \tt{op_} family; \tt{OP__} records the \tt{defined}
+state of \tt{DEBUG} macro whenever \tt{<op._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <op._>}
+
+\idx{op_}\s\s\s\tt{(} \it{unary-operator} \tt{,} $operand$ \tt{)}
+
+\idx{op_}\s\s\s\tt{(} [$destination$ \tt{,}]
+\it{left-operand} \tt{,} \it{binary-operator} \tt{,} \it{right-operand} \tt{)}
+
+\idx{op_2_}\s\tt{(} \it{unary-operator} \tt{,} $operand$ \tt{)}
+
+\idx{op_3_}\s\tt{(} \phantom{[}\it{left-operand} \tt{,}\phantom{]}
+\it{binary-operator} \tt{,} \it{right-operand} \tt{)}
+
+\idx{op_4_}\s\tt{(} \phantom{[}$destination$  \tt{,}\phantom{]}
+\it{left-operand} \tt{,} \it{binary-operator} \tt{,} \it{right-operand} \tt{)}
+
+\head{Constraints}
+
+\it{operand}, $destination$, \it{left-operand}, and \it{right-operand}
+shall have scalar types: if the type is a pointer type, it shall be
+pointer to a complete array; otherwise the type shall be an arithmetic type.
+\it{operand} (for \tt{op_2_}), \it{left-operand} (for \tt{op_3_}),
+and $destination$ (for \tt{op_4_}) shall be pointer to a modifiable array,
+or a modifiable lvalue whose address can be obtained with the \tt{&} operator,
+interpreted as pointer to an array having a single element of arithmetic type.
+
+\it{unary-operator} shall be applicable on each element
+of \it{operand} without causing any semantic violation.
+Similarly, it shall be possible to use \it{binary-operator} with
+two operands: an element of \it{left-operand} (for \tt{op_3_})
+or $destination$ (for \tt{op_4_}) placed before the operator,
+and an element of \it{right-operand} placed after the operator.
+
+\head{Semantics}
+
+\tt{op_} invokes \tt{op_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+These features are modeled after  \tt{op__} family from the ellipsis
+framework (provided by the header \tt{<templates._>}), and their operational
+semantics are identical (the precise behavior is described in chapter 4).
+If $operand$, \it{left-operand}, or \it{right-operand} has an
+arithmetic type, it is interpreted as an array having a single element.
+\tt{op_2_} applies unary operator on each element of $operand$,
+which is then replaced with the result of the operation.
+\tt{op_3_} and \tt{op_4_} are analogous to \tt{op_3_} and \tt{op_4_},
+except that the elements of \it{left-operand} and \it{right-operand}
+are used with \it{binary-operator} instead of function call arguments.
+\tt{op_3_} stores the return values in \it{left-operand} itself,
+whereas \tt{op_4_} stores them in $destination$.\\
+If length of $destination$ is $n$ and $n$ is less than length of
+\it{right-operand} (as inferred from the array types), then only
+the first $n$ elements of \it{right-operand} are used; in any case,
+all elements of \it{right-operand} are utilized at least once.
+
+For \tt{op_3_}, if \it{binary-operator} is not an assignment operator,
+then it is considered to be one. For \tt{op_4_}, even if
+\it{binary-operator} is an assignment operator, the results are
+stored in $destination$, and \it{left-operand} remains unchanged.

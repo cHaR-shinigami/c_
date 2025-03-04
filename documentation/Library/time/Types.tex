@@ -1,0 +1,21 @@
+The following table lists the non-modifiable type
+synonyms along with the corresponding modifiable type.
+
+\table{c|r@{\qquad\qquad}||@{\qquad\qquad}c|l}
+
+\tt{<time._>} & \tt{<time.h>} & \tt{<time._>} & \multicolumn{1}{c}{\tt{<time.h>}}\\
+
+\hline
+
+\type{Size}  & \tt{size_t}  & \type{Timespec} & \tt{struct timespec}\\
+
+\type{Clock} & \tt{clock_t} & \type{Tm}       & \tt{struct tm}\\
+
+\type{Time}  & \tt{time_t}\\
+
+\elbat
+
+Additionally, if both macros \tt{__STDC_LIB_EXT1__} and
+\tt{__STDC_WANT_LIB_EXT1__} remain defined before including \tt{<time._>},
+then the synonyms \type{Errno} and \type{Rsize} are also defined,
+corresponding to the types \tt{errno_t} and \tt{rsize_t}.

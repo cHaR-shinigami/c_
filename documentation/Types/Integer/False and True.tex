@@ -1,0 +1,18 @@
+C\_ introduces two additional integer types \type{False} and \type{True},
+which are not compatible with any other type.
+Many features of C\_ allow compile-time introspection,
+and for some of them the outcome is of a boolean nature;
+for example, \tt{is_pointer_} takes a scalar expression and
+outputs 1 if the expression is of pointer type, and 0 otherwise.
+
+To permit the use of introspective features as the controlling expression
+of a \tt{_Generic} selection, the outcomes must be of incompatible types:
+if outcome is 0, its type is \tt{False_}; else its type is \tt{True_}.
+For instance, the macro \tt{NULL} can expand to \tt{0}, \tt{((void *)0)}, or
+any form of null pointer constant; we can introspect if it is of pointer type.
+
+\example
+\tt{_Generic (is_pointer_(NULL), False_ : "not pointer", True_ : "is pointer")}
+
+\note If \tt{cc_} uses \tt{gcc}, this code has to be compiled
+with \tt{cc_ -Wno-pointer-arith} (not required for \tt{clang}).

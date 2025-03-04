@@ -1,0 +1,45 @@
+The following options have been used with \tt{gcc} to test the
+reference implementation and all sample examples in this document;
+same set of options is also used by the build script
+to generate object files within \tt{object/} directory.
+
+\code{Introduction/Diagnostics/gcc.txt}
+
+\tt{-O3} is an optimization flag that we have chosen not just to improve
+runtime efficiency, but also because some diagnostic options come into effect
+only when certain optimizations are enabled in conjunction with warning flags.
+This ensures a more rigorous diagnosis of our examples,
+which is all the more crucial for something as new as C\_.
+\tt{-s} is used to reduce size of the executable by stripping non-essential
+data pertaining to symbol table and relocation of object code;
+this option is not suitable for use with debugging tools.
+It should also not be used in conjunction with the \tt{-c} option,
+as it removes crucial information required by the linker,
+making the object file(s) unlinkable.
+Header files placed within the \tt{class/} and \tt{interface/}
+directories will be required later in chapters 7 and 8.
+
+The reference implementation relies heavily on macros;
+in fact, it is essentially a preprocessing-based transpiler,
+and a simple typographic error in a small code can trigger an
+avalanche of error messages, which can be overwhelming for beginners,
+and mildly annoying for seasoned programmers.
+The option \tt{-ftrack-macro-expansion=0} limits each error message to the
+macro that is used in the program, skipping any nested expansion of helper
+macros that actually produce the erroneous code.
+Not using this option is mostly useful for debugging expansions
+of low-level iterated composition and metaprogramming macros from
+the ellipsis framework, all of which is introduced in chapter 4.
+
+\tt{-Werror} turns all warnings into errors,
+excluding any exceptions specified with the \tt{-Wno-error=} option.
+This sounds reasonable in a textbook setting, but may not always be
+suitable in a production environment where certain warnings are tolerable,
+but should not be outright disabled as they are informative to be programmer;
+for example, use of non-portable features may be acceptable with a
+particular compiler, but it should be reported as a warning.
+To quickly get back to the main agenda, we shall skip a thorough explanation
+of specific warning options; these are summarized in appendix E.
+The last few options starting with \tt{-Wno-} disable the specified
+warning; these warn about suspected bugs, but are otherwise perfectly
+legal in ISO C, and false positives for the reference implementation.

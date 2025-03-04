@@ -1,0 +1,65 @@
+\head{Syntax}
+
+\idx{pre_}\s\s\s\tt{(} $condition$
+[\tt{,} $text$\tt{="}$condition$\tt{"}
+[\tt{,} $site$\tt{=SITE}]] \tt{)}
+
+\idx{pre_1_}\s\tt{(} $condition$ \tt{)}
+
+\idx{pre_2_}\s\tt{(} $condition$
+\phantom{[}\tt{,} $text$\phantom{]} \tt{)}
+
+\idx{pre_3_}\s\tt{(} $condition$
+\phantom{[}\tt{,} $text$\phantom{]}
+\tt{,} $site$ \tt{)}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression.
+\it{text} shall be a string.
+\it{site} shall be of type \tt{Site}.
+
+The \tt{pre_} family can only be used inside blocks where the
+identifier \tt{_site} refers to a variable of type \tt{Site}.
+
+\note \tt{Site_} is a synonym for \tt{struct Site} having three
+members: \tt{func}, \tt{file}, and \tt{line}; \tt{func} and \tt{file}
+are pointers to \tt{Char}, whereas \tt{line} is of type \tt{Int}.
+Both the type and the synonym pair are defined in \tt{<assert._>}.
+
+\head{Semantics}
+
+\tt{pre_} invokes \tt{pre_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+If $condition$ compares equal to zero, \tt{pre_1_}
+prints a diagnostic message of the following form:
+
+\begin{center}
+\tt{Pre-condition failed:} \it{condition}\tt{, function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\\indent
+\tt{Called from function}
+\it{caller-function-identifier}\tt{, file}
+\it{call-site-file-name}\tt{, line}
+\it{call-site-line-number}\tt{.}
+\end{center}
+
+\it{caller-function-identifier}, \it{call-site-file-name}, and
+\it{call-site-line-number} are respectively obtained from \tt{_site.func},
+\tt{_site.file}, and \tt{_site.line}; if either \tt{_site.func} or
+\tt{_site.file} is a null pointer, an empty string is used instead.
+
+\tt{pre_2_} and \tt{pre_3_} print \it{text}
+instead of \it{condition} in the message.
+\tt{pre_1_} and \tt{pre_2_} obtain \it{function-identifier}, \it{file-name},
+and \it{line-number} from \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__}
+(respectively), whereas \tt{pre_3_} obtains these ``source code
+coordinates'' from \it{site}; if \tt{(}$site$\tt{).func} or
+\tt{(}$site$\tt{).file} is null, an empty string is used instead.
+
+In all cases, the diagnostic message is written to the standard error stream
+\tt{stderr}, and the process terminates as if by calling \tt{exit(1)}.
+\it{text} and \it{site} are always evaluated once;
+their results are discarded if \it{condition} is non-zero.

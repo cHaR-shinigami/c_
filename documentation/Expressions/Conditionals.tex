@@ -1,0 +1,30 @@
+\head{Syntax}
+
+\idx{test_}\s\s\s\tt{(} \it{condition} \tt{,} \it{yes-expression}
+[\tt{,} \it{no-expression}] \tt{)}
+
+\idx{test_2_}\s\tt{(} \it{condition} \tt{,} \it{yes-expression} \tt{)}
+
+\idx{test_3_}\s\tt{(} \it{condition} \tt{,} \it{yes-expression}
+\phantom{[}\tt{,} \it{no-expression}\phantom{]} \tt{)}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression.
+
+\head{Semantics}
+
+\tt{test_} invokes \tt{test_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+\it{condition} is evaluated first: if it is non-zero,
+then \it{yes-expression} is evaluated,
+and \tt{test_3_} does not evaluate \it{no-expression};
+otherwise \it{condition} is zero, \it{yes-expression}
+is not evaluated, and \tt{test_3_} evaluates \it{no-expression}.
+The outcome is a \tt{Void_} expression.
+
+\note The \tt{test_} family works like the conditional operator \tt{? :}, except
+that there is no constraint between the types of second and third expressions:
+exactly one of them is evaluated, and the result is discarded.
+The primary use of \tt{test_} family is to write branching expressions
+with mutually incompatible types within a larger expression.

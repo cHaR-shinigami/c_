@@ -1,0 +1,18 @@
+\begin{itemize}[nosep]
+
+\item \tt{this} and \tt{that} must not compare as equal pointers.
+
+\item \tt{validate_(that)} must be \tt{true}.
+
+\item If \tt{this} is not a null pointer, then
+\tt{is_type(((Object *) this)->type)} must be \tt{true}.
+
+\item If \tt{this} is not null pointer, then
+\tt{is(((Object *) this)->type, ((Object *) that)->type)} must be \tt{true}.
+In other words, a non-null \tt{this} must be an instance of
+a sub-type of \tt{that->type} (if not the same type).
+
+\end{itemize}
+
+\note The first pre-condition is meant to catch bugs
+where both argument expressions evaluate to same value.

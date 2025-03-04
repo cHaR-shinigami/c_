@@ -1,0 +1,18 @@
+The following code declares a typed linked list;
+a similar code is available in \tt{examples/include/class/List._}
+
+\code{Classes/More examples/Typed linked list/List._}
+
+\tt{List} extends the \tt{Chain} class with an additional
+member \tt{species}, which is a pointer to a \tt{Type} structure.
+For a given \tt{List} instance, each of its elements must point to a
+data object that is a valid instance for the \tt{species} of that list.
+Recall that due to Liskov substitution, each instance of a derived type is
+required to be a valid instance of its base type as well, so instances of
+types that extend the given \tt{species} can be added to the list as well.
+
+The macro \tt{List_EXTENDS} establishes an inheritance relationship with the
+\tt{Chain} class: more precisely, the implicit member \tt{base} of \tt{List}
+class is declared as a singleton array with element type as \tt{Chain}.
+\tt{List_EXTENDS} also specifies the procedure names that are overridden
+by the \tt{List} class; rest are inherited from the \tt{Chain} class.

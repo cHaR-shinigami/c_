@@ -1,0 +1,16 @@
+\head{Syntax}
+
+\tt{until}\_\s\tt{(} \it{stop-condition} \tt{)}
+
+\s\s\s\s\it{declarations-and-statements}\opt
+
+\tt{end}
+
+\head{Constraints}
+
+\it{stop-condition} shall be a scalar expression.
+
+\head{Semantics}
+
+If \it{stop-condition} is zero, then the loop body is executed
+before re-evaluating it; otherwise looping is stopped.

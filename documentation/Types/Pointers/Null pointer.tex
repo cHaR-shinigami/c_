@@ -1,0 +1,24 @@
+Null pointer is a special pointer value that
+indicates a non-existent object or function.
+The exact value is implementation-defined,
+but it is most commonly represented with all zero bits;
+moreover, the null pointer representation can be different
+for object pointer types and function pointer types.
+At source code level, a null pointer is denoted by the null pointer constant,
+which is an integer constant expression that evaluates to zero,
+or such an expression cast as pointer to \tt{Void};
+in other words, whenever the compiler sees 0 (possibly cast
+as \tt{Void_ *}) assigned to or compared with a pointer type,
+it substitutes an implementation-defined representation of the null pointer.
+C23 also allows \tt{nullptr} as another form of null pointer constant;
+\tt{nullptr} is a predefined constant of type \tt{nullptr_t}.
+
+\note Portable programs should not use \tt{memset} to initialize some memory
+with null pointer(s), as zeroing out a pointer object is not guaranteed to
+result in a null pointer; the proper way is to assign the null pointer constant.
+
+\subsubsection{\tt{notnull__}}
+\input{Types/Pointers/Null pointer/notnull__}
+
+\subsubsection{\tt{notnull_}*}
+\input{Types/Pointers/Null pointer/notnull_}

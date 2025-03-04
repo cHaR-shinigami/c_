@@ -1,0 +1,11 @@
+#define beanie_c_(...)
+
+#define bean_c_(counter) beanie_c_(counter)
+
+#define cat_( l , r) bean_c_(__COUNTER__) l ## r
+
+#define echo_(  ...) bean_c_(__COUNTER__) __VA_ARGS__
+
+#define pop_(t, ...) bean_c_(__COUNTER__) __VA_ARGS__
+
+#define top_(t, ...) bean_c_(__COUNTER__) t

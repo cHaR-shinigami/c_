@@ -1,0 +1,19 @@
+A new data can be appended to a collection only if it is a
+valid instance of the collection's type (or its sub-type).
+
+In order to impose this requirement as a pre-condition, \tt{Collection}
+overrides \tt{append} method of its base interface \tt{Iterable};
+implementation of the procedure is trivial and identical
+to the code for \tt{append} procedure of \tt{Iterable}.
+
+\head{Protocol}
+
+\noindent\fbox{\tt{
+examples/include/interface/Collection/append._}}
+\code{../include/interface/Collection/append._}
+
+\head{Procedure}
+
+\noindent\fbox{\tt{
+examples/compile/interface/Collection/append.c_}}
+\code{../compile/interface/Collection/append.c_}

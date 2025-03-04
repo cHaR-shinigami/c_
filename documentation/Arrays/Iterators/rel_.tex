@@ -1,0 +1,70 @@
+The header \tt{<rel._>} defines the macro \tt{REL__} that configures
+the behavior of \tt{rel_} family; \tt{REL__} records the \tt{defined}
+state of \tt{DEBUG} macro whenever \tt{<rel._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <rel._>}
+
+\idx{rel_}\s\s\s\tt{(} $flag$ \tt{,}
+\it{unary-operator}  \tt{,} \it{operand} \tt{)}
+
+ \tt{rel_}\s\s\s\tt{(} $flag$ \tt{,} \it{left-operand} \tt{,}
+\it{binary-operator} \tt{,} \it{right-operand} \tt{)}
+
+\idx{rel_3_}\s\tt{(} $flag$ \tt{,}
+\it{unary-operator}  \tt{,} \it{operand} \tt{)}
+
+\idx{rel_4_}\s\tt{(} $flag$ \tt{,} \it{left-operand} \tt{,}
+\it{binary-operator} \tt{,} \it{right-operand} \tt{)}
+
+\head{Constraints}
+
+$flag$ shall be a modifiable lvalue of arithmetic type.
+\it{left-operand} and \it{right-operand} shall have scalar types:
+if the type is a pointer type, it shall be pointer to a
+complete array; otherwise the type shall be an arithmetic type.
+
+For \tt{rel_3_}, it shall be possible to use \it{binary-operator} with two
+consecutive elements of $operand$; for \tt{rel_4_}, \it{binary-operator} shall
+not cause semantic error when an element of \it{left-operand} is placed before
+the operator, and an element of \it{right-operand} is placed after the operator.
+An expression with \it{binary-operator} shall have scalar type.
+
+\note \it{binary-operator} is intended to be a relational or
+equality operator, but it is not imposed as a constraint.
+
+\head{Semantics}
+
+\tt{rel_} invokes \tt{rel_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+These features are modeled after  \tt{rel__} family from the ellipsis
+framework (provided by the header \tt{<templates._>}), and their operational
+semantics are identical (the precise behavior is described in chapter 4).
+If $operand$, \it{left-operand}, or \it{right-operand} has an arithmetic type,
+then it is interpreted as an array having a single element.
+Only the lvalue $flag$ is modified.
+
+If $operand$ has a single element, then
+\tt{rel_3_} sets $flag$ to \tt{TRUE_()} (one).
+If the length of $operand$ is inferred to be $n$ and $n$ is greater than
+one, then every pair of consecutive elements is used as the operands of
+\it{binary-operator} as long as the outcome of the operation is non-zero.
+If an outcome is zero, then rest of the iterations are skipped,
+and $flag$ is set to \tt{FALSE_()} (zero); otherwise all the
+$n - 1$ outcomes are non-zero, and $flag$ is set to \tt{TRUE_()}.
+
+If both \it{left-operand} and \it{right-operand} have a single
+element each, then \tt{rel_4_} sets $flag$ to \tt{TRUE_()};
+otherwise let $n$ be the maximum length of the two arrays.
+At most $n$ iterations are performed, and in each iteration,
+\it{binary-operator} is used with an element of \it{left-operand}
+and an element of \it{right-operand}: if the outcome is zero,
+then subsequent iterations are skipped and $flag$ is set to \tt{FALSE_()};
+otherwise all the $n$ outcomes are non-zero and $flag$ is set to \tt{TRUE_()}.
+Whenever a shorter array is exhausted,
+its elements are reused in a round-robin sequence.
+
+\note A non-trivial assignment to $flag$ is the logical
+conjunction of all the outcomes for \it{binary-operator}.

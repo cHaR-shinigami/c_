@@ -1,0 +1,38 @@
+Many compilers have an option for warning about unused variables.
+Even though such warnings can be disabled altogether,
+it is a good idea to enable them by default, and selectively suppress them
+for certain variables by adding a dummy expression with a \tt{Void} cast;
+this is a common trick for suppressing warnings about unused parameters.
+
+The only downside of the approach is that expression statements cannot
+be used outside functions (or any kind of statement for that matter),
+so if there are unused ``private'' variables (internal linkage)
+created for future use, then this approach requires an additional
+function where we can add dummy expressions that use such variables.
+
+C\_ offers an alternative with \idx{spares_},
+which is syntactically a declaration, so it can also occur outside functions.
+
+\head{Syntax}
+
+\tt{spares_ (} \it{identifier-list} \tt{)}
+
+\pagebreak
+
+\head{Constraint}
+
+\it{identifier-list} shall be a comma separated list of identifiers,
+and each identifier shall refer to a variable or a function.
+At least one identifier shall be provided and no identifier shall be repeated;
+an identifier that has already been used in a \tt{spares_} declaration shall
+not be reused in a subsequent \tt{spares_} declaration within the same scope.
+
+\head{Semantics}
+
+\tt{spares_} declares that variables or functions
+specified in \it{identifier-list} are potentially unused;
+the list should not end with a trailing comma, as implementations are
+not required to support it, and can be treated as a syntax error.
+
+\note C23 adds the standard attribute \tt{maybe_unused}
+that should be preferred if supported by the compiler.

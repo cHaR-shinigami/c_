@@ -1,0 +1,77 @@
+\tt{<math._>} defines the following function-like wrapper macros
+as alternative names for standard macros from \tt{<math.h>}.
+
+\table{llllll}
+
+\idx{fpclassify_} & \idx{iscanonical_} & \idx{isfinite_} & \idx{issignaling_} & \idx{isnan_}\\
+
+   \idx{signbit_} &    \idx{isnormal_} &    \idx{isinf_} & \idx{issubnormal_} & \idx{iszero_}\\
+
+\\
+
+\idx{isgreater_}      & \idx{isless_}      & \idx{islessgreater_} & \idx{iseqsig_}\\
+
+\idx{isgreaterequal_} & \idx{islessequal_} &   \idx{isunordered_}\\
+
+\elbat
+
+The following function-like macros generalize standard
+functions from \tt{<math.h>} using fold/reduce operations.
+
+\table{lllllll}
+
+\idx{powf_}  & \idx{pownf_}     & \idx{powrf_}         & \idx{fadd_}          & \idx{fmul_}\\
+
+\idx{pow_}   & \idx{pown_}      & \idx{powr_}          & \idx{faddl_}         & \idx{fmull_}\\
+
+\idx{powl_}  & \idx{pownl_}     & \idx{powrl_}         & \idx{daddl_}         & \idx{dmull_}\\
+
+\\
+
+\idx{fmaxf_} & \idx{fmaximumf_} & \idx{fmaximum_magf_} & \idx{fmaximum_numf_} & \idx{fmaximum_mag_numf_}\\
+
+\idx{fmax_}  & \idx{fmaximum_}  & \idx{fmaximum_mag_}  & \idx{fmaximum_num_}  & \idx{fmaximum_mag_num_}\\
+
+\idx{fmaxl_} & \idx{fmaximuml_} & \idx{fmaximum_magl_} & \idx{fmaximum_numl_} & \idx{fmaximum_mag_numl_}\\
+
+\idx{fminf_} & \idx{fminimumf_} & \idx{fminimum_magf_} & \idx{fminimum_numf_} & \idx{fminimum_mag_numf_}\\
+
+\idx{fmin_}  & \idx{fminimum_}  & \idx{fminimum_mag_}  & \idx{fminimum_num_}  & \idx{fminimum_mag_num_}\\
+
+\idx{fminl_} & \idx{fminimuml_} & \idx{fminimum_magl_} & \idx{fminimum_numl_} & \idx{fminimum_mag_numl_}\\
+
+\elbat
+
+The following fold/reduce generalizations are provided
+only if \tt{__STDC_IEC_60559_DFP__} is defined.
+
+\table{llllll}
+
+\idx{powd32_}   & \idx{pownd32_}      & \idx{powrd32_}          & \idx{d32addd64_}        & \idx{d32muld64_}\\
+
+\idx{powd64_}   & \idx{pownd64_}      & \idx{powrd64_}          & \idx{d32addd128_}       & \idx{d32muld128_}\\
+
+\idx{powd128_}  & \idx{pownd128_}     & \idx{powrd128_}         & \idx{d64addd128_}       & \idx{d64muld128_}\\
+
+\\
+
+\idx{fmaxd32_}  & \idx{fmaximumd32_}  & \idx{fmaximum_magd32_}  & \idx{fmaximum_numd32_}  & \idx{fmaximum_mag_numd32_}\\
+
+\idx{fmaxd64_}  & \idx{fmaximumd64_}  & \idx{fmaximum_magd64_}  & \idx{fmaximum_numd64_}  & \idx{fmaximum_mag_numd64_}\\
+
+\idx{fmaxd128_} & \idx{fmaximumd128_} & \idx{fmaximum_magd128_} & \idx{fmaximum_numd128_} & \idx{fmaximum_mag_numd128_}\\
+
+\idx{fmind32_}  & \idx{fminimumd32_}  & \idx{fminimum_magd32_}  & \idx{fminimum_numd32_}  & \idx{fminimum_mag_numd32_}\\
+
+\idx{fmind64_}  & \idx{fminimumd64_}  & \idx{fminimum_magd64_}  & \idx{fminimum_numd64_}  & \idx{fminimum_mag_numd64_}\\
+
+\idx{fmind128_} & \idx{fminimumd128_} & \idx{fminimum_magd128_} & \idx{fminimum_numd128_} & \idx{fminimum_mag_numd128_}\\
+
+\elbat
+
+Macros in the \tt{pow} family generalize the
+respective functions using a right-to-left reduction;
+for example, \tt{pow_(4, 3, 2)} expands to \tt{pow(4, pow(3, 2))}.
+The sequence of folding/reduction for rest of the
+generalization macros in \tt{<math._>} is implementation-defined.
+In all cases, the order of evaluation of arguments is unspecified.

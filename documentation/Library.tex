@@ -1,0 +1,120 @@
+C\_ extends the C standard library with type definitions and some new functions.
+Minor extensions include trivial wrappers over standard function-like macros,
+named as per the C\_ convention of a trailing underscore,
+to differentiate them from actual functions.
+C23 specifies 31 standard headers whose names end with \tt{.h},
+and for each of them, C\_ provides an extension header whose name
+ends with \tt{._}: each C\_ header includes its corresponding C
+header as a base, and provides C\_ style type definitions along
+with wrapper macros for the components of the base header.
+
+Sections of this chapter are organized as per standard headers:
+each section lists the extensions provided by a particular C\_ header.
+Details about standard types have been omitted for brevity:
+only the names are mentioned, and as always,
+their modifiable twins are named with a trailing underscore.
+Wrapper macros retain the same meaning as their base
+macros from the standard library: their only purpose is
+to ensure a uniform naming scheme as per C\_ conventions.
+For some headers, the reference implementation also tries to bridge
+the gap between C18 and C23, by implementing new features of the
+current C standard if they are not already provided by the compiler.
+
+\note In few cases, an extension header is only a wrapper
+that includes a C header without any new content.
+
+\section{Diagnostics \idx{<assert._>}}
+\input Library/assert
+
+\section{Complex arithmetic \idx{<complex._>}}
+\input Library/complex
+
+\section{Character handling \idx{<ctype._>}}
+\input Library/ctype
+
+\section{Errors \idx{<errno._>}}
+\input Library/errno
+
+\section{Floating-point environment \idx{<fenv._>}}
+\input Library/fenv
+
+\section{Characteristics of floating types \idx{<float._>}}
+\input Library/float
+
+\section{Format conversion of integer types \idx{<inttypes._>}}
+\input Library/inttypes
+
+\section{Alternative spellings \idx{<iso646._>}}
+\input Library/iso646
+
+\section{Characteristics of integer types \idx{<limits._>}}
+\input Library/limits
+
+\section{Localization \idx{<locale._>}}
+\input Library/locale
+
+\section{Mathematics \idx{<math._>}}
+\input Library/math
+
+\section{Non-local jumps \idx{<setjmp._>}}
+\input Library/setjmp
+
+\section{Signal handling \idx{<signal._>}}
+\input Library/signal
+
+\section{Alignment \idx{<stdalign._>}}
+\input Library/stdalign
+
+\section{Variable arguments \idx{<stdarg._>}}
+\input Library/stdarg
+
+\section{Atomics \idx{<stdatomic._>}}
+\input Library/stdatomic
+
+\section{Bit and byte utilities \idx{<stdbit._>}}
+\input Library/stdbit
+
+\section{Boolean type and values \idx{<stdbool._>}}
+\input Library/stdbool
+
+\section{Checked integer arithmetic \idx{<stdckdint._>}}
+\input Library/stdckdint
+
+\section{Common definitions \idx{<stddef._>}}
+\input Library/stddef
+
+\section{Integer types \idx{<stdint._>}}
+\input Library/stdint
+
+\section{Input/output \idx{<stdio._>}}
+\input Library/stdio
+
+\section{General utilities \idx{<stdlib._>}}
+\input Library/stdlib
+
+\section{\tt{_Noreturn} \idx{<stdnoreturn._>}}
+\input Library/stdnoreturn
+
+\section{String handling \idx{<string._>}}
+\input Library/string
+
+\section{Type-generic math \idx{<tgmath._>}}
+\input Library/tgmath
+
+\section{Threads \idx{<threads._>}}
+\input Library/threads
+
+\section{Date and time \idx{<time._>}}
+\input Library/time
+
+\section{Unicode utilities \idx{<uchar._>}}
+\input Library/uchar
+
+\section{Extended multibyte and wide character utilities \idx{<wchar._>}}
+\input Library/wchar
+
+\section{Wide character classification and mapping utilities \idx{<wctype._>}}
+\input Library/wctype
+
+\section{Complete library \idx{<lib._>}}
+\input Library/lib

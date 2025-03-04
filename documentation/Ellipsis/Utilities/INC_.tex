@@ -1,0 +1,16 @@
+\head{Syntax}
+
+\tt{INC_ (} $n$ \tt{)}
+
+\head{Constraints}
+
+$n$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX},
+or it shall expand to such a constant.
+
+\head{Semantics}
+
+\tt{INC_(PP_MAX)} is \tt{0}; if $n$ is not \tt{PP_MAX}, then
+\tt{INC_(}$n$\tt{)} expands to the decimal integer constant one more than $n$.
+
+\note \tt{DEC_} and \tt{INC_} are inverses of each other,
+so both \tt{DEC_(INC_(}$n$\tt{))} and \tt{INC_(DEC_(}$n$\tt{))} expand to $n$.

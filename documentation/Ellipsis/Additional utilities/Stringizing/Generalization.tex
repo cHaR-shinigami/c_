@@ -1,0 +1,18 @@
+\head{Syntax}
+
+\idx{stringize_} \tt{(} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Outcome is a list of string literals where each element of
+the expanded \it{argument-list} is individually stringized.
+
+\note \tt{stringize_(...)} is equivalent to \tt{map__(quote_, __VA_ARGS__)}.
+
+\example \tt{stringize_(top_(thundering,), pop_(, typhoons))}
+expands to \tt{"thundering", "typhoons"}.

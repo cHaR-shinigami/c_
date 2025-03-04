@@ -1,0 +1,63 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Arrays/Bit arrays/Aggregate operations/#1}}
+
+C\_ supports the facilities of \tt{<stdbit.h>} for bit arrays.
+The standard header \tt{<stdbit.h>} added in C23 defines utility functions and
+macros for aggregate operations on binary representation of unsigned integers.
+For each utility, C\_ provides a \it{similar} function for bit arrays,
+which accepts a length (word count), and a pointer to \tt{Bits};
+the functions whose names start with \tt{first} have slightly
+different behavior from their respective analogues in \tt{<stdbit.h>}.
+
+Each function has two wrappers whose names end with underscore: these infer
+word count from the type of a complete bit array, as done by \tt{length_};
+type of the outcome is same as return type of the corresponding function.
+Each wrapper named with two trailing underscores can evaluate its pointer
+argument more than once only if it has a variably modified type; its companion
+named with a single trailing underscore evaluates the pointer exactly once.
+
+The following subsections describe these features,
+all of which can be configured with the \tt{DEBUG} macro.
+If \tt{DEBUG} remains defined before including \tt{<bits._>},
+the macro \tt{BITS__} expands to \tt{1}, and the utilities named with trailing
+underscore(s) assert that the pointer is not null, as if by using \tt{notnull_};
+otherwise \tt{BITS__} shall expand to \tt{0}.
+
+The reference implementation provides inline definitions for all the functions.
+The following wrappers ending with a single underscore are starred,
+as the reference implementation provides them using non-standard extensions.
+
+\vspace{-\baselineskip}
+\table{lllll}
+\tt{leading_zeros_}* & \tt{trailing_zeros_}* & \tt{first_leading_zero_}* & \tt{first_trailing_zero_}* & \tt{count_zeros_}*\\
+\tt{leading_ones_}*  & \tt{trailing_ones_}*  & \tt{first_leading_one_}*  & \tt{first_trailing_one_}*  & \tt{count_ones_}* \\
+\multicolumn{5}{c}{\tt{has_single_bit_}*\s}
+\elbat
+
+\note If the bit count is not a multiple of \tt{BITS_WIDTH} when
+creating a bit array, then there will be some padding bits at the end;
+the original bit count cannot be determined from the array length (word count),
+so all bits are considered as value bits, and extra bits at
+the end can affect the outcome of some aggregation operations.
+
+\Subsubsection{Count leading zeros}
+
+\Subsubsection{Count leading ones}
+
+\Subsubsection{Count trailing zeros}
+
+\Subsubsection{Count trailing ones}
+
+\Subsubsection{First leading zero}
+
+\Subsubsection{First leading one}
+
+\Subsubsection{First trailing zero}
+
+\Subsubsection{First trailing one}
+
+\Subsubsection{Count zeros}
+
+\Subsubsection{Count ones}
+
+\Subsubsection{Single-bit check}

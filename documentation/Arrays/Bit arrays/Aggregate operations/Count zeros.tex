@@ -1,0 +1,17 @@
+\head{Syntax}
+
+\tt{# include <bits._>}
+
+\tt{ULLong_} \idx{count_zeros}\s\tt{( Size} $wordcount$
+\tt{, Ptr ( UInt_fast8 [} $wordcount$ \tt{] )} $bitarray$ \tt{) ;}
+
+\idx{count_zeros__}\s\tt{(}
+\it{pointer-to-bits} \tt{)}
+
+\idX{count_zeros_}\s\s\tt{(}
+\it{pointer-to-bits} \tt{)}
+
+\head{Semantics}
+
+If pointer to bit array is not null, outcome is the number of bits set to zero;
+otherwise the function returns zero.

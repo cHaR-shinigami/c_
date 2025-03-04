@@ -1,0 +1,25 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Methods/Procedure/Multiple procedures/#1}}
+
+The source file \tt{"Integers/sort._"} containing the
+protocol definition is located in \tt{include/} directory.
+Examples in this documentation follow a practice of keeping prototype
+declarations and protocol definitions in \tt{include/} directory:
+files having prototype declarations are included for method
+invocations, whereas a file having a protocol definition is included
+only by those files that provide a corresponding procedure definition.
+Files having procedure definitions are named with \tt{.c_} as filename
+extension, and these files are placed within the \tt{compile/} directory.
+
+The following subsections describe two endpoint-based strategies for sorting:
+their source codes are available in the files \tt{hourglass.c_} and \tt{burrow.c_},
+both located in the \tt{Integers/} subdirectory within the \tt{compile/} directory.
+Both of these translation units include the header file
+\tt{"Integers/sort._"} containing the protocol definition.
+
+\note As these files provide definitions for the same functions,
+at most one of their object codes can be linked.
+
+\Subsubsection{Hourglass partitioning scheme}
+
+\Subsubsection{Burrowing merge strategy}

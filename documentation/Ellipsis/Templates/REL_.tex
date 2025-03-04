@@ -1,0 +1,123 @@
+Primary use of the \tt{REL_} family is element-wise comparison
+of two lists, and to check for ordering in a single list;\\
+in other words, \tt{REL_}, \tt{REL_0_}, and \tt{REL_2_} extend
+the application of relational operations over lists of constants.
+
+\head{Syntax}
+
+ \tt{REL_}\s\s\s\tt{(} \it{left-arg} \tt{,} $f$ \tt{,} \it{right-list} \tt{)}
+
+ \tt{REL_}\s\s\s\tt{(} $f$ \tt{,} \it{list-arg} \tt{)}
+
+\idx{REL_0_}\s\tt{(} \it{left-arg} \tt{,} $f$ \tt{,} \it{right-list} \tt{)}
+
+\idx{REL_2_}\s\tt{(} $f$ \tt{,} \it{list-arg} \tt{)}
+
+\head{Constraints}
+
+Number of elements in \it{list-arg} or \it{right-list} shall be
+less than \tt{PP_MAX}, after removal of optional parentheses.
+
+If \it{left-arg} expands to a list with multiple elements,
+the same constraint shall also apply to its element count.
+
+$f$ shall be a single argument that expands to an optionally parenthesized
+list with less than \tt{PP_MAX} elements; $f$ needs to be parenthesized for
+\tt{REL_} if the unparenthesized form of $f$ expands to more than one element.
+If an element of $f$ is used in output, then it shall be a function-like macro
+that can be invoked as $f$ \tt{(} $l$ \tt{,} $r$ \tt{)}, where $l$ and $r$ are
+respectively elements from \it{left-arg} and \it{right-list} for \tt{REL_0_};
+for \tt{REL_2_}, $l$ and $r$ can be any pair
+of consecutive elements from \it{list-arg}.
+Each invocation shall produce a non-negative
+decimal integer constant not exceeding \tt{PP_MAX}.
+
+\note \it{list-arg} means a single argument that expands to
+a list after removing optional parentheses with \tt{peel_}.
+
+\head{Semantics}
+
+Arguments to \tt{REL_} are counted after excluding the first
+argument in its unexpanded form, and rest of the arguments
+are expanded: if the count is 1, then \tt{REL_2_} is invoked;
+otherwise the count is more than one, and  \tt{REL_0_} is invoked.
+\tt{REL_} considers $f$ to be a singleton list: it should not expand to more
+than one element, as rest of them are considered to be the initial elements
+of \it{right-list} ($f$ should be parenthesized if it has multiple elements).
+
+\it{left-arg}, \it{right-list}, and \it{list-arg} are peeled and
+expanded in the way described in the semantics of \tt{omni__}.
+
+$f$ is also subjected to the \tt{peel_} macro, and let
+$F$ be the number of elements after peeling and expansion.
+
+\begin{itemize}
+\item \tt{REL_0_ (} \it{left-arg} \tt{,} $f$ \tt{,} \it{right-list} \tt{)}
+\end{itemize}
+
+Let $L$ and $R$ be the number of elements in \it{left-arg} and
+\it{right-list} respectively; let $N$ be their maximum value.
+
+Outcome of \tt{REL_0_} is a logical conjunction that is
+equivalent to the expansion of a text with the following form:
+
+\centerline
+{
+\tt{gate__ ( 1 , AND_ ,}
+$f_0$ \tt{(} $l_0$ \tt{,} $r_0$ \tt{) ,}
+$f_{1\%F}$ \tt{(} $l_{1\%L}$ \tt{,} $r_{1\%R}$ \tt{) ,}
+$\cdots$ \tt{,}
+$f_{(N - 1)\%F}$ \tt{(} $l_{(N - 1)\%L}$ \tt{,} $l_{(N - 1)\%R}$ \tt{)}
+\tt{)}
+}
+
+In each invocation of the form
+$f_{i\%F}$ \tt{(} $l_{i\%L}$ \tt{,} $r_{i\%R}$ \tt{)},
+$l_{i\%L}$ and $r_{i\%R}$ denote elements from \it{left-arg} and \it{right-list}.
+
+\begin{itemize}
+\item \tt{REL_2_ (} $f$ \tt{,} \it{list-arg} \tt{)}
+\end{itemize}
+
+If \it{list-arg} expands to a singleton list, then the outcome
+of \tt{REL_2_} is \tt{1}; otherwise, let $N$ be the number of
+
+elements in \it{list-arg} after peeling and expansion.
+When $N$ is above 1, \tt{REL_2_} performs the following computation:
+
+\centerline
+{
+\tt{gate__ ( 1 , AND_ ,}
+$f_0$ \tt{(} $l_0$ \tt{,} $l_1$ \tt{) ,}
+$f_{1\%F}$ \tt{(} $l_1$ \tt{,} $l_2$ \tt{) ,}
+$\cdots$ \tt{,}
+$f_{(N - 2)\%F}$ \tt{(} $l_{N - 2}$ \tt{,} $l_{N - 1}$ \tt{)}
+\tt{)}
+}
+
+In other words, \tt{REL_2_} computes the logical conjunction
+of a series of macro invocations, each one having the
+
+form $f_{i\%F}$ \tt{(} $l_i$ \tt{,} $l_{i + 1}$ \tt{)};
+here $l_i$ and $l_{i + 1}$ are a pair of consecutive
+elements from \it{list-arg} after peeling and expansion.\\
+
+\note If a list contains fewer elements than the number of iterations,
+its elements are reused in a round robin sequence.
+Despite the ``short-circuit'' semantics of \tt{AND_},
+all the invocations are performed in intermediate steps.
+
+\textsc{example i}\indent
+\tt{REL_(RANGE_(0, 7, 2), LT_, RANGE_(1, 7, 2))} checks if each element of
+left list is less than the corresponding element in right list; outcome is
+\tt{1} for the given lists expanding to \tt{0, 2, 4, 6} and \tt{1, 3, 5, 7}.
+
+\textsc{example ii}\indent
+Both \tt{REL_((1, 2, 3, 4, 5), LT_, 10)} and \tt{REL_(10, GT_, 6, 7, 8, 9, 10)}
+check if each element of the given list is less than ten; the outcome is \tt{1}
+for the first list and \tt{0} for the second (\tt{GT_(10, 10)} is \tt{0}).
+
+\textsc{example iii}\indent
+\tt{REL_(LT_, (0, 1, 1))} tests if the list is monotonic increasing, whereas
+\tt{REL_(LE_, (0, 1, 1))} relaxes the ordering to non-decreasing; for the given
+list \tt{(0, 1, 1)}, the outcome is \tt{0} with \tt{LT_}, and \tt{1} with \tt{LE_}.

@@ -1,0 +1,25 @@
+The header \idx{<relation._>} provides function-like macros for
+relational operations and macros for finding maximum and minimum.
+The syntax and semantics are tabulated below;
+the latter is described in terms of C operators.
+\tt{MAX_} and \tt{MIN_} expand to one of the two arguments;
+rest of the macros for relational operations expand to either \tt{0} or \tt{1}.
+
+\head{Constraints}
+
+$m$ and $n$ shall be non-negative decimal integer constants
+not exceeding \tt{PP_MAX}, or expand to such a constant.
+
+\table{l|c@{\qquad}||@{\qquad}l|c}
+
+\multicolumn{1}{c}{\bf Syntax}           & \bf Semantics   & \multicolumn{1}{c}{\bf Syntax}           & \bf Semantics\\
+
+\s\idx{GT_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $m$ \tt{>}  $n$ & \s\idx{LE_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $m$ \tt{<=} $n$\\
+
+\s\idx{LT_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $m$ \tt{<}  $n$ & \s\idx{GE_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $m$ \tt{>=} $n$\\
+
+\s\idx{EQ_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $m$ \tt{==} $n$ & \s\idx{NE_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $m$ \tt{!=} $n$\\
+
+ \idx{MAX_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $m$ \tt{>=} $n$ \tt{?} $m$ \tt{:} $n$ & \idx{MIN_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $m$ \tt{<=} $n$ \tt{?} $m$ \tt{:} $n$\\
+
+\elbat

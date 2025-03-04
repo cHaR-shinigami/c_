@@ -1,0 +1,19 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Expressions/Bit shifting/Left shift/#1}}
+
+\tt{ulsh_} and \tt{lsh_} are configured by \idx{LSHIFT__},
+which is an object-like macro that expands to the integer constant
+\tt{1} if the macro \tt{DEBUG} remains defined when the header
+\idx{<lshift._>} is included; otherwise \tt{LSHIFT__} expands to \tt{0}.
+
+When \tt{LSHIFT__} expands to \tt{1}, \tt{ulsh_}
+and \tt{lsh_} are configured in debugging mode, in
+which the shift value given by the unsigned right expression is asserted to be
+less than width of the left expression's type both before and after conversion;
+otherwise \tt{ulsh_} and \tt{lsh_} are configured in production mode, in which
+the result is zero if shift value is greater than or equal to width of the left
+expression's original type or \tt{width_(UIntmax)} (whichever is smaller).
+
+\Subsubsection{Unsigned}
+
+\Subsubsection{Signed}

@@ -1,0 +1,20 @@
+\head{Syntax}
+
+\idx{stop_}\s\s\s\tt{(} \it{condition} [\tt{,} \it{return-value}\opt] \tt{)}
+
+\idx{stop_1_}\s\tt{(} \it{condition} \tt{)}
+
+\idx{stop_2_}\s\tt{(} \it{condition} \phantom{[}\tt{,} \it{return-value}\opt\phantom{]} \tt{)}
+
+\head{Constraints}
+
+The \tt{stop_} family shall have precisely the same
+constraints as those applicable for the \tt{guard_} family.
+
+\head{Semantics}
+
+Behavior of the \tt{stop_} family is equivalent to that of the
+\tt{guard_} family with \it{condition} being logically negated.
+
+\note Early exit happens with \tt{stop_} family if \it{condition}
+is non-zero; \tt{guard_} family does it otherwise.

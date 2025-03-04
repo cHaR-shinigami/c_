@@ -1,0 +1,153 @@
+Let us start our journey with a non-trivial example
+that illustrates some of the basic features of C\_.
+The following program reads a list of prices and discounts (in \%),
+and then computes the final price after applying discounts.
+
+\code{../compile/discount.c_}
+
+The first line \tt{#include <c._>} includes the contents of a header file
+named \tt{c._}, which itself aggregates and configures several macros,
+enumeration constants, type definitions, and inline functions,
+from other header files organized in a multilevel hierarchy.
+Type names in C\_ start with an uppercase letter,
+and are modifiable if and only if the name ends with an underscore;
+for example, \tt{Int argc} means the parameter \tt{argc} is non-modifiable.
+
+Recall that in C, a parameter of array type is adjusted to pointer type,
+so \tt{Ptr(Char_) argv[const]} means
+``non-modifiable pointer to a pointer to \tt{Char_}''.
+Note that \tt{Char_} means that the dereferenced lvalue is modifiable,
+and \tt{Ptr(Char_)} means that the pointer itself is non-modifiable.
+Readers may intuit that \tt{Ptr_(Char_)} makes the pointer modifiable as well,
+whereas \tt{Ptr_(Char)} means the pointer is modifiable,
+but the dereferenced lvalue is not.
+
+Blocks or compound statements are started with \tt{begin}
+and completed with \tt{end}, which offer the benefit of early exit:
+if some condition is (un)met, one may skip rest of the
+code within the innermost block that supports early exit,
+and continue execution just after the end of that block.
+This feature is useful to flatten out ``arrow-shaped code'',
+which simplifies the overall design for the programmer,
+and reduces cognitive burden for the reader:
+it can be cumbersome to remember and match braces in a
+deeply nested code to figure out where each nested block ends.
+
+This is exemplified in the next line \tt{guard_(argc == 2)},
+which is a guard clause that says exactly two command-line arguments should
+be passed at runtime; if the check fails, it skips rest of the code.
+Notice the absence of a semicolon at the end of the guard clause:
+this is because \tt{guard_} is syntactically not an expression, but a
+statement, so a semicolon is redundant and only serves as null statement.
+The definition \tt{Auto_ count_ = 0U;} creates a
+modifiable counter variable initialized to zero,
+whose type is inferred as \tt{ULong_} due to the initializer \tt{0U}
+(\tt{ULong_} is a synonym for modifiable \tt{unsigned long};
+\tt{ULong} is similar but non-modifiable).
+
+Recall that the first command-line argument is
+conventionally the name by which the executable is invoked,
+which is available to the program as the first array element \tt{argv[0]}.
+For this example, we need to pass the number of items as the second argument,
+which is available as the next element \tt{argv[1]}.
+The call \tt{input__(argv[1], count_)} reads this string for a valid
+unsigned number, and on success, assigns that value to \tt{count_}.
+It returns the number of input items scanned and assigned,
+which should be 1 in our example,
+so this check has been expressed as a guard clause,
+which fails if the second command-line argument
+does not start with a valid unsigned number of items.
+
+The call \tt{new__(Float_ [count_])} allocates a modifiable array of \tt{float}
+in the heap memory segment, having a capacity of \tt{count_} elements.
+On success, it returns pointer to a \tt{Float_} array of length \tt{count_},
+which is inferred as the type of the non-modifiable variable \tt{prices}.
+Note that we could have used \tt{Auto} instead of \tt{Var};
+the minor distinction between these two is explained in the next chapter.
+We know that memory allocation can fail at runtime,
+in which case \tt{new__} returns a null pointer;
+we have enforced this check with the guard statement \tt{guard_(prices)}.
+
+The next two lines do a similar allocation and check for \tt{discounts},
+whose type is also \tt{Ptr(Float_ [count_])}, which is read as
+``non-modifiable pointer to a modifiable array of \tt{Float_},
+having a capacity of \tt{count_} elements''.
+The primary advantage of using the type ``pointer to array''
+is that a complete array type encodes length information,
+which is utilized later in the program.
+Recall that the lifetime of memory objects
+allocated on the heap is managed by the programmer;
+however, for the sake of brevity, we have omitted an explicit
+deallocation of \tt{prices} and \tt{discounts} by calling \tt{free}
+(for programs executing in a hosted environment, the operating
+system typically takes care of deallocating the heap memory once
+the process terminates or aborts, among other cleanup activities).
+
+\tt{loop_(0, count_ - 1)} iterates from zero through \tt{count_ - 1}, and the
+current iteration number is stored in the modifiable ``candle'' variable
+\tt{_i_}, whose scope and lifetime are limited to the loop block till \tt{end}.
+In each iteration, a prompt message is displayed before reading the values for
+price and discount entered by the user.
+Note that these variables are of type ``pointer to array'',
+so we first obtain the array by dereferencing the pointers,
+and then access the element at index \tt{_i_}.
+The parentheses are necessary around the dereference due
+to its lower precedence than the array subscript operator;
+as an alternative, it also can be written as
+\tt{prices[0][_i_]} or \tt{discounts[0][_i_]}.
+
+The \tt{print_} syntax is modeled after the \tt{print} function of Python 3,
+which prints a space between arguments and also appends a trailing newline.
+\tt{scan__} reads from \tt{stdin} (the standard input stream),
+and assigns the values to its arguments in the same order.
+Similar to \tt{input__}, \tt{scan__} also returns
+the number of input items scanned and assigned,
+which can be less than the number of arguments if the user
+enters an invalid value outside the domain of an argument's type,
+or if the input stream is exhausted and a
+subsequent read returns \tt{EOF} (end of file).
+
+Notice that the \tt{guard_} statement syntax is different from before:
+this time there is an additional argument \tt{1} just after the guard clause.
+This is because \tt{guard_} is actually a ``polymorphic'' statement,
+which can accept either one or two arguments.
+In the first form, if the guard clause fails,
+then rest of the statements are skipped.
+However, if we use this form within a \tt{loop_} block,
+then it will only skip the remaining iterations if the guard clause fails,
+and continue execution after the loop.
+However, this is not desirable:
+if a value cannot be read, the program should not proceed any further.
+In the second form of the \tt{guard_} statement, if the clause is unsatisfied,
+then the function returns the value specified by the additional argument.
+We have used \tt{1} in this example,
+because the value returned by \tt{main} is also exit status of the process,
+which is conventionally zero on success and non-zero to indicate failure.
+
+After reading the prices and discounts,
+we define a variable \tt{price_} to aggregate the total price;
+the initializer \tt{0.f} makes its type \tt{Float_}.
+The statement \tt{op_(price_, +, prices)} adds each price of
+the \tt{prices} array one by one to the variable \tt{price_};
+it was initialized to zero earlier,
+so its result is the sum of all prices, which is printed.
+
+\tt{op_} is a versatile statement that unifies a rich variety
+of operations with both arrays and non-arrays under a common syntax.
+The statement \tt{op_(discounts, *, prices)} multiplies each element of the
+\tt{discounts} array with the corresponding element in the \tt{prices} array.
+The results are stored in the \tt{discounts} array,
+but as the discount values are entered as percentage,
+we also need to divide each discount by 100:
+this is done by the next statement \tt{op_(discounts, /, 100)}.
+\tt{op_} is modeled after \tt{op__};
+their precise semantics are described in chapters 4 and 5.
+
+Next we run a loop to print the discount amount applied to each item.
+This is followed by storing the total discount amount in the variable \tt
+{discount_}, which is done by the statement \tt{op_(discount_, +, discounts)}.
+We print this amount and also the final price
+after subtracting the total discount.
+Since the C99 revision of ISO C,
+reaching the end of \tt{main} returns zero to the environment,
+so an explicit \tt{return 0;} statement has been omitted.

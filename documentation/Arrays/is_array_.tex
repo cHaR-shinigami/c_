@@ -1,0 +1,17 @@
+\head{Syntax}
+
+\tt{is_array_ (} \it{expression-or-type} \tt{)}
+
+\head{Semantics}
+
+If \it{expression-or-type} does not have a variably modified type,
+then the outcome is \tt{TRUE} if the argument is an array, and \tt{FALSE}
+if it is not an array; otherwise the behavior is implementation-defined.
+The outcome is a constant expression whose type depends on the argument,
+so it can be used as the controlling expression of a generic selection.
+
+\note The reference implementation does not support
+variably modified types for \it{expression-or-type}.
+
+\example \tt{is_array_("string literal")} is \tt{TRUE},
+ whereas \tt{is_array_(&"pointer to array")} is \tt{FALSE}.

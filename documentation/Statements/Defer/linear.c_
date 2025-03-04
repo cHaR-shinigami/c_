@@ -1,0 +1,18 @@
+#include <c._>
+
+Bool_ work()
+deferrable
+	Void_ *acquire(), release(Void_ *),
+	utilize(Void_ *, Void_ *, Void_ *);
+	Var  r1 = acquire();
+	if (!r1) return_(0)
+	defer_(release(r1))
+	Var  r2 = acquire();
+	if (!r2) return_(0)
+	defer_(release(r2))
+	Var  r3 = acquire();
+	if (!r3) return_(0)
+	defer_(release(r3))
+	utilize(r1, r2, r3);
+	return_(1)
+refed

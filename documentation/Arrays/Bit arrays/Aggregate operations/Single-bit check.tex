@@ -1,0 +1,22 @@
+\head{Syntax}
+
+\tt{# include <bits._>}
+
+\tt{Bool_} \idx{has_single_bit} \tt{( Size} $wordcount$
+\tt{, Ptr ( UInt_fast8 [} $wordcount$ \tt{] )} $bitarray$ \tt{) ;}
+
+\idx{has_single_bit__}\s\tt{(}
+\it{pointer-to-bits} \tt{)}
+
+\idX{has_single_bit_}\s\s\tt{(}
+\it{pointer-to-bits} \tt{)}
+
+\enlargethispage*{\baselineskip}
+\pagebreak
+
+\head{Semantics}
+
+For a valid pointer to a bit array, the outcome is one if and only if
+a single bit is set to one, and rest of the bits are zeroed out.
+The function \tt{has_single_bit} returns zero
+if the argument for $bitarray$ is a null pointer.

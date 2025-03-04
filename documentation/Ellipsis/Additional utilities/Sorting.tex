@@ -1,0 +1,37 @@
+\head{Syntax}
+
+\idx{sort_} \tt{(} $key$ \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+$key$ shall be a function-like macro that can accept a single argument;
+whenever $key$ is invoked with an element of \it{argument-list}, its outcome
+shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX}.
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Each element of the expanded \it{argument-list} is mapped to the integer
+generated on invoking $key$ with that element, and the expanded list
+is sorted as per non-decreasing order of the mapping of its elements.
+
+\textsc{example i}\indent
+A plain list of integers can be sorted using \tt{echo_} as $key$; for instance,
+
+\tt{sort_(echo_, RANGE_(0, 9, 2), RANGE_(9, 0, 2))}
+expands to \tt{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}.
+
+\textsc{example ii}\indent
+A list of triplets can be sorted on the basis of
+middle elements using the following macro as $key$:
+
+\centerline{\tt{#define mid_(_args_) echo_(top_ C_(pop_ _args_))}}
+
+For instance, \tt{sort_(mid_, (C, 3, c), (A, 1, a), (B, 2, b))}
+gives \tt{(A, 1, a), (B, 2, b), (C, 3, c)}.
+
+\textsc{example iii}\indent
+\tt{sort_(INC_, 125, 126, 127)} expands to \tt{127, 125, 126},
+as its mapping list is \tt{0, 126, 127}.

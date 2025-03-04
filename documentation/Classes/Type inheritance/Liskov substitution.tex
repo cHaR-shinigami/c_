@@ -1,0 +1,21 @@
+C\_ supports Liskov substitution, allowing a derived class object to be used
+wherever its base class object is expected: this rule works recursively,
+so the instance of any class can be treated as an instance of each
+of its ancestor classes, up to the root ancestor \tt{Object} class.
+The common practice is to operate on instances via pointers, and since each
+class structure implicitly contains its base structure as the first member, the
+pointer representation can be directly interpreted as pointing to an instance
+of the base structure, or recursively to an instance of any ancestor class.
+
+The function \tt{is_type} only checks whether a
+pointer refers to a valid \tt{Type} structure or not.
+To check whether an object can be considered as a valid instance of
+a given class, the required conditions are tested by the \tt{validate}
+method provided by that class (or inherited from its base class).
+However, for a C\_ program to work correctly with Liskov substitution,
+it is necessary that each valid instance of a derived class is also a valid
+instance of all of its ancestor classes; this is done by the \tt{validate}
+function, whose precise behavior is described in a later section.
+
+\enlargethispage*{\baselineskip}
+\pagebreak

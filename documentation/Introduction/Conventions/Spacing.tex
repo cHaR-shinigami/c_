@@ -1,0 +1,39 @@
+The source codes presented in this document follow a certain style of spacing
+between operands and operators: if an operand is placed between two operators,
+then we put the operand ``closer'' to the operator that uses this operand;
+for example, the evenly spaced expression \tt{a + b + c} is written as
+\tt{a+b + c} to emphasize left associativity of addition.
+Similarly, we would prefer writing \tt{a * b + c} as
+\tt{a*b + c} to indicate that multiplication happens first.
+
+Conversely, if an operator is placed between two operands,
+we put the operator closer to the operand that is evaluated first;
+an equal spacing on either side indicates that the evaluation of
+operands is unsequenced, so there is no specific order of evaluation.
+For example, \tt{l & r} indicates that either operand may be evaluated first,
+but \tt{p&& q} emphasizes the ``short-circuit'' behavior of logical operators:
+in this case, the left expression \tt{p} is evaluated first; \tt{q} is evaluated
+if and only if \tt{p} turns out to be zero.
+Similarly, we prefer uneven spacing for a conditional expression \tt{c? y : n}
+or a comma expression \tt{(x, y)}; the latter aligns with the conventional
+writing style, but note that other uses of comma, such as for separating
+function call arguments, do not specify any particular order of evaluation.
+
+It is worth stressing that judicious spacing only clarifies that the programmer
+is well aware of the precedence and associativity rules of operators;
+it has no impact on the meaning of the expression,
+and explicit parentheses can often be a cleaner alternative.
+As a third alternative, sometimes the use of a different
+operator may convey the intent more clearly; for example,
+\tt{*ptr_++} may be confusing to beginners: which one gets incremented,
+the modifiable pointer \tt{ptr_}, or the dereferenced lvalue?
+Experienced developers will be aware of right associativity for unary operators,
+but a simple space should make things somewhat less confusing: \tt{* ptr_++}.
+Still, the subscript operator can make things more readable; the equivalent
+\tt{ptr_++[0]} clearly indicates that the pointer gets incremented.
+Unlike the previous naming conventions, the unusual use of spaces is more of
+an idiosyncrasy that is not imposed upon programmers, and ritually observing
+this practice can lead to awkward gaps if lots of operators are involved;
+while a recommended practice is to break such large expressions into smaller
+sub-expressions, it is hoped that readers will be forbearing if they perceive
+that this advice may not have been diligently followed in some of the examples.

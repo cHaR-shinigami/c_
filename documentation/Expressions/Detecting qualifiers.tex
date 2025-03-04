@@ -1,0 +1,37 @@
+\head{Syntax}
+
+\idx{has_qualifier_}\s\s\s\tt{(} [\it{qualifier} \tt{,}] \it{expression} \tt{)}
+
+ \tt{has_qualifier_}\s\s\s\tt{(} [\it{qualifier} \tt{,}] \it{type-name}  \tt{)}
+
+\idx{has_qualifier_1_}\s\tt{(} \it{expression} \tt{)}
+
+ \tt{has_qualifier_1_}\s\tt{(} \it{type-name}  \tt{)}
+
+\idx{has_qualifier_2_}\s\tt{(}
+\phantom{[}\it{qualifier} \tt{,}\phantom{]} \it{expression} \tt{)}
+
+ \tt{has_qualifier_2_}\s\tt{(}
+\phantom{[}\it{qualifier} \tt{,}\phantom{]} \it{type-name}  \tt{)}
+
+\head{Constraints}
+
+\it{expression} shall have object type and shall not designate a bit-field.
+\it{type-name}  shall not specify a function type.
+
+\head{Semantics}
+
+\tt{has_qualifier_} invokes \tt{has_qualifier_}$n$\_ if
+the expanded argument sequence contains $n$ arguments.
+The outcome of \tt{has_qualifier_1_} is \tt{FALSE} if \it{expression}
+or \it{type-name} is unqualified; otherwise the outcome is \tt{TRUE}.
+
+\tt{has_qualifier_2_} checks if \it{expression} or \it{type-name} is qualified
+with \it{qualifier}, which can specify multiple qualifiers separated by
+whitespace: the outcome is \tt{TRUE} if \it{qualifier} is detected in the type,
+and \tt{FALSE} otherwise.
+
+\example \tt{has_qualifier_(Char_)} is \tt{FALSE}.
+\tt{has_qualifier_(const volatile, volatile Char)} is \tt{TRUE}.
+
+\pagebreak

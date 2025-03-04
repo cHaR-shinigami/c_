@@ -1,0 +1,21 @@
+A bit-precise type specifies an integer type with a particular width.
+\type{BitInt} \tt{(}$w$\tt{)} specifies a non-modifiable signed type with one
+sign bit and $w - 1$ value bits; similarly, \type{UBitInt} \tt{(}$w$\tt{)}
+specifies a non-modifiable unsigned type with $w$ value bits.
+As usual, their modifiable twins are specified as
+\tt{BitInt_(}$w$\tt{)} and \tt{UBitInt_(}$w$\tt{)}.
+There will be padding bits if $w$ is not a multiple of \tt{width_(Char)};
+padding bits may also be present for alignment with a word boundary.
+In type promotions, the rank of a bit-precise type is higher
+than the rank of another integer type with lesser width.
+
+Bit-precise types are standardized in C23, and if they are supported by the
+compiler, then the header \tt{<limits.h>} defines the macro \tt{BITINT_MAXWIDTH}
+that expands to the maximum permissible width; it is at least \tt{width_(LLong)}.
+C23 mandates two's complement, so range of \tt{UBitInt (}$w$\tt{)} is
+$[0, 2^w)$, and range of \tt{BitInt (}$w$\tt{)} is $[-2^{w-1}, 2^{w-1})$.
+
+\note \tt{<limits._>} is included by \tt{<c._>},
+and bit-precise types are available iff \tt{BITINT_MAXWIDTH} is defined.
+Width $w$ must be a positive integer not exceeding \tt{BITINT_MAXWIDTH};
+for signed bit-precise types, $w$ cannot be 1.

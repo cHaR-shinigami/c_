@@ -1,0 +1,42 @@
+\head{Syntax}
+
+\tt {Auto\ } \it{identifier}\s\s\tt{=} \it{initializer} \tt{;}
+
+\tt {Auto\_} \it{identifier}\_\s\tt{=} \it{initializer} \tt{;}
+
+\s\tt{Var\ } \it{identifier}\s\s\tt{=} \it{initializer} \tt{;}
+
+\s\tt{Var\_} \it{identifier}\_\s\tt{=} \it{initializer} \tt{;}
+
+\head{Constraints}
+
+\it{initializer} shall be an expression,
+and a comma expression shall be parenthesized.
+
+\head{Semantics}
+
+\type{Auto} defines a non-modifiable variable named \it{identifier} whose
+type is inferred from resulting type of \it{initializer} expression,
+after performing lvalue conversion, array to pointer decay,
+and function to function pointer conversion;
+the expression is evaluated and the variable is initialized to its value.
+The behavior is implementation-defined if the
+\it{initializer} expression contains any type definition,
+or if multiple variables are defined in a single declaration.
+
+\tt{Auto_} is the modifiable twin of \tt{Auto},
+and defines a variable which can be updated thereafter.
+\type{Var} and \tt{Var_} are respectively equivalent
+to \tt{Auto} and \tt{Auto_} preceded by \tt{let};
+in other words, they make the variable unaliasable.
+
+\head{Recommended practice}
+
+Variable names should start with a lowercase
+letter to differentiate them from type names.
+As a convention,
+\it{identifier} in \tt{Auto} and \tt{Var} should not end with underscore;
+\it{identifier\_} in \tt{Auto_} and \tt{Var_} should end with underscore.
+
+\note Type inference cannot be used to define arrays or functions,
+which get converted to pointer types.

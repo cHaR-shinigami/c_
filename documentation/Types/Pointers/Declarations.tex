@@ -1,0 +1,71 @@
+The design of C is characterized by economy of syntax,
+which can make some of its rules less intuitive for beginners;
+
+\example C uses the same syntax for declaring
+pointer variables and dereferencing pointer expressions.
+
+\tt{Char *}
+
+\tt{p_ = 0,}
+
+\tt{ch = 0;}
+
+The previous declaration is badly misleading: it can create a wrong
+impression that both \tt{p_} and \tt{ch} are pointers of type \tt{Char *}.
+However, the \tt{*} is part of the variable and not the type,
+so \tt{p_} is declared as a modifiable pointer to \tt{Char},
+whereas \tt{ch} is a non-modifiable variable of type \tt{Char}.
+The same declaration can be better written as:\\
+
+\tt{Char}
+
+\tt{*p_ = 0,}
+
+\s\tt{ch = 0;}\\
+
+The rewritten declaration conveys the intent more clearly:
+both \tt{*p_} and \tt{ch} are of type \tt{Char},
+so \tt{p_} itself must be a pointer to \tt{Char}.
+But now there is another subtlety: an assignment expression \tt{*p_ = 0} means
+the dereferenced lvalue \tt{*p_} is set to zero, but within a definition,
+the initialization \tt{*p_ = 0} means that \tt{p_} is set to the null pointer.
+
+C\_ takes a different approach: we can avoid such confusion
+entirely by declaring pointers with \type{Ptr} or \tt{Ptr_}.
+
+\head{Syntax}
+
+\tt{Ptr}\s\s\tt{(} \it{type-name} \tt{)}
+
+\tt{Ptr}\_\s\tt{(} \it{type-name} \tt{)}
+
+\head{Constraints}
+
+\it{type-name} shall not provide an incompatible redefinition of an aggregate
+type that has already been defined in the current scope, and it shall not
+redefine an enumeration type that was earlier defined in the same scope.
+
+\head{Semantics}
+
+\tt{Ptr} specifies the type ``non-modifiable pointer to \it{type-name}'',
+whereas \tt{Ptr_} specifies the type ``modifiable pointer to \it{type-name}''.
+If \it{type-name} contains a type definition,
+then that type also gets defined in the current scope.
+
+\example In the following declaration,
+both \tt{p_} and \tt{q_} are modifiable pointers to \tt{Char}.\\
+
+\tt{Ptr_(Char)}
+
+\tt{p_ = 0 ,}
+
+\tt{q_ = p_;}\\
+
+\note \tt{Ptr} and \tt{Ptr_} denote modifiability of the pointer variable,
+which does not affect modifiability of the dereferenced lvalue;
+the latter is decided solely by \it{type-name}.
+
+\example Parameters of the \tt{swap} function are non-modifiable,
+but the dereferenced lvalue can be updated.
+
+\code{Types/Pointers/Declarations/swap.c_}

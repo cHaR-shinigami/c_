@@ -1,0 +1,13 @@
+\head{Syntax}
+
+\tt{elif_ (} \it{condition} \tt{)}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression, and \tt{elif_} shall
+lexically close a preceding \tt{if_} block or an \tt{elif_} block.
+
+\head{Semantics}
+
+\tt{elif_ (} \it{condition} \tt{)} is equivalent to
+\tt{end else if_ (} \it{condition} \tt{)}.

@@ -1,0 +1,40 @@
+We conclude this chapter with some guidelines
+for writing protocol and procedure definitions.
+Capturing the precise behavior in a protocol can be
+challenging for non-trivial problems, and can often involve
+more time and effort than writing a procedure for the same task.
+We also stress upon the fact that it is impossible to write a
+protocol that can correctly identify all possible bugs: one common
+example is invalid memory access due to a bad pointer argument.
+
+Protocols should always be sound, but are seldom required to be complete:
+writing an exhaustive set of conditions is often not desirable,
+and an excessive level of detail can be counter-productive;
+besides increasing the development time, extra code also means a greater
+chance of bugs in the protocol itself, and imposes a burden on maintenance.
+Protocols should check only the essential aspects; for instance, our sorting
+protocol is sound but not complete: it only verifies the non-decreasing order,
+without checking that the resulting array is a permutation of the original.
+
+It is recommended that protocols should be written using an ``offensive''
+design strategy: if a method documentation explicitly disallows some
+arguments or leaves the behavior undefined, then the protocol should
+establish the necessary pre-conditions to catch instances of bad invocations.
+The goal of testing phase is to detect a bug as soon as it occurs,
+not after it has propagated through several layers of abstraction,
+making it harder to trace the origin.
+
+Readers may note that in our sorting example, the same checks
+are also performed by the procedures, but using guard clauses.
+As opposed to the offensive approach of immediate termination,
+procedures should adopt a ``defensive'' strategy and take a
+reasonable action if some pre-condition is not satisfied.
+Developers write programs to work, not to fail, and in production
+mode compilation it is desirable that an application should run
+as long as possible, taking corrective actions whenever necessary.
+Except in the case of memory-constrained devices,
+careful defensive code in procedures can go a long way in
+improving end-user experience, even in the presence of bugs.
+
+\enlargethispage*{\baselineskip}
+\pagebreak

@@ -1,0 +1,21 @@
+\begin{itemize}
+
+\item \tt{validate_(dividend)} must be \tt{true}.
+
+\item \tt{validate_(divisor )} must be \tt{true}.
+
+\end{itemize}
+
+Let $super$ denote the value of
+\tt{super(((Object *) dividend)->type, ((Object *) divisor)->type)}.
+
+If \tt{result} is not a null pointer, let $type$
+denote the value of \tt{((Object *) result)->type}.
+
+\begin{itemize}
+
+\item \tt{is_type(}$type$\tt{)} must be \tt{true}.
+
+\item \tt{is(}$type$\tt{,} $super$\tt{)} must be \tt{true}.
+
+\end{itemize}

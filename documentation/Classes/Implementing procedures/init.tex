@@ -1,0 +1,8 @@
+If the first element of \tt{tape} array is not null,
+then it is interpreted as a pointer to \tt{ULLong},
+and the same is dereferenced; otherwise the value zero is used.
+If the dereferenced value exceeds \tt{UNSIGNED_MAX}, then a
+null pointer is returned. Otherwise a new \tt{Unsigned} object
+is allocated; if the allocation fails, a null pointer is returned.
+For a successful allocation, the members \tt{type} and \tt{value}
+are initialized, and a pointer to the new instance is returned.

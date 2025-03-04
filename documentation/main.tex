@@ -1,0 +1,137 @@
+\documentclass{book}
+
+\usepackage{color}
+\usepackage{emptypage}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage[left=2cm, right=2cm]{geometry}
+\usepackage{hyperref}
+\usepackage{imakeidx}
+\usepackage{listings}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usepackage{upquote}
+
+\makeatletter
+\def\subscript{subscript}
+\def\HyPsd@CatcodeWarning#1{
+\def\text{#1}
+\ifx\subscript\text
+\expandafter\def\expandafter\HyPsd@String\expandafter{\HyPsd@String_}
+\fi}
+\makeatother
+
+\paperwidth  210mm
+\paperheight 279.4mm
+
+\hypersetup
+{	bookmarksnumbered,
+	hidelinks,
+	pdfcenterwindow,
+	pdffitwindow,
+	pdfauthor   = cHaR-shinigami@outlook.com,
+	pdfkeywords = C\_,
+	pdfsubject  = https://github.com/cHaR-shinigami/c\_,
+	pdftitle    = The C\_ Programming Dialect,
+}
+
+\makeindex[intoc]
+
+\lstset
+{	basicstyle = \ttfamily,
+	fancyvrb,
+	tabsize = 4,
+	upquote,
+}
+
+\def\code#1{\lstinputlisting{#1}}
+\def \src#1{\tt{examples/#1}\code{../#1}}
+
+\def\head#1{\noindent\textbf{#1}}
+\def\example {\textsc {example}\indent}
+\def\exercise{\textsc{exercise}\indent}
+\def\note{\textsc{note}\indent}
+
+\def\table#1{\begin{center}\begin{tabular}{#1}}
+\def\elbat{\end{tabular}\end{center}}
+
+\def\it#1{\textit{#1}}
+\def\tt#1{\lstinline{#1}}
+
+\def\_{\tt{_}}
+
+\def\l{\phantom{[}}
+\def\r{\phantom{]}}
+\def\s{\phantom{\_}}
+
+\def\opt{$_{opt}$ }
+
+\def\idx#1{\tt{#1}\index{#1@\tt{#1}}}
+\def\idX#1{\tt{#1}\index{#1@\tt{#1}*}}
+\def\idxy#1#2{\tt{#2}\index{#1@\tt{#1}!#2@\tt{#2}}}
+\def\idxyz#1#2#3{\tt{#3}\index{#1@\tt{#1}!#2@\tt{#2}!#3@\tt{#3}}}
+\def\type#1{\tt{#1}\index{#1@\tt{#1}[\_]}}
+
+\def\Chapter#1{\chapter{#1}\input{#1}}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\begin{document}
+
+\input cover
+
+\input memoriam
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+
+\chapter*{Introduction}
+\chaptermark{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+\input Introduction
+
+\Chapter{Types}
+
+\Chapter{Statements}
+
+\Chapter{Expressions}
+
+\Chapter{Ellipsis}
+
+\Chapter{Arrays}
+
+\Chapter{Methods}
+
+\Chapter{Classes}
+
+\Chapter{Interfaces}
+
+\Chapter{Library}
+
+\appendix
+
+\def\code#1{\VerbatimInput[obeytabs, tabsize=4]{#1}}
+
+\Chapter{Examples}
+
+\Chapter{Naming}
+
+\Chapter{Limits}
+
+\Chapter{Benchmarking}
+
+\def\code#1{\lstinputlisting{#1}}
+
+\Chapter{Build}
+
+\Chapter{References}
+
+\backmatter
+\printindex
+
+\input author
+
+\end{document}

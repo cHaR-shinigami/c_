@@ -1,0 +1,123 @@
+A protocol is nothing but a layer of
+abstraction between the caller and the procedure.
+A protocol itself does not generate the return value: if all the argument
+values satisfy their respective pre-conditions, then the protocol invokes
+a procedure, which gives the return value to the protocol; the protocol then
+verifies if the return value meets the given post-conditions, and on success,
+it forwards the same return value to the caller without modifying it.
+
+\pagebreak
+
+\head{Syntax}
+
+\tt{# include <method._>}\\
+
+\idx{protocol_}\s\s\s\s\s\tt{(} [\it{return-type} \tt{,}]\s\tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} [\tt{,} \it{parameter-tuples}]\s\tt{)}\\
+
+\idx{protocol_0_}\s\s\s\tt{(} [\it{return-type} \tt{,}]\s\tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \l\tt{,} \it{parameter-tuples}\r\s\tt{)}
+
+\idx{protocol_0_1_}\s\tt{(} \l\it{return-type} \tt{,}\r\s\tt{(}
+\it{prefix} \tt{,} \it{method-name} \tt{)} \l\tt{,} \it{parameter-tuples}\r\s\tt{)}
+
+\idx{protocol_0_2_}\s\tt{(}   \tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \tt{,} \it{parameter-tuples} \tt{)}\\
+
+\idx{protocol_1_}\s\s\s\tt{(} \tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \tt{)}\\
+
+\idx{protocol_2_}\s\s\s\tt{(} \l\it{return-type} \tt{,}\r\s
+\tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)} \tt{)}
+
+\idx{protocol_2_1_}\s\tt{(} \l\it{return-type} \tt{,}\r\s
+\tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)} \tt{)}
+
+\tt {protocol_2_}\s\s\s\tt{(} \tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)}
+\tt{,} \tt{(} \it{parameter-type} \tt{,} \it{parameter-name} \tt{)} \tt{)}
+
+\idx{protocol_2_2_}\s\tt{(} \tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)}
+\tt{,} \tt{(} \it{parameter-type} \tt{,} \it{parameter-name} \tt{)} \tt{)}
+
+\head{Constraints}
+
+\it{return-type} shall not be an array type,
+an incomplete type, or a function type.
+\it{parameter-tuples} shall be a comma-separated list
+of parenthesized tuples, each of them having the form
+\tt{(} \it{parameter-type} \tt{,} \it{parameter-name} \tt{)}.
+
+Type qualifiers (if any) in \it{return-type} are ignored.
+
+If \it{parameter-type} has type ``array of $T$'', it is adjusted as ``pointer
+to $T$'', while preserving the qualifiers (if any) of element type $T$.
+If \it{parameter-type} is of function type, it is
+adjusted as pointer to a function of the same type.
+
+Each member of the \tt{protocol_} family starts a block that
+shall be lexically closed with \tt{end} (or its equivalent).
+
+\note Names used for parameters can be redefined inside
+a \tt{protocol_} block, without creating an inner block.
+
+\head{Semantics}
+
+The \tt{protocol_} family is used to provide function definition
+for a verifier; it also declares the procedure prior to its definition.
+The proxy function pointer is defined in the same translation unit: if the
+macro \tt{METHOD__} expands to \tt{1}, then the proxy points to the protocol;
+otherwise \tt{METHOD__} shall expand to \tt{0}, and the proxy points
+to a function with internal linkage that directly calls the procedure
+(without \tt{_site} parameter) and forwards any return value.
+
+\tt{protocol_} invokes \tt{protocol_0_} if the expanded argument sequence has
+more than two arguments; otherwise it invokes \tt{protocol_}$n$\tt{_} if the
+expanded argument sequence contains $n$ arguments, with $n$ not exceeding two.
+
+The first argument is peeled and expanded: if the resulting list
+has a single element, it is considered as \it{return-type};
+otherwise it shall have two elements, \it{prefix} and
+\it{method-name}, which are used to generate method identifiers.
+
+\tt{protocol_0_} invokes \tt{protocol_0_}$n$\_ if the first argument expands
+to a list with $n$ elements on being subjected to the \tt{peel_} macro.
+\tt{protocol_0_1_} defines a method that accepts a sequence of arguments as
+specified by \it{parameter-tuples}, and returns a value of type \it{return-type}.
+\tt{protocol_0_2_} uses \tt{Void_} as the return type.
+
+\tt{protocol_1_} defines a method that can accept a variable number of
+arguments (zero or more) whose types are not specified in the declaration,
+and the method does not return anything (return type is \tt{Void_}).
+
+\tt{protocol_2_} invokes \tt{protocol_2_}$n$\_ if the first argument expands
+to a list with $n$ elements on being subjected to the \tt{peel_} macro.
+\tt{protocol_2_1_} defines a method that can accept a variable number of
+arguments having unspecified types, and returns a value of type \it{return-type}.
+Return type of a \tt{protocol_2_2_} definition is \tt{Void_}.
+
+In all cases, an extra argument named \tt{_site} of
+type \tt{Site} is pushed before the parameter list,
+as per parameter tuples or ellipsis (\tt{...}) for variable arguments;
+\tt{_site} is intended to store call site details during method invocations.
+
+A protocol definition always has external linkage.
+If \tt{private} (equivalent to the keyword \tt{static}) is specified before
+\tt{protocol_}, internal linkage is applicable for the procedure, not the protocol.
+
+\example The basic idea behind any sorting algorithm is to
+move around some elements to achieve a certain ordering.
+The following protocol defines a verifier to check
+that the outcome is sorted in non-decreasing order.
+
+\code{../include/Integers/sort._}
+
+The protocol has three parameters: the first is an implicit
+parameter named \tt{_site} of type \tt{Site}, followed
+by \tt{len} and \tt{arr}; the return type is \tt{Void_}.
+There are two pre-conditions: validating that the length is non-zero and the
+pointer is not null; if any pre-condition fails, call site information for the
+current invocation is obtained from the implicit parameter named \tt{_site}.
+The post-condition is within a loop, checking that
+each element does not exceed its next element.
+The procedure is invoked after validating pre-conditions
+and before verifying post-conditions.

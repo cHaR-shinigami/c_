@@ -1,0 +1,11 @@
+The following synonyms are defined along with their modifiable counterparts
+(\tt{Tm_} is a synonym for \tt{struct tm}).
+
+\table{lllll}
+\type{WChar} & \type{Size} & \type{MBstate} & \type{WInt} & \type{Tm}\\
+\elbat
+
+Additionally, if both macros \tt{__STDC_LIB_EXT1__} and
+\tt{__STDC_WANT_LIB_EXT1__} remain defined before including \tt{<wchar._>},
+then the synonyms \type{Errno} and \type{Rsize} are also defined,
+corresponding to the types \tt{errno_t} and \tt{rsize_t}.

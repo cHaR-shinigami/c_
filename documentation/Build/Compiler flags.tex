@@ -1,0 +1,127 @@
+The following compilation options are common for both \tt{gcc} and \tt{clang}.
+
+\begin{itemize}
+
+\item \tt{-c} means compile only; in other words, generate
+relocatable object files without linking them to an executable.
+
+\item \tt{-xc} means consider the filename extension as \tt{.c}
+for subsequent input files and invoke the C language compiler.
+
+\item \tt{-std=c2x} sets the language dialect to C23 (also called C2x);
+this option also affects the diagnosis of \tt{-Wpedantic}.
+
+\item \tt{-O3} enables several optimizations at
+level 3, mostly focused at improving runtime efficiency
+(though often at the expense of increased code due to space-time tradeoff).
+Another benefit of using \tt{-O3} is that some warnings
+options are activated only when certain optimizations are
+enabled that perform a more rigorous static analysis.
+
+\item \tt{-Werror} turns diagnostic or warning messages
+into hard errors that cause a compilation failure.
+
+\item \tt{-iprefix} sets a path prefix for subsequent use of
+\tt{-iwithprefix} option, until the next occurrence of \tt{-iprefix}.
+
+\item Each usage of \tt{-iwithprefix} adds the subsequent name to the
+list of search directories for \tt{#include} directives: directory name
+is prefixed with the path specified by the preceding \tt{-iprefix}.
+More precisely, the following directories (relative to \tt{examples/}) are
+added to the path for locating header files, searched in the given order:
+
+\enlargethispage*{\baselineskip}
+
+\table{lll}
+
+1. \tt{.include/ellipsis/} & 2. \tt{.include/dialect/} & 3. \tt{.include/library/}\\
+
+4. \s\tt{include/} & 5. \s\tt{include/class/} & 6. \s\tt{include/interface/}\\
+
+\elbat
+
+\item \tt{-Wall} and \tt{-Wextra} enable warnings that can help
+diagnose potential sources of bugs and undefined behavior;
+some of the warnings vary between \tt{gcc} and \tt{clang},
+and the precise lists can be found in their documentations.
+
+\item \tt{-Wpedantic} ensures strict conformance with the language dialect
+specified by \tt{-std} option, by flagging the use of non-portable extensions
+and certain kinds of code whose behavior is not well-defined by the C standard.
+For example, the features that are marked with an asterisk (*) in this
+documentation are mostly provided by the reference implementation
+using statement expressions, a GNU C feature that is supported by
+several C compilers alongside \tt{gcc}, but as of this writing,
+the syntax is not permitted by the rules of ISO C grammar.
+
+\item \tt{-Wcast-align} warns on casting a pointer type to another pointer
+type whose dereferenced type has stricter alignment (higher power of two).
+For instance, a \tt{ULLong} is wider than \tt{UByte} on practically
+all existing environments, so \tt{-Wcast-align} would generate a
+warning if a pointer to \tt{UByte} is cast as pointer to \tt{ULLong}.
+
+\item \tt{-Wcast-qual} warns on removal of
+qualifiers from the target type of a pointer.
+For example, non-modifiable types named without a trailing underscore are
+implemented using \tt{const} qualifier, so warning would be generated on
+converting a \tt{Char *} to \tt{Char_ *} (such as by assignment or type cast).
+It is worth mentioning that there are known workarounds to circumvent
+this artificial limitation; for instance, the reference implementation
+provides \tt{unqual__}/\tt{unqual_}* in the header \tt{<pointer._>}
+by removing qualifiers via type punning using \tt{union}.
+
+\item \tt{-Wswitch-enum}, as the name suggests, applies when the
+controlling expression of a \tt{switch} statement has an enumeration type.
+Warnings are generated if any constant of that enumeration type has been omitted
+as a case label, or if a case label is not a constant of that enumeration.
+A \tt{default} case does not affect this option.
+
+\item \tt{-Wwrite-strings} changes the type of string literals to array
+of \tt{Char} instead of \tt{Char_}, and consequently, warnings are
+generated when string literals are converted as pointer to \tt{Char_}.
+In a sense, this option changes the rules of C language to a small extent,
+and can generate warnings even for strictly conforming programs:
+this is because the C standard specifies the type of string literals as array
+of \tt{Char_}, even though updating that array causes undefined behavior.
+Another point of concern is that \tt{-Wwrite-strings} can silently change the
+behavior of type-sensitive code; for example, consider a \tt{_Generic} expression
+whose controlling expression is a string literal, and there are two selection
+expressions: one associated with \tt{Char *} and another with \tt{Char_ *}.
+
+\note\qquad The minor inconsistency between the type of string literals
+and their non-modifiability dates back before the \tt{const}
+qualifier was standardized by the ANSI committee in C89/C90;
+``fixing'' this rule in the language standard at a late stage can be
+counterproductive and cause constraint violations for legacy codebases.
+
+\end{itemize}
+
+The options starting with \tt{-Wno-} are used to disable
+specific warnings, most of which are considered harmless.
+
+\begin{itemize}
+
+\item \tt{-Wno-override-init} disables warnings when designated initializers
+use multiple expressions to initialize a structure or union member.
+Disabling the warning is necessary because the reference
+implementation uses designated initializers to provide the feature
+of named arguments for method invocations using \tt{call_} family.
+
+\item \tt{-Wno-missing-field-initializers} is used to disable warnings
+about the absence of an explicit initialization of structure members,
+which by default are initialized as if with the integer constant \tt{0}
+(null pointer for members with pointer type).
+This warning has been disabled to permit default arguments for method
+invocations when named arguments are not used; as mentioned before,
+the latter is implemented using designated initializers.
+
+\end{itemize}
+
+\enlargethispage*{\baselineskip}
+\pagebreak
+
+\subsection{\tt{gcc} options}
+\input{Build/Compiler flags/gcc options}
+
+\subsection{\tt{clang} options}
+\input{Build/Compiler flags/clang options}

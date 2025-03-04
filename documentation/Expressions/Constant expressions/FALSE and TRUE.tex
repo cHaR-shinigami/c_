@@ -1,0 +1,15 @@
+\tt{FALSE} and \tt{TRUE} are differently typed
+expressions whose values are of boolean nature.
+\tt{FALSE} is an integer constant expression with type \tt{False_} and value zero.
+\tt{TRUE}  is an integer constant expression with type \tt{True_}  and value one.
+
+\note The reference implementation provides
+\tt{FALSE} and \tt{TRUE} as object-like macros.
+\tt{False_} is a synonym for an \tt{enum} having one member:
+\tt{FALSE}  with value zero;
+\tt{True_}  is a synonym for another \tt{enum} having one member:
+\tt{TRUE}   with value one.
+Both enumeration constants are masked by macro
+definitions that can be used in \tt{#if} directives,
+and an expression whose outcome is \tt{FALSE} or \tt{TRUE} can
+be further used for \tt{_Generic} selections during translation.

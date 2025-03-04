@@ -1,0 +1,13 @@
+\tt{in} points to an array of \tt{UByte}, whose data is interpreted
+as the little-endian representation of an unsigned integer.
+The initial value of \tt{*length} is expected to be length of the
+encoding array; only the first eight bytes are interpreted, and if
+the array is shorter than that, then a null pointer is returned.
+Otherwise \tt{*length} is set to eight,
+indicating the number of bytes that were interpreted.
+The bitwise-AND with \tt{255} is meant for systems where \tt{CHAR_BIT} is
+more than eight; for most execution environments, a byte is an octet of bits,
+and the bitwise-AND is likely to be optimized away by compilers.
+However, the suffixes \tt{UL} and \tt{ULL} are significant, as
+they promote the left operand of the shift to (possibly) wider type,
+ensuring that there is enough room to accommodate the shifted bits.

@@ -1,0 +1,29 @@
+The protocol for \tt{append} method is left as an exercise in this chapter.
+The following conditions can be established:
+
+\begin{itemize}
+
+\item \it{Pre-condition}:
+The parameter \tt{this} must point to a valid \tt{Chain} object.
+
+\item \it{Post-condition}:
+\tt{this} must point to a valid \tt{Chain} object after appending.
+If the procedure returns \tt{false}, then the operation failed,
+and all members of \tt{this} must remain unchanged; otherwise a
+new node was appended, whose member \tt{data} must be same as the
+parameter \tt{data}, and \tt{this->length} must have been incremented.
+
+\end{itemize}
+
+In the next chapter, we shall design the \tt{append} protocol
+for \tt{Chain} class with the help of \tt{Iterable} interface.
+For now, we shall discuss the following procedure available in the source file
+\src{compile/class/Chain/append.c_}
+
+If a new node cannot be allocated, then zero is returned;
+otherwise the member \tt{data} is set to the parameter
+\tt{data}, and the member \tt{next} is set to a null pointer.
+The length is updated, and if its existing value is non-zero,
+then the new node is linked to the \tt{next} member of current tail node;
+otherwise the chain is currently empty, and the new node becomes the head node.
+In any case, the newly appended node always becomes the tail node.

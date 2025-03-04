@@ -1,0 +1,10 @@
+\tt{<stdlib._>} provides inline definition for the following
+additional function that serves as a wrapper over \tt{malloc}.
+
+\table{l}
+\tt{Void_ *}\idx{malloc2}\tt{(Size, Size);}
+\elbat
+
+The primary use of this function is to detect whether the mathematical value of
+the product of arguments can be represented in the type \tt{Size}: if yes, then
+\tt{malloc} is invoked with that product; otherwise a null pointer is returned.

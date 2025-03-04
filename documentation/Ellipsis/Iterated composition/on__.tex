@@ -1,0 +1,21 @@
+The \tt{o}$n$\_\_ family of function-like macros can be used to
+design \tt{o__}, as is done by the reference implementation.
+
+\head{Syntax}
+
+\tt{o}$n$\tt{__ (} \it{function} \tt{,} \it{argument} \tt{)}
+
+\head{Constraints}
+
+$n$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX}.
+
+\head{Semantics}
+
+\tt{o}$n$\tt{__(f, arg)} repeats the text \tt{f(arg)} $n$ consecutive times,
+as \tt{f(arg)f(arg)} $\cdots$ \tt{f(arg)} ($n$ times);
+an invocation of \tt{o0__} expands to blank text.
+If \it{function} is a function-like macro,
+then each invocation is also expanded as well.
+
+\note Other than the null macro \tt{o0__}, each \tt{o}$n$\tt{__(f, a)}
+is defined as \tt{f(a)o}$m$\tt{__(f, a)}, where $m = n - 1$.

@@ -1,0 +1,57 @@
+\tt{<search._>} defines the macro \tt{SEARCH__} that configures the
+behavior of \tt{search_} family;  \tt{SEARCH__} records the \tt{defined}
+state of \tt{DEBUG} every time \tt{<search._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <search._>}
+
+\idx{search_}\s\s\s\tt{(} \it{found-at} \tt{,}
+$predicate$ \tt{,} $source$ [\tt{,} $range$] \tt{,} $key$ \tt{)}
+
+\idx{search_4_}\s\tt{(} \it{found-at} \tt{,}
+$predicate$ \tt{,} $source$ \phantom{[}\tt{,} $key$\phantom{]} \tt{)}
+
+\idx{search_5_}\s\tt{(} \it{found-at} \tt{,}
+$predicate$ \tt{,} $source$ \phantom{[}\tt{,} $range$\phantom{]} \tt{,} $key$ \tt{)}
+
+\head{Constraints}
+
+\it{found-at} shall be a modifiable lvalue of arithmetic type,
+and $source$ shall be pointer to a complete array.
+
+$predicate$ shall be a function type expression that can be called with an element
+of $source$ as the first argument, with $key$ being the subsequent argument(s)
+without any type cast; return type of $predicate$ shall be a scalar type.
+
+$range$ shall be an expression having a \tt{Range} type.
+
+If $key$ needs to specify multiple arguments for calling $predicate$,
+it shall be a fully parenthesized list for \tt{search_}.
+
+\head{Semantics}
+
+\tt{search_} invokes \tt{search_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+$key$ is subjected to the \tt{peel_} macro before counting the
+number of elements in it using \tt{COUNT_}: if the count is one,
+then $key$ is used without peeling; otherwise the resulting text
+after applying \tt{peel_} is used, which can be a list of arguments.
+
+\tt{search_4_} calls $predicate$ for each element of $source$,
+starting at index zero and moving towards higher indices:
+in each invocation, the element is the first argument, followed
+by $key$ (peeled in case it expands to multiple arguments).
+If a return value is non-zero, then that index is copied to \it{found-at},
+and rest of the iterations are skipped; otherwise $predicate$ returns zero for
+all elements of $source$, and \it{found-at} is set to the length of $source$.
+
+\tt{search_5_} calls $predicate$ only for elements in the indices specified
+by $range$: \it{found-at} is set to the first index (as per the sequence
+specified by $range$) for which $predicate$ returns non-zero, skipping rest
+of the index sequence; otherwise $predicate$ returns zero for all elements
+in the given $range$, and \it{found-at} is set to the length of $source$.
+
+\note If $predicate$ returns non-zero, \it{found-at} is set
+to a non-negative index, even if $range$ has negative values.

@@ -1,0 +1,129 @@
+\tt{omni__} is perhaps the most versatile higher order function in C\_, as the
+other iterator macros can be implemented with it; however, it is not as powerful
+as iterated composition, since a function-like macro given to \tt{omni__}
+cannot itself invoke \tt{omni__} or any other macro implemented with it.
+The superiority of \tt{o__} is due to its support of nested composition,
+where a function-like macro being iterated can itself iterate over another
+function-like macro using \tt{o__}, and this pattern can continue up to
+any depth that does not exhaust resources of the translation environment.
+
+\pagebreak
+
+\head{Syntax}
+
+\tt{omni__ (} \it{left-arg} \tt{,} $f$ \tt{,} \it{right-list} \tt{)}
+
+\head{Constraints}
+
+Number of elements in the expanded \it{right-list} shall be
+less than \tt{PP_MAX}, after removal of optional parentheses.
+
+If \it{left-arg} expands to a list with multiple elements,
+the same constraint shall also apply to its element count.
+
+\head{Semantics}
+
+The \tt{peel_} macro is applied on \it{left-arg}
+and \it{right-list}, and their results are expanded.
+Both \it{left-arg} and $f$ are single arguments that can expand to a list with
+multiple elements; the third argument onward are part of \it{right-list}.
+\it{left-arg} and \it{right-list} can be optionally parenthesized:
+each parenthesized list acts as a single argument,
+and the outermost parentheses are removed by \tt{peel_}.
+Length of the longer expanded list determines number of iterations.
+
+The lists are scanned left to right starting from their first elements.
+In each iteration, $f$ is invoked with two arguments:
+current element of \it{left-arg} is the first argument,
+and current element of \it{right-arg} is the second argument.
+Current element of \it{left-arg} is replaced with the
+outcome of current invocation, and the index moves
+one step forward in each list for the next iteration.
+Whenever the shorter list ends, its index is moved back to the beginning;
+in other words, the shorter list is logically circular.
+If $f$ expands to a list of functions, then that list is also considered
+circular, and each function is invoked in a round robin sequence starting from
+the left; if the number of functions is more than the number of iterations,
+then the extra functions remain unused, but all of them are scanned as usual.
+
+Formally, let the elements of \it{left-arg} be
+labeled as $l_0$ \tt{,} $\cdots$ \tt{,} $l_{L-1}$;
+similarly, the elements of \it{right-list} are
+labeled as $r_0$ \tt{,} $\cdots$ \tt{,} $r_{R-1}$.
+$L$ and $R$ denote the number of elements,
+and let $N$ denote maximum of the two.
+Considering $f$ to be a list, let its elements be labeled
+in the same way as $f_0$ \tt{,} $\cdots$ \tt{,} $f_{F-1}$,
+where $F$ denotes the number of functions.
+With these notations, we can denote an invocation of \tt{omni__}
+with the following form (\tt{echo_} is only an example):
+
+\centerline
+{
+\tt{omni__ ( (}  $l_0$ \tt{,} $\cdots$ \tt{,} $l_{L-1}$
+\tt{) , echo_ (} $f_0$ \tt{,} $\cdots$ \tt{,} $f_{F-1}$
+\tt{) ,}  $r_0$ \tt{,} $\cdots$ \tt{,} $r_{R-1}$ \tt{)}
+}
+
+An invocation of the above form performs $N$ iterations,
+generating a comma-separated list of the following form:
+
+\centerline
+{
+$f_0$ \tt{(} $l_0$ \tt{,} $r_0$ \tt{) ,}
+$f_{1\%F}$ \tt{(} $l'_{1\%L}$ \tt{,} $r_{1\%R}$ \tt{) ,}
+$\cdots$ \tt{,}
+$f_{(N - 1)\%F}$ \tt{(} $l'_{(N - 1)\%L}$ \tt{,} $r_{(N - 1)\%R}$ \tt{)}
+}
+
+Only the rightmost $L$ elements of the above list are retained
+in the final output list: each element is of the form
+$f_{i\%F}$ \tt{(} $l'_{i\%L}$ \tt{,} $r_{i\%R}$ \tt{)}, where $i$ ranges
+from $N - L$ through $N - 1$, and $\%$ gives the remainder after division.
+$l'$ denotes the current element in \it{left-arg}, which is updated
+in each iteration: initially, each $l'$ is same as the original
+element in \it{left-arg}, and whenever it is used in an iteration,
+it is replaced with the element generated in that iteration.
+In each case, if $f_{i\%F}$ is a function-like macro other than \tt{omni__},
+it is invoked while \tt{omni__} remains in \it{\tt{PASSIVE}} state.
+
+\note If \it{left-arg} contains fewer elements than \it{right-list},
+intermediate results get used in subsequent iterations.
+If a function-like macro in $f$ produces the name \tt{omni__},
+that instance is marked as \it{\tt{DEAD}} and cannot be invoked.
+
+\textsc{example i}\indent
+When both sides have equal number of elements, \tt{omni__} pairs each element
+of \it{left-arg} with the index-wise corresponding element in \it{right-list},
+and invokes (an element of) $f$ with that pair of arguments.
+For instance, \tt{omni_((di, sa), cat_, (na, ur))} expands to
+\tt{cat_(di, na), cat_(sa, ur)}, and then \tt{dina, saur}.
+Deferred expansion works as usual,
+so \tt{echo_(cat_ C_(omni__((di, sa), cat_, (na, ur))))} produces \tt{dinasaur}.
+
+\textsc{example ii}\indent
+All elements of \it{right-list} can be
+aggregated with a single element of \it{left-arg}.
+For instance, \tt{omni__(0, ADD_, RANGE_(11, 20, 2))}
+computes the sum of all odd numbers from 11 to 20, which is 75.
+
+\textsc{example iii}\indent
+The element in a singleton \it{right-list} can
+be applied to each element of \it{left-arg}.
+For instance, \tt{omni__(RANGE_(10), echo_(ADD_, MUL_), 2)} iterates over
+integers from 0 through 9, adding 2 to each even number and multiplying each
+odd number by 2: the resulting text is \tt{2, 2, 4, 6, 6, 10, 8, 14, 10, 18}.
+
+\head{Recommended practice}
+
+We shall reiterate our earlier cautionary note on the use of \tt{peel_} macro:
+if the argument to \tt{peel_} is not fully
+parenthesized but contains a parenthesized proper prefix,
+then \tt{peel_} can silently change the meaning of a code.
+For example, the text \tt{(a + b) * c} should never be used as \it{left-arg}
+or \it{right-list}, as \tt{peel_} will alter it to \tt{a + b * c}.
+
+A good practice is to fully enclose the actual list within a single
+pair of parentheses, which is removed by \tt{omni__} using \tt{peel_};
+often it will be redundant, but this habit can help
+to avert potentially disastrous changes by \tt{peel_}.

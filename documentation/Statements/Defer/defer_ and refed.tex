@@ -1,0 +1,25 @@
+Without any further ado, we shall now re-implement our
+earlier example with the help of \tt{defer_} and friends.
+
+\code{Statements/Defer/linear.c_}
+
+\tt{defer_} registers expressions and statements to be postponed
+at the end of the nearest enclosing block that ends with \tt{refed}.
+The name \tt{refed} alludes to the fact that \tt{defer_} statements get
+executed in reverse order of reaching them; however, multiple statements
+within a single \tt{defer_} are executed in their lexical order.
+For example, if one writes \tt{defer_(}\it{expr1}\tt{;} \it{expr2}\tt{)}
+followed by \tt{defer_(}\it{expr3}\tt{;} \it{expr4}\tt{)},
+they get executed in due course in the order:
+\it{expr3}\tt{;} \it{expr4}\tt{;} \it{expr1}\tt{;} \it{expr2}\tt{;} .
+Reaching \tt{refed} via \tt{guard_1_} or \tt{stop_1_} executes \tt{defer_}
+statements registered within that block; however, \tt{guard_2_} and \tt{stop_2_}
+directly return from the function, ignoring deferred statements.
+
+\note Due to a minor flaw in the reference implementation,
+\tt{refed} can generate false warnings when it ends a function (other than
+\tt{main}) whose return type is not \tt{Void_}; for \tt{gcc} and \tt{clang},
+one can disable such warnings with the option \tt{-Wno-return-type}.
+It was also observed during testing that \tt{gcc} generates false
+warnings for the given example that is implemented using \tt{defer_};
+these latter ones can be suppressed with \tt{-Wno-maybe-uninitialized}.

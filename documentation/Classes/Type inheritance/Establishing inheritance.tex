@@ -1,0 +1,25 @@
+In most object-oriented programming languages, the term ``inheritance'' broadly
+means that members of a base type are also implicitly members of any of its
+derived types, which includes both member attributes and member methods.
+The derived type can suppress an inherited method with its own implementation,
+which is usually known as ``method overriding''; this technique does
+not forbid accessing the base class method via other mechanisms.
+
+C\_ relies on macros to establish inheritance between two
+object-oriented types: this is not merely limited to the
+reference implementation, but is part of the specification.
+The macro and replacement text need to be defined as:
+
+\begin{center}
+
+\tt{# define} $Derived$\tt{_EXTENDS} $Base$ [, \textit{override-list}]
+
+\end{center}
+
+In the above syntax, a type named as $Derived$
+inherits from another  type named as $Base$.
+The optional \textit{override-list} can only specify a comma-separated
+list of method names that are part of the \tt{Type} structure.
+
+\note C\_ does not specify any mechanism to disallow
+inheritance, though implementations can support it.

@@ -1,0 +1,14 @@
+\def\Subsubsection#1{\subsubsection{#1}\input{Arrays/Iterators/Joining/#1}}
+
+\tt{<join._>} defines the macro \tt{JOIN__} that configures the behavior
+of \tt{join__} and \tt{join_}* families; \tt{JOIN__} records the \tt{defined}
+state of \tt{DEBUG} every time \tt{<join._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\Subsubsection{Synonyms}
+
+\subsubsection{\tt{join__}}
+\input Arrays/Iterators/Joining/join__
+
+\subsubsection{\tt{join_}*}
+\input Arrays/Iterators/Joining/join_

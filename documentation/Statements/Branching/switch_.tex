@@ -1,0 +1,77 @@
+\def\Subsubsection#1{\subsubsection{#1}\input{Statements/Branching/switch_/#1}}
+
+\head{Syntax}
+
+\tt{switch_ (} \it{selection} \tt{)}
+
+\s\s\s\s\it{declarations-and-statements}\opt
+
+\tt{end}
+
+\head{Constraints}
+
+\it{selection} shall be an integer expression.
+
+\head{Semantics}
+
+\tt{switch_} blocks allow case labels of the following forms,
+where each \it{constant-expression} shall be a distinct integer.\\
+
+ \tt{case}\s\s\s\s\it{constant-expression} \tt{:} \it{statement}
+
+\idx{CASE}\s\s\s\s\it{constant-expression} \tt{:} \it{statement}
+
+\idx{case_}\s\tt{(}\s\it{constant-expression} \tt{)}
+\it{declaration-or-statement}\opt\\
+
+The next two forms are additionally permitted by C23,
+but forbidden by older revisions of the C standard.\\
+
+\tt{case}\s\s\s\s\it{constant-expression} \tt{:} \it{declaration}
+
+\tt{CASE}\s\s\s\s\it{constant-expression} \tt{:} \it{declaration}\\
+
+If the \it{selection} expression of \tt{switch_}
+is equal to the \it{constant-expression} of a case,
+then control jumps directly to that case statement,
+skipping any preceding code within the \tt{switch_} block;
+thereafter subsequent statements are executed in their lexical order,
+until a branch or jump statement is encountered.
+If none of the case \it{constant-expression} matches the \it{selection}
+expression, then it acts as an ordinary block and executes from its beginning.
+
+The basic \tt{case} is a plain labeled statement,
+whereas the variants \tt{CASE} and \tt{case_} additionally
+have an implicit unconditional jump immediately before them,
+which prevents a fallthrough from the previous statement (if any).
+If the control reaches just before a \tt{CASE} or \tt{case_},
+then it jumps directly to the end of that \tt{switch_} block.
+
+\note \tt{switch_} is somewhat different from \tt{switch}.
+An explicit \tt{default} case is not mentioned in the semantics,
+as it is disallowed.
+\tt{continue} statements are permitted, but as \tt{switch_}
+is not an iteration block, \tt{continue} acts like \tt{break}.
+Also, \tt{switch_} works like an ordinary block if none of the cases match;
+however, both \tt{CASE} and \tt{case_} have an implicit ``jump to the end''
+immediately before them, so if a \tt{switch_} block starts with either of them,
+then the non-matching behavior is identical to that of a
+conventional \tt{switch} statement: the entire block is skipped.
+Conversely, any code that occurs lexically before the
+first case gets executed when a matching case is not found.
+
+\example The following program selects a color based on
+a random number (modulo 4); if the random selection does
+not match any of the given colors, it prints ``Mixed''.
+Bitwise AND with 3 gives an integer in the range [0, 3].
+
+\code{../compile/colors.c_}
+
+\note The selection expression is cast to type \tt{Color}
+because some compilers can warn if a case is missing for an
+enumeration constant of that type; with \tt{gcc} and \tt{clang},
+the option \tt{-Wswitch-enum} enables this diagnostic.
+
+\Subsubsection{Fallthrough}
+
+\Subsubsection{Declaration after label}

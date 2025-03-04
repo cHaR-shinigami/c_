@@ -1,0 +1,42 @@
+\head{Syntax}
+
+\idx{decode__}\s\s\s\s\tt{(} [\tt{. this =}] $this$ [\tt{,}
+[\tt{. length =}] $length$] \tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\idx{decode__2__}\s\tt{(} [\tt{. this =}] $this$
+\phantom{[}\tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\idx{decode__3_}\s\s\tt{(} [\tt{. this =}] $this$ \phantom{[}\tt{,}
+[\tt{. length =}] $length$\phantom{]} \tt{,} [\tt{. in =}] $in$ \tt{)}\\
+
+\idX{decode_}\s\s\s\s\s\tt{(} [\tt{. this =}] $this$ [\tt{,}
+[\tt{. length =}] $length$] \tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\idX{decode_2_}\s\s\s\tt{(} [\tt{. this =}] $this$
+\phantom{[}\tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\idx{decode_3_}\s\s\s\tt{(} [\tt{. this =}] $this$ \phantom{[}\tt{,}
+[\tt{. length =}] $length$\phantom{]} \tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\head{Semantics}
+
+\tt{decode__} invokes \tt{decode__2__} if the
+argument sequence expands to two elements.
+
+Otherwise the argument sequence shall expand to
+three elements, and \tt{decode__3_} is invoked.
+
+\tt{decode__2__(}$this$\tt{,} $in$\tt{)} is equivalent to
+\tt{decode__3_(}$this$\tt{, &lvalue__(length__(}$in$\tt{)),} $in$\tt{)}.
+
+\tt{decode__2__} can evaluate the argument $in$ more
+than once only if it has a variably modified type.
+
+\tt{decode__3_(}$this$\tt{,} $length$\tt{,} $in$\tt{)}
+is equivalent to \tt{((typeof_(}$this$\tt{))
+call_((Type, decode),} $this$\tt{,} $length$\tt{,} $in$\tt{))}.\\
+
+The \tt{decode_}* family evaluates each argument only once;
+rest of the semantics are identical to \tt{decode__} family.
+Specifically, \tt{decode_2_}* has the same functionality as \tt{decode__2__},
+and \tt{decode_3_} is equivalent to \tt{decode__3_}.

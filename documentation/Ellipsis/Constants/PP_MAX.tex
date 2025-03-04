@@ -1,0 +1,9 @@
+The macro \tt{PP_MAX} expands to the maximum decimal integer constant supported
+by ellipsis framework; the reference implementation defines \tt{PP_MAX} as 127,
+which is the smallest upper bound on the number of macro arguments.
+The behavior is undefined if more than \tt{PP_MAX} arguments
+are passed to a feature implemented as a function-like macro.
+
+\note The reference implementation can be easily modified to support
+values above 127, up to the maximum number of macro arguments supported
+by a given C preprocessor; the necessary steps are described in appendix C.

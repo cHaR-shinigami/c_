@@ -1,0 +1,60 @@
+\def\Subsection#1{\subsection{#1}\input{Expressions/Bit shifting/#1}}
+
+Certain semantics of shift operators are implementation-defined or undefined,
+particularly with negative integers.
+C\_ fills these gaps with bit shifting features that have
+well-defined behavior for all integers when compiled in production mode;
+however, operands that cause undefined behavior for the built-in shift operators
+are caught at runtime when compiled in debugging mode, as if with assertions.
+C\_ broadens the set of operands for which shifting by
+$s$ bits is same as multiplication or division by $2^s$,
+even with one's complement and sign-magnitude representations.
+
+The following subsections describe features that have a more
+uniform semantics for bitwise shift operations on negative integers;
+these features are representation agnostic and their behavior is defined
+in terms of value of the outcome for both unsigned and signed integers.
+For the different representations of signed integers,
+there can be two distinct notions of uniformity in outcome
+when a bitwise operation is performed on a negative value:
+
+\begin{itemize}[nosep]
+
+\item Outcomes are specified in terms of bit patterns,
+but their corresponding values depend on the representation.
+
+\item Outcomes are specified in terms of values,
+but their corresponding bit patterns depend on the representation.
+
+\end{itemize}
+
+C\_ prioritizes the latter kind of uniformity for signed types,
+as bit pattern manipulations are mostly done with unsigned types.
+For each of these features, the left expression is converted
+to the widest integer type that is not a bit-precise type:
+\tt{UIntmax} is used for \tt{ulsh_} and \tt{ursh_};
+\tt{Intmax} is used for \tt{lsh_} and \tt{rsh_}.
+The converted left expression is shifted by the number of bits given
+by the right expression; the latter is converted to an unsigned type
+and it should be less than width of the left expression's type.
+The outcome has the same type as the left expression.
+
+The bit shifting features are grouped into the
+headers \tt{<lshift._>} and \tt{<rshift._>};
+their behavior can be configured during compilation with the \tt{DEBUG} macro.
+These two headers are aggregated by \tt{<shift._>};
+the purpose of including \tt{<shift._>} in a source file is to ensure
+a common configuration for both \tt{<lshift._>} and \tt{<rshift._>}.
+
+\note Both \tt{UIntmax} and \tt{Intmax} are synonyms defined in \tt{<stdint._>};
+they can be extended integer types.
+With the ubiquity of two's complement representation that is also mandated
+by C23, the bit shifting features described here are of limited use,
+and most programmers are likely to prefer the basic
+shift operators for simple bit pattern manipulations.
+Chapter 5 presents dynamically resizable bit
+arrays that serve a wider variety of purposes.
+
+\Subsection{Left shift}
+
+\Subsection{Right shift}

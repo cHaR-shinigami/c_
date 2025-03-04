@@ -1,0 +1,20 @@
+\def\Subsection#1{\subsection{\idxy{struct Type}{#1}}
+\input{Classes/Type structure/#1}}
+
+\idx{struct Type} is a collection of pointers that contain
+information about identity, lineage, name, and implementation
+of a class (concrete type) or interface (abstract type); here
+``implementation'' refers to procedures for a fixed set of protocols.
+The name \tt{Type_} is a synonym for \tt{Ptr_(const struct Type)},
+which means a modifiable pointer to a non-modifiable structure;
+its counterpart \tt{Type} specifies that the pointer is also
+non-modifiable, which is same as \tt{Ptr (const struct Type)}.
+Each class (concrete type) and interface (abstract type)
+is characterized by a non-modifiable \tt{Type} property associated
+with it, which is declared as an identifier with external linkage.
+
+\Subsection{self}
+
+\Subsection{base}
+
+\Subsection{name}

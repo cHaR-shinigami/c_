@@ -1,0 +1,37 @@
+\tt{wrap__} is a variant of \tt{map__} that can be used when
+each element of the argument list is already parenthesized;
+furthermore, each output element is also fully parenthesized,
+so the resulting text is a list of parenthesized elements.
+
+\head{Syntax}
+
+\tt{wrap__ (} $f$ \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+The number of arguments in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Let the expanded form of $f$ be labeled as $f_0$ \tt{,} $\cdots$ \tt{,} $f_{F-1}$;
+similarly, the expanded form of \it{argument-list}
+is denoted as $a_0$ \tt{,} $\cdots$ \tt{,} $a_{N-1}$.
+With this notation, the output of \tt{wrap__}
+is represented as a list of the following form:
+
+\centerline
+{
+\tt{(} $f_0$ $a_0$ \tt{) ,}
+\tt{(} $f_{1\%F}$ $a_1$ \tt{) ,}
+$\cdots$ \tt{,}
+\tt{(} $f_{(N - 1)\%F}$ $a_{N - 1}$ \tt{)}
+}
+
+Each element of the output list has the form \tt{(} $f_{i\%F}$ $a_i$ \tt{)};
+if $f_{i\%F}$ is a function-like macro and $a_i$ contains a parenthesized prefix,
+then the macro is invoked (assuming it is in \it{\tt{ACTIVE}} state).
+
+\example \tt{wrap__(top_, (0, 1), (2, 3), (4, 5))} extracts the first element
+from each pair, producing the output text \tt{(0), (2), (4)}; the input pairs
+can be generated with \tt{omni__(RANGE_(0, 5, 2),, RANGE_(1, 5, 2))}.

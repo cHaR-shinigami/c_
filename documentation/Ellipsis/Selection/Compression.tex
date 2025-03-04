@@ -1,0 +1,30 @@
+\head{Syntax}
+
+\idx{compress_} \tt{( (} \it{argument-list} \tt{) ,} \it{binary-list} \tt{)}
+
+\head{Constraints}
+
+Number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+Elements in \it{binary-list} up to the length of expanded \it{argument-list}
+are significant: each such element shall expand to the decimal integer
+constant \tt{0} or \tt{1}; at least one significant element shall be \tt{1},
+and excess elements shall not violate preprocessing constraints.
+
+\head{Semantics}
+
+An element in the expanded \it{argument-list} is included in the outcome
+if the index-wise corresponding element in \it{binary-list} is \tt{1};
+otherwise the associated element in \it{binary-list} is \tt{0}
+and the element in \it{argument-list} is not selected.
+
+\it{binary-list} is considered to be circular, so if it is
+exhausted before \it{argument-list}, it is read again from the start;
+excess elements in \it{binary-list} beyond the length of
+\it{argument-list} are unused, but they are still scanned as usual.
+
+\note Due to the constraint that \it{binary-list} shall not be all zeros,
+at least one element will always be selected.
+
+\example \tt{compress_((a, e, i, o, u), 0, 1)} expands to
+\tt{e, o} as the pattern repeats like \tt{0, 1, 0, 1, ...}

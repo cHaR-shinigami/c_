@@ -1,0 +1,21 @@
+The \tt{at__} and \tt{at_}* families provide a
+bounds-checking mechanism for array indexing.
+These features can be configured with the \tt{DEBUG} macro before
+including the header \idx{<array._>}: the \tt{defined} state of \tt{DEBUG}
+is recorded by the macro \idx{ARRAY__} every time \tt{<array._>} is included.
+If \tt{ARRAY__} expands to \tt{1}, then \tt{DEBUG} was defined, so \tt{at__} and
+\tt{at_}* families are configured in debugging mode, where they assert that the
+index is not out of bounds; otherwise \tt{ARRAY__} shall expand to \tt{0}, and
+if the index is out of bounds, then a default value can be used (if provided).
+
+Additionally, these features also support negative indexing from the end
+(influenced by the Python language).
+Negative indexing is done right to left, with the last element being indexed as
+-1, and the base element having an index equal to negative of the array length.
+Indices always increase when moving from base element to the end.
+
+\subsection{\tt{at__}}
+\input Arrays/Indexing/at__
+
+\subsection{\tt{at_}*}
+\input Arrays/Indexing/at_

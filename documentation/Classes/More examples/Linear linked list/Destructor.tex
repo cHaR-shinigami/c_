@@ -1,0 +1,10 @@
+The following procedure code is available in the source file
+\src{compile/class/Chain/free.c_}
+
+If the parameter \tt{this} does not point to a valid \tt{Chain} object,
+then its \tt{head} member is set to a null pointer.
+Otherwise, each node is deallocated from \tt{head} through \tt{tail},
+and finally the \tt{Chain} object itself is deallocated.
+
+\note We have not used a guard clause for \tt{this} to be non-null,
+as it is checked by \tt{free} procedure of \tt{Type}.

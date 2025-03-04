@@ -1,0 +1,29 @@
+\head{Syntax}
+
+\tt{# include <join._>}
+
+\idX{join_}\s\s\s\tt{(} $sentence$
+[\tt{,} $separator$ [\tt{,} $range$]] \tt{)}
+
+\idX{join_1_}\s\tt{(} $sentence$ \tt{)}
+
+\idX{join_2_}\s\tt{(} $sentence$
+\phantom{[}\tt{,} $separator$\phantom{]} \tt{)}
+
+\idX{join_3_}\s\tt{(} $sentence$
+\phantom{[}\tt{,} $separator$ \phantom{[}\tt{,} $range$\phantom{]]} \tt{)}
+
+\head{Constraints}
+
+The \tt{join_} family shall have precisely the same
+constraints as those applicable for the \tt{join__} family.
+
+\head{Semantics}
+
+\tt{join_} family evaluates each expression exactly only once;
+rest of the semantics are same as \tt{join__} family.
+
+\note A ``two-dimensional'' array of characters or wide
+characters cannot be used with the \tt{join__} and \tt{join_}
+families, which expect pointer to an array of pointers
+(an ``array of arrays'' is different from an ``array of pointers'').

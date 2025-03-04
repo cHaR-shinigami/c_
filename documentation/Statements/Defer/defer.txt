@@ -1,0 +1,7 @@
+$ cc_ -Wno-pedantic defer.c_ && ./a.out
+Before block
+	Inside block
+	Print before leaving block
+After block
+Yet another defer
+All's well that ends well

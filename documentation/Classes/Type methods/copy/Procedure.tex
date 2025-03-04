@@ -1,0 +1,18 @@
+\begin{itemize}[nosep]
+
+\item If \tt{this} and \tt{that} compare as equal
+pointers, then the function returns \tt{this}.
+
+\item If \tt{validate_(that)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{this} is not a null pointer and \tt{is_type(((Object *)
+this)->type)} is \tt{false}, then \tt{NULL} is returned.
+
+\item If \tt{this} is not null and \tt{is(((Object *)this)->type,
+((Object *)that)->type)} is \tt{false}, \tt{NULL} is returned.
+
+\item Let $type$ denote the value of \tt{((Object *) that)->type};
+then the function returns $type$\tt{->copy(this, that)}.
+
+\end{itemize}

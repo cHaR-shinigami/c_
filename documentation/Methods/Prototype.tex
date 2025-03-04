@@ -1,0 +1,114 @@
+\def\Subsection#1{\subsection{#1}\input{Methods/Prototype/#1}}
+
+There are four polymorphic families for declaring, defining, and invoking
+C\_ methods: \tt{prototype_}, \tt{protocol_}, \tt{procedure_}, and \tt{call_}.
+The \tt{prototype_} family is primarily used
+in header files for method declarations.
+Similar to conventional function declarations, \tt{prototype_}
+declarations are used for static type checking and argument promotions
+or conversions for method calls; however, parameter names are significant
+for \tt{prototype_} declarations, and they can be referred at call sites
+for out of order associations of actual arguments with formal parameters.
+
+\head{Syntax}
+
+\idx{prototype_}\s\s\s\s\s\tt{(} [\it{return-type} \tt{,}]\s\tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} [\tt{,} \it{parameter-tuples}]\s\tt{)}\\
+
+\idx{prototype_0_}\s\s\s\tt{(} [\it{return-type} \tt{,}]\s\tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \l\tt{,} \it{parameter-tuples}\r\s\tt{)}
+
+\idx{prototype_0_1_}\s\tt{(} \l\it{return-type} \tt{,}\r\s\tt{(}
+\it{prefix} \tt{,} \it{method-name} \tt{)} \l\tt{,} \it{parameter-tuples}\r\s\tt{)}
+
+\idx{prototype_0_2_}\s\tt{(}   \tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \tt{,} \it{parameter-tuples} \tt{)}\\
+
+\idx{prototype_1_}\s\s\s\tt{(} \tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \tt{)}\\
+
+\idx{prototype_2_}\s\s\s\tt{(} \l\it{return-type} \tt{,}\r\s
+\tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)} \tt{)}
+
+\idx{prototype_2_1_}\s\tt{(} \l\it{return-type} \tt{,}\r\s
+\tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)} \tt{)}
+
+\tt {prototype_2_}\s\s\s\tt{(} \tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)}
+\tt{,} \tt{(} \it{parameter-type} \tt{,} \it{parameter-name} \tt{)} \tt{)}
+
+\idx{prototype_2_2_}\s\tt{(} \tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)}
+\tt{,} \tt{(} \it{parameter-type} \tt{,} \it{parameter-name} \tt{)} \tt{)}
+
+\pagebreak
+
+\head{Constraints}
+
+\it{return-type} shall not be an array type,
+an incomplete type, or a function type.
+\it{parameter-tuples} shall be a comma-separated list
+of parenthesized tuples, each of them having the form
+\tt{(} \it{parameter-type} \tt{,} \it{parameter-name} \tt{)}.
+
+Type qualifiers (if any) in \it{return-type} are ignored.
+\it{parameter-type} shall not contain any storage-class specifier.
+
+A \it{parameter-name} shall not be used to specify array length
+in another \it{parameter-type}, or for any other purpose.
+
+If \it{parameter-type} has type ``array of $T$'', it is adjusted as ``pointer
+to $T$'', while preserving the qualifiers (if any) of element type $T$.
+If \it{parameter-type} is of function type, it is
+adjusted as pointer to a function of the same type.
+
+\note The two adjustments on \it{parameter-type} are
+also performed for conventional function parameters in C.
+
+\head{Semantics}
+
+\tt{prototype_} invokes \tt{prototype_0_} if the expanded argument sequence has
+more than two arguments; otherwise it invokes \tt{prototype_}$n$\tt{_} if the
+expanded argument sequence contains $n$ arguments, with $n$ not exceeding two.
+
+The first argument is peeled and expanded: if the resulting list
+has a single element, it is considered as \it{return-type};
+otherwise it shall have two elements, \it{prefix} and
+\it{method-name}, which are used to generate method identifiers.
+
+\tt{prototype_0_} invokes \tt{prototype_0_}$n$\_ if the first argument expands
+to a list with $n$ elements on being subjected to the \tt{peel_} macro.
+\tt{prototype_0_1_} declares a method that accepts a sequence of arguments as
+specified by \it{parameter-tuples}, and returns a value of type \it{return-type}.
+\tt{prototype_0_2_} uses \tt{Void_} as the return type.
+
+\tt{prototype_1_} declares a method that can accept a variable number of
+arguments (zero or more) whose types are not specified in the declaration,
+and the method does not return anything (return type is \tt{Void_}).
+
+\tt{prototype_2_} invokes \tt{prototype_2_}$n$\_ if the first argument expands
+to a list with $n$ elements on being subjected to the \tt{peel_} macro.
+\tt{prototype_2_1_} declares a method that can accept a variable number of
+arguments having unspecified types, and returns a value of type \it{return-type}.
+Return type of a \tt{prototype_2_2_} declaration is \tt{Void_}.
+
+In all cases, an extra argument named \tt{_site} of
+type \tt{Site} is pushed before the parameter list,
+as per parameter tuples or ellipsis (\tt{...}) for variable arguments;
+\tt{_site} is intended to store call site details during method invocations.
+
+\note There is no mechanism to specify a method with
+named parameters along with variable argument list.
+
+\head{Recommended practice}
+
+\it{prefix} and \it{method-name} should not start or end with an underscore,
+and neither of them should contain two consecutive underscores; the latter
+is reserved for name mangling that can be performed by C\_ implementations.
+
+\example The following prototype declares
+a method for sorting an array of integers.
+It has three parameters: the first is an implicit parameter named \tt{_site} of
+type \tt{Site}, followed by \tt{len} and \tt{arr}; the return type is \tt{Void_}.
+
+\code{../include/Integers._}
+
+\Subsection{Identifiers}

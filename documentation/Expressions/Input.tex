@@ -1,0 +1,30 @@
+\def\Subsection#1{\subsection{#1}\input{Expressions/Input/#1}}
+
+C\_ offers debuggable features that simplify
+reading formatted input for most common purposes.
+A wide variety of data types are supported, and programmers do not need to
+remember format specifiers for each type; however, the semantics of processing
+the text or wide text input have been described in terms of format specifiers:
+this is because the reference implementation provides these
+features using the \tt{scanf} family of standard library functions.
+As always, other implementations of C\_ need not rely on \tt{scanf} family,
+but the semantics should still be preserved,
+and input shall be consumed and interpreted in precisely the
+same way as prescribed by the \tt{scanf} format specifiers.
+
+The reference implementation provides these features in the header \idx{<input._>}.
+An object-like macro \idx{INPUT__} determines the debugging
+configuration of all features listed in the following subsections.
+If the macro \tt{DEBUG} remains defined when \tt{<input._>} is included,
+then \tt{INPUT__} expands to \tt{1}, and the features provided
+by \tt{<input._>} are collectively configured in debugging mode,
+in which all pointer arguments are asserted to be not null.
+
+If \tt{DEBUG} is not found to be defined when \tt{<input._>} is included,
+then \tt{INPUT__} expands to \tt{0},
+which configures the features under consideration in production mode,
+whose behavior with null pointers is described in the semantics.
+
+\Subsection{Default source}
+
+\Subsection{Custom  source}

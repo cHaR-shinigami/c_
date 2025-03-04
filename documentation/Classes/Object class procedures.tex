@@ -1,0 +1,45 @@
+\def\Subsection#1{\subsection{\idxy{Object}{#1}}
+\input{Classes/Object class procedures/#1}}
+
+The \tt{Object} class provides procedures for each \tt{Type} method that has a
+corresponding member in the \tt{Type} structure; these functions are basic stubs
+with minimal code, just enough to satisfy the post-conditions imposed by protocols.
+
+The expression \tt{type_(Object)} is a pointer to the \tt{Type} structure
+of \tt{Object} class: members of this structure provide access to procedures
+implemented by \tt{Object} class, as described in the subsections.
+Any class using \tt{Object} as base class inherits these procedures in
+its own \tt{Type} structure, unless it overrides them with other functions.
+
+The object-like macros \idx{Object_EXTENDS} and
+\idx{SELF_C_EXTENDS} are reserved for implementations of C\_.
+
+\Subsection{validate}
+
+\Subsection{init}
+
+\Subsection{free}
+
+\Subsection{compare}
+
+\Subsection{copy}
+
+\Subsection{read}
+
+\Subsection{write}
+
+\Subsection{parse}
+
+\Subsection{text}
+
+\Subsection{decode}
+
+\Subsection{encode}
+
+\Subsection{add}
+
+\Subsection{sub}
+
+\Subsection{mul}
+
+\Subsection{div}

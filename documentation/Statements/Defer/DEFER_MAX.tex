@@ -1,0 +1,12 @@
+An implementation can impose a upper bound on the number of \tt{defer_}
+statements that can be registered by a single function; this limit is available
+as the macro \tt{DEFER_MAX}, which expands to a non-negative integer constant.
+The behavior is implementation-defined if the number of \tt{defer_} statements
+registered at runtime exceeds this limit; an implementation that does not have
+this limit shall still define the macro \tt{DEFER_MAX}, which shall expand to 0.
+
+\note The reference implementation defines \tt{DEFER_MAX} as 128,
+which can be changed in the header \tt{<defer._>}.
+
+\enlargethispage*{\baselineskip}
+\pagebreak

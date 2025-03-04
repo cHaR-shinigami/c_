@@ -1,0 +1,12 @@
+alias cc_="gcc -std=c23 -O3 -s -ftrack-macro-expansion=0 \
+-iprefix '$HOME'/examples/.include \
+-iwithprefix/ellipsis -iwithprefix/dialect -iwithprefix/library \
+-iprefix '$HOME'/examples/include \
+-iwithprefix/. -iwithprefix/class -iwithprefix/interface \
+-Werror -Wall -Wextra -Wpedantic \
+-Wcast-align  -Wcast-qual -Wswitch-enum -Wwrite-strings \
+-Wduplicated-branches     -Winit-self -Wshift-overflow=2 \
+-Wduplicated-cond  -Wnull-dereference -Wstrict-overflow=2 \
+-Wno-override-init -Wno-missing-field-initializers \
+-Wno-parentheses   -Wno-tautological-compare -Wno-type-limits \
+'$HOME'/examples/object/lib.o -xc"

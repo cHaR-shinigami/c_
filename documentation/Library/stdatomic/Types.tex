@@ -1,0 +1,60 @@
+\type{Memory_order} and \type{Atomic_flag} are synonyms for
+non-modifiable \tt{memory_order} and \tt{atomic_flag} (respectively).
+
+Additionally, the following synonyms are defined for standard integer types:
+for a non-modifiable type named as \tt{Atomic_}$Type$,
+its modifiable twin \tt{Atomic_}$Type$\_  is a synonym for \tt{atomic_}$type$.
+Similarly, for a non-modifiable unsigned type named as \tt{Atomic_U}$Type$,
+its modifiable twin \tt{Atomic_U}$Type$\_ is a synonym for \tt{atomic_u}$type$.
+
+\table{llllll}
+
+\type{Atomic_Bool} & \type{Atomic_UByte} & \type{Atomic_UShort} &
+\type{Atomic_UInt} & \type{Atomic_ULong} & \type{Atomic_ULLong}\\
+
+\type{Atomic_Char} & \type{Atomic_Byte}  & \type{Atomic_Short}  &
+\type{Atomic_Int}  & \type{Atomic_Long}  & \type{Atomic_LLong} \\
+
+\elbat
+
+For the following types, the modifiable twin named as \tt{Atomic_}$Type$\_
+is a synonym for \tt{atomic_}$type$\tt{_t}.
+
+For the  unsigned types, the modifiable twin named as \tt{Atomic_U}$Type$\_
+is a synonym for \tt{atomic_u}$type$\tt{_t}.
+
+\table{llll}
+
+\type{Atomic_Char8}  & \type{Atomic_Char16} &
+\type{Atomic_Char32} & \type{Atomic_WChar} \\
+
+\\
+
+\type{Atomic_UInt_least8}  & \type{Atomic_UInt_least16} &
+\type{Atomic_UInt_least32} & \type{Atomic_UInt_least64}\\
+
+\type{Atomic_Int_least8}   & \type{Atomic_Int_least16}  &
+\type{Atomic_Int_least32}  & \type{Atomic_Int_least64} \\
+
+\\
+
+\type{Atomic_UInt_fast8}   & \type{Atomic_UInt_fast16}  &
+\type{Atomic_UInt_fast32}  & \type{Atomic_UInt_fast64} \\
+
+\type{Atomic_Int_fast8}    & \type{Atomic_Int_fast16}   &
+\type{Atomic_Int_fast32}   & \type{Atomic_Int_fast64}  \\
+
+\elbat
+
+\table{lll}
+
+\type{Atomic_UIntptr} & \type{Atomic_Size}    & \type{Atomic_UIntmax}\\
+
+\type{Atomic_Intptr}  & \type{Atomic_Ptrdiff} & \type{Atomic_Intmax} \\
+
+\elbat
+
+\note \tt{Atomic_UByte_} and \tt{Atomic_Byte_} are
+synonyms for \tt{atomic_uchar} and \tt{atomic_schar}.
+\tt{Atomic_Char8_} is a synonym for \tt{atomic_char8_t}, available only
+if \tt{__STDC_VERSION_STDATOMIC_H__} is defined by \tt{<stdatomic.h>}.

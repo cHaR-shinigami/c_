@@ -1,0 +1,37 @@
+\tt{map__} implements the higher order function
+\it{map} for element-wise transformation of a list.
+
+\head{Syntax}
+
+\tt{map__ (} $f$ \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+The number of arguments in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Let the expanded form of $f$ be labeled as $f_0$ \tt{,} $\cdots$ \tt{,} $f_{F-1}$;
+similarly, the expanded form of \it{argument-list}
+is denoted as $a_0$ \tt{,} $\cdots$ \tt{,} $a_{N-1}$.
+With this notation, the output of \tt{map__}
+is represented as a list of the following form:
+
+\centerline
+{
+$f_0$ \tt{(} $a_0$ \tt{) ,}
+$f_{1\%F}$ \tt{(} $a_1$ \tt{) ,}
+$\cdots$ \tt{,}
+$f_{(N - 1)\%F}$ \tt{(} $a_{N - 1}$ \tt{)}
+}
+
+Each element of the output list has the form $f_{i\%F}$ \tt{(} $a_i$ \tt{)};
+if $f_{i\%F}$ is a function-like macro, then it is expanded.
+
+\note \tt{map__} can be used to parenthesize elements of
+a list simply by leaving $f$ as blank (comma is required).
+
+\example \tt{map__(echo_(INC_, DEC_), RANGE_(10))} increments each integer
+at even indices, and decrements those at odd indices; for the given list
+\tt{RANGE_(10)}, the generated text is \tt{1, 0, 3, 2, 5, 4, 7, 6, 9, 8}.

@@ -1,0 +1,104 @@
+The \tt{rel__} family is modeled after the semantics of \tt{REL_},
+except that \tt{rel__} is intended to be used with C relational operators,
+and in most cases, the outcome is not a decimal integer constant
+(depending on the operands, it can be an integer constant expression).
+Each element in the operand list(s) is parenthesized (as done by \tt{op__}),
+and the outcome is a parenthesized logical conjunction of expressions:
+it is of type \tt{Int_} and evaluates to either zero or one.
+
+\pagebreak
+
+\head{Syntax}
+
+ \tt{rel__}\s\s\s\s\tt{(} \it{left-arg} \tt{,} $op$ \tt{,} \it{right-list} \tt{)}
+
+ \tt{rel__}\s\s\s\s\tt{(} $op$ \tt{,} \it{list-arg} \tt{)}
+
+\idx{rel__0__}\s\tt{(} \it{left-arg} \tt{,} $op$ \tt{,} \it{right-list} \tt{)}
+
+\idx{rel__2__}\s\tt{(} $op$ \tt{,} \it{list-arg} \tt{)}
+
+\head{Constraints}
+
+The \tt{rel__} family shall have precisely the same
+constraints as those applicable for the \tt{op_} family.
+
+\head{Semantics}
+
+Arguments to \tt{rel__} are counted after excluding the first
+argument in its unexpanded form, and rest of the arguments
+are expanded: if the count is 1, then \tt{rel__2__} is invoked;
+otherwise the count is more than one, and  \tt{rel__0__} is invoked.
+\tt{rel__} considers $op$ to be a singleton list: it should not expand to
+more than one element, as rest of them are taken to be initial elements of
+\it{right-list} ($op$ should be parenthesized if it has multiple elements).
+
+\it{left-arg}, \it{right-list}, and \it{list-arg} are peeled and
+expanded in the way described in the semantics of \tt{omni__}.
+
+$op$ is also subjected to the \tt{peel_} macro, and let
+$P$ be the number of elements after peeling and expansion.
+
+\begin{itemize}
+\item \tt{rel__0__ (} \it{left-arg} \tt{,} $op$ \tt{,} \it{right-list} \tt{)}
+\end{itemize}
+
+Let $L$ and $R$ be the number of elements in \it{left-arg} and
+\it{right-list} respectively; let $N$ be their maximum value.
+
+Outcome of \tt{rel__0__} is a parenthesized expression
+that computes a logical conjunction of the following form:
+
+\begin{center}
+\tt{( (} $l_0$ \tt{)} $op_0$ \tt{(} $r_0$ \tt{) &&}
+\tt{(} $l_{1\%L}$ \tt{)} $op_{1\%P}$ \tt{(} $r_{1\%R}$ \tt{) &&}
+$\cdots$ \tt{&&}
+\tt{(} $l_{(N - 1)\%L}$ \tt{)} $op_{(N - 1)\%P}$ \tt{(} $r_{(N - 1)\%R}$ \tt{) )}
+\end{center}
+
+In each element of the form
+\tt{(} $l_{i\%L}$ \tt{)} $op_{i\%P}$ \tt{(} $r_{i\%R}$ \tt{)},
+$l_{i\%L}$ and $r_{i\%R}$ denote elements from \it{left-arg} and \it{right-list}.
+
+\begin{itemize}
+\item \tt{rel__2__ (} $op$ \tt{,} \it{list-arg} \tt{)}
+\end{itemize}
+
+If \it{list-arg} expands to a singleton list, then the outcome
+of \tt{rel__2__} is \tt{1}; otherwise, let $N$ be the number
+of elements in \it{list-arg} after peeling and expansion.
+When $N$ is above 1, \tt{rel__2__} generates the following expression:
+
+\begin{center}
+\tt{( (} $l_0$ \tt{)} $op_0$ \tt{(} $l_1$ \tt{) &&}
+\tt{(} $l_1$ \tt{)} $op_{1\%P}$ \tt{(} $l_2$ \tt{) &&}
+$\cdots$ \tt{&&}
+\tt{(} $l_{N - 2}$ \tt{)} $op_{(N - 2)\%P}$ \tt{(} $l_{N - 1}$ \tt{) )}
+\end{center}
+
+In other words, \tt{rel__2__} evaluates the logical conjunction
+of a series of expressions, each one having the form
+\tt{(} $l_i$ \tt{)} $op_{1\%P}$ \tt{(} $l_{i + 1}$ \tt{)};
+here $l_i$ and $l_{i + 1}$ are a pair of consecutive
+elements from \it{list-arg} after peeling and expansion.\\
+
+\note If a list contains fewer elements than the number of iterations,
+its elements are reused in a round robin sequence.
+Due to the ``short-circuit'' semantics of \tt{&&},
+the left to right evaluation stops at the first zero expression.\\
+
+\textsc{example i}\indent
+\tt{rel__((a, b, c), <=, (x, y, z))} evaluates to true iff each element
+of left list is less than the corresponding element in right list;
+the generated expression is \tt{((a) <= (x) && (b) <= (y) && (c) <= (z))}.
+
+\textsc{example ii}\indent
+Both \tt{rel__((a, b, c), <, 10)} and \tt{rel__(10, >, x, y, z)}
+evaluate to true iff each element of the given list is less than ten;
+the generated expressions are \tt{((a) < (10) && (b) < (10) && (c) < (10))}
+and \tt{((10) > (x) && (10) > (y) && (10) > (z))} respectively.
+
+\textsc{example iii}\indent
+\tt{rel__(<=, (a, b, c, d))} evaluates to true iff the list is non-decreasing;
+for the given list, the generated expression is
+\tt{((a) <= (b) && (b) <= (c) && (c) <= (d))}.

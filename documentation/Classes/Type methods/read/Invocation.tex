@@ -1,0 +1,18 @@
+\head{Syntax}
+
+\idx{read_}\s\s\s\tt{(} [\tt{. this =}] $this$ [\tt{,} [\tt{. in =}] $in$] \tt{)}
+
+\idx{read_1_}\s\tt{(}   [\tt{. this =}] $this$ \phantom{[}\tt{)}
+
+\idx{read_2_}\s\tt{(}   [\tt{. this =}] $this$ \phantom{[}\tt{,}
+[\tt{. in =}] $in$\phantom{]} \tt{)}
+
+\head{Semantics}
+
+\tt{read_} invokes \tt{read_}$n$\_ if the expanded
+argument sequence contains $n$ arguments.
+
+\tt{read_1_(}$this$\tt{)} is equivalent to \tt{read_2_(}$this$\tt{, stdin)}.
+
+\tt{read_2_(}$this$\tt{,} $in$\tt{)} is equivalent to
+\tt{( (typeof_(}$this$\tt{)) call_((Type, read),} $this$\tt{,} $in$\tt{) )}.

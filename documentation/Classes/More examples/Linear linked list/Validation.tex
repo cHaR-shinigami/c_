@@ -1,0 +1,22 @@
+Implementation of \tt{validate} for \tt{Chain}
+is left as an exercise in this chapter.
+The following checks can be performed:
+
+\begin{itemize}
+
+\item Both \tt{head} and \tt{tail} must not be null,
+or both must be null (\tt{head iff tail}).
+
+\item \tt{length} must be zero if and only if both
+\tt{head} and \tt{tail} are null (\tt{length iff head}).
+
+\item The count of distinct nodes from \tt{head}
+through \tt{tail} must be equal to \tt{length}.
+
+\item If \tt{tail} is not null, then its \tt{next} member must
+be a null pointer (\tt{tail implies}\s\s\tt{! tail->next}).
+
+\end{itemize}
+
+\note In the next chapter, we shall implement \tt{validate}
+procedure of \tt{Chain} class using \tt{Iterable} interface.

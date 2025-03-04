@@ -1,0 +1,86 @@
+The basic operations on bit arrays include getting the bit value
+at a given bit index, clearing a bit, and setting it to \tt{1};
+these facilities are respectively provided by \tt{bit_}, \tt{rst_},
+and \tt{set_}, all of which can be configured with the \tt{DEBUG} macro.
+The macro \idx{BITS__} records the \tt{defined} state of \tt{DEBUG}
+when the header \tt{<bits._>} is included: \tt{BITS__} expands
+to \tt{1} if \tt{DEBUG} was defined, configuring the features
+in debugging mode; otherwise \tt{BITS__} expands to \tt{0}.
+
+\head{Syntax}
+
+\tt{# include <bits._>}
+
+\idx{bit_} \tt{(} \it{pointer-to-bits} \tt{,} \it{bit-index} \tt{)}
+
+\idx{rst_} \tt{(} \it{pointer-to-bits} \tt{,} \it{bit-index} \tt{)}
+
+\idx{set_} \tt{(} \it{pointer-to-bits} \tt{,} \it{bit-index} \tt{)}
+
+\head{Constraints}
+
+\it{pointer-to-bits} shall be pointer to a complete array whose unqualified
+element type is \tt{UInt_fast8_};\\for \tt{rst_} and \tt{set_}, the array shall be modifiable.
+\it{bit-index} shall be an expression having integer type.
+
+\head{Semantics}
+
+Bit count is inferred from the type of \it{pointer-to-bits}.
+\it{bit-index} is converted to type \tt{LLong}:
+if it is negative, bit count is added to it to get the adjusted index.
+If the adjusted index is non-negative and less than bit count, then:
+
+\begin{itemize}[nosep]
+
+\item \tt{bit_} gives the current bit value at the adjusted \it{bit-index}
+
+\item \tt{rst_} sets the bit to \tt{0} at the adjusted \it{bit-index},
+and gives the old bit value
+
+\item \tt{set_} sets the bit to \tt{1} at the adjusted \it{bit-index},
+and gives the old bit value
+
+\end{itemize}
+
+In all cases, the outcome is of type \tt{Bool_}.
+When compiled with \tt{BITS__} expanding to \tt{1},
+\it{pointer-to-bits} is asserted to be not null as if by using \tt{notnull_}.
+If \it{bit-index} is out of bounds, one of the following cases can happen:
+
+\begin{itemize}[nosep]
+
+\item If \it{bit-index} remains negative after adding the inferred bit count,
+the following diagnostic message is printed:
+
+\begin{center}
+\tt{Assertion failed: (}\it{bit-index}\tt{) >= -bitcount_(}\it{pointer-to-bits}\tt{),}
+
+\tt{function} \it{function-identifier}\tt{,}
+\tt{file} \it{file-name}\tt{,}
+\tt{line} \it{line-number}\tt{.}
+\end{center}
+
+\item If \it{bit-index} is not less than the inferred bit count,
+the following diagnostic message is printed:
+
+\begin{center}
+\tt{Assertion failed: (}\it{bit-index}\tt{) < bitcount_(}\it{pointer-to-bits}\tt{),}
+
+\tt{function} \it{function-identifier}\tt{,}
+\tt{file} \it{file-name}\tt{,}
+\tt{line} \it{line-number}\tt{.}
+\end{center}
+
+\end{itemize}
+
+After writing the diagnostic message to the standard error stream \tt{stderr},
+the process terminates as if by calling \tt{exit(1)}.
+\it{function-identifier}, \it{file-name}, and \it{line-number}
+are obtained from \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__}.
+
+When compiled with \tt{BITS__} expanding to \tt{0}, the outcome of
+\tt{bit_}, \tt{rst_}, and \tt{set_} is zero if \it{pointer-to-bits}
+is null, or the adjusted value of \it{bit-index} is out of bounds.
+The behavior is undefined if the inferred bit count
+is greater than the actual number of bits in the array,
+and the adjusted \it{bit-index} is outside the true array bounds.

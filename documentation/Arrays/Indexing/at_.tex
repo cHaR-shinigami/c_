@@ -1,0 +1,22 @@
+\head{Syntax}
+
+\tt{# include <array._>}
+
+\idX{at_}\s\s\s\tt{(} \it{pointer-to-array} \tt{,}
+\it{index} [\tt{,} \it{default-value}] \tt{)}
+
+\idX{at_2_}\s\tt{(} \it{pointer-to-array} \tt{,}
+\it{index} \tt{)}
+
+\idX{at_3_}\s\tt{(} \it{pointer-to-array} \tt{,}
+\it{index} \phantom{[}\tt{,} \it{default-value}\phantom{]} \tt{)}
+
+\head{Constraints}
+
+The \tt{at_} family shall have precisely the same
+constraints as those applicable for the \tt{at__} family.
+
+\head{Semantics}
+
+\tt{at_} family evaluates each expression exactly once;
+rest of the semantics are identical to  \tt{at__} family.

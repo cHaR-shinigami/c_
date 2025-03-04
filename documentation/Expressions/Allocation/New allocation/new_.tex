@@ -1,0 +1,37 @@
+\head{Syntax}
+
+\idX{new_}\s\s\s\tt{(} \it{expression}
+[\tt{,} \it{array-length}
+[\tt{,} \it{initializer}]] \tt{)}
+
+ \tt{new_}\s\s\s\tt{(} \it{type-name}
+[\tt{,} \it{array-length}
+[\tt{,} \it{initializer}]] \tt{)}
+
+\idX{new_1_}\s\tt{(} \it{expression} \tt{)}
+
+ \tt{new_1_}\s\tt{(} \it{type-name}  \tt{)}
+
+\idX{new_2_}\s\tt{(} \it{expression}
+\phantom{[}\tt{,} \it{array-length}\phantom{]} \tt{)}
+
+ \tt{new_2_}\s\tt{(} \it{type-name}
+\phantom{[}\tt{,} \it{array-length}\phantom{]} \tt{)}
+
+\idX{new_3_}\s\tt{(} \it{expression}
+\phantom{[}\tt{,} \it{array-length}
+\phantom{[}\tt{,} \it{initializer}\phantom{]]} \tt{)}
+
+ \tt{new_3_}\s\tt{(} \it{type-name}
+\phantom{[}\tt{,} \it{array-length}
+\phantom{[}\tt{,} \it{initializer}\phantom{]]} \tt{)}
+
+\head{Constraints}
+
+The \tt{new_} family shall have precisely the same
+constraints as those applicable for the \tt{new__} family.
+
+\head{Semantics}
+
+\tt{new_} family evaluates each expression and \it{type-name} only once;
+rest of the semantics are same as \tt{new__} family.

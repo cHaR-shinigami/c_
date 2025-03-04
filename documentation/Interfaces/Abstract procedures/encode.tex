@@ -1,0 +1,10 @@
+\head{Declaration}
+
+\tt{Encoding_ *solver_(Abstract, encode)(Abstract *this, Size_ *length, Encoding_ *out);}
+
+\head{Description}
+
+If \tt{is(this->type, type_(Abstract))} is \tt{false},
+a null pointer is returned; otherwise return value is the outcome
+on calling \tt{encode} procedure of \tt{concrete_(this)->type}
+with \tt{this->concrete}, \tt{length}, and \tt{out} as arguments.

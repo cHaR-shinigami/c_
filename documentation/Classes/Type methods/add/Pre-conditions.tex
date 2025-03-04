@@ -1,0 +1,21 @@
+\begin{itemize}
+
+\item \tt{validate_(augend)} must be \tt{true}.
+
+\item \tt{validate_(addend)} must be \tt{true}.
+
+\end{itemize}
+
+Let $super$ denote the value of
+\tt{super(((Object *) augend)->type, ((Object *) addend)->type)}.
+
+If \tt{sum} is not a null pointer, let $type$
+denote the value of \tt{((Object *) sum)->type}.
+
+\begin{itemize}
+
+\item \tt{is_type(}$type$\tt{)} must be \tt{true}.
+
+\item \tt{is(}$type$\tt{,} $super$\tt{)} must be \tt{true}.
+
+\end{itemize}

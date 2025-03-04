@@ -1,0 +1,42 @@
+The \tt{inline} keyword is used to suggest that the code
+generated for calling a function should be ``efficient''.
+For most purposes, efficiency is desirable in terms of runtime,
+and if the generated code for a function definition is small, the code can be
+substituted at call site(s), thereby avoiding the overhead of a function call.
+However, substituting the code of another function at multiple call
+sites can increase size of the object file; also, too many inline
+substitutions inside a function can bloat its code to an extent
+that the resulting code itself becomes unsuitable for inlining.
+
+\enlargethispage*{\baselineskip}
+\pagebreak
+
+The \tt{inline} keyword is only a hint to the compiler (similar
+to the \tt{register} keyword); however, even in the absence of an
+explicit hint from the programmer, translators can still perform
+inline substitutions at their own discretion, if the function
+definition is visible in the same translation unit as the function call.
+Increasing code size to gain speed (space-time tradeoff)
+may not always work as expected, and large code expansion
+can actually degrade performance (depending on several factors
+of the execution environment, such as instruction caching).
+In particular, minimizing the size of an executable is an
+important concern for memory constrained devices, even if that
+comes at the cost of a tolerable increase in execution time.
+In several contexts, it may be desirable to have a portable
+mechanism to explicitly disable inline substitutions at
+specific call sites, without the use of compiler-specific flags.
+
+\head{Syntax}
+
+\tt{no_inline_ (} $function$ \tt{)}
+
+\head{Semantics}
+
+If $function$ is a function name or a function pointer, then invoking
+the outcome of \tt{no_inline_} ensures that the call is not inlined,
+even if an inline definition is visible in the translation unit.
+The outcome is an expression that compares equal with $function$,
+and it has the same function type as $function$; if $function$ is
+a function pointer, then type of the outcome is the corresponding
+function type obtained on dereferencing the pointer.

@@ -1,0 +1,16 @@
+\head{Syntax}
+
+\tt{cycle_ (} $i$ \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+$i$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX},
+or it shall expand to such a constant.
+
+\head{Semantics}
+
+\tt{cycle_} gets the first element after left-rotating expanded
+\it{argument-list} by $i$ elements; it treats the list as cyclic.
+
+\note \tt{cycle_(i, ...)} is provided using deferred
+expansion as \tt{echo_(top_ C_(left_(i, __VA_ARGS__),))}.

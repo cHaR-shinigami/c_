@@ -1,0 +1,30 @@
+\def\Subsection#1{\subsection{#1}\input{Types/Properties/#1}}
+
+This section describes features that can be used to inspect certain properties
+of the execution environment for arithmetic types, excluding complex types;
+these function-like features are: \tt{has_sign_}, \tt{isNBO_},
+\tt{max_}, \tt{min_}, \tt{width_}, and \tt{precision_}.
+All of them require a type name and support integer types,
+with \tt{max_} and \tt{min_} also supporting real floating-point types.
+The outcome of \tt{has_sign_} is required to be an integer constant expression,
+that can be used with enumerators, C11 static assertions, or C23 \tt{constexpr}.
+This requirement is not imposed upon rest of the features, though it is
+desirable that other implementations can provide them as compile time constants;
+the reference implementation only supports this partially
+for \tt{max_}, \tt{min_}, \tt{width_}, and \tt{precision_}.
+None of these are required to be suitable for use with the \tt{#if}
+preprocessing directive; additionally, \tt{isNBO_}, \tt{max_}, \tt{min_},
+\tt{width_}, and \tt{precision_} need not work reliably with type inference,
+even though all of their outcomes have well-defined types.
+
+\Subsection{Signedness}
+
+\Subsection{Endianness}
+
+\pagebreak
+
+\Subsection{Maximum}
+
+\Subsection{Minimum}
+
+\Subsection{Width}

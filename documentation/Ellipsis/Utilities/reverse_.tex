@@ -1,0 +1,15 @@
+\head{Syntax}
+
+\tt{reverse_ (} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+\it{argument-list} is first expanded, and the resulting sequence is reversed.
+
+\example \tt{PP_RANGE} can be defined as \tt{reverse_(PP_INT)}
+as the argument \tt{PP_INT} is expanded before reversal.

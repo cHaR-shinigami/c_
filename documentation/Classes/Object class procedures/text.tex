@@ -1,0 +1,22 @@
+\head{Declaration}
+
+\tt{Void_ *solver_(Object, text)(Object *this, Size_ *length, Void_ *out);}
+
+\head{Description}
+
+Let $count$ denote the return value of
+\tt{snprintf(NULL, 0, "\%s@\%p\\n\\0", this->type->name, (Void *)this)}.
+
+Let $capacity$ denote the existing value of \tt{*length};
+\tt{*length} is updated to $count$ before the procedure returns.
+
+If \tt{out} is not null and $count$ does not exceed $capacity$, then
+\tt{sprintf(out, "\%s@\%p\\n", this->type->name,} \tt{(Void *)this)}
+is called and \tt{out} is returned.
+Otherwise \tt{malloc(}$count$\tt{)} is called, and let $des$ be its return value.
+If $des$ is not null,
+\tt{sprintf(}$des$\tt{, "\%s@\%p\\n", this->type->name, (Void *)this)} is called.
+$des$ is always returned.
+
+\note \tt{*length} is always set to $count$ before the procedure returns;
+a non-null return value indicates success.

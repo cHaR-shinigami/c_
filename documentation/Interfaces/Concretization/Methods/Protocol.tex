@@ -1,0 +1,32 @@
+\fbox{\tt{
+examples/include/class/Chain/append._}}
+\code{../include/class/Chain/append._}
+
+Before calling the \tt{append} protocol of \tt{Iterable} interface,
+the concrete type is set to \tt{typex_(Iterable, Chain)},
+which contains the function pointer for the \tt{append} procedure
+of \tt{Chain} class (and other concretizing procedures as well).
+The concrete instance is wrapped into an instance of \tt{Iterable} using
+\tt{abstract_}, which is passed to the \tt{append} protocol of \tt{Iterable}.
+The first argument is given as the parameter \tt{_site} instead of \tt{SITE};
+the latter would give the source code coordinates of the current call site,
+whereas \tt{_site} ensures that the original call site of the current
+invocation is used in diagnostic messages for any pre-condition violation.
+Calling the \tt{append} protocol of \tt{Iterable} ensures that the concrete
+instance is checked against its pre-conditions and post-conditions.
+
+In addition to that, the concrete protocol also
+ensures that the following conditions are satisfied:
+
+\begin{itemize}
+
+\item \it{Pre-condition}: \tt{this} must be a valid instance of
+\tt{Chain} class, or one of its sub-classes (Liskov substitution).
+
+\item \it{Post-condition}: If \tt{data} was successfully
+appended to \tt{this}, then it must be at the \tt{tail} node.
+
+\end{itemize}
+
+Before returning the success status, \tt{this->type} is
+restored to its former value that was stored in a local variable.

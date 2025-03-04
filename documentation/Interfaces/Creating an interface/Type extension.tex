@@ -1,0 +1,23 @@
+\def\Subsubsection#1{\subsubsection{\idx{#1}}
+\input{Interfaces/Creating an interface/Type extension/#1}}
+
+Every interface declaration creates a structure with the tag
+\tt{Typex (}\it{interface-name}\tt{)}, which is forward declared by
+\tt{Interface_(}\it{interface-name}\tt{)} and structure members are defined by
+\tt{interface_(}\it{interface-name}\tt{,} \it{members-list}\tt{)}.
+\type{Typex} is a portmanteau of ``\tt{Type} e{\bf x}tension'',
+as this structure extends the \tt{Type} structure with additional members.
+
+The first member is named as \tt{base}, which is a singleton array
+with element type \tt{struct Typex (}\it{base-interface}\tt{)}.
+For each \it{member-name} in \it{members-list}, the corresponding structure
+member is declared with the same name, as pointer to a function having the same
+type as the procedure \tt{solver_(}\it{interface-name}\tt{,} \it{member-name}\tt{)}
+(note that \tt{prototype_} declares the procedure's type only);
+members are declared in the same sequence as in \it{members-list}.
+
+The \tt{Abstract} type also creates a structure with the tag \tt{Typex (Abstract)};
+it is a slight misnomer to call it a \tt{Type} ``extension'', since it contains a
+single member \tt{base} declared as a singleton array with element \tt{struct Type}.
+
+\Subsubsection{is_typex}

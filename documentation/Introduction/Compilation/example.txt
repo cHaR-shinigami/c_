@@ -1,0 +1,13 @@
+$ cc_ discount.c_ lib.c_
+$ ./a.out 2
+Enter price and discount (in %) for item 1
+100 10
+Enter price and discount (in %) for item 2
+200 20
+Total price is 300
+Discount on item 1 is 10
+Discount on item 2 is 40
+Total discount is 50
+Final price is 250
+Have a nice day
+$

@@ -1,0 +1,26 @@
+\fbox{\tt{
+examples/include/interface/Iterable/append._}}
+\code{../include/interface/Iterable/append._}
+
+\head{Pre-conditions}
+
+\begin{itemize}
+
+\item \tt{this} must be a valid instance of \tt{Iterable} before appending.
+
+\end{itemize}
+
+\head{Post-conditions}
+
+\begin{itemize}
+
+\item \tt{this} must remain a valid \tt{Iterable} instance
+regardless of whether \tt{data} was appended or not.
+
+\item If the procedure returns \tt{false},
+then the count of elements must remain unchanged.
+
+\item If the procedure returns \tt{true}\s,
+then the count of elements must be one more than the previous count.
+
+\end{itemize}

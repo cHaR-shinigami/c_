@@ -1,0 +1,11 @@
+alias cc_="clang -std=c23 -O3 -s -fmacro-backtrace-limit=1 \
+-iprefix '$HOME'/examples/.include \
+-iwithprefix/ellipsis -iwithprefix/dialect -iwithprefix/library \
+-iprefix '$HOME'/examples/include \
+-iwithprefix/. -iwithprefix/class -iwithprefix/interface \
+-Werror -Wall -Wextra -Wpedantic \
+-Wcast-align  -Wcast-qual -Wswitch-enum -Wwrite-strings \
+-Wassign-enum -Wshift-sign-overflow -Wunreachable-code-aggressive \
+-Wno-override-init -Wno-missing-field-initializers \
+-Wno-pointer-arith -Wno-unused-command-line-argument \
+'$HOME'/examples/object/lib.o -xc"

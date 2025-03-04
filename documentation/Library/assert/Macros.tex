@@ -1,0 +1,10 @@
+\tt{<assert._>} provides the object-like macros \idx{ASSERT__} and \idx{SITE}.
+\tt{ASSERT__} expands to \tt{0} or \tt{1}, indicating whether the
+macro \tt{DEBUG} was defined when \tt{<assert._>} was last included.
+\tt{SITE} expands to a non-modifiable lvalue of type \tt{Site}, whose members
+\tt{func}, \tt{file}, and \tt{line} respectively contain the values obtained
+from \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__}; this lvalue has automatic
+storage duration, and its lifetime is limited to the nearest enclosing block.
+
+\subsubsection{\tt{assert_}}
+\input Library/assert/Macros/assert_

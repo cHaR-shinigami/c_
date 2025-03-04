@@ -1,0 +1,21 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Ellipsis/Additional utilities/Primality/#1}}
+
+\head{Syntax}
+
+\idx{IS_PRIME_} \tt{(} $n$ \tt{)}
+
+\head{Constraints}
+
+$n$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX},
+or it shall expand to such a constant.
+
+\head{Semantics}
+
+The outcome is \tt{1} if $n$ has at most two divisors;
+otherwise the outcome is \tt{0}.
+
+\note By this definition, 1 is considered as prime,
+so \tt{IS_PRIME_(1)} is \tt{1}.
+
+\Subsubsection{Coprimality}

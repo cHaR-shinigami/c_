@@ -1,0 +1,42 @@
+The \tt{RANGE_} family generates an arithmetic sequence of
+non-negative decimal integer constants not exceeding \tt{PP_MAX}.
+
+\head{Syntax}
+
+\idx{RANGE_}\s\s\s\tt{(} \it{stop} \tt{)}
+
+\idx{RANGE_}\s\s\s\tt{(} \it{alpha} \tt{,} \it{omega} [\tt{,} \it{delta}\tt{=1}] \tt{)}
+
+\idx{RANGE_1_}\s\tt{(} \it{stop} \tt{)}
+
+\idx{RANGE_2_}\s\tt{(} \it{alpha} \tt{,} \it{omega} \tt{)}
+
+\idx{RANGE_3_}\s\tt{(} \it{alpha} \tt{,} \it{omega} \phantom{[}\tt{,} \it{delta}\phantom{]} \tt{)}
+
+\head{Constraints}
+
+Each argument shall be a non-negative decimal integer
+constant not above \tt{PP_MAX}, or expand to such a constant.
+
+\head{Semantics}
+
+\tt{RANGE_} invokes \tt{RANGE_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+\tt{RANGE_1_} generates the sequence of non-negative integers
+less than \it{stop}, in increasing order (starting from zero).
+
+\tt{RANGE_2_} generates the sequence of integers from \it{alpha} through
+\it{omega} (both inclusive): if \it{alpha} is less than \it{omega},
+then the sequence is in increasing order (in steps of 1),
+and decreasing order otherwise (with step value -1).
+
+\tt{RANGE_3_} generates an arithmetic sequence starting from \it{alpha},
+with \it{delta} as the step value: if \it{alpha} is greater
+than \it{omega}, then the step value is subtracted each time.
+Last element of the sequence does not go beyond \it{omega}:
+if \it{omega} can be obtained by repeatedly adding or subtracting
+\it{delta} from \it{alpha}, then \it{omega} is the last element.
+
+\note The sequence is empty only if \it{stop} is zero;
+if \it{alpha} is equal to \it{omega}, then the sequence is a singleton.

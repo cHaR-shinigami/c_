@@ -1,0 +1,102 @@
+\head{Syntax}
+
+\tt{# include <array._>}
+
+\idx{at__}\s\s\s\s\tt{(} \it{pointer-to-array} \tt{,}
+\it{index} [\tt{,} \it{default-value}] \tt{)}
+
+\idx{at__2__}\s\tt{(} \it{pointer-to-array} \tt{,}
+\it{index} \tt{)}
+
+\idx{at__3__}\s\tt{(} \it{pointer-to-array} \tt{,}
+\it{index} \phantom{[}\tt{,} \it{default-value}\phantom{]} \tt{)}
+
+\head{Constraints}
+
+\it{pointer-to-array} shall be pointer to a complete array.
+\it{index} shall have an integer type.
+It shall be possible to use \it{default-value} to initialize a variable
+declared with element type of the array on dereferencing \it{pointer-to-array}.
+
+\head{Semantics}
+
+\tt{at__} invokes \tt{at__}$n$\_\_ if the
+expanded argument sequence contains $n$ arguments.
+Both \tt{at__2__} and \tt{at__3__} infer
+the array bound as if by using \tt{length__}.
+\it{index} is converted to the type \tt{Ptrdiff}:
+if \it{index} is negative, then \tt{at__3__} adjusts it by adding
+the (inferred) length; no such adjustment is done by \tt{at__2__}.
+\it{default-value} is converted to the type of \tt{**(}\it{pointer-to-array}%
+\tt{)}, as if by initializing a variable declared with the element type.
+
+The (adjusted) index is compared with the length: if it is non-negative and
+less than the length, then the array is accessed at that index, and the
+corresponding element is the outcome; otherwise the index is out of bounds.
+
+When compiled with \tt{ARRAY__} expanding to \tt{1},
+one of the following cases can happen for index out of bounds:
+
+\begin{itemize}
+
+\item If \it{index} is negative after conversion to \tt{Ptrdiff},
+\tt{at__2__} prints a diagnostic message of the following form:
+
+\begin{center}
+\tt{Assertion failed: (}\it{index}\tt{) >= 0, function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+\end{center}
+
+\item If \it{index} is negative after conversion to \tt{Ptrdiff},
+and it remains negative after adding length of the array,
+\tt{at__3__} prints a diagnostic message of the following form:
+
+\begin{center}
+\tt{Assertion failed: (}\it{index}\tt{) >= -length_(}\it{pointer-to-array}\tt{),}
+
+\tt{function} \it{function-identifier}\tt{,}
+\tt{file} \it{file-name}\tt{,}
+\tt{line} \it{line-number}\tt{.}
+\end{center}
+
+\item If \it{index} is greater than array length, \tt{at__2__} and
+\tt{at__3__} print a diagnostic message of the following form:
+
+\begin{center}
+\tt{Assertion failed: (}\it{index}\tt{) < length_(}\it{pointer-to-array}\tt{),}
+
+\tt{function} \it{function-identifier}\tt{,}
+\tt{file} \it{file-name}\tt{,}
+\tt{line} \it{line-number}\tt{.}
+\end{center}
+
+\end{itemize}
+
+After writing the diagnostic message to the standard error stream \tt{stderr},
+the process terminates as if by calling \tt{exit(1)}.
+\it{function-identifier}, \it{file-name}, and \it{line-number}
+are obtained from \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__}.
+
+When compiled with \tt{ARRAY__} expanding to \tt{0}, an invocation of
+\tt{at__2__} is same as \tt{(*(}\it{pointer-to-array}\tt{))[}\it{index}\tt{]},
+and the behavior is undefined if \it{index} is out of bounds.
+If the adjusted index is out of bounds, then \it{default-value} is
+used as the outcome after conversion to element type of the array.
+
+The outcome is an lvalue having the same type as array element.
+Dereference can be suppressed with address-of operator \tt{&}
+on the outcome; however, this does not disable bounds-checking.
+If \it{default-value} is used as the outcome of \tt{at__3__},
+then the lvalue has automatic storage duration,
+and its lifetime is limited to the nearest enclosing block.
+
+\it{pointer-to-array} can be evaluated more than once only if
+it has a variably modified type; both \it{index} and \it{default-value}
+are evaluated exactly once, even if the latter value is unused.
+The behavior is implementation-defined if \it{index} causes
+a signed overflow during conversion to the type \tt{Ptrdiff}.
+The behavior is undefined if the inferred length is
+greater than the actual number of elements in the array,
+and the (adjusted) index is outside the true array bounds.

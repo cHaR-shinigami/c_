@@ -1,0 +1,46 @@
+\head{Syntax}
+
+\idx{encode__}\s\s\s\s\tt{(} [\tt{. this =}] $this$ [[\tt{,}
+[\tt{. length =}] $length$] \tt{,} [\tt{. out =}] $out$] \tt{)}
+
+\idx{encode__1_}\s\s\tt{(} [\tt{. this =}] $this$ \tt{)}
+
+\idx{encode__2__}\s\tt{(} [\tt{. this =}] $this$
+\phantom{[[}\tt{,} [\tt{. out =}] $out$ \tt{)}
+
+\idx{encode__3_}\s\s\tt{(} [\tt{. this =}] $this$ \phantom{[[}\tt{,}
+[\tt{. length =}] $length$\phantom{]} \tt{,} [\tt{. out =}] $out$\phantom{]} \tt{)}\\
+
+\idX{encode_}\s\s\s\s\s\tt{(} [\tt{. this =}] $this$ [[\tt{,}
+[\tt{. length =}] $length$] \tt{,} [\tt{. out =}] $out$] \tt{)}
+
+\idx{encode_1_}\s\s\s\tt{(} [\tt{. this =}] $this$ \tt{)}
+
+\idX{encode_2_}\s\s\s\tt{(} [\tt{. this =}] $this$
+\phantom{[[}\tt{,} [\tt{. out =}] $out$ \tt{)}
+
+\idx{encode_3_}\s\s\s\tt{(} [\tt{. this =}] $this$ \phantom{[[}\tt{,}
+[\tt{. length =}] $length$\phantom{]} \tt{,} [\tt{. out =}] $out$\phantom{]} \tt{)}
+
+\head{Semantics}
+
+\tt{encode__} invokes \tt{encode__1_} if the argument sequence expands to a singleton.
+If it expands to two arguments, then \tt{encode__2__} is invoked;
+otherwise there shall be three arguments, and \tt{encode__3_} is invoked.
+
+\tt{encode__1_ (}$this$\tt{)} is equivalent to
+\tt{encode__3_(}$this$\tt{, &(Size_)\{1\}, NULL)}.
+
+\tt{encode__2__(}$this$\tt{,} $out$\tt{)} is equivalent to
+\tt{encode__3_(}$this$\tt{, &lvalue__(length__(}$out$\tt{)),} $out$\tt{)}.
+
+\tt{encode__2__} can evaluate the argument $out$ more
+than once only if it has a variably modified type.
+
+\tt{encode__3_(}$this$\tt{,} $length$\tt{,} $out$\tt{)} is equivalent to the
+invocation \tt{call_((Type, encode),}  $this$\tt{,} $length$\tt{,} $out$\tt{)}.\\
+
+\tt{encode_}* family evaluates each argument only once;
+other semantics are same as \tt{encode__} family.
+\tt{encode_1_} is equivalent to \tt{encode__1_}, \tt{encode_2_}* is similar
+to \tt{encode__2__}, and \tt{encode_3_} is equivalent to \tt{encode__3_}.

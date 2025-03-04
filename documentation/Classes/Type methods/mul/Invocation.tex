@@ -1,0 +1,27 @@
+\head{Syntax}
+
+\idx{mul_}\s\s\s\tt{(} [[\tt{. product =}] $product$ \tt{,}]
+[\tt{. multiplier =}] $multiplier$ \tt{,} [\tt{. multiplicand =}] $multiplicand$ \tt{)}
+
+\idx{mul_2_}\s\tt{(} \phantom{[}[\tt{. multiplier =}]
+$multiplier$ \tt{,} [\tt{. multiplicand =}] $multiplicand$ \tt{)}
+
+\idx{mul_3_}\s\tt{(} \phantom{[}[\tt{. product =}] $product$ \tt{,}\phantom{]}
+[\tt{. multiplier =}] $multiplier$ \tt{,} [\tt{. multiplicand =}] $multiplicand$ \tt{)}
+
+\head{Semantics}
+
+\tt{mul_} invokes \tt{mul_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+\tt{mul_2_(}$multiplier$\tt{,} $multiplicand$\tt{)} is equivalent to
+\tt{mul_3_(NULLPTR,} $multiplier$\tt{,} $multiplicand$\tt{)}.
+
+\tt{mul_3_(}$product$\tt{,} $multiplier$\tt{,} $multiplicand$\tt{)}
+is equivalent to the following verbose invocation:
+
+\enlargethispage*{\baselineskip}
+\begin{center}
+\tt{( (typeof_(}$product$\tt{)) call_((Type, mul),}
+$product$\tt{,} $multiplier$\tt{,} $multiplicand$\tt{) )}
+\end{center}

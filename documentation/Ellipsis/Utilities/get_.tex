@@ -1,0 +1,18 @@
+\head{Syntax}
+
+\tt{get_ (} \it{index} \tt{,} \it{default-argument} \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+\it{index} shall be a non-negative decimal integer constant
+not exceeding \tt{PP_MAX}, or expand to such a constant.
+
+\head{Semantics}
+
+\it{default-argument} and a comma are prepended before \it{argument-list},
+and the resulting sequence is expanded; the first argument of the augmented
+list is removed after expansion, which acts as the default text.
+After truncating the augmented list, its elements are indexed from
+0 left to right, and if an element exists at the given \it{index},
+then that is the outcome; otherwise the default text is produced
+(first element of the augmented argument list after expansion).

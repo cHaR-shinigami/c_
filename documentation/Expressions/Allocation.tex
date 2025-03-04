@@ -1,0 +1,25 @@
+\def\Subsection#1{\subsection{#1}\input{Expressions/Allocation/#1}}
+
+The features listed in the following subsections are used for dynamic
+memory allocation: on success, they return a typed pointer to an object
+whose lifetime is not limited by the lexical scope, and extends throughout
+the process until that pointer is passed to the library function \tt{free}.
+If the required allocation cannot be obtained in one contiguous memory block,
+then the outcome is a null pointer.
+The reference implementation provides these features as
+function-like macros in the header \tt{<allocation._>},
+which also declares the \tt{free} function as: \tt{Void_ free(Void_ *);}
+
+\note It is the responsibility of a programmer to release
+the acquired memory when it is no longer required,
+as there is no automatic ``garbage collection'' for unreachable objects.
+On most hosted environments, dynamically allocated memory is
+released by the operating system when the process terminates,
+so calling \tt{free} just before exiting the process is often a redundant
+operation that causes a marginal increase in code size and execution time.
+
+\Subsection{New allocation}
+
+\Subsection{Resizing arrays}
+
+\Subsection{Conditional allocation}

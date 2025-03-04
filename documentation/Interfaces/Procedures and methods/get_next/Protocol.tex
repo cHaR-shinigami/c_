@@ -1,0 +1,26 @@
+\fbox{\tt{
+examples/include/interface/Iterable/get_next._}}
+\code{../include/interface/Iterable/get_next._}
+
+\head{Pre-conditions}
+
+\begin{itemize}
+
+\item \tt{typex} must be a valid extended \tt{Type}.
+
+\item The member \tt{has_next} of \tt{typex} must not be a null pointer.
+
+\item The member \tt{get_next} of \tt{typex} must not be a null pointer.
+
+\item \tt{iterator} must not be a null pointer.
+
+\end{itemize}
+
+\head{Post-conditions}
+
+\begin{itemize}
+
+\item The return value can be non-null only if
+\tt{has_next} returned \tt{true} before calling the procedure.
+
+\end{itemize}

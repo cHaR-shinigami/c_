@@ -1,0 +1,11 @@
+Most options of \tt{clang} are similar to those of \tt{gcc};
+for our purpose, we shall use the following set of options.
+
+\code{Introduction/Diagnostics/clang.txt}
+
+The setting \tt{-fmacro-backtrace-limit=1} works similar
+to the \tt{gcc} option \tt{-ftrack-macro-expansion=0}.
+As before, a few warnings need to be disabled: in particular,
+the exception \tt{-Wno-error=unused-command-line-argument}
+allows us to look at preprocessed code with the \tt{-E} option,
+which does not require linker, so \tt{lib.o} remains unused.

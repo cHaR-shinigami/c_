@@ -1,0 +1,29 @@
+The function \idx{is_type} performs some basic
+validation checks on (pointer to) a \tt{Type} structure.
+
+\head{Declaration}
+
+\tt{Bool_ is_type(Type);}
+
+\head{Description}
+
+The function \tt{is_type} returns \tt{true} if and
+only if the following conditions are satisfied:
+
+\begin{itemize}
+
+\item The \tt{Type} argument is not a null pointer.
+
+\item On dereferencing the pointer, each
+member of the \tt{Type} structure is not null.
+
+\item The previous rules are recursively satisfied for each
+ancestor class, reachable via the array member \tt{base}.
+
+\item The root ancestor \tt{Object} class is
+reached within a maximum height of \tt{PP_MAX}.
+
+\end{itemize}
+
+If any of the above conditions fails, then it is not considered
+to be a valid \tt{Type}, and the return value is \tt{false}.

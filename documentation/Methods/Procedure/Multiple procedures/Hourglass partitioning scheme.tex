@@ -1,0 +1,52 @@
+Most partitioning schemes for quicksort algorithm are unbalanced,
+as one of the partitions can be significantly larger than the other.
+The hourglass scheme achieves a balanced partitioning by dividing
+the array at the middle as the first step: elements of the left
+half are organized as an inverted binary max heap, whereas
+elements of the right half are organized as a binary min heap.
+An inverted binary max heap is constructed backwards, where the last
+element (of the left half) is the maximum value acting as the root element,
+with the elements before it (if any) acting as children and successors.
+The right side is organized as a binary min heap,
+so it starts with the minimum value as the root element.
+If the maximum value of left side (root of inverted max heap) is less than
+minimum value of right side (root of min heap), then these two (adjacent elements)
+are interchanged, and each side is fixed to maintain the heap property, by
+sinking the incoming root element ``downwards'', i.e. towards the leaf elements.
+
+The process is repeated until the left root does not exceed the right root,
+indicating that all elements of the left side do not exceed any element on
+the right side, so no further swapping is required from one side to the other;
+once this is established, each side is recursively sorted using the same mechanism.
+The following functions provide a modular implementation of this algorithm,
+intended as an alternative procedure to our earlier bubble sort approach.\\
+
+\code{../compile/Integers/hourglass.c_}
+
+\example If the ``heapified'' partitions are drawn one
+above the other, it visually resembles an hourglass.
+
+\code{Methods/Procedure/Multiple procedures/Hourglass partitioning scheme/hourglass.txt}
+
+The above ``hourglass'' would be physically represented in the linear sequence
+\tt{14 13 11 10 15 12 16} followed by \tt{17 21 18 23 22 20 19}.
+Neither of them are sorted from the inside, which can be done
+using similar hourglass formations recursively on each side.
+Note that the root elements \tt{16} and \tt{17} are always placed
+in their correct positions as per the final sorted array, so they
+need not be included in the recursive calls for sorting each side.
+
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+
+\note An asymptotic upper bound on the running time of this algorithm can be
+obtained from the recurrence relation $T(n) = n + n \log(n / 2) + 2T(n/2)$.
+$n$ denotes the complexity of heap formation for each partition ($n/2 + n/2$).
+$n \log(n / 2)$ is the worst-case complexity of element exchange,
+when $n/2$ swaps are needed; $\log(n / 2)$ is the heap height.
+$T(n/2)$ denotes the time taken to sort one side.
+This approach is non-adaptive even if the array is already sorted,
+since a heap formation does not confirm a total linear order;
+hence all recursive calls have to be made in any case.
+
+\pagebreak

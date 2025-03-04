@@ -1,0 +1,128 @@
+\def\Subsection#1{\subsection{#1}\input{Methods/Procedure/#1}}
+
+Procedure defines the solver that operates on the arguments
+and possibly generates a return value (or side effects).
+Unlike protocols, function definition (and declaration) of a procedure does
+not push an extra \tt{Site} parameter at the start: this is because a
+procedure is neither required nor supposed to know from where it is invoked.
+The information provided by \tt{_site} is primarily meant for use by
+the \tt{pre_} family whenever a pre-condition is not satisfied, in order
+to track the call site that caused a violation; however, pre-conditions
+(and also post-conditions) should be established only within protocols,
+so there is no need to forward the original call site details to the procedure.
+
+\note Should the need arise, programmers can supply call site details to
+the procedure by explicitly specifying a parameter of type \tt{Site}, and also
+providing a corresponding argument for the same when the function is called.
+
+\head{Syntax}
+
+\idx{procedure_}\s\s\s\s\s\tt{(} [\it{return-type} \tt{,}]\s\tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} [\tt{,} \it{parameter-tuples}]\s\tt{)}\\
+
+\idx{procedure_0_}\s\s\s\tt{(} [\it{return-type} \tt{,}]\s\tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \l\tt{,} \it{parameter-tuples}\r\s\tt{)}
+
+\idx{procedure_0_1_}\s\tt{(} \l\it{return-type} \tt{,}\r\s\tt{(}
+\it{prefix} \tt{,} \it{method-name} \tt{)} \l\tt{,} \it{parameter-tuples}\r\s\tt{)}
+
+\idx{procedure_0_2_}\s\tt{(}   \tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \tt{,} \it{parameter-tuples} \tt{)}\\
+
+\idx{procedure_1_}\s\s\s\tt{(} \tt{(} \it{prefix}
+\tt{,} \it{method-name} \tt{)} \tt{)}\\
+
+\idx{procedure_2_}\s\s\s\tt{(} \l\it{return-type} \tt{,}\r\s
+\tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)} \tt{)}
+
+\idx{procedure_2_1_}\s\tt{(} \l\it{return-type} \tt{,}\r\s
+\tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)} \tt{)}
+
+\tt {procedure_2_}\s\s\s\tt{(} \tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)}
+\tt{,} \tt{(} \it{parameter-type} \tt{,} \it{parameter-name} \tt{)} \tt{)}
+
+\idx{procedure_2_2_}\s\tt{(} \tt{(} \it{prefix} \tt{,} \it{method-name} \tt{)}
+\tt{,} \tt{(} \it{parameter-type} \tt{,} \it{parameter-name} \tt{)} \tt{)}
+
+\head{Constraints}
+
+The \tt{procedure_} family shall have precisely the same
+constraints as those applicable for the \tt{protocol_} family.
+
+\head{Semantics}
+
+\tt{procedure_} family is used to provide function definition
+for a solver; if \tt{private} (or equivalently \tt{static})
+is specified before the associated \tt{protocol_} definition,
+it means that the \tt{procedure_} definition has internal linkage.
+
+\tt{procedure_} invokes \tt{procedure_0_} if the expanded argument sequence has
+more than two arguments; otherwise it invokes \tt{procedure_}$n$\tt{_} if the
+expanded argument sequence contains $n$ arguments, with $n$ not exceeding two.
+
+The first argument is peeled and expanded: if the resulting list
+has a single element, it is considered as \it{return-type};
+otherwise it shall have two elements, \it{prefix} and
+\it{method-name}, which are used to generate procedure identifier.
+
+\tt{procedure_0_} invokes \tt{procedure_0_}$n$\_ if the first argument expands
+to a list with $n$ elements on being subjected to the \tt{peel_} macro.
+\tt{procedure_0_1_} defines a function that accepts a sequence of arguments as
+specified by \it{parameter-tuples}, and returns a value of type
+\it{return-type}; \tt{procedure_0_2_} uses \tt{Void_} as the return type.
+
+\tt{procedure_1_} defines a \tt{Void_} function with a single parameter
+\tt{_args_} of type \tt{VA_list_} (declared in \tt{<stdarg._>}
+as a synonym for \tt{va_list}): it provides access to a variable
+number of arguments given to the protocol or the proxy.
+
+\tt{procedure_2_} invokes \tt{procedure_2_}$n$\_ if the first argument expands
+to a list with $n$ elements on being subjected to the \tt{peel_} macro.
+\tt{procedure_2_1_} defines a function having a single parameter \tt{_args_}
+of type \tt{VA_list_}, and it returns a value of type \it{return-type}.
+Return type of a \tt{procedure_2_2_} definition is \tt{Void_}.
+
+\example The following procedure implements a
+well-known adaptive version of bubble sort algorithm.
+
+\code{../compile/Integers/bubble.c_}
+
+In the above code, the array is conceptually divided into two parts:
+the left side is assumed to be unsorted, and the right side is sorted.
+The variable \tt{last_} marks the last index of the left side;
+\tt{last_} is initialized to \tt{len - 1}, so the left side
+spans the entire array, and the right side is initially empty.
+The inner \tt{for} loop ``bubbles up'' the maximum element of the left
+side to its end, by swapping consecutive elements that are out of order.
+Once the maximum value is moved to the \tt{last_} index, it is augmented to the
+right side by decreasing the value of \tt{last_}; this element will not exceed
+any previous maximum that was bubbled up earlier, so the right side remains sorted.
+
+As an enhancement, another variable \tt{omega_} keeps track of
+the latest (highest) index at which a swapping was performed:
+This implies that elements from \tt{omega_} to \tt{last_} are
+already sorted, so they can be combined with the right side.
+Doing this is trivial: we simply set \tt{last_} to \tt{omega_}
+after completing each round of bubbling up the maximum.
+Note that the assignment \tt{(last_ = omega_)} also acts the condition of the
+\tt{do-while} loop, which stops when \tt{omega_} remains zero: this indicates
+that the left side is empty, and the right side now spans the entire array.
+
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+
+The optional enhancement makes the algorithm ``adaptive''
+by achieving linear time complexity in the best case:
+if the array is already sorted, then no swapping is
+performed, and \tt{omega_} remains zero after the first round of bubbling.
+This indicates that elements from index \tt{omega_} (zero) to
+\tt{last_} (\tt{len} - 1) are sorted, spanning the entire array.
+After the first round, \tt{last_} is set to \tt{omega_},
+which stops the \tt{do-while} loop as its condition becomes zero.
+
+\pagebreak
+
+\subsection{\idx{solver_}}
+\input{Methods/Procedure/solver_}
+
+\Subsection{Multiple procedures}

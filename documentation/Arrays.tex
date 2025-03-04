@@ -1,0 +1,59 @@
+\def\Section#1{\section{#1}\input{Arrays/#1}}
+
+An array is a contiguous sequence of objects having the same type.
+An array having one element is allocated in the same way as a non-array
+lvalue of the same type; if there are more elements, they are allocated
+successively after the first element without any padding between two elements:
+thus the byte offset between two elements is equal to size of the element type.
+It is permissible to obtain a pointer to one past the last element:
+it points to the address that is one byte after the end of the last element,
+which is outside the array and should not be accessed; however, the pointer
+can be used for comparison with another pointer to an element of the same array.
+
+Elements of an array are indexed from zero (base element).
+An element can be accessed by specifying its index with the subscript operator:
+both $array$ \tt{[} $index$ \tt{]} and $index$ \tt{[} $array$ \tt{]} are equivalent
+to \tt{* (} $array$ \tt{+} $index$ \tt{)}, all of which access the element at
+the given $index$; the outcome is an lvalue, so the address-of operator can be
+applied to it (assignment operators can be used only if the type is modifiable).
+Note that when address arithmetic is performed directly on an array name,
+it is implicitly ``decayed'' to a pointer for the base element.
+
+An array definition must specify a complete type, as the length is required to
+determine allocation; however, an array declaration can omit the length, making
+it an incomplete array that cannot be used as the operand of \tt{sizeof}.\\
+Recall that in C, function parameters of array types are adjusted as pointer
+to the corresponding element type, so applying \tt{sizeof} to a parameter
+declared with array type is permitted, though it gives only the size of
+the adjusted pointer type (which may not be the intent of the programmer).
+Also, declarations of external arrays can be incomplete.
+However, the element type of an array cannot be incomplete, so if the
+element type is also an array type (often called multi-dimensional arrays),
+then it must have a complete type that contains the length information.
+In other words, only the ``outermost'' length of a multi-dimensional array
+can be omitted in declarations, but the inner dimension(s) must be present,
+in order to determine the byte offset between two consecutive elements.
+
+\note Zero length arrays are not allowed by the ISO C standard,
+and they can cause undefined behavior.
+
+\Section{Variably modified types}
+
+\Section{Pointer to an array}
+
+\Section{Length}
+
+\section{\idx{is_array_}}
+\input Arrays/is_array_
+
+\Section{Indexing}
+
+\Section{Synonyms}
+
+\pagebreak
+
+\Section{Range}
+
+\Section{Bit arrays}
+
+\Section{Iterators}

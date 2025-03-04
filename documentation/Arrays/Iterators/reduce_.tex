@@ -1,0 +1,45 @@
+\tt{<reduce._>} defines the macro  \tt{REDUCE__} that configures the
+behavior of \tt{reduce_} family; \tt{REDUCE__} records the \tt{defined}
+state of \tt{DEBUG} every time \tt{<reduce._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <reduce._>}
+
+\idx{reduce_}\s\s\s\tt{(} $accumulator$ \tt{,}
+$function$ \tt{,} $source$ [\tt{,} $range$] \tt{)}
+
+\idx{reduce_3_}\s\tt{(} $accumulator$ \tt{,}
+$function$ \tt{,} $source$ \tt{)}
+
+\idx{reduce_4_}\s\tt{(} $accumulator$ \tt{,}
+$function$ \tt{,} $source$ \phantom{[}\tt{,} $range$\phantom{]} \tt{)}
+
+\head{Constraints}
+
+$source$ shall be pointer to a complete array type.
+$range$  shall be an expression having a \tt{Range} type.
+
+$function$ shall be a function type expression that can be called with
+$accumulator$ as the first argument and an element of $source$ as the
+second argument, without requiring any type cast for each argument.
+
+$accumulator$ shall be a modifiable lvalue that can be assigned with the
+return value of $function$ without any type cast; additionally, it shall be
+possible to obtain a pointer to $lvalue$ with the address-of operator \tt{&}.
+
+\head{Semantics}
+
+\tt{reduce_} invokes \tt{reduce_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+If the length of $source$ array is inferred to be $n$, \tt{reduce_2_}
+invokes $function$ $n$ times, with $accumulator$ as the first argument
+and an element of $source$ as the second argument: the first invocation
+is done with the element at index zero in $source$; subsequent
+invocations use the element next to the one for the previous iteration.
+For each invocation, the return value of $function$ is stored in
+$accumulator$ itself, which is then used in the next iteration (if any).
+
+\tt{reduce_4_} is similar to \tt{reduce_3_}, except that it invokes
+$function$ only for the index series specified by $range$.

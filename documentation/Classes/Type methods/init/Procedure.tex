@@ -1,0 +1,11 @@
+\begin{itemize}[nosep]
+
+\item If \tt{is_type(type)} is \tt{false}, then a null pointer is returned.
+
+\item If \tt{tape} is null, it is adjusted to a
+singleton array whose only member is a null pointer.
+
+\item The return value is same as that of \tt{type->init} when it
+is called with \tt{type} and \tt{tape} (adjusted) as arguments.
+
+\end{itemize}

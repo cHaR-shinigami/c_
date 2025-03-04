@@ -1,0 +1,17 @@
+\head{Syntax}
+
+\idx{write_}\s\s\s\tt{(} [\tt{. this =}]
+$this$ [\tt{,} [\tt{. out =}] $out$] \tt{)}
+
+\idx{write_1_}\s\tt{(} [\tt{. this =}] $this$ \phantom{[}\tt{)}
+
+\idx{write_2_}\s\tt{(} [\tt{. this =}] $this$
+\phantom{[}\tt{,} [\tt{. out =}] $out$ \phantom{[}\tt{)}
+
+\head{Semantics}
+
+\tt{write_} invokes \tt{write_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+\tt{write_1_(}$this$\tt{)} is equivalent to \tt{write_2_(}$this$\tt{, stdout)}.
+\tt{write_2_(}$this$\tt{,} $out$\tt{)} is equivalent
+to \tt{call_((Type, write),} $this$\tt{,} $out$\tt{)}.

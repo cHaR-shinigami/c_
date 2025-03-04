@@ -1,0 +1,135 @@
+C\_ offers out of the box debugging support
+without the use of any additional software.
+Programs can be compiled in debugging mode simply by defining the
+macro \idx{DEBUG}; this setting can be applicable to a whole project,
+or even toggled selectively for specific source files.
+Several C\_ headers are configurable,
+which means that the features implemented by them behave differently depending
+on whether the macro \tt{DEBUG} was defined at the time the header was included;
+more precisely, these headers are re-configurable, so if we change the
+\tt{defined} state of the \tt{DEBUG} macro and then include the header again,
+it will be automatically re-configured.
+For standard headers of C\_,
+the current configuration is internally recorded in an object-like macro,
+whose name is same as the header name entirely in uppercase,
+and the dot replaced by an underscore;
+as an example, \tt{<assert._>} is a re-configurable header
+whose current configuration is given by the macro \tt{ASSERT__}.
+Such a macro shall expand to either 0 or 1,
+where 0 indicates that the \tt{DEBUG} macro was not defined
+when the header was last included, so debugging is disabled;
+whereas 1 means the latest inclusion of that header was preceded by
+an active definition of \tt{DEBUG}, so debugging is currently enabled.
+
+\idx{<c._>} is a top-level header that needs to be included in
+C\_ source files (either directly or via another header).
+Recall that this file is placed in \tt{include/} directory,
+whose contents are meant to be updated by programmers as per their needs.
+As this file will be our companion through the rest of this journey,
+its worth taking a look inside.
+
+\code{../include/c._}
+
+Besides aggregating contents of several other headers,
+\tt{<c._>} also sets a global configuration for the entire project,
+which can changed locally within a source file,
+either for specific headers or the entirety of C\_.
+The uncommented configuration is for ``debugging mode'';
+any replacement text of the \tt{DEBUG} macro is ignored.
+We also define another macro \idx{TODO}, whose purpose is quite trivial:
+it is used to mark incomplete sections of code, such as temporary stubs
+(\tt{TODO} is often highlighted by code editors);
+the identifier \tt{TODO} should not be used to declare any lexical element.
+
+The section after \tt{/*/} configures ``production mode'', where debugging is
+disabled and (non-comment) occurrences of \tt{TODO} are
+not erased by the preprocessor, causing compilation errors.
+Debugging mode increases code size and the program incurs some runtime overhead,
+which can cause a noticeable difference in performance for large projects.
+Once a codebase has been thoroughly tested,
+it may be desirable to disable ``defensive'' checks.
+\tt{NDEBUG} affects the \tt{assert} macro
+on a subsequent inclusion of \tt{<assert.h>};
+this should be used with caution,
+as the expression passed to \tt{assert} is not evaluated,
+which can cause unexpected ``Heisenbugs'' due to unevaluated side effects.
+
+The headers included before \tt{#endif} are non-configurable;
+those included afterwards are re-configurable.
+When a newly created module is used with a well tested project,
+it may be desirable to enable debugging only for that module,
+while compiling rest of the project in production mode.
+As global configurations are within header guard,
+they are effective only the first time \tt{<c._>} is included,
+so debugging can be enforced locally by including \tt{<c._>} twice.\\
+
+\tt{#include <c._>}
+
+\tt{#define DEBUG}
+
+\tt{#include <c._>}\\
+
+It may also be desirable to enforce debugging for certain features of C\_,
+irrespective of the global configuration in \tt{<c._>}.
+This can be done by re-including only the specific
+header(s) that provide these features; for instance:\\
+
+\tt{#include <c._>}
+
+\tt{#define DEBUG}
+
+\tt{#include <array._>}\\
+
+The above example shows how one can locally enforce
+debugging for features provided by the \tt{<array._>} header.
+Note that this approach re-configures only the selected headers,
+not their dependencies.
+For example, \tt{<array._>} depends on some
+non-configurable components provided by \tt{<pointer._>};
+the latter is also a re-configurable header,
+but its existing configuration is preserved,
+and to change that one needs to explicitly include it after defining \tt{DEBUG}.
+Similarly, one can also selectively disable debugging:
+simply undefine \tt{DEBUG} and include the appropriate headers.
+
+The \tt{LOGGER} macro enables logging facilities provided by \tt{<logger._>};
+we have chosen to always enable logging,
+so it is kept outside the mode configuration.
+Note that \tt{<c._>} configures several headers,
+but does not provide any debuggable feature by itself.
+As such, the macro \tt{C__} does not record the \tt{defined}
+state of \tt{DEBUG} to introspect the current configuration;
+it would not be of much use because the actual
+providers can be individually re-configured.
+
+The extent of debugging support depends
+largely on the feature under consideration;
+the basic checks are for common sources of bugs,
+such as null pointer dereference or accessing an array out of bounds.
+A major feature of debugging mode is that
+for methods (discussed in chapter 6),
+the \tt{call__} expression invokes protocols,
+which are used to specify pre-conditions and post-conditions.
+A protocol can be bypassed if and only if both the ``provider''
+and the ``consumer'' (caller) agree that debugging is not required,
+i.e. they are both compiled in production mode.
+In other words, if either of them enables debugging,
+then the transformation logic (process) is invoked via protocol.
+
+Finally, one important observation is that the global configuration can
+be altered simply by changing the second character of the first line;
+the mechanism relies on a preprocessing rule: comments do not nest.
+In other words, a comment started by \tt{/*} is ended by the first occurrence
+of \tt{*/}, disregarding any instance of \tt{/*} within the comment.
+If we change the second character inside \tt{<c._>} from \tt{/} to \tt{*},
+then the first line becomes \tt{/*},
+starting a comment that ends at the line \tt{/*/},
+and what follows is the uncommented configuration for production mode.
+With \tt{//} as the first line, the line \tt{/*/} acts differently:
+instead of ending an ongoing comment, it actually starts a new comment,
+which consumes the production mode configuration and ends at the line \tt{/**/}.
+In summary, the global configuration can be toggled with
+minimum effort just by changing the second character in the file:
+\tt{/} means debugging mode; \tt{*} means production mode.
+Additional macros can be defined in both
+configuration segments as per project requirements.

@@ -1,0 +1,55 @@
+The \tt{is} family is used to check for ``is-a''
+relationship among object-oriented types.
+
+\head{Syntax}
+
+\idx{is}\s\s\s\tt{(} [\tt{. descendant =}] $descendant$
+\tt{,} [\tt{. ancestor =}] $ancestor$ \tt{)}
+
+\idx{is_}\s\s\tt{(} \it{oo-identifier-list} \tt{)}
+
+\idx{is__}\s\tt{(} \it{oo-type-list} \tt{)}
+
+\head{Constraints}
+
+Both $descendant$ and $ancestor$ shall be expressions
+of type \tt{Type}, optionally specifying parameter names.
+
+\it{oo-identifier-list} shall be a comma-separated list of
+names for object-oriented types whose declarations are visible.
+
+\it{oo-type-list} shall be a comma-separated list of
+expressions, each of which shall be of type \tt{Type}.
+
+The number of elements in \it{oo-identifier-list} or \it{oo-type-list}
+shall be less than \tt{PP_MAX} after macro expansions.
+
+\head{Semantics}
+
+\tt{is (}$descendant$ \tt{,} $ancestor$\tt{)} is equivalent to the more
+verbose \tt{call_((Type, is)} \tt{,} $descendant$ \tt{,} $ancestor$\tt{)}.
+
+\tt{is_} accepts a list of object-oriented type names,
+and checks if each type is a descendant of the type after it.
+
+\tt{is__} accepts a list of object-oriented type expressions,
+checking if each type is a descendant of the type after it.
+
+Both \tt{is} and \tt{is_} evaluate each argument exactly once; for \tt{is__},
+if the number of expanded arguments in \it{oo-type-list} is more than two,
+then all arguments except the first and last can be evaluated more than once.
+
+In each case, the outcome in an expression
+of type \tt{Bool_}, and it is not an lvalue.
+
+\note ``is-a'' relationship establishes a partial ordering,
+being reflexive, anti-symmetric, and transitive.
+
+\example \tt{is(type_(Person), type_(Object))} is \tt{true},
+but \tt{is(type_(Object), type_(Person))} is \tt{false}.
+
+\tt{is_(FeaturePhone, Mobile, Phone, Object)} is \tt{true},
+which is equivalent to the following conjunction:
+
+\centerline
+{\tt{is_(FeaturePhone, Mobile) && is_(Mobile, Phone) && is_(Phone, Object)}}

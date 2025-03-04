@@ -1,0 +1,24 @@
+\head{Syntax}
+
+\idx{transpose__} \tt{(} \it{parenthesized-lists} \tt{)}
+
+\head{Constraints}
+
+Each argument shall be a parenthesized list,
+and the number of such lists shall be less than \tt{PP_MAX}.
+
+The number of elements in each parenthesized list
+shall be less than \tt{PP_MAX} after macro expansions.
+
+\head{Semantics}
+
+Each parenthesized list is considered to be a row of a matrix,
+and the outcome is the transpose of such a matrix.
+If any list contains fewer elements, then its elements are
+reused from the beginning for generating the transpose.
+
+\note Transpose of a transpose restores the original
+lists only if all of them have same number of elements.
+
+\example \tt{transpose__((0, a), (1, b), (2, c))}
+expands to \tt{(0, 1, 2), (a, b, c)}.

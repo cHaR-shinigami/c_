@@ -1,0 +1,126 @@
+Between argument substitution in first phase and scanning in second phase,
+two important operations take place:
+
+\begin{itemize}[nosep]
+
+\item For each occurrence of a macro parameter that is subjected to
+the preprocessing operator \tt{#} or \tt{##} in the replacement text,
+the corresponding argument is substituted verbatim without scanning for macro
+expansion: the \tt{#} operator ``stringifies'' the original text of the argument
+when the macro was invoked, and the \tt{##} operator pastes its left and right
+tokens as they appeared when the invocation took place (it may have been deferred).
+
+\item The other operation is more relevant to our discussion.
+At a conceptual level, the preprocessor maintains an internal
+stack of macros whose replacement text is being scanned.
+An object-like macro does not have the first phase of argument substitution,
+so it is pushed to the stack as soon as it is scanned for replacement.
+During the invocation of a function-like macro, it is pushed to the stack
+after the first phase is over, and before commencing the second phase.
+A macro is popped from the stack after completing its ongoing substitution.
+
+\end{itemize}
+
+This conceptual stack is analogous to the runtime call stack of
+activation records; for the preprocessor, this stack maintains the
+sequence of active macro invocations that are yet to be completed,
+and its significance is that all macros in this stack are rendered ``passive''.
+We have used the term ``\it{\tt{ACTIVE}} macros'' while describing the
+primitives, and to understand the distinction between active and passive,
+we shall introduce the concept of ``liveness'' states.
+
+A macro is said to be ``live'' or in \it{\tt{ACTIVE}} state if it can be
+expanded: an object-like macro is live before and after its substitution,
+and a function-like macro remains live throughout the first phase of
+an invocation, so if the same macro is invoked in one of the arguments,
+that expansion works as expected (except with \tt{#} and \tt{##}).
+A macro is said to be ``dormant'' or in \it{\tt{PASSIVE}} state if it cannot be
+expanded: an object-like macro remains dormant throughout its substitution, and
+a function-like macro is becomes dormant when its invocation enters the second phase.
+
+The C preprocessor does not natively support recursion, so unlike a runtime call
+stack, the conceptual preprocessor stack always contains unique records of macros
+whose expansion is underway, and it can be considered as a ``set'' of dormant macros.
+At any stage of macro substitution, if a dormant macro is found while scanning,
+then that occurrence of the macro is marked as \it{\tt{DEAD}},
+meaning that even if the text is rescanned once again after the
+macro becomes live, an instance marked as \it{\tt{DEAD}} still
+cannot be expanded; in other words, the text is retained verbatim.
+
+\note \it{\tt{DEAD}} state is applicable to occurrence of a macro
+if it is scanned when the macro is in \it{\tt{PASSIVE}} state.
+
+\example The concept of liveness is important to understand iterated composition
+with deferred expansion, so we shall clarify it with a concrete example
+that covers all the state transitions. Consider the following invocation:
+
+\centerline{\tt{top_(echo_(cat_ C_(echo, _)(0), cat_ top_ C_(,)(echo, _)(0)),)}}
+
+We shall analyze this elaborate macro invocation
+from the perspective of a C preprocessor.
+Assuming this is directly part of the source text and not in the
+replacement text of another macro, initially the stack is empty.
+
+\begin{itemize}[nosep]
+
+\item When \tt{top_} is invoked, its first argument
+\tt{echo_(cat_ C_(echo, _)(0), cat_ top_ C_(,)(echo, _)(0))} is scanned
+for replacement (recall that \tt{top_} discards rest of the arguments).
+\tt{echo_} is then invoked, and its arguments \tt{cat_ C_(echo, _)(0)}
+and \tt{cat_ top_ C_(,)(echo, _)(0)} are expanded before substitution.
+Note that the stack is still empty, as both \tt{top_} and
+\tt{echo_} invocations are currently in their first phase.
+
+\item Both occurrences of \tt{C_} are erased (replaced with empty text),
+and the resulting replacement text of \tt{echo_} is
+\tt{cat_ (echo, _)(0), cat_ top_ (,)(echo, _)(0)}.
+The first phase is complete for \tt{echo_}, so it is pushed onto the stack
+and its second phase begins; \tt{echo_} is now in \it{\tt{PASSIVE}} state,
+while \tt{top_} is still in \it{\tt{ACTIVE}} state.
+
+\item While scanning the replacement text of  \tt{echo_},
+\tt{cat_} is invoked which produces the token \tt{echo_}
+(assuming \tt{echo} and \tt{_} are not defined as non-trivial object-like
+macros lest they be replaced in the first phase, just like the \tt{C_} macro).
+Now \tt{cat_} is pushed onto the stack, so we have two
+macros in \it{\tt{PASSIVE}} state: \tt{echo_} and \tt{cat_}.
+
+\item While scanning the replacement text of \tt{cat_},
+the pasted token \tt{echo_} is found to be in \it{\tt{PASSIVE}} state,
+so its occurrence is marked as \it{\tt{DEAD}};
+this completes the expansion of \tt{cat_}, and it is popped off the stack.
+
+\item Coming back to the second phase of \tt{echo_},
+scanning the replacement text continues,
+and \tt{top_} is invoked next, which simply expands to the empty text.
+At the end of its second phase,
+outcome of the \tt{echo_} invocation is \tt{echo_(0), cat_(echo, _)(0)}.
+\tt{echo_} is popped and stack becomes empty:
+all macros are in \it{\tt{ACTIVE}} state.
+
+\item The outcome of \tt{echo_} is nothing but the expanded first
+argument of \tt{top_}, which is then substituted in its replacement text.
+The first phase being over, \tt{top_} is moved to
+\it{\tt{PASSIVE}} state and its second phase commences.
+
+\item Even though \tt{echo_} is currently in \it{\tt{ACTIVE}} state,
+the occurrence of \tt{echo_} that was marked as
+\it{\tt{DEAD}} earlier is not expanded, and left as it is.
+\tt{cat_} is invoked next which again produces the token
+\tt{echo_}, but this time \tt{echo_} is live, so this instance
+can be invoked later (note that \tt{cat_} itself is pushed and then
+popped from the stack, with its second phase happening in between,
+when both \tt{top_} and \tt{cat_} are in \it{\tt{PASSIVE}} state).
+
+\item The expansion of \tt{cat_} is followed by an opening
+parenthesis, so the pasted token \tt{echo_} gets invoked.
+The final outcome is the text \tt{echo_(0), 0} (one instance of
+\tt{echo_} is unexpanded as it had been marked as \it{\tt{DEAD}}).
+
+\end{itemize}
+
+\note This example uses doubly deferred expansion for the
+invocation of \tt{cat_} in the second argument of \tt{echo_}.
+For the sake of brevity, we shall not elaborate on higher levels of deferring,
+as these are increasingly complex and found to be of limited use; the basic
+deferred expansion proves insufficient only in very rare circumstances.

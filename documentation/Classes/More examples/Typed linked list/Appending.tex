@@ -1,0 +1,11 @@
+The method \tt{append} is used to extend a \tt{List} instance at its tail node.
+A separate prototype has been declared only because the protocol specifies
+pre-conditions in addition to those established by \tt{append} method of
+the \tt{Chain} class; the procedure itself is trivial and simply calls the
+\tt{append} procedure of \tt{Chain} class, without any extra functionality.
+
+The following procedure code is available in the source file
+\src{compile/class/List/append.c_}
+
+\note A prototype does not declare procedure, so
+\tt{solver_(Chain, append)} is declared prior to invocation.

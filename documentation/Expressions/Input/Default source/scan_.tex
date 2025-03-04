@@ -1,0 +1,20 @@
+\head{Syntax}
+
+\tt{# include <input._>}
+
+\tt{scan_ (} \it{expression-list} \tt{)}
+
+\head{Constraints}
+
+\tt{scan_} shall have precisely the same
+constraints as those applicable for \tt{scan__}.
+
+\head{Semantics}
+
+\tt{scan_} evaluates each lvalue in \it{expression-list} exactly once;
+rest of the semantics are identical to \tt{scan__}.
+
+\note \tt{scan__} and \tt{scan_} cannot store whitespace in a \tt{Char_} lvalue.
+For signed types, if the input (optionally preceded by sign)
+starts with \tt{0}, it is interpreted as octal; if it starts
+with \tt{0X} or \tt{0x}, it is interpreted as hexadecimal.

@@ -1,0 +1,7 @@
+\tt{PP_LOG2} expands to the decimal integer constant
+equal to the truncated binary logarithm of \tt{PP_MAX};
+equivalently, it is one less than the number of significant bits
+necessary to represent the value of \tt{PP_MAX} in standard binary form.
+
+\note The reference implementation defines \tt{PP_LOG2} as 6
+($\lfloor\log_2 127\rfloor$), which is used by the \tt{LOG_} macro.

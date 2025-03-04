@@ -1,0 +1,14 @@
+\head{Syntax}
+
+\tt{min_ (} \it{type-name} \tt{)}
+
+\head{Constraints}
+
+\it{type-name} shall specify an arithmetic type, but not a complex type.
+
+\head{Semantics}
+
+\idx{min_} returns the minimum value that is representable with
+the type given by \it{type-name}; it is zero for unsigned types,
+and for floating-point types, it is the smallest absolute value.
+The outcome is of the same type as \it{type-name}.

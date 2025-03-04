@@ -1,0 +1,20 @@
+\head{Syntax}
+
+\idx{wtext_BOOL_} \tt{(} \it{expression} \tt{)}
+
+\idx{wtext_Bool_} \tt{(} \it{expression} \tt{)}
+
+\idx{wtext_bool_} \tt{(} \it{expression} \tt{)}
+
+\head{Constraints}
+
+\it{expression} shall have scalar type.
+
+\head{Semantics}
+
+\idx{wtext_BOOL_}, \idx{wtext_Bool_}, and \idx{wtext_bool_} are respectively the
+wide string equivalents of \tt{text_BOOL_}, \tt{text_Bool_}, and \tt{text_bool_}.
+Rest of the semantics are identical, and the outcome is of type \tt{Ptr_(WChar)}.
+
+\note \tt{WChar_} is a synonym for \tt{wchar_t}, and \tt{WChar}
+is its non-modifiable twin; both are provided by \tt{<stddef._>}.

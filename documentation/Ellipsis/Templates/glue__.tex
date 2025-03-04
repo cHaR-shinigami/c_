@@ -1,0 +1,13 @@
+\head{Syntax}
+
+\tt{glue__ (} \it{separator} \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+The number of arguments in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Each argument separating comma in the expanded \it{argument-list}
+is replaced with \it{separator}, forming one element.

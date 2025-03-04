@@ -1,0 +1,25 @@
+\head{Syntax}
+
+\tt{slice_ (} \it{alpha} \tt{,} \it{omega} \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+Both \it{alpha} and \it{omega} shall be non-negative decimal integer constants
+not exceeding \tt{PP_MAX}, or each of them shall expand to such a constant.
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+\it{argument-list} is expanded first, and elements in the
+resulting list are indexed left to right starting at index zero.
+Let there be $n$ elements in the expanded list,
+so that its last element has index $n - 1$.
+If \it{omega} is not less than $n$, it is adjusted to $n - 1$.
+If \it{alpha} exceeds the adjusted value of \it{omega},
+then the outcome is a blank text;
+otherwise the outcome contains all elements of the expanded list in
+the index range from \it{alpha} through \it{omega} (both inclusive).
+
+\note \tt{slice_(alpha, omega, ...)} is equivalent to
+\tt{xhead_(alpha, head_(INC_(omega), __VA_ARGS__))}.

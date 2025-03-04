@@ -1,0 +1,8 @@
+The member \tt{type} is a pointer to a non-modifiable \tt{Type} structure; its
+data type is \tt{Type_}, which is a synonym for \tt{Ptr_(const struct Type)}.
+An instance of any class ``is an'' \tt{Object}, and due to the \tt{type}
+attribute inherited from \tt{Object} class, every instance ``has a'' \tt{type},
+which points to the \tt{Type} structure of the class being instantiated.
+
+\note Instantiating an interface gives a valid instance of
+\tt{Abstract} type, which itself extends \tt{Object} class.

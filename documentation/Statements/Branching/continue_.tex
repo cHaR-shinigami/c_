@@ -1,0 +1,16 @@
+\head{Syntax}
+
+\tt{continue_ (} \it{condition} \tt{)}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression.
+\tt{continue_} shall be used only within an iteration block,
+or a C\_ block that can be lexically closed with \tt{end} or \tt{refed}.
+
+\head{Semantics}
+
+\tt{continue_} executes the \tt{continue} statement only if
+\it{scalar-expression} does not evaluate to zero.
+If the nearest enclosing block that supports \tt{continue_} is not
+an iteration block, then its behavior is same as that of \tt{break_}.

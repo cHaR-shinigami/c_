@@ -1,0 +1,17 @@
+\head{Syntax}
+
+\tt{(} \it{expression} \tt{iff} \it{expression} \tt{)}
+
+\head{Constraints}
+
+Both operands shall be scalar expressions.
+
+\head{Semantics}
+
+\tt{iff} checks logical equivalence of the two scalar expressions:
+the result has value one if both operands compare equal to zero,
+or both operands compare unequal to zero; otherwise the result is zero.
+The result is of type \tt{Int_}.
+
+\note The reference implementation provides \tt{iff} as an
+object-like macro that expands to the text \tt{)==0 == !(}

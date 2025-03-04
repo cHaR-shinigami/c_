@@ -1,0 +1,16 @@
+\head{Syntax}
+
+\tt{right_ (} $n$ \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+$n$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX},
+or it shall expand to such a constant.
+
+\head{Semantics}
+
+\tt{right_} is the inverse of \tt{left_}: \it{argument-list}
+is first expanded then it is rotated by $n$ elements on the right.
+
+\note \tt{right_(n, ...)} can be implemented via reversal as
+\tt{reverse_(left_(n, reverse_(__VA_ARGS__)))}.

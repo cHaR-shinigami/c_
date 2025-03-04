@@ -1,0 +1,115 @@
+\def\Subsection#1{\subsection{#1}\input{Arrays/Iterators/#1}}
+
+The header \tt{<iterators._>} provides several features for iterating
+over arrays, and applying a function or an operator to the elements.
+These iterators are influenced by higher order functions from functional
+programming, and their semantics are similar to the macro iterators from the
+ellipsis framework; the fundamental difference is that the macro iterators
+operate during preprocessing, but the array iterators operate during execution.
+With the exception of \tt{join_} family, rest of the iterators are
+statements, so they cannot be used within expressions under ISO C syntax.
+
+\tt{<iterators._>} only aggregates several other headers that are described
+in the subsections; each iterator family can be configured for debugging
+by defining the \tt{DEBUG} macro before including the associated header.
+The purpose of \tt{<iterators._>} is to ensure a uniform
+configuration for all iterators; however, an iterator family can
+be individually (re-)configured simply by (re-)including its associated
+header, possibly preceded by an active definition of \tt{DEBUG}.
+
+Each header that is included by \tt{<iterators._>} defines an object-like
+macro for recording the \tt{defined} state of \tt{DEBUG} macro every time
+that header is included: if that macro expands to \tt{1}, then the
+corresponding iterator family is configured in debugging mode, and it
+asserts that all pointer arguments are not null, as done by \tt{notnull_}.
+Some of the iterator families accept a $range$ argument, which specifies
+an arithmetic progression of indices; negative indices are adjusted
+by adding length of the array that is inferred from the array type.
+When compiled in debugging mode, an iterator asserts that
+adjusted values of $alpha$ and $omega$ are within the index range,
+in addition to checking that the $range$ pointer is not null.
+If a $range$ assertion fails, then one of the
+following diagnostic messages is printed:
+
+\begin{center}
+\tt{Assertion failed:} \tt{(}\it{range}\tt{) != NULL}\tt{, function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+\end{center}
+
+\begin{center}
+\tt{Assertion failed:} \tt{alpha_(}\it{range}\tt{) >= -length_(}\it{source}\tt{),}\\
+\tt{function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+\end{center}
+
+\begin{center}
+\tt{Assertion failed:} \tt{alpha_(}\it{range}\tt{) < length_(}\it{source}\tt{),}\\
+\tt{function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+\end{center}
+
+\begin{center}
+\tt{Assertion failed:} \tt{omega_(}\it{range}\tt{) >= -length_(}\it{source}\tt{),}\\
+\tt{function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+\end{center}
+
+\begin{center}
+\tt{Assertion failed:} \tt{omega_(}\it{range}\tt{) < length_(}\it{source}\tt{),}\\
+\tt{function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+\end{center}
+
+\it{function-identifier}, \it{file-name}, and \it{line-number} are
+respectively obtained from \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__}.
+Diagnostic message is written to standard error stream \tt{stderr},
+and the process terminates as if by calling \tt{exit(1)}.
+
+When compiled in non-debugging mode, if $alpha$ or $omega$ is less than
+negative of the array length, it is adjusted to zero; if it is not less
+than the array length, it is adjusted to one less than the array length.
+$delta$ is then applied on the adjusted bounds.
+It is possible that the resulting index series is
+empty, in which case no iteration is performed.
+
+\note If an iterator also accepts a $destination$ array,
+length of the smaller array is used for $range$ adjustments.
+
+\subsection{\tt{map_}}
+\input Arrays/Iterators/map_
+
+\subsection{\tt{fold_}}
+\input Arrays/Iterators/fold_
+
+\subsection{\tt{reduce_}}
+\input Arrays/Iterators/reduce_
+
+\subsection{\tt{omni_}}
+\input Arrays/Iterators/omni_
+
+\subsection{\tt{op_}}
+\input Arrays/Iterators/op_
+
+\subsection{\tt{rel_}}
+\input Arrays/Iterators/rel_
+
+\subsection{\tt{filter_}}
+\input Arrays/Iterators/filter_
+
+\subsection{\tt{search_}}
+\input Arrays/Iterators/search_
+
+\subsection{\tt{permute_}}
+\input Arrays/Iterators/permute_
+
+\Subsection{Joining}

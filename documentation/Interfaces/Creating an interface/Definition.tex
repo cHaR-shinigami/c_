@@ -1,0 +1,26 @@
+Unlike declarations typically placed in header files,
+each interface must be defined in exactly one translation unit.
+
+\head{Syntax}
+
+\tt{define_}\s\s\s\tt{(} \it{interface-name} \tt{)}
+
+\tt{define_1_ (} \it{interface-name} \tt{)}
+
+\head{Constraints}
+
+An object-like macro named as \it{interface-name}\tt{_EXTENDS} shall
+remain defined, and for each $ancestor$ type up to the \tt{Abstract} type,
+a similarly named macro $ancestor$\tt{_EXTENDS} shall also remain defined.
+
+\head{Semantics}
+
+\tt{define_(}\it{interface-name}\tt{)} is equivalent to
+\tt{define_1_(}\it{interface-name}\tt{)}, which defines a non-modifiable
+external array named \tt{type_(}\it{interface-name}\tt{)}:
+this array is a singleton whose sole element is a \tt{Type} structure,
+containing function pointers for the basic \tt{Type} procedures
+associated with \it{interface-name} (either inherited or overridden).
+
+\example The following interface definition is available in the file
+\src{compile/interface/Iterable.c_}

@@ -1,0 +1,13 @@
+Let $type$ be the value of \tt{((Object *)this)->type}
+and $capacity$ be the value of \tt{*length} before invoking the procedure.
+Let $instance$ be the pointer returned by the procedure.
+
+\begin{itemize}[nosep]
+
+\item After the procedure returns, the updated
+value of \tt{*length} must not exceed $capacity$.
+
+\item If $instance$ is not a null pointer, then
+\tt{validate(}$type$\tt{,} $instance$\tt{)} must be \tt{true}.
+
+\end{itemize}

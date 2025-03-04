@@ -1,0 +1,31 @@
+Due to the unusual syntax of function-like macros for logical operations,
+they cannot be directly used with \tt{omni__}.
+Those macros are modeled after logic gates,
+and the \tt{gate__} iterator can be used to apply them over two lists.
+
+\head{Syntax}
+
+\tt{gate__ (} \it{left-arg} \tt{,} $f$ \tt{,} \it{right-list} \tt{)}
+
+\head{Constraints}
+
+\tt{gate__} shall have precisely the same
+constraints as those applicable for \tt{omni__}.
+
+\head{Semantics}
+
+\tt{gate__} generates a list similar to \tt{omni__}, except that element at index
+$i$ is of the form $f_{i\%F}$ \tt{(} $l'_{i\%L}$ \tt{) (} $r_{i\%R}$ \tt{)};
+each symbol has the same meaning as described for \tt{omni__}.
+Output contains last $L$ elements of the following list:
+
+\centerline
+{
+$f_0$ \tt{(} $l_0$ \tt{) (} $r_0$ \tt{) ,}
+$f_{1\%F}$ \tt{(} $l'_{1\%L}$ \tt{) (} $r_{1\%R}$ \tt{) ,}
+$\cdots$ \tt{,}
+$f_{(N - 1)\%F}$ \tt{(} $l'_{(N - 1)\%L}$ \tt{) (} $r_{(N - 1)\%R}$ \tt{)}
+}
+
+\example \tt{gate__((0, 1), XNOR_, (2, 3))} generates
+\tt{XNOR_(0)(2), XNOR_(1)(3)} that expands to \tt{0, 1}.

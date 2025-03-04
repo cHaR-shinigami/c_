@@ -1,0 +1,9 @@
+The object-like macro \idx{L_TMPNAM} is an alternative name for \tt{L_tmpnam}.
+The object-like macros \idx{STDIN}, \idx{STDOUT}, and \idx{STDERR}
+expand to non-lvalue expressions corresponding to the standard
+I/O streams \tt{stdin}, \tt{stdout}, and \tt{stderr}.
+
+Additionally, if both macros \tt{__STDC_LIB_EXT1__} and
+\tt{__STDC_WANT_LIB_EXT1__} remain defined before including \tt{<stdio._>},
+then the object-like macro \idx{L_TMPNAM_S} is
+defined as an alternative name for \tt{L_tmpnam_s}.

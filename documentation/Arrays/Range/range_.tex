@@ -1,0 +1,38 @@
+The \tt{range_} family is used to instantiate a \tt{Range}:
+it creates a triplet array and gives a pointer to that array.
+
+\head{Syntax}
+
+\idx{range_}\s\s\s\tt{(} $stop$  \tt{)}
+
+ \tt{range_}\s\s\s\tt{(} $alpha$ \tt{,} $omega$ [\tt{,} $delta$\tt{=1}] \tt{)}
+
+\idx{range_1_}\s\tt{(} $stop$  \tt{)}
+
+\idx{range_2_}\s\tt{(} $alpha$ \tt{,} $omega$ \tt{)}
+
+\idx{range_3_}\s\tt{(} $alpha$ \tt{,} $omega$ \phantom{[}\tt{,} $delta$\phantom{]} \tt{)}
+
+\head{Constraints}
+
+$alpha$, $omega$, $delta$, and $stop$ shall be expressions having integer types.
+
+\head{Semantics}
+
+\tt{range_} invokes \tt{range_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+\tt{range_3_} creates a non-modifiable array of integers initialized with
+$alpha$, $omega$, and $delta$ (in order), and gives a pointer to that array.
+Element type of the array is same as type of the
+expression \tt{(}$alpha$\tt{) - (}$omega$\tt{)}.
+If \tt{range_} family is used within a function, the array has automatic
+storage duration, and its lifetime is limited to the nearest enclosing block.
+
+\tt{range_1_(}$stop$\tt{)} is equivalent to
+\tt{range_2_(0, (}$stop$\tt{) - 1)}.
+
+\tt{range_2_(}$alpha$\tt{,} $omega$\tt{)} is equivalent to
+\tt{range_3_(}$alpha$\tt{,} $omega$\tt{, 1)}.
+
+\note The value of $delta$ is converted to type of the
+expression \tt{(}$alpha$\tt{) - (}$omega$\tt{)}.

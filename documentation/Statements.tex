@@ -1,0 +1,64 @@
+\def\Section#1{\section{#1}\input{Statements/#1}}
+
+This chapter discusses various types of statements in C\_.
+The most common form of statements is expression statement,
+which is an expression followed by a semicolon;
+the semicolon acts as a sequence point, which means that pending side effects
+before the semicolon are completed before moving on to the next statement.
+For example, assuming the return values have arithmetic types in the expression
+\tt{f() * g() + h()}, the multiplication is done before addition due to
+precedence rules, but the order of evaluation of arguments is unsequenced,
+so there are six possible orderings in which these functions can get called.
+If we want to enforce a specific order of calling these functions,
+we need to separate them out as statements,
+and store their return values in temporary variables.\\
+
+\tt{Var a = f();}
+
+\tt{Var b = g();}
+
+\tt{Var c = h();}
+
+\tt{Var sum}\s\s\tt{=}\s\s\tt{a*b + c;}\\
+
+There are several other forms of statements, which are categorized into
+selection or branching statements, iteration statements, jump statements, and
+compound statements; the latter is a sequence of declarations and statements.
+It is important to note that C\_ declarations and statements do not
+require a terminating semicolon, which is harmless in most cases,
+but should be avoided as a general practice.
+This is because an extra semicolon acts as a null statement by itself, which
+can be problematic in certain contexts (these are syntax errors, not bugs).
+
+\example The following code fails to compile as \tt{stop_} is itself a statement,
+and the next semicolon is a null statement outside the \tt{if}  statement,
+which creates a syntactic isolation of the subsequent \tt{else} statement.\\
+
+\tt{Void_ queue(Int);}
+
+\tt{Int_}\s\s\tt{flush();}
+
+\tt{Var_}\s\s\tt{chr = 0;}
+
+\tt{if ((chr = getchar()) == EOF)}
+
+\s\s\s\s\tt{stop_(flush() == EOF);}
+
+\tt{else}
+
+\s\s\s\s\tt{queue(chr);}\\
+
+Same problem occurs when an external C\_ declaration is followed by a semicolon;
+the latter acts acts a null statement, which is disallowed outside functions.
+For these reasons, an unnecessary semicolon should be avoided.
+
+\Section{Declarations}
+
+\Section{Blocks}
+
+\Section{Branching}
+
+\Section{Iteration}
+
+\section{Defer*}
+\input Statements/Defer.tex

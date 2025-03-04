@@ -1,0 +1,28 @@
+\head{Syntax}
+
+\tt{# include <output._>}
+
+\idX{output_}\s\s\s\tt{(} [\it{sink}\tt{=stdout} \tt{,}
+[\it{separator}\tt{=" "} \tt{,}]] \it{expression-list} \tt{)}
+
+\idX{output_0_}\s\tt{(} \it{sink} \tt{,}
+ \it{separator} \tt{,} \it{expression-list} \tt{)}
+
+\idX{output_1_}\s\tt{(} \it{expression} \tt{)}
+
+\idX{output_2_}\s\tt{(} \it{sink} \tt{,} \it{expression} \tt{)}
+
+\idX{output_3_}\s\tt{(} \it{sink} \tt{,} \it{separator} \tt{,} \it{expression} \tt{)}
+
+\head{Constraints}
+
+The \tt{output_} family shall have precisely the same
+constraints as those applicable for the \tt{output__} family.
+
+\head{Semantics}
+
+\tt{output_} family evaluates each expression exactly once;
+rest of the semantics are identical to  \tt{output__} family.
+
+\note Unlike \tt{print_}, the \tt{output__} and \tt{output_}
+families do not write an extra newline at the end.

@@ -1,0 +1,9 @@
+In addition to identifiers reserved for the implementation of C itself,
+names ending with \tt{_C} or \tt{_c} followed by any number of underscores
+(possibly none) are reserved for use by the implementation of C\_ dialect;
+header filenames ending with \tt{_c._} are reserved as well.
+Also, any name starting with an underscore is
+reserved for use as internal identifiers.
+These names should not be used for declarations even in block scope;
+one such example is \tt{_site}, which is a non-modifiable parameter of protocols
+that provides call-site identification details for diagnostic purposes.

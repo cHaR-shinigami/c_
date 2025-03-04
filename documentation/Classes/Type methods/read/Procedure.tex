@@ -1,0 +1,11 @@
+\begin{itemize}[nosep]
+
+\item If \tt{this} or \tt{in} is a null pointer,
+then the function returns a null pointer.
+
+\item Let $type$ be the value of \tt{((Object *) this)->type}; if
+\tt{is_type(}$type$\tt{)} is \tt{false}, the function returns \tt{NULL}.
+
+\item Otherwise the function returns the value of $type$\tt{->read(this, in)}.
+
+\end{itemize}

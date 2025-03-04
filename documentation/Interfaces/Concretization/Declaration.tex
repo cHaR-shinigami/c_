@@ -1,0 +1,94 @@
+\head{Syntax}
+
+\tt{# define} \it{class-name}\tt{_EXTENDS}
+\it{base-class} [\tt{,} \it{override-list}]
+
+\tt{# define} \it{class-name}\tt{_IMPLEMENTS_}\it{interface-list}
+\it{base-implementation} \tt{,} \it{methods-list}
+
+\tt{class_}\s\s\s\tt{(} \it{class-name} [\tt{implements}
+\it{interface-list}] \tt{)} \it{member-declarations} \idx{fin}
+
+\tt{class_0_}\s\tt{(} \it{class-name} \phantom{[}\tt{implements}
+\it{interface-list}\phantom{]}  \tt{)} \it{member-declarations} \tt{fin}
+
+\tt{prototype_ (} [\it{return-type} \tt{,}]\s\tt{(} \it{class-name}
+\tt{,} \it{member-name} \tt{)} [\tt{,} \it{parameter-tuples}]\s\tt{)}\\
+
+\head{Constraints}
+
+\it{base-implementation} shall be name of the class that implements
+the base type of \it{interface-name}, as specified by another macro
+named as \it{interface-name}\tt{_EXTENDS}; as a special constraint,
+if \it{interface-name} directly extends the \tt{Abstract} type,
+then \it{base-implementation} shall be specified as the word \idx{SELF}.
+If the macro \it{interface-name}\tt{_EXTENDS} specifies \it{base-interface} as
+the base type and \it{base-interface} is not \tt{Abstract}, then an object-like
+macro named \it{base-implementation}\tt{_IMPLEMENTS_}\it{base-interface}
+shall be defined in the same form as described in the syntax.
+
+\it{methods-list} shall be a comma-separated list of member names declared
+in \tt{struct Typex (}\it{interface-name}\tt{)}, and for each such member
+a corresponding prototype shall be declared, prefixed with \it{class-name}.
+Each element in \it{methods-list} shall be a
+\it{member-name} corresponding to a function pointer in
+\tt{struct Typex (}\it{interface-name}\tt{)}, or a parenthesized pair of the form
+\tt{(} \it{typex-member} \tt{,} \it{class-method} \tt{)}, where \it{typex-member}
+is a member name declared in \tt{struct Typex (}\it{interface-name}\tt{)}, and
+\it{class-method} is the unprefixed name declared in prototype of a class method.
+
+Other constraints are precisely the same as documented
+for class declarations in \S 7.8.1 of the previous chapter.
+
+\note \it{member-name},
+\tt{(}\it{member-name}\tt{)}, and \tt{(}\it{member-name}\tt{,} \it{member-name}\tt{)}
+are equivalent in \it{members-list}.
+
+\head{Semantics}
+
+\idx{implements} is defined as an object-like macro that expands to a single comma.
+When the argument sequence of \tt{class_} expands to multiple arguments,
+it invokes \tt{class_0_}: the first argument is considered as name of a
+concretizing class, and subsequent arguments are the names of interfaces.
+For each \it{interface-name} specified in \it{interface-list},
+\tt{class_0_} declares a non-modifiable external array named
+\idx{typex_}\tt{(}\it{interface-name}\tt{,} \it{class-name}\tt{)},
+whose element type is \tt{const struct Typex (}\it{interface-name}\tt{)}.
+Rest of the semantics are identical to that of \tt{class_1_} (see \S 7.8.1).
+
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+
+\note The macros named as \it{class-name}\tt{_IMPLEMENTS_}\it{interface-list}
+are required only for class definitions; they are placed in header files because
+another macro \it{base-implementation}\tt{_IMPLEMENTS_}\it{base-interface}
+is required by the class definition (recursively for each ancestor);
+the latter is made available in the header of \it{base-implementation}.
+
+\example The \tt{Chain} class implementing a linked list is
+a good candidate for concretizing \tt{Iterable} interface.
+
+The following class declaration is available in the header file
+\src{include/class/Chain._}
+
+We are already familiar with most of this code,
+as it is almost entirely similar to the version in previous chapter.
+
+\pagebreak
+
+New additions are inclusion of the header \tt{"Iterable._"},
+along with the macro \tt{Chain_IMPLEMENTS_Iterable} that specifies
+the members of \tt{struct Typex (Iterable)}, and for each member,
+we have also declared a prototype for the class method
+whose procedure provides the concrete implementation.
+\tt{SELF} is used as \it{base-implementation} because the
+\tt{Iterable} interface directly extends \tt{Abstract},
+for which we do not have a separate concretizing class.
+
+Recall that the header \tt{"Iterable._"} declares \tt{Iterator}
+as a synonym for the incomplete type \tt{struct Iterator},
+whose pointer type is used in the \tt{Iterable} prototypes for
+\tt{iterator}, \tt{has_next}, \tt{get_next}, and \tt{duplicate}.
+The opaque type \tt{Iterator} for traversing through an \tt{Iterable}
+is concretized by \tt{Node} for traversing through a \tt{Chain}.

@@ -1,0 +1,15 @@
+\head{Syntax}
+
+\tt{faux_ (} \it{type-name} \tt{,} \it{expression} \tt{)}
+
+\head{Constraints}
+
+\it{type-name}  shall not be \tt{Void_} or an incomplete aggregate type.
+\it{expression} shall not be an unparenthesized comma expression;
+it shall be a valid function call argument for a
+parameter whose type is specified by \it{type-name}.
+
+\head{Semantics}
+
+\it{expression} is not evaluated, and the outcome is a \tt{Void_}
+expression which does not affect translation or execution.

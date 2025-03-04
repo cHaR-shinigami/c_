@@ -1,0 +1,25 @@
+\head{Syntax}
+
+\tt{# include <input._>}
+
+\idX{input_}\s\s\s\tt{(} [\it{source}\tt{=stdin} \tt{,}
+[\it{separator}\tt{=""} \tt{,}]] \it{expression-list} \tt{)}
+
+\idX{input_0_}\s\tt{(} \it{source} \tt{,}
+ \it{separator} \tt{,} \it{expression-list} \tt{)}
+
+\idX{input_1_}\s\tt{(} \it{expression} \tt{)}
+
+\idX{input_2_}\s\tt{(} \it{source} \tt{,} \it{expression} \tt{)}
+
+\idX{input_3_}\s\tt{(} \it{source} \tt{,} \it{separator} \tt{,} \it{expression} \tt{)}
+
+\head{Constraints}
+
+The \tt{input_} family shall have precisely the same
+constraints as those applicable for the \tt{input__} family.
+
+\head{Semantics}
+
+\tt{input_} family evaluates each expression exactly once;
+rest of the semantics are identical to  \tt{input__} family.

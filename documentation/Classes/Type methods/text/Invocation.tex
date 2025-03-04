@@ -1,0 +1,46 @@
+\head{Syntax}
+
+\idx{text__}\s\s\s\s\tt{(} [\tt{. this =}] $this$ [[\tt{,}
+[\tt{. length =}] $length$] \tt{,} [\tt{. out =}] $out$] \tt{)}
+
+\idx{text__1_}\s\s\tt{(} [\tt{. this =}] $this$ \tt{)}
+
+\idx{text__2__}\s\tt{(}  [\tt{. this =}] $this$
+\phantom{[[}\tt{,} [\tt{. out =}] $out$ \tt{)}
+
+\idx{text__3_}\s\s\tt{(} [\tt{. this =}] $this$ \phantom{[[}\tt{,}
+[\tt{. length =}] $length$\phantom{]} \tt{,} [\tt{. out =}] $out$\phantom{]} \tt{)}\\
+
+\idX{text_}\s\s\s\s\s\tt{(} [\tt{. this =}] $this$ [[\tt{,}
+[\tt{. length =}] $length$] \tt{,} [\tt{. out =}] $out$] \tt{)}
+
+\idx{text_1_}\s\s\s\tt{(} [\tt{. this =}] $this$ \tt{)}
+
+\idX{text_2_}\s\s\s\tt{(} [\tt{. this =}] $this$
+\phantom{[[}\tt{,} [\tt{. out =}] $out$ \tt{)}
+
+\idx{text_3_}\s\s\s\tt{(} [\tt{. this =}] $this$ \phantom{[[}\tt{,}
+[\tt{. length =}] $length$\phantom{]} \tt{,} [\tt{. out =}] $out$\phantom{]} \tt{)}
+
+\head{Semantics}
+
+\tt{text__} invokes \tt{text__1_} if the argument sequence expands to a singleton.
+If the argument sequence expands to two elements, then \tt{text__2__} is invoked;
+otherwise there shall be three arguments, and \tt{text__3_} is invoked.
+
+\tt{text__1_ (}$this$\tt{)} is equivalent to
+\tt{text__3_(}$this$\tt{, &(Size_)\{1\}, NULL)}.
+
+\tt{text__2__(}$this$\tt{,} $out$\tt{)} is equivalent to
+\tt{text__3_(}$this$\tt{, &lvalue__(length__(}$out$\tt{)),} $out$\tt{)}.
+
+\tt{text__2__} can evaluate the argument $out$ more
+than once only if it has a variably modified type.
+
+\tt{text__3_(}$this$\tt{,} $length$\tt{,} $out$\tt{)} is equivalent to the verbose
+invocation \tt{call_((Type, text),}  $this$\tt{,} $length$\tt{,} $out$\tt{)}.\\
+
+The \tt{text_}* family evaluates each argument exactly once;
+rest of the semantics are identical to \tt{text__} family.
+So \tt{text_1_} is equivalent to \tt{text__1_}, \tt{text_2_}* is similar
+to \tt{text__2__}, and \tt{text_3_} is equivalent to \tt{text__3_}.

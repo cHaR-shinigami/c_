@@ -1,0 +1,54 @@
+\tt{<filter._>} defines the macro \tt{FILTER__} that configures the
+behavior of \tt{filter_} family;  \tt{FILTER__} records the \tt{defined}
+state of \tt{DEBUG} every time \tt{<filter._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <filter._>}
+
+\idx{filter_}\s\s\s\tt{(} $destination$ \tt{,}
+$predicate$ \tt{,} $source$ [\tt{,} $range$] \tt{,} $key$ \tt{)}
+
+\idx{filter_4_}\s\tt{(} $destination$ \tt{,}
+$predicate$ \tt{,} $source$ \phantom{[}\tt{,} $key$\phantom{]} \tt{)}
+
+\idx{filter_5_}\s\tt{(} $destination$ \tt{,}
+$predicate$ \tt{,} $source$ \phantom{[}\tt{,} $range$\phantom{]} \tt{,} $key$ \tt{)}
+
+\head{Constraints}
+
+Both $source$ and $destination$ shall be pointers to complete arrays.
+$destination$ array shall be modifiable, and its element type shall be
+suitable to store an element of $source$ array without any type cast.
+
+$predicate$ shall be a function type expression that can be called with an element
+of $source$ as the first argument, with $key$ being the subsequent argument(s)
+without any type cast; return type of $predicate$ shall be a scalar type.
+
+$range$ shall be an expression having a \tt{Range} type.
+
+If $key$ needs to specify multiple arguments for calling $predicate$,
+it shall be a fully parenthesized list for \tt{filter_}.
+
+\head{Semantics}
+
+\tt{filter_} invokes \tt{filter_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+$key$ is subjected to the \tt{peel_} macro before counting the
+number of elements in it using \tt{COUNT_}: if the count is one,
+then $key$ is used without peeling; otherwise the resulting text
+after applying \tt{peel_} is used, which can be a list of arguments.
+
+\tt{filter_4_} calls $predicate$ for each element of $source$:
+in each invocation, the element is the first argument, followed
+by $key$ (peeled in case it expands to multiple arguments).
+If the return value is non-zero, then that element is copied
+to $destination$; if $destination$ gets full before reaching
+the end of $source$, subsequent iterations are skipped.
+
+\tt{filter_5_} calls $predicate$ only for elements in the indices
+specified by $range$, as long as $destination$ is not full.
+
+\enlargethispage*{\baselineskip}
+\pagebreak

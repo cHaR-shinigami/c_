@@ -1,0 +1,81 @@
+\def\Section#1{\section{#1}\input{Introduction/#1}}
+
+The C\_ dialect provides a set of abstractions for the C programming language.
+The purpose of this document is to specify the syntax, constraints, and semantics
+of various features in C\_, without describing the implementation details.
+Programmers are free to write their own implementation of C\_ that
+conforms to or refines the abstract semantics described in this document.
+Source codes for the C\_ reference implementation and sample examples are
+available at the repository \tt{<}\url{https://github.com/cHaR-shinigami/c_}\tt{>},
+released under the terms of GNU Lesser General Public License (LGPL 2.1 or later),
+without any warranty of merchantability or fitness for some purpose.
+
+The reference implementation of C\_ is a proof of concept that is intended to
+conform with ISO/IEC 9899:2024, which is the current revision of the C standard;
+it is commonly known to programmers as C23,
+and this is the name we shall use throughout the rest of this document.
+Some features of C\_ are implemented using non-standard extensions,
+which are compiler-specific, and therefore, not fully portable; these have
+been marked with an asterisk (*) when they are introduced in later chapters.
+Other implementations of C\_ can provide these features
+in a standard-conforming way, and can also give well-defined
+behavior to constructs beyond the scope of this document.
+
+Design of the reference implementation is based on a header-only architecture,
+making it open source by nature; it does not require a separate
+front-end for C compilers or installation of any additional software.
+At a high level, the reference implementation is essentially a
+preprocessing-based transpiler which converts C\_ code to C code;
+the idea is similar to Cfront, the original translator for
+``\it{C with Classes}'' (later renamed to C++), which transpiled the
+source code  to C code that could be compiled with a native C compiler.
+Since it is possible to emulate almost the entirety of C\_ using C (C23), we do
+not refer to C\_ as a new programming language, but consider it a dialect of C.
+
+The intent of documenting C\_ in terms of its abstract semantics is two-fold:
+firstly, readers need not get bogged down to implementation details,
+which can often be an unnecessary distraction.
+The second reason is more important: this approach isolates the
+abstract behavior from any particular concrete implementation,
+which allows a future scope of providing more efficient translators for C\_.
+We shall digress a little to the development timeline:
+C\_ started out as a modest collection of macros, and as it started to mature,
+the necessity of a formal documentation was realized,
+which commenced after finalizing the reference implementation.
+Any serious discrepancy between the reference implementation and the contents
+of this document is unintentional, and may be considered as a ``bug''.
+
+C\_ was created with an aim to simplify programming,
+while also making it harder for things to go wrong;
+the latter is a more ambitious goal, and the extent of
+its fulfillment largely rests on the programmer.
+C\_ facilitates ``abstraction-oriented programming'', which blends several
+concepts from functional programming and object-oriented programming paradigms.
+Many features of C\_ are based on similar constructs found
+in other programming languages, such as C++, Python, Java,
+which are themselves influenced by C (either directly or indirectly);
+the semantics of \tt{defer_} have been borrowed from Zig.
+Proper use of the right abstractions reduces the chances of bugs.
+
+A knowledge of basic concepts and standard terminology in C is a prerequisite,
+and this document assumes familiarity with the general concepts of programming.
+The current C standard is quite sophisticated in its entirety, and
+readers are not required to have a complete mastery over all its intricacies;
+a deep understanding of C is surely beneficial to understand how the reference
+implementation works, but that is not necessary to get started with C\_.
+
+\Section{Example}
+
+\Section{Compilation}
+
+\Section{Diagnostics}
+
+\Section{Debugging}
+
+\Section{Conventions}
+
+\Section{Polymorphism}
+
+\Section{Limitations}
+
+\Section{Roadmap}

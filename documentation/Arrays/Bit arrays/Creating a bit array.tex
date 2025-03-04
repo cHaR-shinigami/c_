@@ -1,0 +1,29 @@
+The \tt{bits_} family can be used to create a dynamically resizeable bit array.
+
+\head{Syntax}
+
+\idx{bits_}\s\s\s\tt{(} $bitcount$ [\tt{,} $initializer$] \tt{)}
+
+\idx{bits_1_}\s\tt{(}   $bitcount$ \tt{)}
+
+\idx{bits_2_}\s\tt{(}   $bitcount$ \phantom{[}\tt{,} $initializer$\phantom{]} \tt{)}
+
+\head{Constraints}
+
+$bitcount$ shall be an expression having integer type,
+and $initializer$ shall be a scalar expression.
+
+\head{Semantics}
+
+\tt{bits_} invokes \tt{bits_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+On success, the outcome is a pointer to \tt{Bits_},
+whose length (number of words) is given by \tt{wordcount_(}$bitcount$\tt{)};
+the outcome is a null pointer if the required allocation cannot be obtained.
+If $initializer$ compares equal to zero, then all bits are zeroed out (reset);
+otherwise $initializer$ is non-zero, and all bits are set to one.
+The array can be deallocated by passing the pointer to \tt{free}, and it can be
+resized with \tt{realloc}, or with the help of \tt{renew__}/\tt{renew_}* families.
+
+\note If the converted value of $bitcount$ is not a multiple
+of \tt{BITS_WIDTH}, there will be extra bits at the end.

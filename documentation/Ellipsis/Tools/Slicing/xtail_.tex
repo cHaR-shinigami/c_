@@ -1,0 +1,21 @@
+\head{Syntax}
+
+\tt{xtail_ (} $n$ \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+$n$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX},
+or it shall expand to such a constant.
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Macros in \it{argument-list} are expanded.
+If the resulting number of arguments is greater than $n$,
+then the outcome is  blank; otherwise last $n$ arguments from the
+expanded list are excluded, and rest of them appear in the outcome.
+
+\note \tt{xtail_(n, ...)} can be implemented via reversal as
+\tt{reverse_(xhead_(n, reverse_(__VA_ARGS__)))}.

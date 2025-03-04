@@ -1,0 +1,96 @@
+\def\Subsection#1{\subsection{#1}\input{Methods/Invocation/#1}}
+
+The \tt{call_} family is used to invoke methods that
+have been declared with the \tt{prototype_} family.
+The header \idx{<call._>} is used to configure debugging behavior of the \tt{call_}
+family; this header also defines the object-like macro \idx{CALL__}, which records
+the \tt{defined} state of \tt{DEBUG} macro every time \tt{<call._>} is included.
+If \tt{DEBUG} remains defined before the most recent inclusion of \tt{<call._>},
+then \tt{CALL__} expands to \tt{1}; otherwise \tt{CALL__} expands to \tt{0}.
+
+\head{Syntax}
+
+\tt{# include <call._>}\\
+
+\idx{call_}\s\s\s\s\s\tt{(} $method$ [\tt{,} \it{argument-list}] \tt{)}
+
+ \tt{call_}\s\s\s\s\s\tt{( (} $prefix$ \tt{,} \it{method-name}
+\tt{)}\s[\tt{,} \it{argument-list}] \tt{)}\\
+
+\idx{call_0_}\s\s\s\tt{(} $method$ \tt{,} \it{argument-list} \tt{)}
+
+\idx{call_0_1_}\s\tt{(} $method$ \tt{,} \it{argument-list} \tt{)}
+
+ \tt{call_0_}\s\s\s\tt{( (} $prefix$ \tt{,} \it{method-name}
+\tt{) ,} \it{argument-list} \tt{)}
+
+\idx{call_0_2_}\s\tt{( (} $prefix$ \tt{,} \it{method-name}
+\tt{) ,} \it{argument-list} \tt{)}\\
+
+\idx{call_1_}\s\s\s\tt{(} $method$ \tt{)}
+
+\idx{call_1_1_}\s\tt{(} $method$ \tt{)}
+
+ \tt{call_1_}\s\s\s\tt{( (} $prefix$ \tt{,} \it{method-name} \tt{) )}
+
+\idx{call_1_2_}\s\tt{( (} $prefix$ \tt{,} \it{method-name} \tt{) )}
+
+\head{Constraints}
+
+$method$ shall be an array of two function pointers, and the
+function type shall accept a \tt{Site} as the first argument.
+If $method$ is given, then \it{argument-list} shall not specify
+any named argument of the form \tt{.}$parameter$ \tt{=} $argument$.
+
+A prototype declaration for the method identified by \tt{(} $prefix$
+\tt{,} \it{method-name} \tt{)} shall occur prior to its use in \tt{call_}.
+If it accepts a variable number of arguments, then \tt{(} $prefix$
+\tt{,} \it{method-name} \tt{)} cannot be directly used for invocation:
+in such cases, the $method$ array shall be specified as
+\tt{method_ (} $prefix$ \tt{,} \it{method-name} \tt{)} (or equivalent).
+
+\it{argument-list} shall be a non-empty sequence of expressions,
+and if the method does not accept a variable number of arguments,
+then the values in \it{argument-list} are subjected to default argument
+promotions as per the parameter types declared in the prototype;
+none of the arguments shall not violate any type constraints.
+If the argument corresponding to the last parameter is followed
+by another argument, the latter shall be a named argument of the
+form \tt{.}$parameter$ \tt{=} $argument$, where $parameter$ shall
+be the name of some parameter in the prototype declaration.
+
+\note If $method$ is a comma expression, it needs to be doubly
+parenthesized for \tt{call_}, \tt{call_0_}, and \tt{call_1_}.
+
+\head{Semantics}
+
+\tt{call_} invokes \tt{call_1_} if the expanded argument
+sequence is a singleton; otherwise it invokes \tt{call_0_}.
+
+The first argument is peeled and expanded: if the resulting list has a single
+element, it is considered as $method$; otherwise it shall have two elements,
+\it{prefix} and \it{method-name}, which are used to generate method identifiers.
+
+\tt{call_0_} invokes \tt{call_0_}$n$\_ if the first argument expands
+to a list with $n$ elements on being subjected to the \tt{peel_} macro.
+\tt{call_1_} invokes \tt{call_1_}$n$\_ if the first argument
+expands to a list with $n$ elements on being subjected to \tt{peel_}.
+\tt{call_0_} is used when some explicit argument is given
+for the invocation, and \tt{call_1_} is used otherwise.
+
+In all cases, the \tt{call_} family pushes a value of type \tt{Site}
+as the implicit first argument: this value contains call site
+information obtained from \tt{__func__}, \tt{__FILE__}, and
+\tt{__LINE__}, passed to the \tt{_site} parameter of protocols.
+
+When compiled with \tt{CALL__} expanding to \tt{1}, protocol function is
+invoked; additionally, if $method$ array is given, then the pointer obtained
+(through array-to-pointer decay) is asserted to be not null, as if by using
+\tt{notnull_}, and if the assertion works, then second element of the array
+(protocol at index \tt{1}) is similarly asserted to be not null.
+Otherwise \tt{CALL__} shall expand to \tt{0}, and proxy function
+is invoked instead (first element of $method$ at index zero).
+
+\Subsection{Named arguments}
+
+\Subsection{Workflow}

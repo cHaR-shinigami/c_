@@ -1,0 +1,31 @@
+\def\Subsection#1{\subsection{#1}\input{Arrays/Bit arrays/#1}}
+
+C\_ offers several facilities for bitwise operations on resizeable arrays.
+Memory is typically byte-addressable,
+and individual bits are accessed with bitwise operators.
+C\_ provides simple abstractions for performing bit manipulations
+over arrays that are interpreted as a packed sequence of bits
+(padding bits can be present only at the end).
+
+The reference implementation provides these features in
+the header \idx{<bits._>}, most of which can be configured.
+
+\subsection{\type{Bits}}
+\input{Arrays/Bit arrays/Bits}
+
+\subsection{\idx{BITS_WIDTH}}
+\input{Arrays/Bit arrays/BITS_WIDTH}
+
+\Subsection{Word count}
+
+\Subsection{Bit count}
+
+\Subsection{Creating a bit array}
+
+\Subsection{Basic operations}
+
+\Subsection{Aggregate operations}
+
+\Subsection{Rotation}
+
+\Subsection{Shifting}

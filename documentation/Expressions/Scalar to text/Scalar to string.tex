@@ -1,0 +1,25 @@
+\head{Syntax}
+
+\idx{text_BOOL_} \tt{(} \it{expression} \tt{)}
+
+\idx{text_Bool_} \tt{(} \it{expression} \tt{)}
+
+\idx{text_bool_} \tt{(} \it{expression} \tt{)}
+
+\head{Constraints}
+
+\it{expression} shall have scalar type.
+
+\head{Semantics}
+
+\tt{text_BOOL_} gives the string ``\tt{FALSE}'' if \it{expression}
+compares equal to zero, and ``\tt{TRUE}'' otherwise (sans quotes).
+
+\tt{text_Bool_} gives the string ``\tt{False}'' if \it{expression}
+compares equal to zero, and ``\tt{True}'' otherwise (sans quotes).
+
+\tt{text_bool_} gives the string ``\tt{false}'' if \it{expression}
+compares equal to zero, and ``\tt{true}'' otherwise (sans quotes).
+
+The result is of type \tt{Ptr_(Char)} but not a string literal,
+so it cannot be used for translation time concatenation.

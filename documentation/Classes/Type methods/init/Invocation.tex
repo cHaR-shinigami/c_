@@ -1,0 +1,49 @@
+\head{Syntax}
+
+\idx{init_}\s\s\s\s\s\tt{(} \it{oo-type-name} \tt{)}
+
+\idx{init_1_}\s\s\s\tt{(} \it{oo-type-name} \tt{)}
+
+\idx{init_}\s\s\s\s\s\tt{(} [\tt{. type =}]
+$type$ \tt{,} [\tt{. tape =}] $tape$ \tt{)}
+
+\idx{init_2_}\s\s\s\tt{(}   [\tt{. type =}]
+$type$ \tt{,} [\tt{. tape =}] $tape$ \tt{)}\\
+
+\idx{init__}\s\s\s\s\tt{(} [\tt{. type =}] $type$ \tt{,} \it{argument-list} \tt{)}
+
+\idx{init__0__}\s\tt{(} [\tt{. type =}] $type$ \tt{,} \it{argument-list} \tt{)}
+
+\idx{init__}\s\s\s\s\tt{(} \it{oo-type-name} \tt{)}
+
+\idx{init__1_}\s\s\tt{(} \it{oo-type-name} \tt{)}
+
+\enlargethispage*{\baselineskip}
+\pagebreak
+
+\head{Semantics}
+
+\tt{init_} invokes \tt{init_}$n$\_ if the expanded
+argument sequence contains $n$ arguments.
+\tt{init_1_(}\it{oo-type-name}\tt{)} is equivalent
+to the verbose call \tt{((}\it{oo-type-name}\_ \tt{*)
+call_((Type, init), type_(}\it{oo-type-name}\tt{), (Tape)\{NULL\}))}.
+
+\tt{init_2_(}$type$\tt{,} $tape$\tt{)} is equivalent
+to \tt{call_((Type, init),} $type$\tt{,} $tape$\tt{)};
+the outcome is of type \tt{Void_ *}.
+
+\tt{init__} invokes \tt{init__1_} if the expanded argument
+sequence is a singleton; otherwise it invokes \tt{init__0__}.
+
+\tt{init__1_} is equivalent to \tt{init_1_}.
+
+\tt{init__0__(}$type$\tt{,} \it{argument-list}\tt{)} is same as \tt{init_2_(}%
+$type$\tt{,} \tt{(Tape)\{map__(&lvalue__,} \it{argument-list}\tt{), NULL\})}.
+In other words, each value in \it{argument-list} is converted into an lvalue
+(as if with \tt{lvalue__}), pointers to these lvalues are packed into an array,
+and a terminating null pointer is appended to it (to mark the end);
+each lvalue and the array itself have automatic storage duration,
+whose lifetime ends after the innermost block where the invocation is performed.
+Each value in \it{argument-list} can be evaluated
+more than once only if it has a variably modified type.

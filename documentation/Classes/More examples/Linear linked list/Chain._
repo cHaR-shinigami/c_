@@ -1,0 +1,21 @@
+#ifndef CHAIN__
+#define CHAIN__
+
+#define Chain_EXTENDS Object,\
+ validate, init, free, compare, copy, add
+
+typedef_(Node, struct Node
+{	Void  *data;
+	struct Node *next;
+})
+
+class_ (Chain)
+	Node_ *head;
+	Size_  length;
+	Node_ *tail;
+fin
+
+prototype_(Bool_ , (Chain, append),
+(Chain_ *, this) , (Void *, data))
+
+#endif

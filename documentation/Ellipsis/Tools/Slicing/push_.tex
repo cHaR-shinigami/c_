@@ -1,0 +1,27 @@
+\head{Syntax}
+
+\tt{push_ (} \it{graft} \tt{,} \it{index} \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+\it{index} shall be a non-negative decimal integer constant not
+exceeding \tt{PP_MAX}, or shall expand to such a constant.
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+\it{argument-list} is expanded first, and elements in the
+resulting list are indexed left to right starting at index zero.
+Let there be $n$ elements in the expanded list,
+so that its last element has index $n - 1$.
+If \it{index} exceeds $n$, then it is adjusted to $n$.
+\it{graft} is injected at the adjusted index position, and if that position is
+not $n$ (end of the list), then subsequent elements from that index onward
+(before grafting) are pushed to the right, keeping their existing order.
+
+\note Multiple elements can be grafted by wrapping with
+a macro such as \tt{echo_}, making it a single argument.
+
+\example \tt{push_(echo_(u, s), 1, p, h)} expands to the text \tt{p, u, s, h}.

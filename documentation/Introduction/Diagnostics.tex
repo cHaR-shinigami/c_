@@ -1,0 +1,17 @@
+\def\Subsection#1{\subsection{#1}\input{Introduction/Diagnostics/#1}}
+
+Modern software development is incomplete without enabling
+compile-time diagnostics of suspicious code constructs,
+which are usually reported as ``compiler warnings''.
+Most professional C developers will use a customized set of options aligned with
+the coding standards and business requirements of their production environment.
+For compiling examples in later chapters, we shall enable several
+warning options that are considered suitable for most purposes.
+
+\note The reference implementation provides the starred features (*) using non-%
+standard extensions that need to be compiled with \tt{cc_ -Wno-pedantic} (this
+option disables \tt{-Wpedantic} which is part of our \tt{cc_} command alias).
+
+\Subsection{gcc}
+
+\Subsection{clang}

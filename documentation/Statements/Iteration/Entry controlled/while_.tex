@@ -1,0 +1,19 @@
+\head{Syntax}
+
+\tt{while}\_\s\tt{(} \it{loop-condition} \tt{)}
+
+\s\s\s\s\it{declarations-and-statements}\opt
+
+\tt{end}
+
+\head{Constraints}
+
+\it{loop-condition} shall be a scalar expression.
+
+\head{Semantics}
+
+\it{loop-condition} is evaluated at the start of each iteration:
+if it is non-zero, then the loop body is executed, and the expression
+is re-evaluated after reaching the end of that \tt{while_} block,
+or after executing a \tt{continue} statement;
+looping is stopped if the \it{loop-condition} is found to be zero.

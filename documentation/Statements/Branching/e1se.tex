@@ -1,0 +1,20 @@
+\head{Syntax}
+
+\tt{e1se}
+
+\s\s\s\s\it{declarations-and-statements}\opt
+
+\tt{end}
+
+\head{Constraints}
+
+\tt{e1se} shall be syntactically connected to a preceding \tt{if_} block,
+whose lexical scope is ended by \tt{e1se}.
+
+\head{Semantics}
+
+\tt{e1se} is equivalent to \tt{end else begin}.
+\tt{e1se} block is executed only if \it{scalar-expression}
+of the preceding \tt{if_} block equals zero;
+in other words they are mutually exclusive:
+either \tt{if_} block or \tt{e1se} block is executed, not both.

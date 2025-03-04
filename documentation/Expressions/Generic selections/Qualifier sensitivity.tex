@@ -1,0 +1,60 @@
+Both \tt{_Generic} and its extension \tt{generic_} ignore type
+qualifiers when checking type compatibility of a controlling
+expression (list) with the type (list) of an association.
+C\_ has another kind of generalization called \tt{generiq_},
+which is a qualifier preserving variation of  \tt{generic_}:
+both have the same syntax, but different constraints and semantics.
+
+\head{Syntax}
+
+\idx{generiq_} \tt{( (} \it{expression-list} \tt{)}
+[\tt{, (} \it{type-list} \tt{,} \it{expression} \tt{)}] $\cdots$
+[\tt{, (} \it{default-expression} \tt{)}]
+\tt{)}
+
+\head{Constraints}
+
+\tt{generiq_} accepts a sequence of parenthesized lists, where the first list is
+a tuple of controlling expressions, and each subsequent list is an association.
+\it{expression-list} shall be a comma-separated list of expressions,
+such as $expr_1$ \tt{,} $\cdots$ \tt{,} $expr_n$.
+Each \it{type-list} shall be a comma-separated list of types,
+such as \it{type-name}$_1$ \tt{,} $\cdots$ \tt{,} \it{type-name}$_k$.
+Number of types in a \it{type-list} need not match
+the count of expressions in \it{expression-list}.
+
+An optional association without \it{type-list} is a default association,
+which shall consist of a single \it{default-expression}; at most one
+default association is permitted, and it need not be the last in sequence.
+All associations shall be distinct, such that any two non-default association
+lists differ in at least one \it{type-name}, after considering type qualifiers.
+There shall be exactly one association list
+that can be selected based on semantic rules.
+
+\head{Semantics}
+
+A type sequence is constructed from the controlling \it{expression-list}
+retaining type qualifiers, and if it is compatible element-wise with
+the type list of an association, then that association is selected,
+and its expression becomes the outcome of the \tt{generiq_} expression;
+otherwise a default association list is present,
+having a single \it{default-expression} that is selected as the outcome.
+Type of the \tt{generiq_} expression is same as type of the selected expression,
+as if the entire \tt{generiq_} expression is replaced by an
+implicitly parenthesized form of the selected expression.
+
+Other than the expression from the selected association list,
+none of the other expressions are evaluated.
+
+\example Our \tt{cc_} alias for \tt{gcc} and \tt{clang} includes the option
+\tt{-Wwrite-strings} which enforces the type of string literals to be
+``array of \tt{Char}'', consistent with their non-modifiable nature;
+we can use \tt{generiq_} to test this.
+
+\centerline{\tt{generiq_((*""), (Char, FALSE), (Char_, TRUE))}}
+
+The outcome would be \tt{FALSE} when compiled with \tt{cc_},
+and \tt{TRUE} when compiled with \tt{cc_ -Wno-write-strings}.
+
+\note Recall that \tt{FALSE} has type \tt{False_} and \tt{TRUE}
+has type \tt{True_}, so type of the result indicates its value.

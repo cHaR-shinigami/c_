@@ -1,0 +1,16 @@
+A block is a sequence of declarations and statements, which are executed
+in their lexical order until a branch or jump statement is encountered.
+Syntactically, a block as a whole acts as one single statement,
+which is why it is also called a compound statement.
+A C\_ block is started with \idx{begin},
+and its lexical scope extends till the occurrence of a matching \idx{end}.
+C\_ blocks can be nested like ordinary blocks:
+an inner block ends before the one that encloses it.
+
+Unlike traditional blocks enclosed within curly braces,
+C\_ blocks also support guard clauses, which are discussed in the next section.
+The primary advantage is that if some condition is (un)satisfied,
+then it is possible to bail out early by skipping rest of the statements
+within the nearest enclosing block that supports jumping directly to its end.
+We refer to this feature as ``early exit'' out of a C\_ block;
+the term does not imply exiting the process itself.

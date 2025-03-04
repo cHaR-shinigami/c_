@@ -1,0 +1,15 @@
+If \tt{sum} is not null, then it is used for storing the result;
+otherwise a new allocation is performed. If the allocation fails,
+a null pointer is returned; otherwise the member \tt{type}
+of the new object is initialized to \tt{type_(Unsigned)}.
+The sum of \tt{augend->value} and \tt{addend->value} is stored
+in \tt{result->value}, and pointer to the instance is returned.
+
+\note Unsigned arithmetic follows implicit wraparound,
+so there is no possibility of integer overflow; however,
+if \tt{width_(ULLong)} is greater than 64 on some execution environment,
+then the sum can be greater than \tt{UNSIGNED_MAX}, which would violate
+the post-condition that invokes \tt{validate} on a non-null return value.
+To avoid such a mishap, bitwise-AND with \tt{UNSIGNED_MAX} (64 bits set to 1) is
+used to truncate the result (most systems support exactly 64 bits in \tt{ULLong},
+so the bitwise-AND is redundant and likely to be optimized away by compilers).

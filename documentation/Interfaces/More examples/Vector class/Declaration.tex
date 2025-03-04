@@ -1,0 +1,16 @@
+\fbox{\tt{
+examples/include/class/Vector._}}
+\code{../include/class/Vector._}
+
+Unlike \tt{Chain} and \tt{List} that implement a linear linked list,
+\tt{Vector} uses an array of pointers.
+The class structure contains four members: \tt{array} points to the base element
+of an array of \tt{Void} pointers; \tt{capacity} stores the maximum number
+of elements that can be stored with an existing allocation of \tt{array},
+while \tt{count} maintains the number of elements already stored in the array
+(from index zero); \tt{species} is required for the \tt{Collection} interface.
+
+\tt{Cursor} structure is used as an iterator, and the class
+method \tt{cursor} implements the interface method \tt{iterator};
+the latter is established by the pair \tt{(iterator, cursor)}
+in the replacement text of \tt{Vector_IMPLEMENTS_Iterable}.

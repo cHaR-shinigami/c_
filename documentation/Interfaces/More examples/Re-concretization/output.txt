@@ -1,0 +1,10 @@
+Initial concrete type: List
+2023
+12
+24
+'Twas the night before Christmas ...
+After re-concretization: Vector
+2023
+12
+24
+'Twas the night before Christmas ...

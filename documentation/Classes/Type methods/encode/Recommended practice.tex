@@ -1,0 +1,8 @@
+If a valid encoding can be generated for an instance,
+then it should be possible to reconstruct that instance by
+invoking the \tt{decode} method with the generated encoding.
+Unlike the \tt{text} method for generating human-readable
+textual representation of an instance, an encoding is
+typically binary data and it should characterize an instance.
+A single instance can have multiple encodings, but two
+distinguishable instances should have different encodings.

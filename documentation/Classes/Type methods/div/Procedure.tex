@@ -1,0 +1,28 @@
+\begin{itemize}
+
+\item If \tt{validate_(dividend)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{validate_(divisor )} is \tt{false},
+then the function returns a null pointer.
+
+\end{itemize}
+
+Let $super$ denote the value of
+\tt{super(((Object *) dividend)->type, ((Object *) divisor)->type)}.
+
+If \tt{result} is not a null pointer, let $type$
+denote the value of \tt{((Object *) result)->type}.
+
+\begin{itemize}
+
+\item If \tt{is_type(}$type$\tt{)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{is(}$type$\tt{,} $super$\tt{)} is \tt{false},
+then the function returns a null pointer.
+
+\item Otherwise the function returns the value
+of $super$\tt{->div(result, dividend, divisor)}.
+
+\end{itemize}

@@ -1,0 +1,17 @@
+The function \tt{is_typex} is used to check whether a pointer
+refers to a valid extended \tt{Type} or not.
+
+\head{Declaration}
+
+\tt{Bool_ is_typex(Void *typex)}
+
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+
+\head{Description}
+
+The function \tt{is_typex} returns \tt{true} if and only if \tt{is_type(typex)} is \tt{true},
+\tt{((Type) typex)->self} is not the same pointer as \tt{typex},
+and \tt{is_type(((Type) typex)->self)} is also \tt{true};
+otherwise the return value is \tt{false}.

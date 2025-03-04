@@ -1,0 +1,89 @@
+Declarations of object-oriented types are typically placed in header files,
+as they are required in multiple translation units (wherever the type is used).
+On the contrary, every such type must have exactly one definition that can be
+compiled: this is because every object-oriented type has an associated \tt{Type}
+structure declared as a singleton array (non-modifiable), which must be defined
+in exactly one translation unit (source file that is given to the compiler).
+
+\enlargethispage*{\baselineskip}
+\pagebreak
+
+\head{Syntax}
+
+\idx{define_}\s\s\s\tt{(} \it{name} [\tt{,} \it{interface-list}] \tt{)}
+
+\idx{define_0_}\s\tt{(} \it{class-name} \tt{,} \it{interface-list} \tt{)}
+
+\idx{define_1_}\s\tt{(} \it{oo-type-name} \tt{)}
+
+\head{Constraints}
+
+\it{interface-list} shall be a comma-separated list of interface
+names, declared prior to the declaration of \it{class-name}.
+
+The number of elements in the expanded
+\it{interface-list} shall be less than \tt{PP_MAX}.
+
+An object-like macro named as \it{class-name}\tt{_EXTENDS} or
+\it{oo-type-name}\tt{_EXTENDS} shall remain defined, and for each
+$ancestor$ type up to the \tt{Object} class, a similarly named macro
+$ancestor$\tt{_EXTENDS} shall also remain defined.
+
+For each \it{interface-name} in \it{interface-list}, an
+object-like macro shall be defined in the following form:
+
+\begin{center}
+\tt{# define} \it{class-name}\tt{_IMPLEMENTS_}\it{interface-name}
+\it{base-implementation} \tt{,} \it{methods-list}
+\end{center}
+
+In the replacement text, \it{base-implementation} shall be name
+of the class that implements the base type of \it{interface-name},
+as specified by the macro named as \it{interface-name}\tt{_EXTENDS};
+as a special rule, if \it{interface-name} directly extends the \tt{Abstract}
+type, then \it{base-implementation} shall be specified as \tt{SELF}.
+If the macro \it{interface-name}\tt{_EXTENDS} specifies \it{base-interface} as
+the base type and \it{base-interface} is not \tt{Abstract}, then an object-like
+macro named \it{base-implementation}\tt{_IMPLEMENTS_}\it{base-interface}
+shall be defined in the same form as described above.
+
+\it{methods-list} shall be a list of method names that are specified in the
+extended type structure declared as \tt{struct Typex (}\it{interface-name}\tt{)};
+for each \it{method-name} in \it{methods-list}, an external function named
+as \tt{solver_(}\it{class-name}\tt{,} \it{method-name}\tt{)} shall be declared,
+and this also applies for the implementation of \it{base-interface}.
+
+\note \tt{is(type_(}\it{class-name}\tt{), type_(}\it{base-implementor}\tt{))}
+should be \tt{true}, but not enforced as a constraint.
+
+\head{Semantics}
+
+\tt{define_} invokes \tt{define_0_} if \it{interface-list} is specified;
+else \it{interface-list} is omitted and \tt{define_1_} is invoked.
+
+\tt{define_1_} defines a non-modifiable external array
+named \tt{type_(}\it{oo-type-name}\tt{)}:
+this array is a singleton whose sole element is a \tt{Type} structure,
+containing function pointers for the basic procedures of an object-oriented type.
+
+For each procedure name specified in the optional \it{override-list}
+in the replacement text of the macro \it{oo-type-name}\tt{_EXTENDS},
+the function pointer is used to initialize the corresponding member
+in \tt{type_(}\it{oo-type-name}\tt{)}; otherwise the process is
+repeated for each ancestor type, and procedures defined by the nearest
+ancestor are used to initialize remaining function pointers in the
+non-modifiable \tt{Type} structure, defined with static storage duration.
+
+In addition to the facilities provided by \tt{define_1_},
+\tt{define_0_} also defines a non-modifiable external
+array for each interface specified in \it{interface-list}.
+For an interface identified by \it{interface-name}, name of the external array
+is given by \tt{typex_(}\it{interface-name}\tt{,} \it{class-name}\tt{)}:
+this array is a singleton whose element type is an extended \tt{Type}
+structure identified as \tt{struct Typex (}\it{interface-name}\tt{)},
+having function pointers for each method of that interface.
+
+\example The wrapper class \tt{Unsigned} is defined in the file
+\tt{examples/compile/class/Unsigned.c_}
+
+\code{../compile/class/Unsigned.c_}

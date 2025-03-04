@@ -1,0 +1,92 @@
+Emulating an entire dialect with the preprocessor has some inherent drawbacks.
+Readers who were able to successfully compile the first
+example may have observed some slowness in translation;
+a large fraction of this time is spent transpiling C\_ code to C code,
+which involves highly resource intensive computations.
+Another unimpressive aspect of the reference implementation is
+that diagnostic messages (errors and warnings) can be cryptic,
+and deciphering the precise cause of an error may require familiarity
+with inner workings of how some feature has been implemented.
+Most features rely on helper macros or functions whose names end with \tt{_C} or
+\tt{_c} (possibly followed by underscores); these are not part of C\_ and should
+not be directly used by programmers, as their availability is not guaranteed.
+
+It is hoped that future implementors of the C\_ dialect will provide
+alternatives that have faster compilation time and more informative diagnostics,
+possibly in conjunction with better code generation;
+this optimism is the primary motivation for documenting C\_ in
+terms of abstract semantics rather than concrete implementation.
+
+The reference implementation provides almost everything as macros,
+and the underlying preprocessor may impose a translation limit on the maximum
+number of parameters for function-like macros, in which case the same limit
+should also be applicable to the number of arguments for macro invocations.
+The C\_ standard requires that any such limit shall be at least 127,
+which is the default value of \tt{PP_MAX} used by the ellipsis framework.
+Portable code should not exceed this limit,
+which is respected by the reference implementation and sample examples.
+
+It should be noted that the preprocessor is a separate
+component that does not understand most rules of the C language;
+one serious limitation in calling function-like macros is that brace-enclosed
+commas that are not parenthesized get interpreted as separate arguments, which
+can cause issues with unparenthesized compound literals having multiple elements
+in its initializer (or even a single element with a redundant trailing comma).
+We have already seen an example with a wrapper around the \tt{abs} function,
+during the discussion on trivial function-like macros;
+unfortunately, that workaround is often limited to only the last argument.
+As an example, the library function \tt{putc} can be
+additionally provided as a macro in \tt{<stdio.h>};
+for discussion, let us consider it as a plain wrapper over \tt{fputc}.\\
+
+\tt{#define putc(c, stream) fputc(c, stream)}\\
+
+As we saw earlier, macros like this suffer from subtle problems with compound
+literals; a contrived example is \tt{putc('\\n', *(Stream [])\{stdout,\})}
+(\tt{Stream} is a synonym for non-modifiable \tt{File_} pointer,
+and \tt{File_} itself means a modifiable \tt{FILE} object).
+To deal with such unusual arguments,
+one should use ellipsis (\tt{...}) instead.\\
+
+\tt{#define putc(c, ...) fputc(c, __VA_ARGS__)}\\
+
+This is a small example where the first parameter \tt{c} may be omitted,
+as it can be part of the ellipsis itself; however, macros may need to
+isolate arguments for additional logic (such as \tt{_Generic} selection).
+A general recommendation is that compound literal arguments having commas
+should be parenthesized, which neatly avoids all these complications;
+a couple of alternatives are available for non-polymorphic features:
+a comma that does not separate arguments can be written as \tt{COMMA},
+or an entire argument with unparenthesized commas can be wrapped
+within \tt{echo_}, a basic primitive of ellipsis framework.
+A small relaxation is that the last argument of a non-polymorphic
+feature allows unparenthesized commas, without requiring any workaround.
+As another artificial example, \tt{guard__1_(prices, 0)} can be written as \tt
+{guard__1_(prices, *(Int [])\{0,\})}, but \tt{guard_(prices, *(Int [])\{0,\})}
+does not work with the reference implementation, as it counts three arguments:
+\tt{prices}, \tt{*(Int [])\{0}, and \tt{\}}; consequently, the invocation gets
+resolved to \tt{guard_3_}, which is not available in C\_ and causes an error.
+
+Before moving ahead, it should be stated that this section is only meant
+to inform readers of some inherent drawbacks of the reference implementation,
+that are mostly due to dependency on the preprocessor.
+This is not an exhaustive list of limitations which mostly apply to pathological
+corner-cases in contrived code snippets; from a practical perspective,
+such artificial counter-examples should be of no concern to most programmers.
+It is also worth stressing that these weaknesses are specific to the
+reference implementation that serves a proof of concept for C\_, and the dialect
+itself is not hindered by such drawbacks; however, for some features, the
+behavior of certain cases has been documented as implementation-defined,
+and implementations of C\_ are also permitted to disallow such cases entirely.
+In particular, the reference implementation
+currently does not support most of these scenarios.
+
+\note The choice of writing a preprocessing-based
+implementation is best explained by quoting Donald Knuth:
+
+``\it{One rather curious thing I've noticed about aesthetic
+satisfaction is that our pleasure is significantly enhanced
+when we accomplish something with limited tools.}''
+
+At the very least, the reference implementation is a
+testament to metaprogramming capabilities of preprocessor.

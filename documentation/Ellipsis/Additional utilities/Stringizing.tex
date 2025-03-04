@@ -1,0 +1,16 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Ellipsis/Additional utilities/Stringizing/#1}}
+
+\head{Syntax}
+
+\idx{quote_} \tt{(} \it{argument-list} \tt{)}
+
+\head{Semantics}
+
+Outcome is a string literal for the unexpanded text of \it{argument-list},
+as obtained with preprocessing operator \tt{#}.
+
+\example \tt{quote_(top_(ping,), pop_(, corn))}
+expands to \tt{"top_(ping,), pop_(, corn)"}.
+
+\Subsubsection{Generalization}

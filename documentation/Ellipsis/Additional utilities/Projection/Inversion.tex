@@ -1,0 +1,22 @@
+\head{Syntax}
+
+\idx{eject_} \tt{(} \it{alpha} \tt{,} \it{omega} \tt{,} \it{parenthesized-lists} \tt{)}
+
+\head{Constraints}
+
+\tt{eject_} shall have precisely the same
+constraints as those applicable for \tt{project_}.
+
+\head{Semantics}
+
+\tt{eject_} is complementary to \tt{project_} and performs
+inverse projection on a sequence of parenthesized lists:
+
+\noindent for each list, \tt{eject_} drops only those elements that
+are selected by \tt{project_}, and retains rest of the elements.
+
+\note The behavior of \tt{eject_} is equivalent to applying
+\tt{xslice_} on each list after removing the parentheses.
+
+\example \tt{eject_(1, 2, (A, B, C, D), (a, b, c, d))}
+expands to \tt{(A, D), (a, d)}.

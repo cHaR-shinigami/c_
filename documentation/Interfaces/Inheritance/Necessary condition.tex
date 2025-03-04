@@ -1,0 +1,28 @@
+For Liskov substitution to work correctly with instances of interfaces,
+a fundamental necessity is that the concrete lineage
+must be a refinement of the abstract lineage.
+This requirement can be formalized as stated below:
+
+\begin{center}
+If \it{interface-A} is extended by \it{interface-B},
+and \it{interface-B} is concretized by \it{class-C},\\
+then \it{interface-A} must also be concretized by \it{class-C}
+or one of its ancestors.
+\end{center}
+
+If an instance of \it{interface-B} is substituted as an
+instance of its base \it{interface-A}, the \tt{concrete}
+member would be of \it{class-C} (or a derived class).
+However, any code operating with \it{interface-A} would expect \tt{concrete}
+instance of a class that implements \it{interface-A}, which works fine if such
+a class happens to be an ancestor of \it{class-C}, or the same class itself.
+This is because in the concrete lineage, any instance of \it{class-C} (or sub-class)
+is also valid for all of its ancestors (due to \tt{base} being the first member),
+and is thus suitable to be used with an instance of \it{interface-A}.
+
+\example \tt{Collection} interface is concretized by \tt{List} class,
+and its base interface \tt{Iterable} is concretized
+by \tt{Chain} (which is the base class of \tt{List}).
+Since an instance of \tt{List} can be used as an instance of \tt{Chain},
+an instance of \tt{Collection} whose \tt{concrete} member points to
+an instance of \tt{List} can be used as an instance of \tt{Iterable}.

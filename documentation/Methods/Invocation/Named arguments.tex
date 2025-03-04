@@ -1,0 +1,30 @@
+For \tt{(} $prefix$ \tt{,} \it{method-name} \tt{)} style invocation of a method
+whose prototype permits a fixed number of arguments, a named argument of the form
+\tt{.}$parameter$ \tt{=} $argument$ is used to associate an argument with a parameter.
+The idea is influenced by keyword arguments in the Python programming language,
+and it can be used to provide arguments out of order, i.e. in a different
+sequence as compared to the parameter list declared in the prototype.
+If a named argument is followed by a conventional unnamed argument, the latter
+corresponds to the subsequent parameter; further unnamed arguments after that
+are assigned in the declared order of parameters as per the prototype.
+
+If the argument corresponding to a parameter is provided multiple times,
+only the last expression is considered, and rest of them are not evaluated;
+if an argument is omitted for some parameter, the default
+value \tt{0} is used instead (null for pointer type parameters).
+The latter property can be convenient for augmenting a method with additional
+parameters, without having to refactor the source code: this is because
+existing invocations with \tt{call_} will still compile successfully, with
+each newly added parameter at the end receiving the default argument \tt{0}.
+
+\note A crucial point is that existing object files should not be linked with a
+method extended with additional parameters, but their source codes should be
+recompiled to generate object files; otherwise the default argument \tt{0} will
+not be used for the extra parameters, potentially causing undefined behavior at runtime.
+The \tt{call_} family comes with a mixed blessing that only avoids
+refactoring the source code if more parameters are added to a method.
+It still requires recompiling all translation units that invoke the method, based
+on the updated prototype; failing to do so can silently break existing code.
+As a general recommendation, an existing method prototype in wide
+use should never be updated except in very rare circumstances,
+and it is best to avoid such breaking changes altogether.

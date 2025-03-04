@@ -1,0 +1,18 @@
+The following code declares a linear linked list;
+a similar code is available in \tt{examples/include/class/Chain._}
+
+\code{Classes/More examples/Linear linked list/Chain._}
+
+The macro \tt{Chain_EXTENDS} establishes an inheritance
+relationship with the \tt{Object} class, and specifies
+the methods that are overridden by the \tt{Chain} class.
+\tt{Node_} is a synonym for a modifiable structure with two members,
+\tt{data} and \tt{next}: \tt{data} is a pointer to a non-modifiable
+object, and \tt{next} is a pointer to a modifiable \tt{Node_} object.
+
+The class structure contains three non-trivial members: \tt{head} and \tt{tail}
+are respectively pointers to the first and last nodes, and \tt{length} is used to
+maintain a count of the current number of elements in the list (in constant time).
+
+The \tt{append} method is meant to extend a list by adding
+a node after tail node (the new node becomes the tail).

@@ -1,0 +1,13 @@
+\head{Syntax}
+
+\tt{method_ (} \it{prefix} \tt{,} \it{method-name} \tt{)}
+
+\head{Semantics}
+
+\tt{method_} specifies a non-modifiable array of
+two function pointers: the function type is given by
+\tt{Method_} with the same \it{prefix} and \it{method-name}.
+These are pointers to the proxy and verifier functions, which are described next.
+
+\note \tt{typeof (method_(}\it{prefix}\tt{,} \it{method-name}\tt{))} is
+same as \tt{Ptr (Method_(}\it{prefix}\tt{,} \it{method-name}\tt{)) [2]}.

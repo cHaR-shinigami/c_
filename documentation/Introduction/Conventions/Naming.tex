@@ -1,0 +1,109 @@
+The underscore character plays a pivotal role in the naming
+scheme designed for this dialect, which justifies the name C\_;
+it is believed that liberal use of trailing underscores in C\_ also reduces
+the chances of name collision with identifiers in existing libraries.
+We are already familiar with a couple of rules from the first example:
+a type name ending with an underscore means that it is modifiable.
+Readers may have already observed that the same
+convention is also followed for identifiers of variables:
+they do not start with an uppercase letter,
+and a trailing underscore means the object is modifiable.
+Furthermore, type names begin with an uppercase
+letter and contain at least one lowercase letter;
+the latter requirement is to differentiate it from object-like macros,
+which are traditionally named entirely in uppercase.
+Except for a few keyword-like features, C\_ continues the same
+tradition for naming object-like macros, with an additional requirement:
+except for header guards, they should not end with an underscore.
+
+Names of function-like macros end with underscore to differentiate
+them from function names; the latter should not end with an underscore.
+One design principle of C\_ is that a function-like macro, whose documented
+semantics are required to be similar to those of a proper function call,
+should mimic the behavior of an actual function as closely as possible.
+However, there is a fundamental limitation that cannot be overcome:
+a macro does not have an address,
+so it is impossible to obtain a function pointer for a macro.
+A trailing underscore acts as a form of self-documentation for such limitations:
+it makes the programmer aware that instead of an actual function, some other
+form of implementation may be used, most likely a function-like macro.
+Such names will be encountered frequently in later chapters, as most features
+of C\_ are provided as function-like macros by the reference implementation.
+
+The abstract semantics of C\_ does not mandate that
+its features need to be implemented with macros;
+thus implementors are not bound to rely on the preprocessor,
+and they can write a separate front-end pass that transpiles C\_ code to C code.
+For the latter approach, it is strongly recommended that the names for non-macro
+implementations should additionally be defined as trivial object-like macros;
+it is hoped that any code that works correctly with the reference implementation
+should also behave identically when compiled with other implementations of C\_.
+
+One undesirable aspect of function-like macros is that the
+replacement text can expand some argument more than once;
+this can lead to unfortunate outcomes if the argument contains
+side effects and more than one expansion gets evaluated.
+C\_ follows the convention of naming such macros with two trailing underscores,
+which signifies that the implementation is permitted,
+but not obliged, to evaluate some argument multiple times.
+Thus any C\_ feature whose name ends with two underscores is permitted to be
+implemented as a function-like macro that may possibly evaluate some
+argument more than once; the documentation clearly specifies which exact
+argument(s) may undergo multiple evaluation, and under what circumstances.
+For some features, multiple evaluation of arguments can itself be part of the
+semantics; for example, the macro \tt{repeat__(frequency, ...)} from the
+ellipsis framework replicates the argument sequence given by \tt{__VA_ARGS__},
+for the number of times specified by the \tt{frequency} argument.
+
+On the contrary, a feature whose name ends with a single underscore has
+more stringent requirements: it can be implemented as a function-like macro,
+but it is not permitted to evaluate any argument more than once.
+However, a macro implementation is allowed to expand an argument more
+than once, as long as at most one such expansion is evaluated at runtime;
+one example is the use of a macro argument in
+multiple associations of a \tt{_Generic} selection.
+The phrase ``at most'' implies that such macros may ignore some argument or perhaps
+expand it in a context where it does not get evaluated under certain conditions.
+As before, there may be cases where this behavior is required by the semantics;
+for example, the conditional expression \tt{test_(}$check$\tt{,} $yes$\tt{,}
+$no$\tt{)} expands all three arguments, but only one of the
+sub-expressions $yes$ or $no$ gets evaluated, depending on whether
+the scalar expression $check$ is true (non-zero) or false (zero).
+Recall that in C, a ``scalar expression'' is of arithmetic type or pointer type;
+equivalently, it is an expression that can be assigned to or
+cast as boolean type (\tt{_Bool} in C is \tt{Bool_} in C\_).
+
+A function-like macro whose name does not have any
+lowercase letter and ends with a single underscore
+indicates that a valid invocation expands to a list of constants.
+The expanded list can be a singleton; for example, the macro \tt{COUNT_(...)}
+from the ellipsis framework counts the number of arguments passed to it
+(more precisely, it returns one more than the number of
+unparenthesized commas in the expanded argument sequence).
+
+Header guards are defined as object-like macros having
+the same name as the filename entirely in uppercase,
+with the dot being replaced by an underscore;
+this assumes that header filenames should not start with
+a digit and not contain any non-identifier characters.
+We have already encountered one such example before:
+\tt{C__} acts as the guard for the header \tt{<c._>}.
+Another example is the macro \tt{ASSERT__}, which records whether
+the header \tt{<assert._>} was last configured in debugging mode;
+in addition to that, it also doubles as the header guard.
+The same practice has been adopted for other configurable headers;
+for a header file named \tt{header._},
+an object-like macro \tt{HEADER__} serves a dual purpose:
+besides acting as a header guard to avoid redefinitions, it also records the
+\tt{defined} state of \tt{DEBUG} macro every time \tt{header._} is included.
+One common use of this convention is to check
+whether a header has already been included or not,
+which helps to avoid any unintended re-configuration of dependency headers.
+
+Throughout this document, we have used \tt{<}angle bracket\tt{>} syntax
+for including the configuration header \tt{<c._>} and C\_ standard headers;
+reference implementation of the standard headers
+are placed within \tt{.include/} directory.
+The example headers used for illustrative purposes are not part of C\_; these
+have been included with the \tt{"}double quotes\tt{"} syntax, to differentiate
+them from standard headers that are to be provided by all implementations of C\_.

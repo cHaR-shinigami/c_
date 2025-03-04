@@ -1,0 +1,13 @@
+The following procedure code is available in the source file
+\src{compile/class/List/init.c_}
+
+If the first element in the \tt{tape} array is not null,
+it is expected to be pointer to a \tt{struct Type} pointer,
+\tt{Type} being a synonym for \tt{Ptr (const struct Type)}.
+If it is not null and does not refer to a valid
+\tt{Type} structure, then a null pointer is returned.
+Otherwise a new \tt{List} object is created, and on successful allocation,
+its \tt{type} member is initialized to the value of \tt{type} parameter$.$
+If the first element of \tt{tape} array is not null, it is dereferenced
+to get a pointer to a \tt{Type} structure, used to initialize the
+\tt{species} of the new instance; otherwise \tt{type_(Object)} is used.

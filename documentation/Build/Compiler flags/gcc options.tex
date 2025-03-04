@@ -1,0 +1,76 @@
+The following additional options are used
+for invoking \tt{gcc} in our build script.
+
+\begin{itemize}
+
+\item \tt{-ftrack-macro-expansion} is an option for the preprocessor
+\tt{cpp} that controls location tracking of preprocessing tokens
+that undergo nested macro invocations, and this information is shown
+in diagnostic messages when a macro invocation causes an error.
+As the foundation of the C\_ reference implementation is
+built upon the preprocessor, even a minor typographic mistake
+in code can trigger an avalanche of preprocessing errors.
+A detailed stack trace report of macro expansions can be
+beneficial for finding bugs in the reference implementation itself;
+however, they are of limited interest to most programmers, and excessive
+verbosity can overwhelm beginners about the precise cause of an error,
+which can be as minor as an extra comma in a macro invocation.
+Setting this option to zero disables it, thereby
+limiting the depth of preprocessing error messages.
+
+\item \tt{-Wduplicated-branches} warns when two blocks of
+a conditional expression or statement have identical code.
+
+\item \tt{-Wduplicated-cond} warns when two mutually exclusive branches,
+such as \tt{if} and \tt{elif} (short for \tt{else if}), have conditions
+whose values can be statically determined to be identical.
+This makes the code guarded by the \tt{elif} unreachable:
+when the condition is satisfied for \tt{if} branch, then \tt{elif} branch
+will not execute due to mutual exclusion, and when the condition fails
+for \tt{if} branch, then it will also fail for \tt{elif} branch as well.
+
+This programming fallacy be demonstrated with a concrete example,
+as shown in this contrived code snippet.
+
+\code{Build/Compiler flags/unreachable.c_}
+
+The above function cannot execute \tt{return 1} due to the guarding
+\tt{elif} having the same condition as its preceding \tt{if}.
+However, declaring the parameter as \tt{volatile Int n} suppresses the warning,
+as it tells the compiler that the value of \tt{n} can possibly change from zero
+to non-zero between the branches, due to external sources of mutation (such as
+another concurrent thread of execution updating this value via a pointer to it).
+
+\item \tt{-Winit-self} warns about initializing an uninitialized
+variable with its indeterminate value, such as \tt{Int n = n;}
+
+\item \tt{-Wnull-dereference} warns about execution paths
+that can lead to dereferencing a possibly null pointer.
+This is an example of a warning that is enabled by optimizations: in this case,
+\tt{-Wnull-dereference} comes into effect when \tt{-fdelete-null-pointer-checks}
+is active, which is enabled by \tt{-O2} and higher optimizations.
+
+\item \tt{-Wshift-overflow=2} warns about integer overflow for bitwise left shift
+operations; in particular, setting it to \tt{2} enables warning about shifting
+a \tt{1} to sign bit position, when the promoted left operand has a signed type.
+
+\item \tt{-Wstrict-overflow=2} warns about signed overflows
+in cases where \tt{gcc} assumes that overflow will not occur.
+
+\end{itemize}
+
+The following options starting with \tt{-Wno-} are used to
+disable certain warnings turned on by \tt{-Wall} or \tt{-Wextra}.
+
+\begin{itemize}
+
+\item \tt{-Wno-parentheses} is used to forgo redundant parentheses
+in some expressions, notably with \tt{iff} and \tt{implies}.
+
+\item \tt{-Wno-tautological-compare} is used to disable few
+false positive warnings for the reference implementation.
+
+\item \tt{-Wno-type-limits} disables warnings on range
+checking conditions that are always true on most environments.
+
+\end{itemize}

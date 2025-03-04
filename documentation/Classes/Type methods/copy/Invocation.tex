@@ -1,0 +1,19 @@
+\head{Syntax}
+
+\idx{copy_}\s\s\s\tt{(} [[\tt{. this =}]
+$this$ \tt{,}] [\tt{. that =}] $that$ \tt{)}
+
+\idx{copy_1_}\s\tt{(} \phantom{[}[\tt{. that =}] $that$ \tt{)}
+
+\idx{copy_2_}\s\tt{(} \phantom{[}[\tt{. this =}]
+$this$ \tt{,}\phantom{]}  [\tt{. that =}] $that$ \tt{)}
+
+\head{Semantics}
+
+\tt{copy_} invokes \tt{copy_}$n$\_ if the expanded
+argument sequence contains $n$ arguments.
+
+\tt{copy_1_(}$that$\tt{)} is equivalent to \tt{copy_2_(NULL,} $that$\tt{)}.
+
+\tt{copy_2_(}$this$\tt{,} $that$\tt{)} is equivalent to \tt{( (typeof
+(unqual__(}$that$\tt{))) call_((Type, copy),} $this$\tt{,} $that$\tt{) )}.

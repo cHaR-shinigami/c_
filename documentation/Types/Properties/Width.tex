@@ -1,0 +1,21 @@
+\def\Subsubsection#1{\subsubsection{#1}\input{Types/Properties/Width/#1}}
+
+\head{Syntax}
+
+\tt{width_ (} \it{type-name} \tt{)}
+
+\head{Constraints}
+
+\it{type-name} shall specify an integer type.
+
+\head{Semantics}
+
+\idx{width_} returns the number of useful bits for the type specified by
+\it{type-name}: for unsigned types, it counts the number of value bits,
+and for signed types, it also counts the sign bit along with value bits;
+padding bits are ignored.
+
+\example \tt{width_(Bool)} is always 1; both \tt{width_(UBitInt (}$w$\tt{))}
+and \tt{width_(BitInt (}$w$\tt{))} are equal to $w$.
+
+\Subsubsection{Precision}

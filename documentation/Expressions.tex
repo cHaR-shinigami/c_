@@ -1,0 +1,48 @@
+\def\Section#1{\section{#1}\input{Expressions/#1}}
+
+This chapter describes several features of C\_ that are syntactically classified
+as expressions: each expression has a well-defined type, which can be a complete
+type, a function type, or an incomplete type; if the type is not \tt{Void_}
+or an incomplete aggregate type, an expression also has a value.
+Unlike statements discussed in the previous chapter,
+these features can be used as sub-expressions within a larger expression;
+an expression becomes a statement when it is ended by a semicolon.
+Before proceeding to the main content, it should be mentioned that this chapter
+does not contain a complete collection of all expression-like features in C\_;
+the rest have been documented in later chapters.
+
+\note ISO C grammar does not allow statements within expressions;
+however, the GNU C dialect permits this as a non-standard language extension
+that is supported by many compilers (including \tt{gcc} and \tt{clang}).
+C\_ features marked with an asterisk (*) are provided
+by the reference implementation using this extension;
+depending on how a C\_ feature is implemented, this is required to
+avoid multiple evaluation of arguments with variably modified types.
+Use of such features can generate compiler warnings that can be
+disabled with \tt{-Wno-pedantic} for \tt{gcc} and \tt{clang}.
+
+\Section{Constant expressions}
+
+\Section{Compound operators}
+
+\Section{Scalar to text}
+
+\Section{Bit shifting}
+
+\Section{Evaluation}
+
+\Section{Conditionals}
+
+\Section{Generic selections}
+
+\Section{Detecting qualifiers}
+
+\Section{Call stack growth}
+
+\Section{Allocation}
+
+\Section{Input}
+
+\Section{Output}
+
+\Section{Logging}

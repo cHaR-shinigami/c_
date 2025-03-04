@@ -1,0 +1,10 @@
+The function-like macros \idx{uabs_}, \idx{ulabs_}, and \idx{ullabs_} are
+non-trivial wrappers over the functions \tt{uabs}, \tt{ulabs}, and \tt{ullabs}.
+These macros conditionally invoke their respective functions only if their
+argument has a signed type; otherwise the argument value is cast to the
+unsigned return type of the corresponding function, without calling it.
+
+\note If the argument happens to be unsigned, calling the
+functions directly can cause signed overflow if the argument
+value cannot be represented in the signed parameter type.
+The wrapper macros avoid such predicaments.

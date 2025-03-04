@@ -1,0 +1,28 @@
+The method \tt{species} is used to obtain and possibly relax the
+existing \tt{species} of a \tt{List} instance to an ancestor type.
+We have left the protocol definition as an exercise, which shall
+be implemented in the next chapter using \tt{Collection} interface.
+Following are the basic pre-conditions that can be established by the protocol:
+
+\begin{itemize}
+
+\item \tt{this} must point to a valid instance of \tt{List} class.
+
+\item If \tt{species} is not null, then it
+must point to a valid \tt{Type} structure.
+
+\end{itemize}
+
+The following procedure code is available in the source file
+\src{compile/class/List/species.c_}
+
+If the parameter \tt{species} is a null pointer, then
+the existing value of \tt{this->species} is returned.
+
+If the list is empty, then \tt{this->species} is directly updated to \tt{species};
+otherwise \tt{this->species} is updated to the nearest common ancestor
+of \tt{species} and the existing value of \tt{this->species}.
+It ensures that \tt{this->species} is always updated to an ancestor type,
+and due to Liskov substitution principle, each existing element
+in the list would be a valid instance of the super type.
+So a non-empty list would remain valid after relaxing the type.

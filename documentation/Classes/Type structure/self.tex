@@ -1,0 +1,8 @@
+\tt{self} is a pointer to non-modifiable \tt{struct Type}.
+\tt{self} is the first member of \tt{Type} structure, and for a given \tt{Type}
+instance, if \tt{self} points to its own address, it indicates a basic type;
+otherwise the \tt{Type} instance is a concrete implementation
+of an extended type (interface), and \tt{self} points
+to basic \tt{Type} instance of the implementing class.
+
+\enlargethispage*{\baselineskip}

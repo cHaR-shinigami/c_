@@ -1,0 +1,28 @@
+\head{Syntax}
+
+\tt{put_ (} \it{clobber} \tt{,} \it{index} \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+If \it{clobber} expands to an unparenthesized list,
+then the number of elements in that list shall be less than \tt{PP_MAX}.
+
+\it{index} shall be a non-negative decimal integer constant not
+exceeding \tt{PP_MAX}, or shall expand to such a constant.
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+\it{argument-list} is expanded first, and elements in the
+resulting list are indexed left to right starting at index zero.
+Let there be $n$ elements in the expanded list,
+so that its last element has index $n - 1$.
+If \it{index} exceeds $n$, then it is adjusted to $n$.
+If \it{clobber} expands to a list of length $m$, then $m$ elements starting
+from the adjusted index are replaced by \it{clobber}; if there are fewer than
+$m$ elements from the adjusted index, the list is extended on right side.
+
+\example \tt{put_(echo_(a, p), 0, m, a, p, l, e)}
+expands to the text \tt{a, p, p, l, e}.

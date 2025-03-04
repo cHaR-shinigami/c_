@@ -1,0 +1,9 @@
+\type{Char} is the basic character type, which is also
+an integer type with implementation-defined signedness.
+By definition, \tt{sizeof (Char)} is 1 and all bits are value bits (at least 8);
+character encoding scheme is implementation-defined.
+
+\note Character constants are always signed as they are of type \tt{Int_},
+not \tt{Char_}, so for example \tt{typeof_('\\n')} is \tt{Int_};
+however, string literals are of type ``array of characters'',
+so the type \tt{typeof_(*"\\n")} is \tt{Char_} as expected.

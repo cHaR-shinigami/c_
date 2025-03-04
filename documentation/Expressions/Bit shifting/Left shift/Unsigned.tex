@@ -1,0 +1,26 @@
+\head{Syntax}
+
+\tt{# include <lshift._>}
+
+\idx{ulsh_} \tt{(} \it{left-expression} \tt{,} \it{right-expression} \tt{)}
+
+\head{Constraints}
+
+Both expressions shall have integer types.
+
+\head{Semantics}
+
+\it{left-expression} is converted to the type \tt{UIntmax};
+we shall denote this converted value as $u$.
+\it{right-expression} is converted to an unsigned type;
+we shall denote this converted value as $s$.
+Let $w$ denote minimum width of the type of
+\it{left-expression} before and after conversion.
+If shift $s$ is less than width $w$, then $u$ is left shifted by $s$ bits,
+as if with \tt{u << s}; more precisely, if the unsigned value $u$ is expressed
+as $\sum_{i = 0}^{w - 1} b_i.2^i$ with the bit pattern $b_{w - 1} \cdots b_0$
+(here $b_0$ is the least significant bit), then the result of left shifting
+it by $s$ bits has the value $\sum_{i = s}^{w - 1} b_{i - s}.2^i$
+with the bit pattern $b_{w - 1 - s} \cdots b_0 0_1 \cdots 0_s$.
+This unsigned result is converted back to
+the original type of \it{left-expression}.

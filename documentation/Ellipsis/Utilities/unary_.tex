@@ -1,0 +1,13 @@
+\head{Syntax}
+
+\tt{unary_ (} $n$ \tt{)}
+
+\head{Constraints}
+
+$n$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX},
+or it shall expand to such a constant.
+
+\head{Semantics}
+
+\tt{unary_(}$n$\tt{)} is equivalent to the invocation \tt{repeat__(}$n$\tt{,)}
+which generates a sequence of $n$ consecutive commas.

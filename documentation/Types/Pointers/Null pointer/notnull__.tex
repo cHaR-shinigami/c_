@@ -1,0 +1,128 @@
+The \tt{notnull__} and \tt{notnull_} family are
+useful for runtime diagnosis of null pointers:
+when compiled in debugging mode, detecting a null pointer prints a customizable
+diagnostic message and then terminates the process with exit status as one;
+when compiled in production mode,
+a null pointer is replaced with an optional default pointer.
+
+\head{Syntax}
+
+\tt{# include <pointer._>}\\
+
+\idx{notnull__}
+ \tt{(} \it{ptr}
+[\tt{,} \it{def}\tt {=NULL}
+[\tt{,} \it{text}\tt{="(}\it{ptr}\tt{) != NULL"}
+[\tt{,} \it{site}\tt{=SITE}
+[\tt{,} \it{sink}\tt{=stderr}
+[\tt{,} \it{DEBUG}\tt{=POINTER__}]]]]]\tt{)}
+
+\idx{notnull__1__} \tt{(}
+\it{ptr}   \tt{)}
+
+\idx{notnull__2__} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{)}
+
+\idx{notnull__3__} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{,}
+\it{text}  \tt{)}
+
+\idx{notnull__4__} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{,}
+\it{text}  \tt{,}
+\it{site}  \tt{)}
+
+\idx{notnull__5__} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{,}
+\it{text}  \tt{,}
+\it{site}  \tt{,}
+\it{sink}  \tt{)}
+
+\idx{notnull__6__} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{,}
+\it{text}  \tt{,}
+\it{site}  \tt{,}
+\it{sink}  \tt{,}
+\it{DEBUG} \tt{)}\\
+
+\head{Constraints}
+
+\it{ptr} shall be a pointer expression, and \it{def}
+shall be a pointer compatible with the type of \it{ptr};
+more precisely, it shall be possible to assign \it{def} to a variable
+with the same type as that of \it{ptr}, without requiring a type cast.
+\it{text} shall be a string.
+\it{site} shall be of type \tt{Site}.
+\it{sink} shall be of type \tt{Stream}.
+\it{DEBUG} shall expand to either \tt{0} or \tt{1}.
+
+\head{Semantics}
+
+\tt{notnull__} invokes \tt{notnull__}$n$\_\_ if the
+expanded argument sequence contains  $n$ arguments.
+Outcome of the expression is of the same type as \it{ptr}.
+If \it{ptr} is not null, then that is the value of the outcome.
+When compiled with \it{DEBUG} expanding to \tt{0}, if \it{ptr} is null, then
+value of the outcome is \it{def}, but having the same type as that of \it{ptr}.
+
+When compiled with \it{DEBUG} expanding to \tt{1}, if \it{ptr} is null,
+the process prints a diagnostic message of the following form,
+and then terminates by calling \tt{exit(1)}.\\
+
+\tt{Assertion failed: (}\it{ptr}\tt{) != NULL, function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+
+The text \tt{(}\it{ptr}\tt{) != NULL} is the default,
+which can be customized with the argument \it{text};
+an empty string is used if \it{text} is null.
+\it{function-identifier}, \it{file-name}, and \it{line-number}
+collectively form the ``source code coordinates'',
+which indicate the location where the assertion failed;
+the default argument \tt{SITE} is an expression that obtains
+these coordinates from the predefined identifier \tt{__func__},
+the \tt{__FILE__} macro, and the \tt{__LINE__} macro (respectively).
+The structure type \tt{Site} is discussed in chapter 9; for now,
+we can provide the \it{site} argument with a compound literal, as shown below
+(if any of the first two members is null,
+then an empty string is used as the corresponding text).\\
+
+\tt{( ( Site ) \{ "}\it{function-identifier}\tt{" , "}\it{file-name}\tt{" ,}
+\it{line-number} \tt{\} )}\\
+
+The message is written to the standard error stream \tt{stderr} by default,
+which can be changed with the \it{sink}.
+\tt{stderr} is also the fallback if \it{sink} is null; the behavior
+of writing to \it{sink} is undefined if it is not an output stream.
+
+The default value of the \it{DEBUG} argument is \idx{POINTER__},
+which is an object-like macro that records the \tt{defined} state of
+the \tt{DEBUG} macro when the header \idx{<pointer._>} was last included.
+If the latest inclusion of \tt{<pointer._>} was preceded by an active
+definition of the macro \tt{DEBUG}, then \tt{POINTER__} expands to \tt{1};
+otherwise it expands to \tt{0}.
+The first argument \it{ptr} can be evaluated more than once only if it
+is pointer to a variably modified type; otherwise it is evaluated once.
+Rest of the arguments are always evaluated only once,
+regardless of whether \it{DEBUG} is \tt{0} or \tt{1}.
+
+\note Readers may observe that when \it{DEBUG} is \tt{1},
+the argument \it{def} is not utilized; conversely, when \it{DEBUG} is \tt{0},
+the arguments \it{text}, \it{site}, and \it{sink} are redundant.
+Nevertheless, if these arguments are explicitly supplied by the programmer,
+then they are always evaluated, even if their results remain unused.
+This ensures a consistent behavior when a non-essential argument involves
+side effects, which take place anyways to avoid unexpected surprises.
+
+\example \tt{notnull__} can be used to write debugging wrappers for
+functions that have undefined behavior with null pointer arguments.
+The \tt{echo_} macro is used as a safeguard in
+case \tt{str} contains unparenthesized commas.\\
+
+\tt{#define sscanf(str, ...) sscanf(notnull__(echo_(str), ""), __VA_ARGS__)}

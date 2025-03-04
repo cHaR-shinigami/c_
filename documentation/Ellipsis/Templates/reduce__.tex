@@ -1,0 +1,39 @@
+\tt{reduce__} is also an aggregating macro similar to \tt{fold__},
+except that the elements are combined right to left.
+
+\head{Syntax}
+
+\tt{reduce__ (} $f$, \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+The number of arguments in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Let the expanded form of $f$ be labeled as $f_0$ \tt{,} $\cdots$ \tt{,} $f_{F-1}$;
+similarly, the expanded form of \it{argument-list}
+is denoted as $a_0$ \tt{,} $\cdots$ \tt{,} $a_{N-1}$.
+With this notation, the output of \tt{fold__}
+can be represented with the following form:
+
+\centerline
+{
+$f_{(N - 2)\%F}$ \tt{(} $a_0$ \tt{,} $f_{(N - 3)\%F}$ \tt{(}$a_1$ \tt{,} $\cdots$
+$f_{2\%F}$ \tt{(} $a_{N - 4}$ \tt{,} $f_{1\%F}$ \tt{(} $a_{N - 3}$ \tt{,} $f_0$
+\tt{(} $a_{N - 2}$ \tt{,} $a_{N - 1}$ \tt{)} \tt{)} \tt{)} $\cdots$ \tt{)} \tt{)}
+}
+
+The first invocation is of the form
+$f_0$ \tt{(} $a_{N - 2}$ \tt{,} $a_{N - 1}$ \tt{)}; thereafter the result
+of each invocation is used as the second argument in the next invocation,
+and the previous unprocessed element is used as the first argument.
+
+\note Even though \tt{reduce__} processes its \it{argument-list}
+right to left, the function list $f$ is used left to right.
+
+\example \tt{reduce__(SUB_, 3, 2, 1)} performs
+\tt{SUB_(3, SUB_(2, 1))}, whose outcome is \tt{2}.
+On the contrary, \tt{fold__(SUB_, 3, 2, 1)} works left to
+right as \tt{SUB_(SUB_(3, 2), 1)}, and the result is \tt{0}.

@@ -1,0 +1,35 @@
+\head{Syntax}
+
+\tt{# include <bits._>}
+
+\tt{Void_} \idx{left_shift} \tt{(Size} $wordcount$%
+\tt{, Ptr (UInt_fast8_ [}$wordcount$\tt{])} $bitarray$%
+\tt{, ULLong} $shift$\tt{, Bool} $bit$\tt{);}
+
+\idx{left_shift__}\s\tt{(}
+\it{pointer-to-bits} \tt{,} $shift$ \tt{,} $bit$ \tt{)}
+
+\idX{left_shift_}\s\s\tt{(}
+\it{pointer-to-bits} \tt{,} $shift$ \tt{,} $bit$ \tt{)}
+
+\head{Constraints}
+
+\it{pointer-to-bits} shall be pointer to a complete
+\tt{Bits_} array; the array shall be modifiable.
+
+For \tt{left_shift__} and \tt{left_shift_}*,
+$shift$ shall be an expression having integer type.
+
+\head{Semantics}
+
+\tt{left_shift__} and \tt{left_shift_}* infer $wordcount$ from
+the type of \it{pointer-to-bits} and invoke \tt{left_shift}.\\
+If \it{bitarray} is null or $shift$ is greater than bit count,
+the function returns immediately; otherwise the bits are index
+left to right starting at index zero, and if $shift$ is $s$,
+the bits are shifted towards lower indices by $s$ positions.
+The bits originally at indices $0$ through $s - 1$ are lost after
+the left shift, and the last $s$ vacated bits are filled with $bit$.
+
+When compiled with \tt{BITS__} expanding to \tt{1},
+\it{pointer-to-bits} is asserted to be not null, as if with \tt{notnull_}.

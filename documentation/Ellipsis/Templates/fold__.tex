@@ -1,0 +1,44 @@
+\tt{fold__} implements the higher order function \it{fold} for combining
+multiple elements of a list into a single result using an aggregation
+function that can accept two arguments: if the list contains more elements,
+the function is called again with the result of its previous invocation
+as one argument, the other argument being the next input element.
+
+\head{Syntax}
+
+\tt{fold__ (} $f$, \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+The number of arguments in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+Let the expanded form of $f$ be labeled as $f_0$ \tt{,} $\cdots$ \tt{,} $f_{F-1}$;
+similarly, the expanded form of \it{argument-list}
+is denoted as $a_0$ \tt{,} $\cdots$ \tt{,} $a_{N-1}$.
+With this notation, the output of \tt{fold__}
+can be represented with the following form:
+
+\centerline
+{
+$f_{(N - 2)\%F}$ \tt{(} $f_{(N - 3)\%F}$ \tt{(} $\cdots$ $f_{2\%F}$ \tt{(}
+$f_{1\%F}$ \tt{(} $f_0$ \tt{(} $a_0$ \tt{,} $a_1$ \tt{) ,} $a_2$ \tt{) ,}
+$a_3$ \tt{)} $\cdots$ \tt{,} $a_{N - 2}$ \tt{) ,} $a_{N - 1}$ \tt{)}
+}
+
+In other words, if \it{argument-list} expands to a list of $N$ elements
+($N > 1$), then there are $N - 1$ iterations: intermediate results are used
+in subsequent stages until all elements are combined into a single result.
+The first invocation is of the form $f_0$ \tt{(} $a_0$ \tt{,} $a_1$ \tt{)};
+if the list has more than two elements, then the result of each
+invocation is used as the first argument in the next invocation,
+and the next unprocessed element is used as the second argument.
+
+\note \tt{fold__} aggregates the expanded \it{argument-list}
+by processing its elements from left to right.
+
+\example \tt{fold__(echo_(ADD_, SUB_), RANGE_(10))} alternately adds and
+subtracts non-negative integers below 10; in effect, it subtracts the sum of
+odd integers from the sum of even integers in given range, resulting in \tt{5}.

@@ -1,0 +1,49 @@
+A variable designates a memory object commonly known as lvalue;
+if the lvalue can be accessed by an expression other than the variable,
+then that expression is an alias:
+the simplest form of aliasing is a pointer to the variable.
+
+\example Non-modifiable types only disallow updating the variable,
+but the lvalue can still be modifiable.\\
+
+\tt{Int capacity = BUFSIZ;}
+
+\tt{/* ++capacity; // constraint violation */}
+
+\tt{++*(Int_ *)&capacity; // can compile}\\
+
+To make a variable truly immutable, we need to enforce non-aliasing,
+which can be done by declaring with \idx{let}.
+
+\head{Syntax}
+
+\tt{let} \it{variable-declaration}
+
+\head{Constraints}
+
+\it{variable-declaration} shall not declare a function,
+but it can declare a function pointer.
+
+\head{Semantics}
+
+For a block scope declaration that does not specify any storage-class,
+\tt{let} disallows aliasing,
+so a pointer cannot be obtained to the lvalue designated by the variable;
+this also applies to function parameters.
+The behavior is implementation-defined if \tt{let} is used in conjunction
+with any storage-class specifier, or with external declarations.
+
+\example In the earlier code, \tt{&capacity} will cause an
+error if we declare it as \tt{let Int capacity = BUFSIZ;}
+
+\head{Recommended practice}
+
+The reference implementation provides \tt{let} as the \tt{register} keyword,
+so it cannot be used with external declarations,
+or with other storage-class specifiers;
+other implementations can provide \tt{let} as a separate built-in feature.
+
+\note \tt{let} can be used with \tt{auto} only if the latter
+is meant for type inference, which is standardized in C23.
+The use of \tt{let} is encouraged, as disabling aliasing
+can sometimes provide an opportunity for better optimizations.

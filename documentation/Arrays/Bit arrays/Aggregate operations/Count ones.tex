@@ -1,0 +1,17 @@
+\head{Syntax}
+
+\tt{# include <bits._>}
+
+\tt{ULLong_} \idx{count_ones}\s\s\tt{( Size} $wordcount$
+\tt{, Ptr ( UInt_fast8 [} $wordcount$ \tt{] )} $bitarray$ \tt{) ;}
+
+\idx{count_ones__}\s\s
+\tt{(} \it{pointer-to-bits} \tt{)}
+
+\idX{count_ones_}\s\s\s
+\tt{(} \it{pointer-to-bits} \tt{)}
+
+\head{Semantics}
+
+If pointer to bit array is not null, outcome is the number of bits set to one;
+otherwise the function returns zero.

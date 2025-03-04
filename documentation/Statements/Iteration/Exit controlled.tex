@@ -1,0 +1,32 @@
+We also have looping blocks whose condition is checked after each iteration;
+such blocks are executed at least once.
+
+\head{Syntax}
+
+\begin{tabular}{l|l}
+
+\tt{begin} & \tt{begin}\\
+
+\s\s\s\s\it{declarations-and-statements}\opt
+&
+\s\s\s\s\it{declarations-and-statements}\opt\\
+
+\idx{again_} \tt{(} \it{loop-condition} \tt{)}
+&
+\idx{end_}   \tt{(} \it{stop-condition} \tt{)}\\
+
+\end{tabular}
+
+\head{Constraints}
+
+Both \it{loop-condition} and \it{stop-condition} shall be scalar expressions.
+
+\head{Semantics}
+
+\it{loop-condition} and \it{stop-condition} are evaluated on
+reaching end of that block, or due to a \tt{continue} statement.
+Execution of the block is repeated as long as \it{loop-condition} is non-zero,
+or \it{stop-condition} is zero, after each iteration.
+
+\note \tt{end} is equivalent to \tt{end_(1)}.
+\tt{end_} is equivalent to \tt{again_} with the condition being logically negated.

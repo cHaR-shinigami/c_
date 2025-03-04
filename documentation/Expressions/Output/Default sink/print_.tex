@@ -1,0 +1,108 @@
+\head{Syntax}
+
+\tt{# include <output._>}
+
+\tt{print_ (} \it{expression-list} \tt{)}
+
+\head{Constraints}
+
+Each expressions shall have one of the following types
+after doing lvalue conversion and array to pointer decay.\\
+
+\noindent
+\begin{tabular}{@{}rrrrrrrr}
+
+\tt{UByte_} &\tt{UShort_} &  \tt{UInt_} & \tt{ULLong_} &\tt{UInt_least8_} &\tt{UInt_least16_} &\tt{UInt_least32_} &\tt{UInt_least64_}\\
+ \tt{Byte_} & \tt{Short_} &   \tt{Int_} &  \tt{LLong_} & \tt{Int_least8_} & \tt{Int_least16_} & \tt{Int_least32_} & \tt{Int_least64_}\\
+
+\tt{UInt8_} &\tt{UInt16_} &\tt{UInt32_} & \tt{UInt64_} & \tt{UInt_fast8_} & \tt{UInt_fast16_} & \tt{UInt_fast32_} & \tt{UInt_fast64_}\\
+ \tt{Int8_} & \tt{Int16_} & \tt{Int32_} &  \tt{Int64_} &  \tt{Int_fast8_} &  \tt{Int_fast16_} &  \tt{Int_fast32_} &  \tt{Int_fast64_}\\
+
+ \tt{Bool_} &\tt{Dec128_} & \tt{Dec32_} &  \tt{Dec64_} &       \tt{Size_} &     \tt{UIntptr_} &       \tt{ULong_} &     \tt{UIntmax_}\\
+ \tt{Char_} & \tt{Float_} &\tt{Double_} &\tt{LDouble_} &    \tt{Ptrdiff_} &      \tt{Intptr_} &        \tt{Long_} &      \tt{Intmax_}\\
+
+& \tt{Void *} & \tt{Void_ *} & \tt{Char *} & \tt{Char_ *} & \tt{WChar *} & \tt{WChar_ *} &
+
+\end{tabular}\\
+
+\note Unlike the lvalues required by input facilities, the expressions given
+to \tt{print_} and other output facilities are not constrained to be lvalues.
+The permitted type list of \tt{print_} is a
+superset of the types supported by \tt{scan__}.
+
+\head{Semantics}
+
+\tt{print_} writes the textual representation of each expression to \tt{stdout}.
+Expressions are printed left to right as per their sequence in
+\it{expression-list}, and they are evaluated in an unspecified order
+before printing the first expression; consecutive outputs are separated
+by a single space character, and a newline is printed at the end.
+
+Text printed for each expression is formatted as per one of the following \tt
+{printf} specifiers (preceded by \tt{"\%"}), depending on the resulting type of
+each expression after it undergoes lvalue conversion and array to pointer decay.
+
+\noindent
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}rl|rl|rl}
+
+       \tt{UByte_} & \tt{"hhu"}       &        \tt{Byte_} & \tt{"hhi"}       & \tt{Bool_}            & \tt{"d"}\\
+
+      \tt{UShort_} & \tt{"hu"}        &       \tt{Short_} & \tt{"hi"}        & \tt{Char_}            & \tt{"c"}\\
+
+        \tt{UInt_} & \tt{"u"}         &         \tt{Int_} & \tt{"i"}         & \tt{Float_}           & \tt{"g"}\\
+
+       \tt{ULong_} & \tt{"lu"}        &        \tt{Long_} & \tt{"li"}        & \tt{Double_}          & \tt{"lg"}\\
+
+      \tt{ULLong_} & \tt{"llu"}       &       \tt{LLong_} & \tt{"lli"}       & \tt{LDouble_}         & \tt{"Lg"}\\
+
+        \tt{Size_} & \tt{"zu"}        &     \tt{Ptrdiff_} & \tt{"ti"}        & \tt{Dec32_}           & \tt{"Hg"}\\
+
+     \tt{UIntmax_} & \tt{"ju"}        &      \tt{Intmax_} & \tt{"ji"}        & \tt{Dec64_}           & \tt{"Dg"}\\
+
+       \tt{UInt8_} & \tt{PRIu8}       &        \tt{Int8_} & \tt{PRIi8}       & \tt{Dec128_}          & \tt{"DDg"}\\
+
+      \tt{UInt16_} & \tt{PRIu16}      &       \tt{Int16_} & \tt{PRIi16}      & \tt{Void}\s\s\tt{*}   & \tt{"p"}\\
+
+      \tt{UInt32_} & \tt{PRIu32}      &       \tt{Int32_} & \tt{PRIi32}      & \tt{Void_ *}          & \tt{"p"}\\
+
+      \tt{UInt64_} & \tt{PRIu64}      &       \tt{Int64_} & \tt{PRIi64}      & \tt{\ Char}\s\s\tt{*} & \tt{"s"}\\
+
+ \tt{UInt8_least_} & \tt{PRIuLEAST8}  &  \tt{Int8_least_} & \tt{PRIiLEAST8}  & \tt{\ Char_ *}        & \tt{"s"}\\
+
+\tt{UInt16_least_} & \tt{PRIuLEAST16} & \tt{Int16_least_} & \tt{PRIiLEAST16} & \tt {WChar}\s\s\tt{*} & \tt{"ls"}\\
+
+\tt{UInt32_least_} & \tt{PRIuLEAST32} & \tt{Int32_least_} & \tt{PRIiLEAST32} & \tt {WChar_ *}        & \tt{"ls"}\\
+
+\tt{UInt64_least_} & \tt{PRIuLEAST64} & \tt{Int64_least_} & \tt{PRIiLEAST64}\\
+
+  \tt{UInt8_fast_} & \tt{PRIuFAST8}   &   \tt{Int8_fast_} & \tt{PRIiFAST8}\\
+
+ \tt{UInt16_fast_} & \tt{PRIuFAST16}  &  \tt{Int16_fast_} & \tt{PRIiFAST16}\\
+
+ \tt{UInt32_fast_} & \tt{PRIuFAST32}  &  \tt{Int32_fast_} & \tt{PRIiFAST32}\\
+
+ \tt{UInt64_fast_} & \tt{PRIuFAST64}  &  \tt{Int64_fast_} & \tt{PRIiFAST64}\\
+
+     \tt{UIntptr_} & \tt{PRIuPTR}     &      \tt{Intptr_} & \tt{PRIiPTR}\\
+
+\end{tabular*}
+
+\tt{print_} evaluates each expression exactly once and its outcome is of type
+\tt{Int_}: a non-negative outcome indicates the number of characters printed
+by that invocation (counting each space separator and the terminating newline);
+a negative outcome means nothing was printed due to write error.
+If an expression results in a pointer to \tt{Char}/\tt{Char_} or
+\tt{WChar}/\tt{WChar_}, the behavior is undefined if it does
+not refer to a valid null terminated string or wide string.
+
+\note The format specifies starting with \tt{PRI}, along with those
+starting with \tt{SCN} (mentioned in the semantics of \tt{scan__}),
+are collectively defined as object-like macros in the C standard
+header \tt{<inttypes.h>} (extended by \tt{<inttypes._>}).
+These macros expand to implementation-defined format
+specifiers for the type synonyms provided by another standard
+header \tt{<stdint.h>} (extended by \tt{<stdint._>}).
+Recall that these synonyms can be mapped to extended integer types, each of
+which can have different format specifiers for \tt{printf} and \tt{scanf}
+families; in general, a macro starting with \tt{PRI} need not expand to
+the same format specifier as its counterpart macro named with \tt{SCN}.

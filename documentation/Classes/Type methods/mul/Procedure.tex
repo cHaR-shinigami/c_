@@ -1,0 +1,28 @@
+\begin{itemize}
+
+\item If \tt{validate_(multiplier)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{validate_(multiplicand)} is \tt{false},
+then the function returns a null pointer.
+
+\end{itemize}
+
+Let $super$ denote the value of
+\tt{super(((Object *) multiplier)->type, ((Object *) multiplicand)->type)}.
+
+If \tt{product} is not a null pointer, let $type$
+denote the value of \tt{((Object *) product)->type}.
+
+\begin{itemize}
+
+\item If \tt{is_type(}$type$\tt{)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{is(}$type$\tt{,} $super$\tt{)} is \tt{false},
+then the function returns a null pointer.
+
+\item Otherwise the function returns the value
+of $super$\tt{->mul(product, multiplier, multiplicand)}.
+
+\end{itemize}

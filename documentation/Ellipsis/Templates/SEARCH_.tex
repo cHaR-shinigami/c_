@@ -1,0 +1,19 @@
+\head{Syntax}
+
+\tt{SEARCH_ (} \it{predicate} \tt{,} \it{arg2} \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+\tt{SEARCH_} shall have precisely the same
+constraints as those applicable for \tt{FILTER_}.
+
+\head{Semantics}
+
+\tt{SEARCH_} generates an index list for elements in the expanded
+\it{argument-list} that would be selected by \tt{FILTER_}.
+
+\note As always, the expanded \it{argument-list} is
+indexed from left to right starting at index zero.
+
+\example \tt{SEARCH_(EQ_, 10, 0, 10, 1, 10)} generates
+\tt{1, 3} which is the list of indices at which ten is found.

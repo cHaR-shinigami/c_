@@ -1,0 +1,14 @@
+\begin{itemize}
+
+\item If \tt{this} or \tt{in} is a null pointer,
+then the function returns a null pointer.
+
+\item Let $type$ be the value of \tt{((Object *) this)->type};
+if \tt{is_type(}$type$\tt{)} is \tt{false}, the function returns \tt{NULL}.
+
+\item If \tt{length} is a null pointer or \tt{*length} is
+equal to zero, then the function returns a null pointer.
+
+\item Otherwise, the function returns $type$\tt{->decode(this, length, in)}.
+
+\end{itemize}

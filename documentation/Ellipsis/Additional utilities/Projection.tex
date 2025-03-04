@@ -1,0 +1,30 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Ellipsis/Additional utilities/Projection/#1}}
+
+\head{Syntax}
+
+\idx{project_} \tt{(} \it{alpha} \tt{,} \it{omega} \tt{,} \it{parenthesized-lists} \tt{)}
+
+\head{Constraints}
+
+Both \it{alpha} and \it{omega} shall be non-negative decimal integer constants
+not exceeding \tt{PP_MAX}, or each of them shall expand to such a constant.
+Each argument shall be a parenthesized list,
+and the number of such lists shall be less than \tt{PP_MAX}.
+Number of elements in each parenthesized list
+shall be less than \tt{PP_MAX} after macro expansions.
+
+\head{Semantics}
+
+For each parenthesized list, the elements from index \it{alpha}
+through \it{omega} are selected, as if by applying \tt{slice_}
+on each expanded list after removing the outermost parentheses.
+The outcome for each list is fully parenthesized.
+
+\note \it{alpha} is compared with the adjusted value
+of \it{omega} in the same way as done by \tt{slice_}.
+
+\example \tt{project_(1, 2, (A, B, C, D), (a, b, c, d))}
+expands to \tt{(B, C), (b, c)}.
+
+\Subsubsection{Inversion}

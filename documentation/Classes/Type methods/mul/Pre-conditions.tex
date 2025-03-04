@@ -1,0 +1,21 @@
+\begin{itemize}
+
+\item \tt{validate_(multiplier)} must be \tt{true}.
+
+\item \tt{validate_(multiplicand)} must be \tt{true}.
+
+\end{itemize}
+
+Let $super$ denote the value of
+\tt{super(((Object *) multiplier)->type, ((Object *) multiplicand)->type)}.
+
+If \tt{product} is not a null pointer, let $type$
+denote the value of \tt{((Object *) product)->type}.
+
+\begin{itemize}
+
+\item \tt{is_type(}$type$\tt{)} must be \tt{true}.
+
+\item \tt{is(}$type$\tt{,} $super$\tt{)} must be \tt{true}.
+
+\end{itemize}

@@ -1,0 +1,27 @@
+\def\Subsection#1{\subsection{#1}\input{Statements/Declarations/#1}}
+
+Syntactically, declarations are not statements; they are described
+here as the amount of content does not justify a separate chapter.
+Over the years, ISO C revisions have made two
+major amendments in the rules of declarations.
+
+\begin{itemize}
+
+\item Firstly, mixing declarations and statements is permitted since C99;
+earlier a declaration was not allowed to follow a statement,
+and the workaround was to enclose a subsequent declaration within an inner block.
+
+\item Secondly, C23 permits a declaration to immediately follow a label;
+it was earlier forbidden due to a grammatical restriction, and a simple
+workaround was to add a null statement (a semicolon) just after the label.
+
+\end{itemize}
+
+Some features of C\_ are in fact declarations;
+we have already seen one of them in the previous chapter:
+\tt{typedef_} is a declaration that creates a pair of type synonyms.
+Here we shall discuss two other kinds of declarations.
+
+\Subsection{Static assertions}
+
+\Subsection{Spare variables}

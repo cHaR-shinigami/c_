@@ -1,0 +1,14 @@
+\tt{<inttypes._>} additionally defines the following function-like macros:
+\idx{uintmax_}, \idx{gcd_}, \idx{umax_}, \idx{umin_}, \idx{smax_}, \idx{smin_}.
+
+\tt{uintmax_} exhibits well-defined behavior for large
+unsigned integers that cause signed overflow with \tt{uintmax}.
+
+\tt{gcd_}, \tt{umax_}, \tt{umin_}, \tt{smax_}, and \tt{smin_}
+generalize the respective functions with fold/reduce operations;
+if a single argument is given, then that is the outcome after
+conversion to \tt{UIntmax} or \tt{Intmax} (as per the return type).
+The sequence of evaluation of arguments is unspecified.
+
+\note The reference implementation provides generalization
+macros using \tt{reduce__} from ellipsis framework.

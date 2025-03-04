@@ -1,0 +1,21 @@
+\begin{itemize}
+
+\item \tt{validate_(minuend)} must be \tt{true}.
+
+\item \tt{validate_(subtrahend)} must be \tt{true}.
+
+\end{itemize}
+
+Let $super$ denote the value of
+\tt{super(((Object *) minuend)->type, ((Object *) subtrahend)->type)}.
+
+If \tt{difference} is not a null pointer, let $type$
+denote the value of \tt{((Object *) difference)->type}.
+
+\begin{itemize}
+
+\item \tt{is_type(}$type$\tt{)} must be \tt{true}.
+
+\item \tt{is(}$type$\tt{,} $super$\tt{)} must be \tt{true}.
+
+\end{itemize}

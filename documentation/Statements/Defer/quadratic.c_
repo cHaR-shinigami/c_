@@ -1,0 +1,25 @@
+#include <c._>
+
+Bool_ work()
+begin
+	Void_ *acquire(), release(Void_ *),
+	utilize(Void_ *, Void_ *, Void_ *);
+{	Var  r1 = acquire();
+	guard_(r1, 0)
+{	Var  r2 = acquire();
+	if_(!r2)
+		release(r2);
+		return 0;
+	end
+{	Var  r3 = acquire();
+	if_(!r3)
+		release(r2);
+		release(r1);
+		return 0;
+	end
+	utilize(r1, r2, r3);
+	release(r3);
+}	release(r2);
+}	release(r1);
+}	return 1;
+end

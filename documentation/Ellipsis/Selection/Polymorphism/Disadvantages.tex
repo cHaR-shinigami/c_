@@ -1,0 +1,38 @@
+Generalization achieved with the use of polymorphic macros
+has certain fundamental limitations in the design itself.
+
+\begin{itemize}[nosep]
+
+\item The preprocessing ``microcode'' of \tt{COUNT_} uses an
+incrementing strategy to count the arguments one by one,\\
+which incurs a small transpilation overhead; in fact, any other implementation
+of static polymorphism based on argument counting will have some name
+resolution overhead, even though it may be considered insignificant.
+
+\item If \it{function-identifier} is defined as a non-trivial object-like macro,
+then pasting the expanded arguments would not produce the required name.
+For example, if a polymorphic macro \tt{fn_(...)} is meant to invoke \tt{fn2}
+or \tt{fn3}, the definition \tt{poly_(fn, COUNT_(__VA_ARGS__))(__VA_ARGS__)}
+has a subtle issue: if \tt{fn} is defined as an object-like
+macro that expands to \tt{func}, then \tt{fn_(0, 1)} would
+expand to \tt{func2(0, 1)} instead of \tt{fn2(0, 1)}.
+
+\item The same issue also affects \it{suffix}: for example, the reference
+implementation does not use \tt{__} directly as \it{suffix} with \tt{poly_3_},
+as \tt{__} is a reserved identifier in C, and compilers can define it
+as a non-trivial object-like macro, which would result in an incorrect
+name mangling when \tt{__} expands to something else before token pasting.
+
+\item When a polymorphic macro invokes another macro
+obtained with name mangling, the latter receives expanded
+arguments that may look unrecognizable when stringified.
+Many debuggable features of C\_ are polymorphic in nature (such as \tt{assert_}),
+and it is desirable that the original text is printed in a diagnostic message.
+The reference implementation takes extra precautions to
+retain the original argument text in a diagnostic message.
+
+\end{itemize}
+
+Due to these subtleties, the reference implementation only provides, but rarely
+makes use of polymorphic macros: avoiding argument counting overhead in
+the source code leads to a noticeable improvement in preprocessing time.

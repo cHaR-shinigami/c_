@@ -1,0 +1,44 @@
+\def\Subsection#1{\subsection{\idx{#1}}\input{Interfaces/Abstract type/#1}}
+
+\tt{Abstract} type extends the \tt{Object} class, and by virtue of inheritance,
+\idx{struct Abstract} contains a member \idxy{struct Abstract}{base}
+defined as a singleton array whose element type is \tt{Object_}.
+\tt{Abstract_} is a synonym for \tt{struct Abstract},
+while \tt{Abstract} is its non-modifiable counterpart.
+The member \idxy{struct Abstract}{type} is an alias for \tt{base->type},
+which is initialized by the \tt{Abstract} constructor to point to the \tt{Type}
+structure of \tt{Abstract}, containing pointers to overridden procedures.
+\tt{Abstract} structure also contains a pointer member that
+can be accessed with three names having different types:
+
+\begin{itemize}
+
+\item The name \idxy{struct Abstract}{concrete}  is declared
+as pointer to \tt{Void},  referring to a non-modifable object.
+
+\item The name \idxy{struct Abstract}{concrete_} is declared
+as pointer to \tt{Void_}, referring to a modifiable object.
+
+\item The name \idxy{struct Abstract}{_concrete} is a pointer to an
+untagged union with two members, both aliased to the same pointer:
+\idxyz{struct Abstract}{_concrete}{type}  is a pointer to \tt{struct Type}, and
+\idxyz{struct Abstract}{_concrete}{typex} is a pointer to an extended \tt{Type},
+with \tt{Typex_(Abstract)} being a synonym for the pointer type
+(\tt{Type} extension using interfaces is documented in a later section).
+
+\end{itemize}
+
+When an interface is instantiated with \tt{Type} of a concrete class,
+the above three names alias to the same member, pointing
+to an instance of the class that concretizes the interface.
+The member \tt{type} (or \tt{base->type}) provides the abstract lineage,
+while \tt{_concrete->type} points to \tt{Type} of the
+implementing class, providing the concrete lineage.
+
+The macros \idx{Abstract_EXTENDS} and \idx{SELF_IMPLEMENTS_Abstract}
+are reserved for implementations of C\_.
+
+\note The generic pointer type aliases are used to avoid
+boilerplate casts during assignments and invocations.
+
+\Subsection{concrete_}

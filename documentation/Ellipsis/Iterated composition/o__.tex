@@ -1,0 +1,150 @@
+The fundamental design technique behind iteration composition of function-like
+macros is to separate text generation from macro invocation, which is postponed
+with the help of deferred expansion; an actual function can also be used.
+
+\head{Syntax}
+
+\tt{o__ (} \it{function} \tt{,} \it{exponent} \tt{, (} \it{argument-list} \tt{) )}
+
+\head{Constraints}
+
+\it{exponent} shall be a non-negative decimal integer constant
+not exceeding \tt{PP_MAX}, or expand to such a constant.
+
+\head{Semantics}
+
+The macro \tt{o__} produces an iterated function composition
+text of the form $f(f(\cdots f(arguments)\cdots))$;
+if \it{function} is a function-like macro, then it is not invoked.
+The number of iterations for the composition is given by \it{exponent}:
+if it is zero, then \it{function} is ignored, and the text produced
+contains only \it{argument-list} ($f^0$ is identity function).
+
+\note The macro \tt{o__} is named after the mathematical
+symbol $\circ$ for function composition, such as $f \circ g$.
+
+\example The macro \tt{turn_} performs a single left
+rotation on its expanded argument list, and is defined as:
+
+\begin{center}
+\tt{#define turn_(...) pop_(__VA_ARGS__, top_(__VA_ARGS__,))}
+\end{center}
+
+It is generalized by the macro \tt{left_}, which rotates
+its expanded argument sequence by $n$ positions on the left.
+
+\begin{center}
+\tt{#define left_(n, ...) echo_(o__(turn_, n, (__VA_ARGS__)))}
+\end{center}
+
+The invocation of \tt{o__} merely generates the iterated function
+composition, without invoking the macro \tt{turn_}; for instance,
+\tt{o__(turn_, 3, (e, u, r, e, k, a))} expands to
+\tt{turn_(turn_(turn_(e, u, r, e, k, a)))}.
+To complete each invocation of \tt{turn_}, we need to pass it through
+another function-like macro that is not used by \tt{turn_} itself:
+we have chosen \tt{echo_} for this purpose.
+Recall the two phases during a function-like macro invocation:
+
+\begin{itemize}[nosep]
+
+\item In the first phase, the \tt{echo_} argument
+\tt{o__(turn_, 3, (e, u, r, e, k, a))} is expanded to\\
+\tt{turn_(turn_(turn_(e, u, r, e, k, a)))}, and this
+is substituted in the replacement text of \tt{echo_}.
+
+\item After expanded argument substitution,
+\tt{echo_} is moved to \it{\tt{PASSIVE}} state, and the replacement
+text is scanned left to right, during which \tt{turn_} is invoked:
+each invocation works as expected because it is performed during the argument
+substitution phase of \tt{turn_}, when it remains in \it{\tt{ACTIVE}} state.
+
+\end{itemize}
+
+Due to the above steps, an invocation \tt{left_(3, e, u, r, e, k, a)}
+would produce the text \tt{e, k, a, e, u, r}.
+What makes iterated composition the crown jewel of this dialect is that the
+function being composed can itself be a function-like macro that uses iterated
+composition: for example, a function-like macro \tt{f} can be the iterated
+composition of another function-like macro \tt{g}, whose definition itself can
+involve iterated composition of another function-like macro \tt{h}, and so on;
+the nesting of iterated composition can continue up to any depth, as long as
+the entire expansion does not exhaust resources in the translation environment
+(memory footprint is a major concern).
+
+Nesting of iterated composition within the function%
+-like macro being iterated works due to two factors:
+two-phase scanning and separation of text generation from macro invocation.
+For the given example, text generation occurs in the argument substitution phase
+of \tt{echo_}, during which the \tt{o__} macro remains in \it{\tt{PASSIVE}}
+state; once that is done, \tt{o__} returns to \it{\tt{ACTIVE}} state,
+so when the replacement text of \tt{echo_} is scanned in the second phase,
+\tt{o__} is already live and gets expanded if it is used within the
+function-like macro whose iterated composition is currently being invoked.
+The same mechanism works well for further nesting of the depth of
+\tt{o__} in the full expansion tree of the outermost macro invocation,
+as opposed to the number of iterations at any particular depth.
+
+A crucial observation is that we need a macro to complete the invocations
+which were deferred during text generation, and this expander macro itself
+cannot be used either directly or indirectly by the function being composed.
+This is because the function-like macro supplied to \tt{o__} as the
+first argument is invoked in the second phase of the expander macro,
+during which the latter remains in \it{\tt{PASSIVE}} state, so if
+it is invoked by the iterated macro, the expansion fails and each
+occurrence of the expander macro is retained verbatim; furthermore,
+all such instances are marked as \it{\tt{DEAD}}, so they cannot be invoked
+even if rescanned after the expander macro returns to \it{\tt{ACTIVE}} state.
+
+\head{Recommended practice}
+
+Our example used \tt{echo_} as the expander macro,
+as it is not used by the iterated macro \tt{turn_},
+which only relies on the primitives \tt{pop_} and \tt{top_}.
+In general, it may be considered a good practice to define a new macro
+created only to expand the text generated by an invocation of \tt{o__};
+such an expander macro can have only a single parameter
+that occurs as the sole entity in the replacement text,
+since an invocation of \tt{o__} itself acts as one single argument.
+This avoids the burden of having to know how the iterated macro works;
+more precisely, using an existing macro to complete invocation of the
+iterated macro requires knowledge of the complete expansion tree for
+the latter, all the way down to the primitives, as one must ensure
+that the expander macro is not used either directly or indirectly.
+
+Another disadvantage of using an existing macro is tight coupling,
+as the expander macro can no longer be used by the iterated
+macro or any of its dependencies in a future refactoring:
+the text for iterated composition would still be generated correctly,
+but its expansion would not fully work in the second phase.
+A workaround is that if an existing macro needs to be introduced
+while refactoring another macro, it cannot be used directly;
+instead, its functionality can be achieved by using a newly
+created macro with the same definition as the existing macro.
+
+\note One of the design goals for the reference implementation is
+economy of names: iterated composition is used to generate preprocessing
+``microcode'' for almost every non-trivial feature of the C\_ dialect,
+and creating a new macro to expand each iterated composition would quickly
+cause an unnecessary proliferation of macros, almost doubling in number
+(one extra macro for each use of \tt{o__}).
+As the definitions of macros are already known,
+their iterated composition can be invoked with a function-like macro
+that is not used in the resulting expansion tree.
+
+Knowledge about implementation details can be tempting for minimalists,
+but many developers may find it beneficial in the long run to
+prefer our earlier suggestion of creating a separate expander
+macro for each new feature that is to be implemented using iterated composition;
+an extra macro can save a lot of hassle in the long game of code maintenance.
+Before moving on to the next section, we shall complete this discussion
+by revisiting our previous example: instead of \tt{echo_}, we could
+have used a separate expander macro \tt{left_c_} as shown below.
+
+\table{l}
+\tt{#define left_(n, ...) left_c_(o__(turn_, n, (__VA_ARGS__)))}\\
+\tt{#define left_c_(o) o}\\
+\elbat
+
+Now we need not worry about the macros used by \tt{turn_},
+which can safely use \tt{echo_} without breaking \tt{left_}.

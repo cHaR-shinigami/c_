@@ -1,0 +1,19 @@
+\tt{COUNT_} gives the number of arguments in its expanded argument sequence;
+it is defined in the header \tt{<count._>}.
+
+\head{Syntax}
+
+\tt{COUNT_ (} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+The outcome of an invocation of \tt{COUNT_} is the positive integer constant
+that is one more than the number of unparenthesized commas in the expanded
+\it{argument-list}, indicating the number of arguments after macro expansions.
+
+\note Even a blank text is counted as an argument.

@@ -1,0 +1,23 @@
+\head{Syntax}
+
+\tt{# include <rshift._>}
+
+\idx{rsh_} \tt{(} \it{left-expression} \tt{,} \it{right-expression} \tt{)}
+
+\head{Constraints}
+
+Both expressions shall have integer types.
+
+\head{Semantics}
+
+\it{left-expression} is converted to the type \tt{Intmax};
+we shall denote this converted value as $n$ and its absolute value $|n|$ as $u$.
+\it{right-expression} is converted to an unsigned type;
+we shall denote this converted value as $s$.
+Let $w$ denote minimum width of the type of
+\it{left-expression} before and after conversion.
+If shift $s$ is less than width $w$, then the absolute value
+$u$ is right shifted by $s$ bits, as if with \tt{ursh_(u, s)};
+if $n$ is negative, then sign negation is performed on the shifted value.
+This becomes the outcome after conversion
+to the original type of \it{left-expression}.

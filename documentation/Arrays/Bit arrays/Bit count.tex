@@ -1,0 +1,15 @@
+\head{Syntax}
+
+\idx{bitcount_} \tt{(} \it{pointer-to-array} \tt{)}
+
+\head{Constraints}
+
+\it{pointer-to-array} shall be pointer to a complete array.
+
+\head{Semantics}
+
+\tt{bitcount_} multiplies \tt{CHAR_BIT} with size of the array
+inferred from its type; the outcome is of type \tt{Size_}.
+
+\it{pointer-to-array} need not be evaluated
+if it does not have a variably modified type.

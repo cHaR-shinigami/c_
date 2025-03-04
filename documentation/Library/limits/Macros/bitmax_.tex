@@ -1,0 +1,15 @@
+\head{Syntax}
+
+\tt{bitmax_ (} \it{width} \tt{)}
+
+\head{Constraints}
+
+\it{width} shall have an integer type.
+
+\head{Semantics}
+
+If \it{width} is a non-negative integer not exceeding \tt{width_(ULLong)},
+then \tt{bitmax_} gives the maximum value that is representable
+using \it{width} bits; otherwise the behavior is undefined.
+The result is an expression of type \tt{ULLong_}, and it is an integer constant
+expression only if the argument \it{width} is also an integer constant expression.

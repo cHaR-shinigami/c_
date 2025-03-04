@@ -1,0 +1,22 @@
+\head{Syntax}
+
+\tt{precision_ (} \it{type-name} \tt{)}
+
+\head{Constraints}
+
+\it{type-name} shall specify an integer type.
+
+\head{Semantics}
+
+\idx{precision_} returns the number of value bits for the type specified by \it
+{type-name}. The only difference between \tt{width_} and \tt{precision_} is for
+signed types: the former counts the sign bit as well, but the latter does not.
+
+\example \tt{precision_(Bool)} is 1; \tt{precision_(UBitInt (}$w$\tt{))}
+is $w$, but \tt{precision_(BitInt (}$w$\tt{))} is ${w - 1}$.
+
+\note For the reference implementation, the outcome of \tt{max_}, \tt{min_},
+\tt{width_}, and \tt{precision_} is a constant expression if \it{type-name}
+specifies a basic type, or an extended integer type that is also available
+as a standard synonym in \tt{<stdint.h>} header; in particular,
+the result is not a constant expression for bit-precise integer types.

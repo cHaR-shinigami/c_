@@ -1,0 +1,11 @@
+\head{Declaration}
+
+\tt{LLong_ solver_(Object, write)(Object *this, Stream out);}
+
+\head{Description}
+
+Let $ret$ be the return value for the invocation
+\tt{fprintf(out, "\%s@\%p\\n", this->type->name, (Void *)this)}.
+
+If \tt{fflush(out)} is successful, then $ret$ is the return value;
+otherwise the return value is \tt{EOF} (a negative integer).

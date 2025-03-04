@@ -1,0 +1,75 @@
+\head{Syntax}
+
+\idx{new__}\s\s\s\s\tt{(} \it{expression}
+[\tt{,} \it{array-length}
+[\tt{,} \it{initializer}]] \tt{)}
+
+ \tt{new__}\s\s\s\s\tt{(} \it{type-name}
+[\tt{,} \it{array-length}
+[\tt{,} \it{initializer}]] \tt{)}
+
+\idx{new__1__}\s\tt{(} \it{expression} \tt{)}
+
+ \tt{new__1__}\s\tt{(} \it{type-name}  \tt{)}
+
+\idx{new__2__}\s\tt{(} \it{expression}
+\phantom{[}\tt{,} \it{array-length}\phantom{]} \tt{)}
+
+ \tt{new__2__}\s\tt{(} \it{type-name}
+\phantom{[}\tt{,} \it{array-length}\phantom{]} \tt{)}
+
+\idx{new__3__}\s\tt{(} \it{expression}
+\phantom{[}\tt{,} \it{array-length}
+\phantom{[}\tt{,} \it{initializer}\phantom{]]} \tt{)}
+
+ \tt{new__3__}\s\tt{(} \it{type-name}
+\phantom{[}\tt{,} \it{array-length}
+\phantom{[}\tt{,} \it{initializer}\phantom{]]} \tt{)}
+
+\head{Constraints}
+
+\it{expression} shall have a complete object type
+and shall not designate a structure bit-field member.
+\it{type-name}  shall specify a complete object type.
+\it{array-length} shall have an integer type.
+It shall be possible to use the value of \it{initializer} to
+initialize a variable declared with the same type as \it{expression},
+or the type specified by \it{type-name}.
+
+\head{Semantics}
+
+\tt{new__} invokes \tt{new__}$n$\_\_ if the
+expanded argument sequence contains $n$ arguments.
+In all cases, \it{expression} or \it{type-name} may not be evaluated
+at all if they do not specify a variably modified type, or they can
+be evaluated more than once only if their type is variably modified.
+\it{array-length} can be evaluated multiple times
+only if it is not an integer constant expression.
+\it{initializer} is always evaluated only once.
+The order of evaluation is unspecified.
+
+A non-null outcome of \tt{new__1__} is pointer to an object
+that has the unqualified type of \it{expression} or \it{type-name}.
+
+\tt{new__2__} converts \it{array-length} to type \tt{Size}
+and a non-null outcome is pointer to an array whose elements
+have the unqualified type of \it{expression} or \it{type-name};
+length of the array is equal to the converted value of \it{array-length}.
+
+\tt{new__3__} allocates an array in the same way as \tt{new__2__},
+and on success, \tt{new__3__} also initializes each element of
+the array with the resulting value of \it{initializer} after it
+is converted to the type of \it{expression} or \it{type-name}.
+
+\note \tt{Size_} is a synonym for \tt{size_t},
+which is defined as the type of a \tt{sizeof} expression.
+For \tt{new__2__} and \tt{new__3__},
+the outcome is of type ``pointer to array'' which encodes length information;
+a similarly typed outcome is also given by \tt{new__1__} if its \it{expression}
+or \it{type-name} specifies an array type, such as \tt{new__(Char_ [BUFSIZ])}.
+
+\example \tt{new__(Char_ *, 10, 0)} is a portable approach to populate
+a dynamically allocated array of ten elements with null pointers.
+Note that this may not be equivalent to simply zeroing out the memory
+with \tt{calloc} or \tt{memset}, as there are execution environments
+(mostly archaic) where null pointer representation has non-zero bits.

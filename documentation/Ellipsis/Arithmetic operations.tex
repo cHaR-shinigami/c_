@@ -1,0 +1,56 @@
+The header \idx{<abacus._>} for arithmetic operations includes two other headers:
+\idx{<additive._>} provides macros for addition and subtraction;
+\idx{<multiplicative._>} defines macros for
+multiplicative, exponential, and shift operations.
+Their syntax and semantics are grouped and tabulated below;
+the semantics are summarized under ``Op'' columns.
+
+\head{Constraints}
+
+For each macro, both arguments shall expand to non-negative
+decimal integer constants not exceeding \tt{PP_MAX}.
+
+\head{Syntax and semantics}
+
+Except for \tt{MINUS_}, the outcome is a non-negative decimal
+integer constant not exceeding \tt{PP_MAX}, or blank text.
+
+\vspace{-\baselineskip}
+
+\table{@{}l|c||l|c||l|c||l|c}
+
+\multicolumn{2}{c}{\bf Additive}                               & \multicolumn{2}{c}{\bf Multiplicative}                    & \multicolumn{2}{c}{\bf Exponential}                                     & \multicolumn{2}{c}{\bf Shift}\\
+
+\multicolumn{1}{c}{\bf Syntax}              & \bf Op           & \multicolumn{1}{c}{\bf Syntax}          & \bf Op          & \multicolumn{1}{c}{\bf Syntax}            & \bf Op                      & \multicolumn{1}{c}{\bf Syntax}          & \bf Op\\
+
+\s\s\idx{ADD_} \tt{(} $m$ \tt{,} $n$ \tt{)} &  $m$ \tt{+} $n$  & \idx{MUL_} \tt{(} $n$ \tt{,} $d$ \tt{)} & $n$ \tt{*}  $d$ & \s\idx{POW_} \tt{(} $n$ \tt{,} $p$ \tt{)} & $n^p$                       & \idx{LSH_} \tt{(} $n$ \tt{,} $s$ \tt{)} & $n$ \tt{<<} $s$\\
+
+\s\s\idx{SUB_} \tt{(} $m$ \tt{,} $n$ \tt{)} &  $m$ \tt{-} $n$  & \idx{DIV_} \tt{(} $n$ \tt{,} $d$ \tt{)} & $n$ \tt{/}  $d$ & \s\idx{LOG_} \tt{(} $n$ \tt{,} $b$ \tt{)} & $\lfloor\log_b n\rfloor$    & \idx{RSH_} \tt{(} $n$ \tt{,} $s$ \tt{)} & $n$ \tt{>>} $s$\\
+
+\s\s\idx{DIF_} \tt{(} $m$ \tt{,} $n$ \tt{)} & $|m$ \tt{-} $n|$ & \idx{MOD_} \tt{(} $n$ \tt{,} $d$ \tt{)} & $n$ \tt{\%} $d$ &  \idx{ROOT_} \tt{(} $n$ \tt{,} $p$ \tt{)} & $\lfloor\sqrt[p]{n}\rfloor$ & &\\
+
+  \idx{MINUS_} \tt{(} $m$ \tt{,} $n$ \tt{)} & [\tt{-}]$|m$ \tt{-} $n|$ & & & & & &\\
+
+\elbat
+
+Both \tt{ADD_} and \tt{SUB_} perform modular wraparound similar to unsigned
+arithmetic, so that their final outcome never exceeds \tt{PP_MAX}: if the result
+of addition is  greater than \tt{PP_MAX}, then \tt{PP_MAX + 1} is subtracted;
+if the result of subtraction is negative, then \tt{PP_MAX + 1} is added.
+After these adjustments, the outcome is in the domain
+of preprocessing integers, making it suitable for further
+computations with arithmetic, logical, or relational macros.
+
+\tt{DIF_} computes the absolute difference between its arguments;
+\tt{MINUS_} puts a minus sign before the outcome of
+\tt{DIF_} iff its first argument is greater than the second:
+in that case, the outcome is not a decimal integer constant.
+
+\tt{DIV_} and \tt{MOD_} respectively compute the quotient and remainder;
+the outcome is blank iff the divisor $d$ is zero.
+
+For \tt{MUL_}, \tt{POW_}, and \tt{LSH_}, the outcome is a blank
+text iff the true mathematical result is greater than \tt{PP_MAX}.
+
+\tt{LOG_} and \tt{ROOT_} apply floor function on the true
+mathematical result, so any fractional part gets discarded.

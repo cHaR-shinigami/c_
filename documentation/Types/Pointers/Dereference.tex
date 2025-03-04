@@ -1,0 +1,14 @@
+The dereference operator \tt{*} can be applied only for a pointer to
+complete object type or function type, and only if it points to a valid
+object whose lifetime has not ended, or to a function of the right type.
+Dereferencing an invalid pointer causes undefined behavior; however,
+there are some exceptions where the dereference operation is not performed,
+such as applying the address-of operator \tt{&} to the dereferenced expression,
+the controlling expression of a \tt{_Generic} selection, \tt{sizeof} and
+\tt{typeof} operators without a variably modified type, and pointer to an array.
+
+\subsubsection{\tt{fetch__}}
+\input Types/Pointers/Dereference/fetch__
+
+\subsubsection{\tt{fetch_}*}
+\input Types/Pointers/Dereference/fetch_

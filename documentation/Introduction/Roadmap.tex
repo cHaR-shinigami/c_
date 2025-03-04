@@ -1,0 +1,86 @@
+Besides being the \it{de facto} documentation of C\_,
+this manuscript is also intended to serve as a learning resource;
+the writing and presentation follow a textbook style,
+with the contents being organized into chapters,
+supplemented with a good number of illustrative examples.
+Features marked with an asterisk (*) currently
+do not have a fully portable implementation;
+they should be used judiciously due to their
+dependency on compiler-specific extensions.
+
+Chapter 1 covers the basic types of C\_, which are required
+to be synonymous with the corresponding standard types in C;
+we shall also see how such synonyms can be created with \tt{typedef_},
+the C\_ extension to \tt{typedef}.
+
+Chapter 2 discusses various kinds of statements, such as blocks
+supporting early exit, branching, and iteration statements.
+An interesting statement is \tt{defer_},
+whose semantics have been borrowed from Zig.
+Unlike statements, many features can be used as sub-expressions
+within a larger expression; these are covered separately in chapter 3.
+
+Chapter 4 is dedicated to the rich set of C99-compatible
+metaprogramming facilities provided by the ellipsis framework,
+which serves as the backbone of the reference implementation.
+Perhaps the most important contribution of C\_ is a constructive proof
+that the C preprocessor can be used as a general model of computation,
+which may be of interest in the study of programming languages.
+Many features are modeled after basic CPU instructions, and the overall design
+is influenced by microprogramming architecture used in control units.
+This modular approach to hardware design has been integrated with the help
+of ``deferred expansion'', a consequence of an obscure preprocessing rule;
+iterated composition via deferred expansion is arguably the most powerful
+feature of C\_, which opens the way for structured programming purely with
+macros, such as branching, iterations, and even nested recursions.
+
+Chapter 5 is focused on arrays; unlike traditional pedagogy,
+the discussion of arrays has been isolated three chapters apart from pointers;
+this is done to stress the fact that arrays and pointers are not the same,
+and conflating them is a common misconception among beginners.
+This chapter advocates the use of ``pointer to array'',
+which offers an advantage that is leveraged by highly versatile iterators;
+the \tt{op_} statement is a prime example of this.
+
+Chapter 6 introduces C\_ ``methods'',
+whose primary objective is to ``isolate behavior from implementation'';
+the structure of this entire documentation follows the same spirit,
+and an architectural separation of ``\it{what} to do'' from
+``\it{how} to do'' is the most important design technique in C\_.
+Another advantage of methods is default arguments:
+they are useful for augmenting a method with extra parameters,
+without breaking existing programs that invoke the method with fewer arguments.
+We shall design verifiers using Floyd-Hoare logic in protocols,
+with the help of pre-conditions and post-conditions;
+for aid in diagnostics, the former requires call-site details
+available in a special parameter \tt{_site} of type \tt{Site},
+which is a structure type used for storing ``source code coordinates''.
+
+Chapters 7 and 8 cover dynamic typing with classes and interfaces influenced by
+object-oriented programming; the major features supported include encapsulation,
+multilevel inheritance, Liskov substitution, and runtime polymorphism.
+Classes are used for creating concrete data types,
+whereas an interface is basically an abstract data type,
+whose instantiation requires a concrete implementation by some class.
+The interplay of abstract and concrete types requires some care, but it can
+greatly reduce redundancy through code reuse; less code is easier to maintain.
+
+Chapter 9 concludes the main documentation by listing C\_ extensions that
+make the C standard library more consistent with the rest of this dialect.
+For every standard header in C23, a corresponding C\_ header is available,
+which includes the standard header and provides additional enhancements,
+such as C\_ style synonyms for types defined in the header and wrappers
+over standard functions; the purpose of the latter is to
+refine certain semantics that are left undefined by the C standard,
+thereby filling some missing gaps and providing diagnostic support.
+
+Appendix A is a collection of all examples on classes and interfaces.
+Appendix B describes the name mangling schemes used by the reference implementation.
+Appendix C provides the steps to modify the reference implementation for
+extending the domain of integers supported by the ellipsis framework.
+Appendix D proposes a quantitative method for benchmarking
+the preprocessing overhead of function-like macros.
+Appendix E describes the build script provided with the reference implementation,
+along with a summary of diagnostic options for \tt{gcc} and \tt{clang}.
+Appendix F contains references for ISO C standard.
+The index is alphabetical list of features and headers in C\_.

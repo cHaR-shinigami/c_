@@ -1,0 +1,42 @@
+\head{Syntax}
+
+\tt{# include <pointer._>}\\
+
+\idx{fetch__}\s\s\s\s\tt{(} \it{pointer} [\tt{,} \it{default-value}] \tt{)}
+
+\idx{fetch__1__}\s\tt{(} \it{pointer} \tt{)}
+
+\idx{fetch__2__}\s\tt{(} \it{pointer} \phantom{[}\tt{,} \it{default-value}\phantom{]} \tt{)}
+
+\head{Constraints}
+
+The first argument shall be pointer to a complete object type.
+If \it{pointer} is an expression of type ``pointer to \tt{T}'',
+then it shall be possible to assign \it{default-value} to a
+variable of type \tt{T}, without requiring an explicit type cast.
+
+\head{Semantics}
+
+\tt{fetch__} invokes \tt{fetch__}$n$\_\_ if the
+expanded argument sequence has $n$ arguments.
+If \it{pointer} is not null,
+then outcome is the lvalue obtained on dereferencing the pointer.
+When \tt{POINTER__} expands to \tt{1}, if \it{pointer} is null,
+then the behavior is same as if \tt{notnull__(}\it{pointer}\tt{)} is invoked.
+When \tt{POINTER__} expands to \tt{0}, a null pointer is not dereferenced,
+in which case the outcome is \it{default-value},
+but with the same type as of dereferencing the pointer.
+
+If \it{pointer} is of type \tt{T *},
+then the outcome is an lvalue of type \tt{T}.
+When \tt{POINTER__} expands to \tt{0}, if \it{default-value} is used as the
+outcome, then the dereferenced lvalue is a temporary object with automatic
+storage duration, whose lifetime ends after the innermost enclosing block.
+\it{pointer} can be evaluated more than once only if
+ it points to an object with variably modified type;
+\it{default-value} is always evaluated once, even if its outcome remains unused.
+
+\note As the outcome is an lvalue, the dereference can be
+suppressed by applying address-of operator \tt{&} to the result,
+which does not impact null pointer diagnosis in debugging mode compilation
+(\tt{POINTER__} expands to \tt{1}).

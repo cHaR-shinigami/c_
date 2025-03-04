@@ -1,0 +1,17 @@
+\head{Syntax}
+
+\tt{if_ (} \it{condition} \tt{)}
+
+\s\s\s\s\it{declarations-and-statements}\opt
+
+\tt{end}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression, and an \tt{if_} block
+shall be lexically closed by one of \tt{end}, \tt{e1se}, or \tt{elif_}.
+
+\head{Semantics}
+
+Code within an \tt{if_} block is executed only if \it{condition}
+is non-zero; otherwise the entire block is skipped.

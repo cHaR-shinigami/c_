@@ -1,0 +1,14 @@
+\tt{<stdlib._>} provides inline definitions for the following
+additional functions to get the absolute value of an integer.
+
+\table{l@{\qquad\qquad}l@{\qquad\qquad}l}
+
+\tt  {UInt_} \idx  {uabs}\tt{(Int);}  &
+\tt {ULong_} \idx {ulabs}\tt{(Long);} &
+\tt{ULLong_} \idx{ullabs}\tt{(LLong);}\\
+
+\elbat
+
+These functions return unsigned types, so obtaining the absolute value of the
+most negative integer representable in the parameter type does not cause any
+signed overflow, and the behavior is well-defined for all signed values.

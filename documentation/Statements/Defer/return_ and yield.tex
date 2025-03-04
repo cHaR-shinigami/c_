@@ -1,0 +1,14 @@
+A conventional \tt{return} is oblivious of \tt{defer_},
+so the pending statements do not get executed.
+\tt{return_} takes an expression that is compatible with the function
+return type, that is to say, it should be possible to return that
+value without an explicit type cast; the expression is first evaluated,
+and then deferred statements are executed starting from the innermost block,
+moving to outer blocks in the order of their ending.
+When deferred statements of the function block started with \tt{deferrable}
+has been executed, the expression that was evaluated earlier is returned.
+
+\tt{return_} cannot be used if function return type is \tt{Void_};
+as \tt{return} keyword is unaware of pending statements,
+an early return should be written as \tt{yield;} which returns
+from the function after executing the deferred statements.

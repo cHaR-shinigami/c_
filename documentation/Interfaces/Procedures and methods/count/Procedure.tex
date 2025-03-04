@@ -1,0 +1,22 @@
+\fbox{\tt{
+examples/compile/interface/Iterable/count.c_}}
+\code{../compile/interface/Iterable/count.c_}
+
+\tt{iterator} procedure implemented by the concretizing
+class is called with the concrete instance as argument.
+
+\enlargethispage*{\baselineskip}
+\pagebreak
+
+\note While the required functionality can be directly implemented by counting how
+many times \tt{get_next} can be called on an \tt{Iterator} before \tt{has_next}
+returns \tt{false}, such an approach would have linear time complexity.
+
+On the other hand, concrete implementations can maintain an internal
+counter for the number of elements in an instance, which would be
+incremented by the concrete implementation of \tt{append} each time an
+additional element is inserted (needless to say, the internal counter
+would be initialized to zero when a new \tt{Iterable} is instantiated).
+Relegating the responsibility of counting to the concretizing class provides
+it an opportunity to leverage knowledge about internal organization of the
+underlying concrete object, and return the count of elements in constant time.

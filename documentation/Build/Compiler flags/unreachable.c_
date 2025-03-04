@@ -1,0 +1,8 @@
+#include <c._>
+
+Int_ fun(Int n)
+begin
+	if (!!n) return 0;
+	elif (n) return 1;
+	return 2;
+end

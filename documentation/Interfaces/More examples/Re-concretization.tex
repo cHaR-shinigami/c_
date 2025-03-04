@@ -1,0 +1,64 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Interfaces/More examples/Re-concretization/#1}}
+
+We conclude our discussion on interfaces with a program for testing various
+classes and interfaces that are provided as examples in this documentation.
+To test the \tt{Collection} interface, we instantiate different wrapper
+classes and append their instances to a collection concretized
+by the \tt{List} class, which specifies the format of storage.
+
+The abstract nature of the \tt{copy} procedure of \tt{Collection} naturally
+facilitates a format conversion from one concrete type to another, which we refer
+to as ``re-concretization'' of an existing instance (a shallow copy is created).
+
+The following program is available in the source file \src{compile/merry.c_}
+
+The numerous guard clauses throughout this program ensure
+that the program terminates if any allocation fails;
+readers may ignore this cautious bit of defensive programming.
+We instantiate the wrapper classes \tt{Unsigned}, \tt{Signed}, and \tt{Rational}
+by calling their respective constructors with an initializer data; for the
+wrapper class \tt{Text}, we first create an empty instance, and then invoke the
+\tt{parse} method (via \tt{parse__}) to copy the given string to the instance
+(note that it expects pointer to an array, so the address-of
+operator \tt{&} has been used on the string literal).
+
+\enlargethispage*{\baselineskip}
+\pagebreak
+
+If all of the above operations are successful, we instantiate the
+\tt{Collection} interface with \tt{List} as the concretizing class; note
+that the second argument to \tt{init__} is made into an lvalue, and a pointer
+to it becomes the first element of \tt{tape} parameter for \tt{init} method.
+Since a \tt{species} has not been specified, the \tt{List} constructor
+assigns \tt{type_(Object)} as the default value, which allows the four
+instances of diverse wrapper classes to be stored in the same collection.
+If all the \tt{append} operations are successful, we print the name of the
+concretizing class, followed by writing the collection data to \tt{stdout}
+(the default output stream).
+The \tt{write} procedure of \tt{Collection} does not use the \tt{species}
+type to print the elements: since each element is an instance, it has its own
+\tt{type} member, whose \tt{write} procedure is invoked for printing each
+particular instance; successive elements are separated by a newline.\\
+
+Next we create another empty instance of \tt{Collection},
+but this time we use \tt{Vector} as the concretizing class.
+Notice the additional argument \tt{type_(Object)} which explicitly states
+\tt{species} of the new collection; this is required because the \tt{Vector}
+class implements both \tt{Collection} as well as its base interface
+\tt{Iterable} (which is untyped), so in the absence of an explicit argument
+for \tt{species}, it would be set to null, making it an invalid instance
+of \tt{Collection} (as per its \tt{validate} procedure), thereby causing
+a post-condition violation for \tt{init} protocol of \tt{Type}.\\
+
+Our task of re-concretizing the \tt{List}-based collection to a
+\tt{Vector}-based one is accomplished by simply calling the \tt{copy} method,
+with \tt{vector} as the destination and \tt{list} as the source.
+To confirm that a successful re-concretization has indeed occurred, we print the
+concrete type name of the \tt{Vector}-based instance, and then print its elements.
+The outcome would be precisely the same as before,
+because even though \tt{Collection} itself does not impose any ordering, both
+\tt{List} and \tt{Vector} store their elements as per the order of insertion,
+so the sequence is preserved.
+
+\Subsubsection{Compilation}

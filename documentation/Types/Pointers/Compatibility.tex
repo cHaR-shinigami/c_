@@ -1,0 +1,53 @@
+Pointer to a modifiable type can be converted as pointer to the corresponding
+non-modifiable type, but the other way around should be avoided.
+For example, an expression of type \tt{Ptr (Char_)} can be assigned to a
+variable of type \tt{Ptr (Char)}, but attempting the converse will trigger a
+warning from most compilers; in particular, our use of the option \tt{-Werror}
+in the \tt{cc_} command alias will turn this into a compilation error.
+C allows casting away the non-modifiability, but our use of the option
+\tt{-Wcast-qual} disallows that as well; the intent is to diagnose a potentially
+erroneous type cast, where the type should actually be non-modifiable.
+Explicitly discarding non-modifiability is strongly discouraged, but in some
+cases this can be unavoidable; such a need may arise during the implementation
+of legacy APIs, where changing some declaration can break existing code.
+The standard library has some notable examples, such as the function \tt{strchr}
+declared in the header \tt{<string.h>}: it accepts a pointer to
+\tt{Char} as one of its arguments and returns a pointer to \tt{Char_},
+which points to a part of the same object as pointed to by the argument.
+An alternative design is to return an offset relative to the argument pointer,
+but most library functions are based on ``prior art'' from the early days of C,
+when non-modifiability was not as prioritized as it is today.
+Nevertheless, in recognition of the occasional necessity for discarding
+non-modifiability, C\_ provides \idx{unqual__} and \idX{unqual_}*.
+
+\head{Syntax}
+
+\tt{unqual_}\_\s\tt{(} \it{pointer} \tt{)}
+
+\tt{unqual_}\s\s\tt{(} \it{pointer} \tt{)}
+
+\head{Constraints}
+
+The argument shall be pointer to an object type.
+
+\head{Semantics}
+
+Outcome of both \tt{unqual__} and \tt{unqual_} has the same value as
+\it{pointer}, but its type is pointer to the corresponding modifiable type,
+without any type qualifier; more precisely, if the argument is pointer
+to a possibly qualified type \tt{T}, then the result is the same pointer,
+but typed as \tt{typeof_unqual (T) *}.
+\tt{unqual__} can evaluate the argument more than once only if it is pointer
+to a variably modified type; \tt{unqual_} evaluates the argument exactly once.
+
+\example The following code exemplifies a need to forgo
+non-modifiability with an implementation of \tt{strchr}.
+
+\code{Types/Pointers/Compatibility/c_strchr.c_}
+
+\note Strong type safety is an integral aspect of C,
+and it is also respected by C\_.
+Concerning the potential abuse of \tt{unqual__} and \tt{unqual_},
+C\_ trusts the programmer to use them judiciously,
+and it is the responsibility of API designers to declare prototypes in
+such a way that implementors are not compelled to discard non-modifiability.

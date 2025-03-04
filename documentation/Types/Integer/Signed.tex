@@ -1,0 +1,28 @@
+Signed types can represent positive and negative
+integers within a nearly-symmetric range.
+Their representation contains the necessary value bits to support the range,
+one sign bit, and optional padding bits (not allowed in \tt{Byte}).
+C23 requires two's complement representation,
+but C\_ does not forbid one's complement and sign-magnitude forms.
+
+The standard signed types are listed in non-decreasing order of
+their actual width and increasing order of rank; the range
+of a lower ranked type is contained within the range of a higher ranked type.
+In arithmetic expressions, \tt{Byte} and \tt{Short} are promoted to \tt{Int_},
+and if required by the operator, a lower ranked operand is promoted to
+the type of a higher ranked operand, which is also the type of the result
+(overflow behavior is implementation-defined).
+
+\table{cc}
+Type & Minimum width\\
+\type{Byte}  &  8\\
+\type{Short} & 16\\
+\type{Int}   & 16\\
+\type{Long}  & 32\\
+\type{LLong} & 64
+\elbat
+
+\note Width includes sign and precision bits.
+\tt{Byte_} is a synonym for \tt{signed char}, so \tt{sizeof (Byte)} is 1.
+For two's complement representation,
+a signed type cannot represent the negation of its most negative value.

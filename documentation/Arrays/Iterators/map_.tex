@@ -1,0 +1,56 @@
+The header \tt{<map._>} defines the macro \tt{MAP__} that configures
+the behavior of \tt{map_} family; \tt{MAP__} records the \tt{defined}
+state of \tt{DEBUG} macro every time \tt{<map._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <map._>}
+
+\idx{map_}\s\s\s\tt{(} [$destination$ \tt{,}]
+$function$ \tt{,} $source$ [\tt{,} $range$] \tt{)}
+
+\idx{map_2_}\s\tt{(} $function$ \tt{,} $source$ \tt{)}
+
+\idx{map_3_}\s\tt{(} \phantom{[}$destination$ \tt{,}\phantom{]}
+$function$ \tt{,} $source$ \tt{)}
+
+\idx{map_4_}\s\tt{(} \phantom{[}$destination$ \tt{,}\phantom{]}
+$function$ \tt{,} $source$ \phantom{[}\tt{,} $range$\phantom{]} \tt{)}
+
+\head{Constraints}
+
+Both $source$ and $destination$ shall be pointers to complete arrays.
+
+For \tt{map_2_}, $source$ array shall be modifiable;
+for \tt{map_3_} and \tt{map_4_}, $destination$ array shall be modifiable.
+
+$function$ shall be a function type expression that can be called with an
+element of $source$ array with requiring any type cast; return type of the
+function shall be suitable to store the return value in $destination$ without
+any type casting (for \tt{map_2_}, $source$ is itself the destination).
+$range$ shall be an expression having a \tt{Range} type.
+
+\head{Semantics}
+
+\tt{map_} invokes \tt{map_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+For each element in $source$, \tt{map_2_} invokes $function$ with that element
+as the argument, and the return value of that invocation replaces the element
+in array; the sequence of invocation and replacement is implementation-defined.
+
+\tt{map_3_} is similar to \tt{map_2_}, except that the return values
+are stored in $destination$, and $source$ can be non-modifiable.
+If $destination$ has length $n$ and $n$ is not greater than length of $source$,
+only the first $n$ elements of $source$ are mapped to $destination$; otherwise
+$destination$ is longer than $source$, and extra elements are not modified.
+
+\tt{map_4_} invokes $function$ only for the index
+series specified by $range$, and in the given order.
+For each selected element of $source$, the return value is stored at
+the same index in $destination$; rest of the elements are not modified.
+
+\note \tt{map_2_(}$f$\tt{,} $source$\tt{)} is equivalent
+to \tt{map_3_(}$source$\tt{,} $f$\tt{,} $source$\tt{)},
+except that $source$ is evaluated once.

@@ -1,0 +1,71 @@
+C\_ provides basic logging facilities that can be configured
+with two object-like macros: \idx{LOGGER} and \idx{LOGGER__}.
+Logging is enabled only if \tt{LOGGER} expands to \tt{1};
+otherwise \tt{LOGGER} is not defined or it shall expand to \tt{0}, which
+disables logging in a translation unit until \tt{LOGGER} is defined as \tt{1}.
+\tt{LOGGER__} records whether the macro \tt{DEBUG} is
+defined each time the header \idx{<logger._>} is included,
+which decides the debugging configuration of logging facilities.
+
+\note Changing the definition of \tt{LOGGER} does not require
+a re-inclusion of \tt{<logger._>} to come into effect.
+
+\head{Syntax}
+
+\tt{# include <logger._>}
+
+\idx{logger_}\s\s\s\tt{(} [\it{sink}\tt{=stderr} \tt{,}
+[\it{separator}\tt{=" "} \tt{,}]] \it{expression-list} \tt{)}
+
+\idx{logger_0_}\s\tt{(} \it{sink} \tt{,}
+\it{separator} \tt{,} \it{expression-list} \tt{)}
+
+\idx{logger_1_}\s\tt{(} \it{expression} \tt{)}
+
+\idx{logger_2_}\s\tt{(} \it{sink} \tt{,} \it{expression} \tt{)}
+
+\idx{logger_3_}\s\tt{(} \it{sink} \tt{,} \it{separator} \tt{,} \it{expression} \tt{)}
+
+\head{Constraints}
+
+\it{sink} shall be a stream (\tt{File_ *}).
+\it{separator} shall be a string or a wide string.
+\it{expression} and each argument in \it{expression-list} shall have precisely the
+same constraints as those applicable for \tt{print_} and the \tt{output__} family.
+
+\head{Semantics}
+
+\tt{logger_} invokes \tt{logger_0_} if the expanded argument sequence contains
+more than three arguments; otherwise it invokes \tt{logger_}$n$\tt{_} if the
+expanded argument sequence contains $n$ arguments, with $n$ not exceeding three.
+
+If \tt{LOGGER} is defined as an object-like macro that expands to \tt{1}, then
+logging is enabled, and the \tt{logger_} family constructs a log message that
+starts with a blank line, followed by a heading text having the form given below.
+
+\table{l}
+\tt{Mon Dec 25 12:34:56 2023}\\
+\tt{function func, file file.c_, line 25}\\
+\elbat
+
+Timestamp is determined from the return value of \tt{time} function
+just before logging; function identifier, file name, and line number are
+respectively obtained from \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__}.
+Heading is followed by the textual representation of
+expressions as they would be printed by the \tt{output__} family.
+\tt{logger_1_} writes the output to \tt{stderr}; rest of the semantics are same
+as those of the \tt{output__} family, except that \it{sink} can only be a stream,
+which should be a byte-oriented output stream for \tt{logger_2_}, and for
+\tt{logger_0_} or \tt{logger_3_}, \it{sink} should be an output stream without
+orientation or the same orientation as inferred from the type of \it{separator}.
+
+If \tt{LOGGER} is not defined or it expands to \tt{0},
+then all arguments are evaluated once, and the results are discarded.
+The macro \tt{LOGGER__} determines the debugging configuration of logging
+facilities in the same way \tt{OUTPUT__} configures the \tt{output__} family,
+both in debugging mode (\tt{LOGGER__} as \tt{1})
+and in production mode (\tt{LOGGER__} as \tt{0}).
+In debugging mode, both \it{sink} and \tt{logger_0_} \it{separator}
+are asserted to be not null even if logging is disabled;
+in other words, a definition of \tt{LOGGER} (or its absence) does
+not affect the debugging configuration of \tt{logger_} family.

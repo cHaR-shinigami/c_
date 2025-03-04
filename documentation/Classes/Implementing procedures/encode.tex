@@ -1,0 +1,8 @@
+\tt{*length} is expected to be the capacity of \tt{out} array.
+If \tt{out} is not null and \tt{*length} is not less than eight, then it is
+used for storing the encoding; otherwise an array of eight bytes is allocated.
+The length is always set to eight, but if the
+allocation fails, then a null pointer is returned.
+Otherwise the bits of \tt{this->value} are divided into octets
+and stored in little-endian order (less significant octet in
+lower address), and a pointer to the encoding is returned.

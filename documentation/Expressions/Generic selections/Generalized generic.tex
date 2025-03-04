@@ -1,0 +1,67 @@
+The basic \tt{_Generic} selection only allows a single controlling expression;
+C\_ offers an extension that generalizes it to a tuple of controlling expressions,
+and correspondingly, each generic association also permits a tuple of types.
+
+\head{Syntax}
+
+\idx{generic_} \tt{( (} \it{expression-list} \tt{)}
+[\tt{, (} \it{type-list} \tt{,} \it{expression} \tt{)}] $\cdots$
+[\tt{, (} \it{default-expression} \tt{)}]
+\tt{)}
+
+\head{Constraints}
+
+\tt{generic_} accepts a sequence of parenthesized lists, where the first list is
+a tuple of controlling expressions, and each subsequent list is an association.
+\it{expression-list} shall be a comma-separated list of expressions,
+such as $expr_1$ \tt{,} $\cdots$ \tt{,} $expr_n$.
+Each \it{type-list} shall be a comma-separated list of types,
+such as \it{type-name}$_1$ \tt{,} $\cdots$ \tt{,} \it{type-name}$_k$, and a
+\it{type-name} shall not specify an incomplete aggregate type; a \it{type-name}
+can be \tt{Void_} only if there are no other types in an association list.
+Number of types in a \it{type-list} need not match
+the count of expressions in \it{expression-list}.
+
+An optional association without \it{type-list} is a default association,
+which shall consist of a single \it{default-expression}; at most one
+default association is permitted, and it need not be the last in sequence.
+All associations shall be distinct, such that any two non-default
+association lists differ in at least one \it{type-name},
+after considering type adjustments described by the semantics.
+There shall be exactly one association list
+that can be selected based on semantic rules.
+
+\head{Semantics}
+
+A type sequence is constructed from the controlling \it{expression-list},
+as if with \tt{typeof_}; more precisely, each expression in the first list
+is subjected to lvalue conversion, array to pointer decay, and function
+to function pointer conversion; then its resulting type is determined.
+For each \it{type-name} in a non-default association list,
+outermost type qualifiers are discarded, array types are adjusted to pointer
+types, and function types are adjusted to function pointer types; the latter two
+adjustments are identical to those which are performed for function parameters.
+
+After performing these conversions, if the type list constructed from the
+controlling \it{expression-list} is compatible element-wise with the type list of
+an association, then that association is selected, and its expression becomes the
+outcome of the \tt{generic_} expression; otherwise a default association list is
+present, having a single \it{default-expression} that is selected as the outcome.
+Type of the \tt{generic_} expression is same as type of the selected expression,
+as if the entire \tt{generic_} expression is replaced by an
+implicitly parenthesized form of the selected expression.
+
+Other than the expression from the selected association list,
+none of the other expressions are evaluated.
+
+\example \tt{generic_} can be used to emulate ``function overloading'',
+where a unified function call interface is
+designed for a group of possibly related functions.
+It is a form of static polymorphism because binding a call
+to a specific function is decided during translation itself,
+depending on the type of arguments given by that invocation.
+
+\code{../compile/generic.c_}
+
+\note C23 allows variable argument functions to be declared
+without a named parameter before ellipsis (\tt{...}).

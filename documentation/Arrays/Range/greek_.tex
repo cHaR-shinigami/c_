@@ -1,0 +1,30 @@
+\idx{alpha_}, \idx{omega_}, and \idx{delta_} are configurable features
+that can do null pointer diagnosis when compiled in debugging mode.
+The object-like macro \idx{RANGE__} records the \tt{defined} state
+of \tt{DEBUG} macro every time the header \idx{<range._>} is included:
+if \tt{DEBUG} is defined before including \tt{<range._>},
+then \tt{RANGE__} expands to \tt{1}, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <range._>}
+
+\tt{alpha_ (} $range$ \tt{)}
+
+\tt{omega_ (} $range$ \tt{)}
+
+\tt{delta_ (} $range$ \tt{)}
+
+\head{Constraints}
+
+$range$ shall be pointer to a non-modifiable integer array of length three, such
+that the element type does not change when subjected to integer promotion rules.
+
+\head{Semantics}
+
+When compiled with \tt{RANGE__} expanding to \tt{0}, \tt{alpha_(}$r$\tt{)},
+\tt{omega_(}$r$\tt{)}, and \tt{delta_(}$r$\tt{)} have the same values as
+\tt{(*(}$r$\tt{))[0]}, \tt{(*(}$r$\tt{))[1]}, and \tt{(*(}$r$\tt{))[2]} (respectively).
+Otherwise \tt{RANGE__} shall expand to \tt{1}, and these features
+additionally check if $range$ is a null pointer, as if by using \tt{notnull_}.
+In all cases, the outcome is not an lvalue.

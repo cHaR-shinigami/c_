@@ -1,0 +1,24 @@
+\head{Declaration}
+
+\tt{Abstract_ *solver_(Abstract, copy)(Abstract_ *this, Abstract *that);}
+
+\head{Description}
+
+As per the protocol of \tt{copy} method, \tt{this} is considered to be the
+destination pointer, and \tt{that} is considered to be the source pointer.
+If \tt{is(that->type, type_(Abstract))} is
+\tt{false}, then a null pointer is returned.
+Otherwise if \tt{that} is not null and the pointer \tt{that->concrete}
+compares equal to the pointer \tt{this->concrete}, then \tt{this} is returned.
+If \tt{this->concrete} is not null and either the concrete \tt{type} is not valid
+or not a sub-type of \tt{concrete_(that)->type}, then a null pointer is returned.
+Otherwise the \tt{copy} procedure of \tt{concrete_(that)->type} is
+invoked with \tt{this->concrete_} and \tt{that->concrete} as arguments.
+If its outcome is null, then a null pointer is returned;
+otherwise its outcome is a pointer to a copy of \tt{that->concrete},
+and if it is same as \tt{this->concrete}, then \tt{this} is returned.
+Otherwise a new \tt{Abstract} instance is allocated, whose \tt{type}
+member is initialized with the \tt{type} parameter, and \tt{concrete}
+member is initialized with the pointer that was returned by
+\tt{concrete_(that)->type->}\\\tt{copy(this->concrete, that->concrete)}.
+The return value is a pointer to the initialized \tt{Abstract} instance.

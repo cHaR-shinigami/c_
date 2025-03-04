@@ -1,0 +1,19 @@
+\def\Subsubsection#1{\subsubsection{#1}\input{Interfaces/Concretization/Methods/#1}}
+
+For each class method that provides an implementation for an interface method,
+the concrete protocol can leverage the abstract protocol
+which already establishes pre-conditions and post-conditions.
+This promotes code reusability: if an interface is concretized by multiple
+classes, then each of their protocols need not re-implement the same logic.
+
+In this subsection, we have only described the implementation of \tt{append}
+method for the \tt{Chain} class; rest of the concretizing methods are implemented
+in a similar way, and their source codes can be found in appendix A.
+
+\note A concrete protocol can also specify its own set of pre-conditions and
+post-conditions specific to the class structure, in addition to those that
+are already imposed by the corresponding abstract protocol of the interface.
+
+\Subsubsection{Protocol}
+
+\Subsubsection{Procedure}

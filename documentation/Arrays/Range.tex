@@ -1,0 +1,34 @@
+A \type{Range} type specifies a pointer type to a non-modifiable
+integer array of three elements: $alpha$, $omega$, and $delta$.
+This triplet encodes an arithmetic sequence that begins at $alpha$ and does not go
+beyond $omega$, with $delta$ being the difference between two consecutive members.
+The last member of the series is of the form $alpha + k*delta$, where $k$ is the
+maximum non-negative integer for which the last member does not go beyond $omega$.
+
+\note If $omega - alpha$ is a multiple of $k$,
+then the sequence ends with $omega$ as its last member.
+
+\head{Syntax}
+
+\tt{Range}\s\s\tt{(} $type$ \tt{)}
+
+\tt{Range_}\s\tt{(}  $type$ \tt{)}
+
+\head{Constraints}
+
+$type$ shall specify an integer type.
+
+\head{Semantics}
+
+Both \tt{Range} and \tt{Range_} specify pointer types to a non-modifiable
+array of three elements. $type$ is subjected to integer promotion rules,
+and non-modifiable form of the promoted type becomes the array element type.
+
+\note \tt{Range_} means that the pointer itself is modifable,
+but the array it points to remains non-modifiable.
+
+\subsection{\tt{range_}}
+\input Arrays/Range/range_
+
+\subsection{\tt{alpha_}, \tt{omega_}, \tt{delta_}}
+\input Arrays/Range/greek_

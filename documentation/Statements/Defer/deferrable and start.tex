@@ -1,0 +1,18 @@
+A function that supports the use of \tt{defer_} is started with
+\tt{deferrable} instead of \tt{begin} or a plain opening brace.
+If statements are to be postponed to the end of an inner block,
+then such a block is started with \tt{start};
+reaching its corresponding \tt{refed} executes the statements
+deferred within that block in reverse order of registering them.
+
+\example The following code demonstrates execution
+sequence of deferred statements within nested blocks.
+
+\code{../compile/defer.c_}
+
+\note Asterisk means that the reference implementation relies
+on non-standard extensions for providing these features;
+they are reported by \tt{-Wpedantic} (enabled in \tt{cc_}),
+but we can suppress such warnings with \tt{-Wno-pedantic}.
+
+\code{Statements/Defer/defer.txt}

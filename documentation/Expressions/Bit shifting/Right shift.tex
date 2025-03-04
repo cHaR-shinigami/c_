@@ -1,0 +1,19 @@
+\def\Subsubsection#1{\subsubsection{#1}
+\input{Expressions/Bit shifting/Right shift/#1}}
+
+The object-like macro \idx{RSHIFT__} records the \tt{defined} state
+of \tt{DEBUG} macro when the header \idx{<rshift._>} is included:
+it expands to the integer constant \tt{1} if \tt{DEBUG} was defined,
+and \tt{0} otherwise; \tt{ursh_} and \tt{rsh_} are configured accordingly.
+
+When \tt{RSHIFT__} expands to \tt{1}, \tt{ursh_}
+and \tt{rsh_} are configured in debugging mode, in
+which the shift value given by the unsigned right expression is asserted to be
+less than width of the left expression's type both before and after conversion;
+otherwise \tt{ursh_} and \tt{rsh_} are configured in production mode, in which
+the result is zero if shift value is greater than or equal to width of the left
+expression's original type or \tt{width_(UIntmax)} (whichever is smaller).
+
+\Subsubsection{Unsigned}
+
+\Subsubsection{Signed}

@@ -1,0 +1,20 @@
+\head{Syntax}
+
+\tt{bitlen__ (} \it{bitmax} \tt{)}
+
+\head{Constraints}
+
+\it{bitmax} shall have an integer type.
+
+\head{Semantics}
+
+If \it{bitmax} is a non-negative integer that is one less than some power of 2,
+then \tt{bitlen__} acts as the inverse of \tt{bitmax_}, and computes the number
+of significant bits; otherwise the behavior is implementation-defined.
+
+The result is an integer constant expression only if the
+argument \it{bitmax} is also an integer constant expression.
+
+\note The reference implementation provides \tt{bitlen__} with a formula
+suggested by Hallvard B. Furuseth; the basic technique can be found at
+\url{https://groups.google.com/g/comp.lang.c/c/NfedEFBFJ0k/m/9HAqis6IDqcJ}

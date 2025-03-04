@@ -1,0 +1,12 @@
+\begin{itemize}
+
+\item If \tt{validate_(this)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{length} is a null pointer or \tt{*length} is
+equal to zero, then the function returns a null pointer.
+
+\item Let $type$ be the value of \tt{((Object *)this)->type};
+the function returns $type$\tt{->encode(this, length, out)}.
+
+\end{itemize}

@@ -1,0 +1,63 @@
+One of the blessings of inheritance in object-oriented
+programming is that it facilitates code reuse.
+We have already seen how the pre-conditions and
+post-conditions established by interface protocols can be
+utilized by concretizing classes without re-writing them.
+This workflow is illustrated below, where each arrow denotes a function call.
+
+\begin{center}
+\fbox{Class protocol}$\longrightarrow$%
+\fbox{Interface protocol}$\longrightarrow$%
+\fbox{Interface procedure}$\longrightarrow$%
+\fbox{Class procedure}
+\end{center}
+
+The above diagram leads to another interpretation of interfaces:
+an interface can act as an additional layer of abstraction
+between a class protocol and its corresponding procedure.
+If a class method provides the concrete implementation of an interface method,
+then the class protocol can indirectly invoke its procedure via an interface,
+which validates pre-conditions on arguments and verifies
+post-conditions on return value (and possible side effects).
+
+So far we have seen that each interface requires some concretizing class,
+which can be summarily stated as ``abstract depends on concrete'':
+this is the conventional dependency.
+To further leverage the benefits of interfaces, we can also write class procedures
+that depend on an interface procedure, which inverts the dependency relationship.
+
+For example, we have seen in \S 8.4.2 how the \tt{compare}
+procedure of \tt{Iterable} can be implemented by comparing the
+count of elements in each iterable, and if found to be equal,
+then checking if both of them contain precisely the same set of elements.
+Iteration and appending require knowledge of concrete representation,
+and must be facilitated by the class; once these are available, other
+operations such as \tt{compare} and \tt{copy} can be implemented using them.
+
+This approach of comparing two iterables is abstract in nature,
+as it does not make any assumptions about how the data is actually stored.
+Abstract designs are highly reusable: each concretizing class
+need not implement its own custom logic for comparing instances,
+but can simply use the generic approach implemented by the interface.
+This is how the \tt{compare} procedure of \tt{Chain} class
+is implemented in \src{compile/class/Chain/compare.c_}
+
+The high-level workflow shown below is quite
+opposite to the conventional one we saw earlier.
+
+\begin{center}
+\fbox{Class procedure}$\longrightarrow$\fbox{Interface procedure}
+\end{center}
+
+We refer to this as ``dependency inversion'', since the concretizing
+class depends on the interface for providing certain functionalities.
+The coordination and interdependence between an interface and its concretizing
+class is an important aspect in object-oriented design, and the technique
+of dependency inversion is also used to implement several other procedures
+associated with \tt{Chain}, \tt{List}, and \tt{Vector} classes, for which the
+interface itself implements abstract algorithms not tied to any particular
+representation, by using the primitives of iteration and appending.
+
+\note A basic tenet of abstract design is that instead of operating directly
+on data, we implement representation-agnostic higher-order functions that work
+with other lower-level functions which are ``closer'' to the concrete data.

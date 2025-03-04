@@ -1,0 +1,26 @@
+Pointer to an array refers to the same address as pointer to its base element;
+however, pointer to array has a fundamentally different type from
+pointer to base element, and this distinction is important for address
+arithmetic with pointers: adding one with ``pointer to an array''
+makes it point to the next ``array'', not to the next element.
+One advantage of using pointer to array type is that
+it not implicitly ``decay'' to a base element pointer.
+
+Pointer to an array is also a natural extension of pointer to other object types,
+and using pointer to array as a function parameter clearly conveys the intent
+that some function expects (pointer to) an array, not pointer to a single element.
+For instance, the standard library function \tt{fputs} can be declared as
+\tt{int fputs(Char *, File_ *)} where the first parameter expects an array of
+characters, and the second parameter expects pointer to a single \tt{File_} object.
+The distinction of array and pointer is not evident from the
+declaration itself, which can be achieved with pointer to arrays
+(doing so with existing functions would change their type).
+
+As an example,
+\tt{strcpyn(Size length, Ptr (Char_ [length]) target, Ptr (Char_ []) source)}
+declares both \tt{target} (destination) and \tt{source} as pointers to arrays:
+\tt{target} expects pointer to a complete array having a capacity of \tt{length}
+elements, whereas source is a pointer to an incomplete array whose length is
+not specified in the type (it is determined by looking for the first null byte).
+Most features of C\_ that work with arrays expect a pointer to a complete array,
+so that length information can be extracted from the pointer itself.

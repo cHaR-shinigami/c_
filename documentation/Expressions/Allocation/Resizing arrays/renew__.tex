@@ -1,0 +1,55 @@
+\head{Syntax}
+
+\idx{renew__}\s\s\s\s\tt{(} \it{array-pointer} \tt{,} \it{array-length}
+[\tt{,} \it{initializer}] \tt{)}
+
+\idx{renew__2__}\s\tt{(} \it{array-pointer} \tt{,} \it{array-length} \tt{)}
+
+\idx{renew__3__}\s\tt{(} \it{array-pointer} \tt{,} \it{array-length}
+\phantom{[}\tt{,} \it{initializer}\phantom{]} \tt{)}
+
+\head{Constraints}
+
+\it{array-pointer} shall be pointer to unqualified complete array type.
+\it{array-length} shall have integer type.
+It shall be possible to assign \it{initializer} to element of the
+array obtained on dereferencing \it{array-pointer}, without type cast.
+
+\head{Semantics}
+
+\tt{renew__} invokes \tt{renew__}$n$\_\_ if the
+expanded argument sequence contains $n$ arguments.
+In all cases, \it{array-pointer} shall be suitable for passing to \tt{free};
+otherwise the behavior is undefined.
+\it{array-pointer} can be evaluated more than once
+only if element type of the array is variably modified.
+\it{array-length} is converted to type \tt{Size}, and it can be evaluated
+multiple times only if it is not an integer constant expression.
+\it{initializer} is evaluated only once.
+
+A non-null outcome of \tt{renew__2__} is pointer to an
+array having \tt{(Size)(}\it{array-length}\tt{)} elements,
+with the same element type as that of \it{array-pointer}.
+If \it{array-pointer} is null,
+then the behavior is identical to \tt{new__2__}, which allocates a new array.
+If the outcome is null,
+then resizing could not be done, and the original array is preserved.
+
+\tt{renew__3__} resizes an array in the same way as \tt{renew__2__},
+and if the array is expanded, then \tt{renew__3__} also initializes
+each additional element of the resized array with the resulting value
+of \it{initializer} after it is converted to the array element type.
+For the purpose of initialization, the current array length
+is determined solely from the type of \it{array-pointer},
+which may or may not reflect true length of the array object.
+For instance, \tt{renew__3__} also permits \it{array-pointer} to be null, but as
+per the constraints, its type shall be pointer to an unqualified complete array
+type: if the length encoded by that type is smaller than the converted value of
+\it{array-length}, then initialization starts from the index equal to the
+inferred old length, and array elements prior to that index remain uninitialized.
+
+\note If the element type is not variably modified, then \it{array-pointer}
+is evaluated only once, even if the array type itself is variably modified.
+Practically speaking, shrinking an array should always be possible in-place,
+but in theory, any resizing operation can relocate the array
+and produce a new pointer, leaving the old pointer dangling.

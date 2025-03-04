@@ -1,0 +1,22 @@
+\head{Syntax}
+
+\idx{guard_}\s\s\s\tt{(} \it{condition} [\tt{,} \it{return-value}\opt] \tt{)}
+
+\idx{guard_1_}\s\tt{(} \it{condition} \tt{)}
+
+\idx{guard_2_}\s\tt{(} \it{condition} \phantom{[}\tt{,} \it{return-value}\opt\phantom{]} \tt{)}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression, and the optional \it{return-value}
+shall be an expression that can be returned by the function without a type cast.
+If the function return type is \tt{Void_}, then \it{return-value} shall be blank.
+
+\head{Semantics}
+
+\tt{guard_} invokes \tt{guard_}$n$\_ if the
+expanded argument sequence has $n$ arguments.
+If \it{condition} does not compare equal to zero,
+then control flow is not altered and \it{return-value} is not evaluated;
+otherwise the behavior of \tt{guard_1_} is same as that of \tt{break} statement,
+and \tt{guard_2_} has the effect of a return statement with \it{return-value}.

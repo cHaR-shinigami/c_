@@ -1,0 +1,32 @@
+\head{Syntax}
+
+\tt{typeof\_ (} \it{expression} \tt{)}
+
+\tt{typeof\_ (} \it{type-name}  \tt{)}
+
+\head{Constraints}
+
+\it{expression} shall not have and \it{type-name} shall not specify an incomplete
+aggregate type; if they contain a type definition, then it shall not provide an
+incompatible redefinition for a tagged type already defined in the same scope.
+
+\head{Semantics}
+
+\tt{typeof_} specifies the resulting type of an expression with the same type
+as the argument to \tt{typeof_}, after performing lvalue conversion,
+array to pointer decay, and function to function pointer conversion.
+As with \tt{typedef_}, if \it{type-name} specifies definition of an
+enumeration or aggregate type, then that type is defined in the same scope.
+\tt{typeof_} can evaluate its argument only if it is of a
+variably modified type, in order to determine the sizes of VLAs.
+
+\head{Recommended practice}
+
+Side effects are discouraged, and code should not rely
+on evaluation of an argument with variably modified type.
+
+\note \tt{typeof_} is similar to \tt{typeof_unqual}, but they are not the same,
+particularly with arrays and functions.
+
+\example \tt{typeof_("str")} is pointer type \tt{Char *},
+whereas \tt{typeof_unqual ("str")} is array type \tt{Char_ [4]}.

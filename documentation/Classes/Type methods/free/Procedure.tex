@@ -1,0 +1,11 @@
+\begin{itemize}[nosep]
+
+\item If \tt{this} is a null pointer, then the function returns immediately.
+
+\item Let $type$ be the value of \tt{((Object *) this)->type}; if
+\tt{is_type(}$type$\tt{)} is \tt{false}, then return immediately.
+
+\item Otherwise \tt{is_type(}$type$\tt{)} is
+\tt{true} and $type$\tt{->free(this)} is invoked.
+
+\end{itemize}

@@ -1,0 +1,84 @@
+\def\Subsection#1{\subsection{#1}\input{Introduction/Conventions/#1}}
+
+The reference implementation operates with ``pseudo-namespaces''
+that use name mangling to emulate the behavior of proper namespaces:
+members in different namespaces can be designated by the same identifier.
+For a proper functioning of these so-called pseudo-namespaces,
+the reference implementation ``trusts the programmer''
+to abide by a few simple naming restrictions,
+in addition to the existing identifier reservations imposed by the C standard.
+
+Firstly, macros defined by the reference
+implementation shall not remain undefined,
+and the programmer shall not provide a
+non-equivalent redefinition of these macros.
+Secondly, non-macro names defined in C\_ shall
+not be defined as non-trivial object-like macros;
+however, it is permitted to define them as trivial
+object-like macros, or even function-like macros.
+A trivial object-like macro is one whose
+expansion does not alter the source code.
+In other words, an object-like macro is trivial if its
+replacement text expands to the macro name itself; for example:\\
+
+\tt{#define identifier identifier}\\
+
+One advantage of function-like macros is that their expansion can be suppressed,
+if the first non-whitespace character after an occurrence
+of the macro name is not the opening parenthesis;
+for example, standard library functions may be additionally provided as macros,
+and a common trick to suppress macro expansion and call the actual
+function is to parenthesize the name, such as the call \tt{(putc)('\\n')}.
+On the contrary, the expansion of an object-like macro cannot be suppressed,
+which can be problematic if an existing non-macro
+identifier is defined as a non-trivial object-like macro.
+These restrictions are not specific to C\_,
+but applicable to C in general; for instance,
+the standard header \tt{<stdlib.h>} defines the structure
+type \tt{div_t} with two members \tt{quot} and \tt{rem},
+so none of these names can be defined as non-trivial object-like macros;
+however, the following macro definitions are unlikely to cause any problem:\\
+
+\tt{#define quot quot}
+
+\tt{#define rem(...)}\\
+
+We can also define the notion of a trivial function-like macro in a similar
+fashion: a function-like macro is considered to be trivial is its expansion
+is successful and does not modify any text of the source code; for example:\\
+
+\tt{#define abs(...) abs(__VA_ARGS__)}\\
+
+Despite the simplicity of its definition,
+there are certain caveats in the design of trivial function-like macros.
+\tt{abs} is a standard library function declared in the header \tt{<stdlib.h>}:
+it takes a single argument of type \tt{int}
+(\tt{Int_} in C\_) and returns its absolute value.
+A naive implementation of a corresponding function-like macro might look like:\\
+
+\tt{#define abs(n) abs(n)}\\
+
+However, the above macro is actually non-trivial; in
+the absence of this macro, the call \tt{abs(*(int [])\{0,\})} works correctly,
+but the preprocessor does not understand compound literals,
+so a macro invocation actually reads it as two arguments:
+\tt{*(int [])\{0} and \tt{\}}.
+This may be a contrived example, but is nonetheless perfectly
+legal C code that is rendered invalid by our second definition
+of \tt{abs} with a single parameter, making the macro non-trivial.
+
+Note that our definition of ``triviality'' only requires that the
+resulting expansion of the macro should not alter the source text;
+however, it does not imply that a trivial macro can be freely undefined,
+which can impact a subsequent \tt{#if} preprocessing
+directive that checks whether a macro name is defined or not.
+Another naming restriction of C\_ is that user-defined
+identifiers should not have two consecutive underscores anywhere;
+this is to avoid name collisions with several internal identifiers
+with double underscores that are formed as a result of name mangling.
+
+\Subsection{Naming}
+
+\Subsection{Reservations}
+
+\Subsection{Spacing}

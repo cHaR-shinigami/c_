@@ -1,0 +1,65 @@
+\def\Subsubsection#1{\subsubsection{#1}\input{Ellipsis/Selection/Polymorphism/#1}}
+
+The \tt{poly_} family of macros can be used to emulate static polymorphism via
+name mangling on the basis of argument count in an invocation, which can be
+determined with the \tt{COUNT_} macro (arguments are expanded before counting).
+
+\note \tt{poly_} is itself a polymorphic macro
+based on the same working principle: name mangling.
+
+\head{Syntax}
+
+\idx{poly_}\s\s\s\tt{(}
+\it{function-identifier}
+ \tt{,} \it{argument-count}
+[\tt{,} \it{suffix}
+[\tt{,} \it{upper-bound}]]
+ \tt{)}
+
+\idx{poly_2_}\s\tt{(}
+\it{function-identifier}
+ \tt{,} \it{argument-count}
+ \tt{)}
+
+\idx{poly_3_}\s\tt{(}
+\it{function-identifier}
+ \tt{,} \it{argument-count}
+\phantom{[}\tt{,} \it{suffix}\phantom{[}
+ \tt{)}
+
+\idx{poly_4_}\s\tt{(} \it{function-identifier}
+ \tt{,} \it{argument-count}
+\phantom{[}\tt{,} \it{suffix}
+\phantom{[}\tt{,} \it{upper-bound}\phantom{]]}
+ \tt{)}
+
+\head{Constraints}
+
+Pasting the expanded forms of \it{function-identifier}, \it{argument-count},
+and \it{suffix} (in that order) shall not produce an invalid token.
+\it{upper-bound} shall expand to a decimal integer constant more than 1 and not
+exceeding \tt{PP_MAX}; if\\\it{upper-bound} is given, \it{argument-count} shall
+expand to a non-negative decimal integer constant not exceeding \tt{PP_MAX}.
+
+\head{Semantics}
+
+\tt{poly_} invokes \tt{poly_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+\tt{poly_2_} and \tt{poly_3_} paste their expanded arguments in the given order.
+For \tt{poly_4_}, if \it{argument-count} is less than \it{upper-bound},
+the outcome is same as \tt{poly_3_}; otherwise \it{argument-count} is
+replaced with \tt{0}, and pasting is done the same way as \tt{poly_3_}.
+
+\note The \tt{poly_} family merely generates a
+mangled name that has to be invoked separately.
+\it{argument-count} is typically supplied via
+\tt{COUNT_}, whose outcome is always non-zero.
+For \tt{poly_4_}, the special argument count of zero is used to
+designate a default function/macro meant to be invoked when argument
+count exceeds a certain value; in other words, a function/macro should
+be available for each supported argument count below \it{upper-bound}.
+
+\example \tt{RANGE_(...)} can be implemented as
+\tt{poly_(RANGE_, COUNT_(__VA_ARGS__), _)(__VA_ARGS__)}.
+
+\Subsubsection{Disadvantages}

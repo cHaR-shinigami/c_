@@ -1,0 +1,50 @@
+\head{Syntax}
+
+\tt{for_ (} \it{declaration-or-expression}\opt \tt{;}
+\it{loop-condition}\opt \tt{;} \it{expression}\opt \tt{)}
+
+\s\s\s\s\it{declarations-and-statements}\opt
+
+\tt{end}
+
+\head{Constraints}
+
+\it{loop-condition} shall be a scalar expression.
+
+\head{Semantics}
+
+\it{declaration-or-expression} is evaluated only once before the first
+iteration; declarations are visible till the end of that \tt{for_} block.
+\it{loop-condition} is evaluated at the start of each iteration: if it is
+non-zero or it has been omitted, then the block is executed; otherwise iteration
+is stopped, and control jumps immediately after the end of that \tt{for_} block.
+After each iteration, the \it{expression} that follows \it{loop-expression}
+gets executed if an iteration ran its natural course and reached the end of
+that \tt{for_} block, or due to the execution of a \tt{continue} statement.
+
+\note For notational convenience, we can assign descriptive
+names to the parts of a \tt{for_} loop, as done below.
+
+\tt{for_ (} \it{init} \tt{;} \it{pre} \tt{;} \it{post} \tt{)}
+
+\s\s\s\s\it{body}
+
+\tt{end}
+
+\it{outside}
+
+With this notation, control flow for a conventional cycle
+of iterations (without jump statements) proceeds as:
+\begin{center}
+\it{init}
+$\to$
+[ \it{pre}$_{true}$ $\to$ \it{body} $\to$ \it{post} ]\opt
+$\to$
+$\cdots$
+$\to$
+[ \it{pre}$_{true}$ $\to$ \it{body} $\to$ \it{post} ]\opt
+$\to$
+\it{pre}$_{false}$
+$\to$
+\it{outside}
+\end{center}

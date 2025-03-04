@@ -1,0 +1,17 @@
+\head{Syntax}
+
+\tt{repeat__ (} \it{frequency} \tt{,} \it{text} \tt{)}
+
+\head{Constraints}
+
+\it{frequency} shall be a non-negative decimal integer constant
+not exceeding \tt{PP_MAX}, or expand to such a constant.
+
+\head{Semantics}
+
+\tt{repeat__} creates consecutive replicas of \it{text}
+for the number of times specified by \it{frequency}:
+an invocation of the form \tt{repeat__(}$n$\tt{, text)} expands to \tt{text text}
+$\cdots$ \tt{text} ($n$ times), which is then scanned for macro expansions.
+
+\note If \it{frequency} is zero, then the outcome is a blank text.

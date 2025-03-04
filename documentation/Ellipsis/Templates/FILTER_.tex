@@ -1,0 +1,43 @@
+\head{Syntax}
+
+\tt{FILTER_ (} \it{predicate} \tt{,} \it{arg2} \tt{,} \it{argument-list} \tt{)}
+
+\head{Constraints}
+
+Each element in \it{predicate} shall be a function-like macro that can be
+invoked with two arguments, and its outcome shall be \tt{0} or \tt{1} when
+the first argument is from \it{argument-list} and the second from \it{arg2},
+as described in semantics.
+
+If \it{arg2} is a list with multiple elements after expansion,
+the resulting element count shall be less than \tt{PP_MAX}.
+
+The number of arguments in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+\head{Semantics}
+
+For each element in the expanded \it{argument-list}, a function-like macro
+from \it{predicate} is invoked with that element as the first argument, and
+the second argument is an element from \it{arg2} after peeling and expansion
+of \it{arg2}: if outcome is \tt{1}, then the element from \it{argument-list}
+is included; otherwise outcome is \tt{0} and the element is excluded.
+
+If \it{predicate} or \it{arg2} expands to a list with multiple elements, the
+elements are used in a round robin sequence, moving back to the first element each
+time the list ends; extra elements beyond the number of iterations are unused.
+\it{arg2} is also subjected to \tt{peel_}, which removes the
+outermost parentheses from an optionally parenthesized prefix.
+
+\example The invocation \tt{FILTER_(echo_(MOD_, LT_), (2, 10), 2, 3, 5, 7, 11, 13)}
+extracts all odd integers at even indices, and single digits at odd indices;
+the resulting expansion generates the text \tt{3, 5, 7, 11}.
+
+\note As per our naming conventions, a function-like macro named
+in uppercase suggests that its outcome is a list of constants.
+The naming of \tt{FILTER_} is an exception,
+since its outcome need not be a list of constants.
+The name \tt{filter_} is already used for a similar iterator that works with
+runtime arrays, so the metaprogramming variant was named as \tt{FILTER_};
+moreover, \tt{FILTER_} is closely associated with \tt{SEARCH_},
+so the naming is justified.

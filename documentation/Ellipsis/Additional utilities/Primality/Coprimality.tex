@@ -1,0 +1,16 @@
+\head{Syntax}
+
+\idx{ARE_COPRIME_} \tt{(} $m$ \tt{,} $n$ \tt{)}
+
+\head{Constraints}
+
+$m$ and $n$ shall be non-negative decimal integer constants
+not exceeding \tt{PP_MAX}, or expand to such a constant.
+
+\head{Semantics}
+
+Outcome is \tt{1} if the greatest common divisor of $m$ and $n$ is 1;
+otherwise the outcome is \tt{0}.
+
+\note \tt{ARE_COPRIME_(}$m$\tt{,} $n$\tt{)} is
+equivalent to \tt{EQ_(GCD_(}$m$\tt{,} $n$\tt{), 1)}.

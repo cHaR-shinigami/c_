@@ -1,0 +1,52 @@
+\def\Section#1{\section{#1}\input{Types/#1}}
+
+C\_ provides synonyms for the standard data types in C;
+the reference implementation defines them in the header \tt{<types._>}.
+C\_ uses a type system we shall call ``twin typing'',
+where each type comes as a pair:
+the non-modifiable variant does not end with an underscore,
+and its modifiable ``twin'' has the same name suffixed with an underscore.
+By convention, C\_ type names begin with an uppercase letter,
+and contain at least one lowercase letter.
+
+The concept of ``immutability'' originates from functional programming,
+and is increasingly being adopted by new programming languages.
+C\_ follows the same trend,
+as it can prevent accidental modifications due to typographic errors;
+one common source of bugs is writing the equality operator \tt{==} as \tt{=},
+which can cause silent assignment if the left
+operand happens to be a modifiable lvalue.
+Somewhat ironically to the name C\_, we advocate the use of types without
+underscore; modifiable types should be used judiciously, only when necessary.
+Besides reducing chances of unintended mutations, it can also aid in
+optimizations, and lesser use of underscore improves visual appeal of code.
+
+For consistency, we also follow the same convention for variables; a trailing
+underscore is easy to spot, making one realize that the variable is modifiable.
+Variable names start with a lowercase letter to differentiate
+them from type names; they should not start with an underscore,
+which is reserved for special purposes.
+We start by listing the basic types with their minimum bit-width,
+without repeating their modifiable twins whose existence is implied.
+
+\Section{Integer}
+
+\Section{Floating}
+
+\Section{Optional}
+
+\section{\type{Void}}
+\input   Types/Void
+
+\Section{Synonyms}
+
+\section{\idx{typeof_}}
+\input  Types/typeof_
+
+\Section{Unaliasable}
+
+\Section{Inference}
+
+\Section{Properties}
+
+\Section{Pointers}

@@ -1,0 +1,76 @@
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+
+The following script code is available in the source file \src{build.sh}
+
+When the script is executed directly (such as \tt{./build.sh}),
+the first line starting with the ``shebang'' \tt{#!} tells that
+the program \tt{/bin/bash} is to be used for running this script
+(it is also a comment line due to the preceding \tt{#}).
+
+The \tt{set -e} line is to stop the script immediately as soon as a command
+terminates with a non-zero exit status, skipping rest of the subsequent commands
+(recall that a non-zero exit code indicates failure, whereas zero indicates success).
+Exit status is nothing but the return value of \tt{main}
+or argument to \tt{exit}/\tt{_Exit}/\tt{quick_exit} calls.
+
+\tt{\$0} gives the first command-line argument, which is the name by
+which the script was invoked: passing it to \tt{realpath} gives the
+full pathname where the file is located (ending with the filename),
+and \tt{dirname} obtains the directory name only (without the filename).
+Enclosing the command within parentheses makes it execute within
+a subshell, and its outcome is stored in the variable \tt{C_},
+which will be used as a path prefix in subsequent commands.
+
+\pagebreak
+
+The heredoc starting with \tt{<<} is used to emulate a multi-line comment:
+the \tt{'#'} after that marks the delimiter whose
+subsequent occurrence terminates the heredoc text.
+In the first case, the heredoc itself is commented out by a preceding \tt{'#'},
+and the \tt{#} in a subsequent line that would have otherwise
+delimited the heredoc text becomes an ordinary comment line.
+Both blocks of heredoc texts are for initializing a variable
+\tt{CC_} with an invocation of \tt{gcc} or \tt{clang}, with its
+associated command-line flags that includes several diagnostic options.
+When the \tt{<<} line is commented out, the following text
+comes into effect, which is used to set compilation options.
+For example, to use \tt{clang} instead of \tt{gcc}, uncomment the heredoc
+before \tt{gcc} options can comment out the one before \tt{clang} options.
+
+The file \tt{build.sh} is located directly within \tt{examples/}
+directory, whose absolute path is stored in the variable \tt{C_}.
+After initializing \tt{CC_} with the compiler invocation string,
+we change the current directory to \tt{C\_/compile/}.
+Once inside the \tt{compile/} directory, we execute the compiler command
+on the source file \tt{lib.c_}, which generates an object file named
+\tt{lib.o} containing various external variables and function definitions
+(for the dialect as well as standard library extensions).
+The \tt{strip} command is used to reduce size of the object file
+by removing non-essential symbols that are not required for code
+relocation and linking purposes (such as debugging symbols).
+We then create a subdirectory named \tt{object/} within \tt{examples/}
+directory, and move the file \tt{lib.o} to that directory (the \tt{-p}
+option to \tt{mkdir} avoids an error if the directory is already present).
+After that we change our current directory to \tt{object/}.
+
+Once inside the \tt{object/} directory, we create a
+subdirectory named \tt{class/} and change to that directory.
+The source files directly within \tt{compile/class/} contain class definitions,
+which are compiled into object files and placed within \tt{object/class/};
+the \tt{strip} command is invoked on each object file to reduce file size.
+The loop iterates over each directory name in \tt{compile/class/}:
+for this we open a subshell, change the current directory to
+\tt{compile/class/}, and the output of \tt{ls -d */} gives all
+directory names without path prefix and with a trailing \tt{'/'}.
+For each directory in \tt{compile/class/}, we create a corresponding directory
+with the same name in \tt{object/class/}, which is used for storing stripped
+object files of each source file containing the methods associated with that class.
+
+Once the loop terminates, we go back to the \tt{object/}
+directory, and create a subdirectory named  \tt{interface/}.
+As done for each class, similar steps are repeated to create
+object files for each interface and its associated methods.
+
+\note To run the script as \tt{./build.sh}, make it executable
+using \tt{chmod +x build.sh} (if not done already).

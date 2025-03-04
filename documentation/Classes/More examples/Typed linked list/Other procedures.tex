@@ -1,0 +1,43 @@
+In this chapter, we have discussed only the implementation of \tt{init} for the
+\tt{List} class; some other procedures will be implemented in the next chapter,
+demonstrating how inheritance and abstraction promote code reusability.
+We conclude this chapter with an overview of how these
+procedures can be implemented (can be done as an exercise).
+
+\begin{itemize}
+
+\item \tt{validate} should check that \tt{is_type(species)}
+is \tt{true}, and the \tt{data} member of each node in
+the list points to a valid instance of \tt{species}.
+Recall that the general \tt{validate} function does validation with
+respect to the base type first, so we need not check that the list
+structure is valid, as it is already done by the \tt{Chain} class.
+To allow instances of any object-oriented type in a list,
+its \tt{species} can be initialized to \tt{type_(Object)}.
+
+\item \tt{compare} should adopt a similar rule as \tt{strcmp}: for a pair
+of elements, one from each list in identical positions, find their super
+type and invoke its \tt{compare} procedure with the instances as arguments.
+If the outcome is non-zero, then that is
+also the return value of comparing the lists.
+Otherwise the same is repeated for successive pairs until one of
+the lists ends: if the other list ends as well, then the lists
+are considered to be equal, and the return value should be zero;
+otherwise the shorter list is considered to be ``less than'' the longer list.
+
+\item \tt{copy} should perform a ``shallow copy'' of the source list: only
+the data pointers are copied to nodes of the destination list (allocated as
+required), as opposed to invoking \tt{copy} procedure for each instance.
+The primary reason behind this is to avoid issues of memory
+allocation failure while creating a ``deep copy'' of each instance.
+
+\item \tt{read}, \tt{parse}, and \tt{decode} should each invoke its
+corresponding procedure from the \tt{Type} specified by \tt{species}.
+
+\item \tt{write}, \tt{text}, and \tt{encode} should each invoke its
+corresponding procedure from the \tt{Type} given by each instance.
+
+\item \tt{add} should concatenate the two lists: elements of
+the left list are to be followed by elements of the right list.
+
+\end{itemize}

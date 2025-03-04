@@ -1,0 +1,89 @@
+The \tt{assert_} family can be used to ensure
+that some condition is satisfied at runtime.
+Unlike the \tt{pre_} and \tt{post_} facilities,
+the \tt{assert_} family can be customized during translation:
+when compiled in debugging mode, failure of a given condition causes
+a diagnostic message to be printed on the standard error stream and the
+process terminates with exit status as one; when compiled in production mode,
+the condition is evaluated but the result is ignored.
+
+\note C\_ \tt{assert_} family is not a wrapper over
+the C \tt{assert} macro defined in \tt{<assert.h>};
+as with other extension headers, \tt{<assert.h>} is included by \tt{<assert._>},
+and the \tt{assert} macro can be configured with \tt{NDEBUG}.
+
+\head{Syntax}
+
+\tt{# include <assert._>}\\
+
+\idx{assert_}\s\s\s
+ \tt{(} \it{condition}
+[\tt{,} \it{text}\tt{="}\it{condition}\tt{"}
+[\tt{,} \it{site}\tt{=SITE}
+[\tt{,} \it{sink}\tt{=stderr}
+[\tt{,} \it{DEBUG}\tt{=ASSERT__}]]]]
+ \tt{)}
+
+\idx{assert_1_}\s\tt{(}
+\it{condition} \tt{)}
+
+\idx{assert_2_}\s\tt{(}
+\it{condition} \tt{,}
+\it{text} \tt{)}
+
+\idx{assert_3_}\s\tt{(}
+\it{condition} \tt{,}
+\it{text} \tt{,}
+\it{site} \tt{)}
+
+\idx{assert_4_}\s\tt{(}
+\it{condition} \tt{,}
+\it{text} \tt{,}
+\it{site} \tt{,}
+\it{sink} \tt{)}
+
+\idx{assert_5_}\s\tt{(}
+\it{condition} \tt{,}
+\it{text} \tt{,}
+\it{site} \tt{,}
+\it{sink} \tt{,}
+\it{DEBUG} \tt{)}
+
+\head{Constraints}
+
+\it{condition} shall be a scalar expression.
+\it{text} shall be a string.
+\it{site} shall be of type \tt{Site}.
+\it{sink} shall be of type \tt{Stream}.
+\it{DEBUG} shall expand to either \tt{0} or \tt{1}.
+
+\head{Semantics}
+
+\tt{assert_} invokes \tt{assert_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+Outcome of the expression is of type \tt{Bool_}:
+when compiled with \it{DEBUG} expanding to \tt{0},
+the outcome is \tt{(Bool)(}\it{condition}\tt{)};
+otherwise \it{DEBUG} expands to \tt{1} and the outcome is \tt{(Bool) 1}.
+
+When compiled with \it{DEBUG} expanding to \tt{1}, if \it{condition} compares
+equal to zero, the process prints a diagnostic message of the following form,
+and then terminates by calling \tt{exit(1)}.\\
+
+\tt{Assertion failed:} \it{condition}\tt{, function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+
+The stringified form of \it{condition} is used as default,
+which can be customized with the argument \it{text};
+an empty string is used if \it{text} is null.
+\it{function-identifier}, \it{file-name}, and \it{line-number}
+indicate the location where the assertion failed.
+The message is written to the standard error stream \tt{stderr} by default,
+which can be changed with the \it{sink}.
+\tt{stderr} is also the fallback if \it{sink} is null; the behavior
+of writing to \it{sink} is undefined if it is not an output stream.
+
+All the arguments are always evaluated exactly once,
+regardless of whether \it{DEBUG} expands to \tt{0} or \tt{1}.

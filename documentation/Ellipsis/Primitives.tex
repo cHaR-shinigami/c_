@@ -1,0 +1,31 @@
+The ellipsis framework forms the core of the reference implementation,
+and its architecture is strongly influenced by the microprogramming
+approach to processor design; in a sense, function-like macros for
+arithmetic, relational, and logical operations are analogous to micro-programs,
+which are executed by the preprocessor that acts as a ``microcode engine''.
+Each non-trivial computation is performed as a sequence
+of primitive operations that act as micro-instructions.
+The elementary operations on macro arguments are done with macros
+defined in the header \idx{<primitives._>}, which is the topmost root
+ancestor of the entire header hierarchy for the reference implementation.
+
+\note \tt{cat_} and \tt{echo_} are named after UNIX commands;
+\tt{pop_} and \tt{top_} are named after stack operations.
+
+\subsection{\idx{C_}}
+\input Ellipsis/Primitives/C_
+
+\subsection{\idx{COMMA}}
+\input Ellipsis/Primitives/COMMA
+
+\subsection{\idx{cat_}}
+\input Ellipsis/Primitives/cat_
+
+\subsection{\idx{echo_}}
+\input Ellipsis/Primitives/echo_
+
+\subsection{\idx{pop_}}
+\input Ellipsis/Primitives/pop_
+
+\subsection{\idx{top_}}
+\input Ellipsis/Primitives/top_

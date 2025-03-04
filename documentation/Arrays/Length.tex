@@ -1,0 +1,23 @@
+The number of elements in an array is termed as its length.
+C\_ offers the facility to determine array length
+using \tt{length__} and \tt{length_}*:
+both expect pointer to a complete array, and length is inferred
+from the pointer type.
+
+\note An array type is not directly allowed in a cast, but pointer to an
+array can be used instead; this can be used to provide incorrect length
+information that is different from the actual number of elements in an array.
+C does not offer any mechanism to invalidate such constructs, and the
+cast itself is well-defined; trouble brews only when executing some
+code that attempts to access the array outside its actual bounds.
+Casting as (pointer to) an array of smaller size is always safe, since an array
+of $n$ elements ($n > 0$) can act as an array of $n - 1$ elements as well.
+For example, pointer to a variable declared as \tt{Int num;} can be cast
+as pointer to an array: \tt{(Ptr (Int [1]))&num}; this works because a single
+\tt{Int} can be interpreted as an array of \tt{Int} having a single element.
+
+\subsection{\idx{length__}}
+\input Arrays/Length/length__
+
+\subsection{\idX{length_}*}
+\input Arrays/Length/length_

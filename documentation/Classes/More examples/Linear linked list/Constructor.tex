@@ -1,0 +1,12 @@
+The following procedure code is available in the source file
+\src{compile/class/Chain/init.c_}
+
+The implementation first creates a new \tt{Chain} object,
+and if the allocation is successful, then its \tt{type} member
+is initialized to the argument for \tt{type} parameter.
+Rest of the members are initialized as if with the integer constant \tt{0}:
+\tt{head} and \tt{tail} are each set to the null pointer, and
+\tt{length} is initialized to zero, which indicates an empty list.
+
+\note \tt{(Void) tape} is a pseudo-use of the parameter
+\tt{tape}, for suppressing a warning on unused parameters.

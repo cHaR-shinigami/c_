@@ -1,0 +1,31 @@
+\tt{<limits._>} defines the following object-like macros
+introduced in C23, if they are not available in \tt{<limits.h>}.
+
+\table{rrrrrr}
+
+\idx{BOOL_WIDTH} & \idx{UCHAR_WIDTH} & \idx{USHRT_WIDTH} & \idx{UINT_WIDTH} & \idx{ULONG_WIDTH} & \idx{ULLONG_WIDTH}\\
+
+\idx{CHAR_WIDTH} & \idx {CHAR_WIDTH} & \idx {SHRT_WIDTH} & \idx {INT_WIDTH} & \idx {LONG_WIDTH} & \idx {LLONG_WIDTH}\\
+
+\elbat
+
+Additionally, the following object-like macros (left side)
+are alternative names for standard macros (right side).
+
+\table{l@{\qquad}|@{\qquad}l@{\qquad}@{\qquad}||@{\qquad}@{\qquad}l@{\qquad}|@{\qquad}l}
+
+\tt{<limits._>}  & \tt{<limits.h>}  & \tt{<limits._>}   & \tt{<limits.h>}\\
+
+\hline
+
+ \idx{UBYTE_WIDTH} & \tt{UCHAR_WIDTH} &  \idx{USHORT_WIDTH} &  \tt{USHRT_WIDTH}\\
+
+ \idx{UBYTE_MAX}   & \tt{UCHAR_MAX}   &  \idx{USHORT_MAX}   &  \tt{USHRT_MAX}\\
+
+\s\idx{BYTE_WIDTH} & \tt{SCHAR_WIDTH} & \s\idx{SHORT_WIDTH} & \s\tt{SHRT_WIDTH}\\
+
+\s\idx{BYTE_MAX}   & \tt{SCHAR_MAX}   & \s\idx{SHORT_MAX}   & \s\tt{SHRT_MAX}\\
+
+\s\idx{BYTE_MIN}   & \tt{SCHAR_MIN}   & \s\idx{SHORT_MIN}   & \s\tt{SHRT_MIN}\\
+
+\elbat

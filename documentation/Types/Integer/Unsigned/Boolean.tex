@@ -1,0 +1,12 @@
+\type{Bool} is an unsigned type having one value bit,
+and an implementation-defined number of padding bits (at least 7);
+the single value bit can represent only two values: 0 and 1.
+Any scalar expression can be converted to \tt{Bool} and the
+converted result is 1 if and only if the expression is non-zero
+(for pointers, only null pointer compares equal to 0).
+
+\note Unlike other unsigned types, there is no corresponding signed type for
+\tt{Bool}; the optionally supported \tt{BitInt (2)} is the closest substitute.
+The result of equality and relational operators is of a boolean nature,
+but for historical reasons, its type is actually \tt{Int_};
+also, a \tt{Bool} operand is promoted to \tt{Int_} in arithmetic expressions.

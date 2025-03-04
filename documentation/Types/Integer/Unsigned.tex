@@ -1,0 +1,25 @@
+\def\Subsubsection#1{\subsubsection{#1}\input{Types/Integer/Unsigned/#1}}
+
+For every signed type, there is a corresponding unsigned
+type with the same name prefixed with \tt{U}: these are
+\type{UByte}, \type{UShort}, \type{UInt}, \type{ULong}, and \type{ULLong}.
+Unsigned types cannot represent negative numbers, and the range of each unsigned
+type is a superset of the non-negative range of the corresponding signed type;
+furthermore, the intersecting range has identical representation in both.
+There is no overflow with unsigned arithmetic, and integers
+that cannot be represented by an unsigned type are mapped
+to its range under the rules of modular wraparound:
+numbering restarts from zero after the maximum value ($2^{w} - 1$, where $w$ is
+the bit-width, or number of value bits); negative integers are counted backwards,
+so for an unsigned type, -1 is mapped to its largest representable value.
+
+\note \tt{UByte} and \tt{UShort} are usually promoted to \tt{Int_},
+which can represent all values of the former two.
+As a consequence, operations are performed with signed arithmetic rules;
+in particular, implicit modular wraparound may not apply
+to results outside the range of \tt{UByte} and \tt{UShort}.
+For example, \tt{(UInt)-1 + 1} is always zero, but \tt{(UShort)-1 + 1}
+would be zero iff \tt{Int} cannot represent all values of \tt{UShort},
+in which case it is promoted to \tt{UInt_}.
+
+\Subsubsection{Boolean}

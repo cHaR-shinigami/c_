@@ -1,0 +1,25 @@
+\idx{is_pointer_} can be used to statically check if the type
+of a scalar expression is pointer to a complete object type.
+
+\head{Syntax}
+
+\tt{is_pointer_ (} \it{expression} \tt{)}
+
+\head{Constraints}
+
+\it{expression} shall have scalar type.
+
+\head{Semantics}
+
+For a scalar expression that is not a pointer to an incomplete type or function
+type, \tt{is_pointer_} returns one if the expression evaluates to a pointer
+after array to pointer decay (if applicable); otherwise it returns zero.
+The outcome is an integer constant expression,
+whose type is \tt{False_} for zero, and \tt{True_} for one.
+
+\example \tt{is_pointer_(0)} is false; \tt{is_pointer_((Char *)0)}
+and \tt{is_pointer_("array decay")} are true.
+
+\note \tt{is_pointer_} provided by the reference implementation can portably
+differentiate between arithmetic type expressions and pointers to complete types;
+other implementations can support a broader class of expressions.

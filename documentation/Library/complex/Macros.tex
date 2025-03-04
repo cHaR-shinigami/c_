@@ -1,0 +1,10 @@
+\tt{<complex._>} additionally defines these function-like macros: \idx{cmplxf_},
+\idx{cmplx_}, \idx{cmplxl_}, \idx{cpowf_}, \idx{cpow_}, \idx{cpowl_}.
+
+\tt{cmplxf_}, \tt{cmplx_}, and \tt{cmplxl_} are trivial wrappers over
+\tt{CMPLXF},  \tt{CMPLX},  and \tt{CMPLXL} (respectively).
+
+\tt{cpowf_}, \tt{cpow_}, and \tt{cpowl_} generalize the functions
+\tt{cpowf},  \tt{cpow},  and \tt{cpowl} using a right reduction.
+For example, \tt{cpow_(2, 3, 4)} expands to \tt{cpow(2, cpow(3, 4))},
+and converting the result to an integer equals 512.

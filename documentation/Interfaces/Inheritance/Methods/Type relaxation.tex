@@ -1,0 +1,29 @@
+To store instances of any object-oriented type,
+the argument for \tt{species} can be specified as \tt{type_(Object)}.
+
+\head{Protocol}
+
+\noindent\fbox{\tt{
+examples/include/interface/Collection/species._}}
+\code{../include/interface/Collection/species._}
+
+\enlargethispage*{\baselineskip}
+\enlargethispage*{\baselineskip}
+
+The pre-conditions ensure \tt{this} must be a valid instance of \tt{Collection},
+and if \tt{species} is not null, then it must be a valid \tt{Type}.
+The post-conditions ensure that the updated type is also valid,
+and if the parameter \tt{species} was null,
+then the collection's type must remain same as before.
+For an empty collection, a non-null \tt{species} parameter
+must be directly used to update the collection's type.
+Otherwise the collection is non-empty and its updated type must be
+nearest common ancestor of the prior type and \tt{species} parameter;
+rationale of using the super type is to avoid a non-empty collection from getting
+invalidated on account of some element not being an instance of \tt{species}.
+
+\head{Procedure}
+
+\noindent\fbox{\tt{
+examples/compile/interface/Collection/species.c_}}
+\code{../compile/interface/Collection/species.c_}

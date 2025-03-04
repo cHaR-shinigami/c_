@@ -1,0 +1,19 @@
+\head{Syntax}
+
+\tt{# include <bits._>}
+
+\tt{ULLong_} \idx{leading_ones}\s\s\tt{( Size} $wordcount$
+\tt{, Ptr ( UInt_fast8 [} $wordcount$ \tt{] )} $bitarray$ \tt{) ;}
+
+\idx{leading_ones__}\s\s
+\tt{(} \it{pointer-to-bits} \tt{)}
+
+\idX{leading_ones_}\s\s\s
+\tt{(} \it{pointer-to-bits} \tt{)}
+
+\head{Semantics}
+
+If pointer to the bit array is not null, then the outcome is the number
+of consecutive bits with value one starting from the lowest bit index.
+The function \tt{leading_ones} returns zero if
+the argument for $bitarray$ is a null pointer.

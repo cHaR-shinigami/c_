@@ -1,0 +1,14 @@
+\begin{itemize}[nosep]
+
+\item If \tt{this} and \tt{that} compare as
+equal pointers, then the function returns zero.
+
+\item If \tt{validate_(this)} or \tt{validate_(that)}
+is \tt{false}, then the function returns one.
+
+\item Otherwise, let $super$ denote the value of
+\tt{super(((Object *) this)->type, ((Object *) that)->type)}.
+
+Then the return value is same as the result of $super$\tt{->compare(this, that)}.
+
+\end{itemize}

@@ -1,0 +1,61 @@
+\head{Syntax}
+
+\tt{# include <pointer._>}\\
+
+\idX{notnull_}
+ \tt{(} \it{ptr}
+[\tt{,} \it{def}\tt {=NULL}
+[\tt{,} \it{text}\tt{="(}\it{ptr}\tt{) != NULL"}
+[\tt{,} \it{site}\tt{=SITE}
+[\tt{,} \it{sink}\tt{=stderr}
+[\tt{,} \it{DEBUG}\tt{=POINTER__}]]]]]\tt{)}
+
+\idX{notnull_1_} \tt{(}
+\it{ptr}   \tt{)}
+
+\idX{notnull_2_} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{)}
+
+\idX{notnull_3_} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{,}
+\it{text}  \tt{)}
+
+\idX{notnull_4_} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{,}
+\it{text}  \tt{,}
+\it{site}  \tt{)}
+
+\idX{notnull_5_} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{,}
+\it{text}  \tt{,}
+\it{site}  \tt{,}
+\it{sink}  \tt{)}
+
+\idX{notnull_6_} \tt{(}
+\it{ptr}   \tt{,}
+\it{def}   \tt{,}
+\it{text}  \tt{,}
+\it{site}  \tt{,}
+\it{sink}  \tt{,}
+\it{DEBUG} \tt{)}
+
+\head{Constraints}
+
+The \tt{notnull_} family shall have precisely the same
+constraints as those applicable for the \tt{notnull__} family.
+
+\head{Semantics}
+
+\tt{notnull_} family evaluates each expression exactly once;
+rest of the semantics are identical to  \tt{notnull__} family.
+
+\note The reference implementation provides
+these features in the header \tt{<pointer._>}.
+Other implementations can provide them elsewhere or even as built-in features,
+but \tt{<pointer._>} will still be relevant as its inclusion configures
+the behavior of these features with the macro \tt{POINTER__}.
+So \tt{<pointer._>} is part of the requirements.

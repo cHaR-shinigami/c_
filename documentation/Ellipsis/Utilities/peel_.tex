@@ -1,0 +1,12 @@
+\head{Syntax}
+
+\tt{peel_ (} \it{text} \tt{)}
+
+\head{Semantics}
+
+If \it{text} has a parenthesized prefix, then \tt {peel_}
+removes its outermost parentheses; otherwise it is not changed.
+
+\note \tt{peel_} should be used with caution, as it can cause undesirable changes
+if \it{text} is not fully parenthesized, but contains a parenthesized proper prefix:
+for example, \tt{peel_((1 + 2) * 3)} alters the expression to \tt{1 + 2 * 3}.

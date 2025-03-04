@@ -1,0 +1,21 @@
+\tt{case} does not alter the sequential flow of control,
+so in the absence of any branch or jump statements,
+when the selecting expression is equal to a \tt{case} expression,
+subsequent cases that lexically follow the selected case are
+also executed in order; proceeding to the next \tt{case} statement
+after executing the selected case is termed as fallthrough.
+
+Fallthrough may or may not be desirable,
+and often the requirement is to execute only the matching case.
+In our previous example, the use of \tt{case_} ensures mutual exclusion:
+both \tt{CASE} and \tt{case_} behave as if they are preceded by an
+implicit jump statement to the end, so only one color is printed.
+One important point to note is that the implicit jump applies to the
+end of the nearest enclosing block that supports \tt{break} statement;
+this small subtlety may be insignificant for most purposes,
+but for the sake of completeness, we exemplify this with a concrete program.
+
+\example The following code demonstrates fallthrough,
+where both print statements will get executed.
+
+\code{../compile/fallthrough.c_}

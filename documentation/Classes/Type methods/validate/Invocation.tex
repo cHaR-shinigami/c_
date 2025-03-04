@@ -1,0 +1,15 @@
+\head{Syntax}
+
+\idx{validate_}\s\s\s\tt{(} [\it{type}\tt{=NULL ,}] \it{this} \tt{)}
+
+\idx{validate_1_}\s\tt{(} \it{this} \tt{)}
+
+\idx{validate_2_}\s\tt{(} \it{type} \tt{,} \it{this} \tt{)}
+
+\head{Semantics}
+
+\tt{validate_} invokes \tt{validate_}$n$\_ if the
+expanded argument sequence contains  $n$ arguments.
+
+\tt{validate_1_} calls \tt{validate} with \tt{type} as null pointer;
+\tt{validate_2_} is a trivial wrapper over \tt{validate}.

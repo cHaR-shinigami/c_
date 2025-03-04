@@ -1,0 +1,11 @@
+\head{Definition}
+
+\tt{#define top_(t, ...) t}
+
+\head{Semantics}
+
+\tt{pop_} expands \it{\tt{ACTIVE}} macros for the first argument
+in an unexpanded argument list, and discards the rest.
+
+\example \tt{top_(0 COMMA 0, 6)} expands to \tt{0 , 0}
+as the unexpanded \tt{0 COMMA 0} forms a single argument.

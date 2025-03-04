@@ -1,0 +1,10 @@
+\head{Declaration}
+
+\tt{Void_ *solver_(Abstract, text)(Abstract *this, Size_ *length, Void_ *out);}
+
+\head{Description}
+
+If \tt{is(this->type, type_(Abstract))} is \tt{false},
+a null pointer is returned; otherwise return value is the outcome
+on calling \tt{text} procedure of \tt{concrete_(this)->type}
+with \tt{this->concrete}, \tt{length}, and \tt{out} as arguments.

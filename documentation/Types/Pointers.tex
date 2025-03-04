@@ -1,0 +1,83 @@
+\def\Subsection#1{\subsection{#1}\input{Types/Pointers/#1}}
+
+We start this section with a quote by Donald Knuth,
+from his article \it{Structured Programming with go to Statements}:
+
+``\it{I do consider assignment statements and pointer variables
+to be among computer science's `most valuable treasures'.}''
+
+Pointers are ubiquitous in C,
+and their basic use is to refer to an lvalue by its memory address.
+The address of an lvalue expression (often just a variable) can be obtained
+with the unary operator \tt{&} (its binary form is used for bitwise AND).
+The pointed-to object can be accessed by dereferencing the pointer
+with unary operator \tt{*} (its binary form denotes multiplication);
+the dereferenced expression denotes an lvalue, so it can be subjected to
+the \tt{&} operator, in which case the dereference is not done at runtime.
+Using pointers, the same object can be referred to in multiple places
+without creating separate replicas that increase memory footprint;
+this approach works best if the shared object is immutable, so we can have
+multiple readers but no writers: one classic example is string literals.
+
+As an analogy, consider a realtor who advertises the address of a
+house to potential buyers, all of whom can come and view the house,
+but none of them can alter it (until they buy it of course).
+The idea of physically replicating an entire
+house for each interested buyer is absurd.
+On a similar reasoning, aggregate types (structures and unions) can have large
+sizes, and passing them by value can be a significant function call overhead;
+this can be easily avoided by passing a pointer to the data,
+which has a small fixed size (commonly 4 bytes or 8 bytes,
+and sometimes even 2 bytes on memory-constrained devices).
+Number of usable bits in a pointer determines size of virtual address space.
+
+Another common use of pointers is to modify an lvalue outside its lexical scope,
+but within the object's lifetime;
+the traditional example is swapping the values of two
+variables with a function call, which we shall discuss soon.
+Dynamic memory allocators work on the same principle:
+a function such as \tt{malloc} returns the pointer to an untyped object of the
+required size, and the object can be subsequently accessed outside the lexical
+scope where it was allocated, as its lifetime continues until a \tt{free} call.
+A pointer can itself be a memory object, and therefore an lvalue, so we
+can have pointer to pointer, which is sometimes called a ``double pointer''
+(not to be confused with ``pointer to \tt{double}''); similarly, we can
+have higher levels of indirection that will require additional dereferences.
+
+One underappreciated use of pointers is for working with opaque data types,
+where the structural representation of some type is hidden by the interface,
+which only names the type.
+In C, these can be implemented with incomplete structures and unions,
+where only the tag is declared, but the type definition is not available.
+Pointers to incomplete types cannot be dereferenced,
+as the type information is unavailable; instead, a set of functions acts as an
+interface that provide controlled access to various attributes of each object.
+We shall defer an elaborate discussion on data hiding and encapsulation to
+chapters 7 and 8, where we reach a middle ground called ``translucent object'',
+where the dynamic type information is available,
+but the structural details are abstracted away from the programmer.
+
+\note Pointers are not integers, even though their representation
+is typically an unsigned integer that denotes a memory address;
+on modern hosted environments, this is a virtual address.
+Pointers are not even arithmetic types,
+even though we can add a valid integer offset to a pointer
+(such that the resulting pointer points to some part of the same object),
+or subtract two pointers that both point to parts of the same object.
+Being able to obtain a memory address from a pointer is only its bare minimum
+requirement; additional bits may be utilized to store extra information known as
+``provenance''; however, such possibilities have not yet been explored in C\_.
+
+\Subsection{Declarations}
+
+\subsection{\tt{Pointer} type}
+\input{Types/Pointers/Pointer type}
+
+\subsection{\tt{is_pointer_}}
+\input Types/Pointers/is_pointer_
+
+\Subsection{Null pointer}
+
+\Subsection{Dereference}
+
+\Subsection{Compatibility}

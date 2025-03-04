@@ -1,0 +1,17 @@
+\head{Syntax}
+
+\idx{type_} \tt{(} \it{class-or-interface} \tt{)}
+
+\head{Constraints}
+
+\it{class-or-interface} shall be the name of an object-oriented
+type that has been declared prior to its use of \tt{type_}.
+
+\head{Semantics}
+
+\tt{type_} gives a pointer to the non-modifiable \tt{Type} structure associated
+with the object-oriented type declared with the name \it{class-or-interface}.
+The outcome is an expression that is not an lvalue.
+
+\example \tt{type_(Object)} gives a pointer to the
+\tt{Type} structure associated with the \tt{Object} class.

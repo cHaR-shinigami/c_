@@ -1,0 +1,28 @@
+\begin{itemize}
+
+\item If \tt{validate_(augend)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{validate_(addend)} is \tt{false},
+then the function returns a null pointer.
+
+\end{itemize}
+
+Let $super$ denote the value of
+\tt{super(((Object *) augend)->type, ((Object *) addend)->type)}.
+
+If \tt{sum} is not a null pointer, let $type$
+denote the value of \tt{((Object *) sum)->type}.
+
+\begin{itemize}
+
+\item If \tt{is_type(}$type$\tt{)} is \tt{false},
+then the function returns a null pointer.
+
+\item If \tt{is(}$type$\tt{,} $super$\tt{)} is \tt{false},
+then the function returns a null pointer.
+
+\item Otherwise the function returns the value
+of $super$\tt{->add(sum, augend, addend)}.
+
+\end{itemize}

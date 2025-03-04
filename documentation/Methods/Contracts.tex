@@ -1,0 +1,27 @@
+\def\Subsection#1{\subsection{#1}\input{Methods/Contracts/#1}}
+
+The concept of protocols is nothing but a natural extension of the idea
+behind function declarations: a declaration only specifies the return type
+and parameter types of a function, for static type checking of function calls
+and performing implicit argument promotions or conversions during translation.
+A protocol describes additional checks to be performed
+on the arguments and return value during execution.
+In a sense, a protocol is a form of contract that expects
+the caller to ensure certain prerequisites for the arguments,
+and promises that the return value will meet certain criteria.
+These requirements are established with the
+help of pre-conditions and post-conditions.
+
+The reference implementation provides \tt{<contract._>}
+which includes two other headers: \tt{<pre._>} and \tt{<post._>}.
+\tt{<pre._>} provides facilities for specifying pre-conditions,
+and \tt{<post._>} provides facilities for writing post-conditions.
+
+\note Pre-conditions are input-oriented,
+whereas post-conditions are output-oriented.
+
+\Subsection{Pre-conditions}
+
+\Subsection{Post-conditions}
+
+\Subsection{Example}

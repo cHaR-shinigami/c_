@@ -1,0 +1,16 @@
+\head{Syntax}
+
+\tt{length__ (} \it{pointer-to-array} \tt{)}
+
+\head{Constraints}
+
+\it{pointer-to-array} shall be pointer to a complete array.
+
+\head{Semantics}
+
+\tt{length__} infers array length from the type of
+\it{pointer-to-array}; the outcome is an expression of type \tt{Size_}.
+The argument need not be evaluated at all if it does not have
+a variably modified type; it may be evaluated more than once
+only if element type of the array is itself variably modified.
+The behavior is undefined if the pointer is null.

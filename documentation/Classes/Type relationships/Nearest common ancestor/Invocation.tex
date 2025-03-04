@@ -1,0 +1,38 @@
+\head{Syntax}
+
+\idx{super}\s\s\tt{(} [\tt{. this =}] $this$ \tt{,} [\tt{. that =}] $that$ \tt{)}
+
+\idx{super_}\s\tt{(} \it{oo-identifier-list} \tt{)}
+
+\head{Constraints}
+
+Both the arguments $this$ and $that$ shall be expressions
+of type \tt{Type}, optionally specifying parameter names.
+
+\it{oo-identifier-list} shall be a comma-separated list of
+names for object-oriented types whose declarations are visible.
+
+The number of elements in \it{oo-identifier-list}
+shall be less than \tt{PP_MAX} after macro expansions.
+
+\head{Semantics}
+
+\tt{super (}$this$ \tt{,} $that$\tt{)} is equivalent to the more verbose
+invocation \tt{call_((Type, super)} \tt{,} $this$ \tt{,} $that$\tt{)}.
+
+\tt{super_} accepts a list of object-oriented type names, and returns their
+nearest common ancestor type; it essentially provides a combination of map and
+fold/reduce, by applying \tt{type_} on each name in \it{oo-identifier-list},
+and then using fold/reduce with \tt{super} as the aggregator.
+If \it{oo-identifier-list} is a singleton, the
+outcome is \tt{type_(}\it{oo-identifier-list}\tt{)}.
+
+\note \tt{super} is commutative, so the order of arguments does not affect the
+return value; however, the order of evaluation of arguments is unspecified,
+so side-effects should generally be avoided in argument expressions.
+
+\example The outcome of \tt{super (type_(Programmer), type_(Phone))}
+is same as \tt{type_(Object)}.
+
+The outcome of \tt{super_(Landline, FeaturePhone, SmartPhone)}
+is same as \tt{type_(Phone)}.

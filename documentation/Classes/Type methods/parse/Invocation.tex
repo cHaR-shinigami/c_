@@ -1,0 +1,42 @@
+\head{Syntax}
+
+\idx{parse__}\s\s\s\s\tt{(} [\tt{. this =}] $this$ [\tt{,}
+[\tt{. length =}] $length$] \tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\idx{parse__2__}\s\tt{(}  [\tt{. this =}] $this$
+\phantom{[}\tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\idx{parse__3_}\s\s\tt{(} [\tt{. this =}] $this$ \phantom{[}\tt{,}
+[\tt{. length =}] $length$\phantom{]} \tt{,} [\tt{. in =}] $in$ \tt{)}\\
+
+\idX{parse_}\s\s\s\s\s\tt{(} [\tt{. this =}] $this$ [\tt{,}
+[\tt{. length =}] $length$] \tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\idX{parse_2_}\s\s\s\tt{(} [\tt{. this =}] $this$
+\phantom{[}\tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\idx{parse_3_}\s\s\s\tt{(} [\tt{. this =}] $this$ \phantom{[}\tt{,}
+[\tt{. length =}] $length$\phantom{]} \tt{,} [\tt{. in =}] $in$ \tt{)}
+
+\head{Semantics}
+
+\tt{parse__} invokes \tt{parse__2__} if the
+argument sequence expands to two elements.
+
+Otherwise the argument sequence shall expand to
+three elements, and \tt{parse__3_} is invoked.
+
+\tt{parse__2__(}$this$\tt{,} $in$\tt{)} is equivalent to
+\tt{parse__3_(}$this$\tt{, &lvalue__(length__(}$in$\tt{)),} $in$\tt{)}.
+
+\tt{parse__2__} can evaluate the argument $in$ more
+than once only if it has a variably modified type.
+
+\tt{parse__3_(}$this$\tt{,} $length$\tt{,} $in$\tt{)}
+is equivalent to \tt{( (typeof_(}$this$\tt{))
+call_((Type, parse),} $this$\tt{,} $length$\tt{,} $in$\tt{) )}.\\
+
+The \tt{parse_}* family evaluates each argument exactly once;
+rest of the semantics are identical to \tt{parse__} family.
+More precisely, \tt{parse_2_}* has the same functionality as \tt{parse__2__},
+and \tt{parse_3_} is equivalent to \tt{parse__3_}.

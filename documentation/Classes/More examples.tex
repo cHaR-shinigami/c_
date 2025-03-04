@@ -1,0 +1,23 @@
+\def\Subsection#1{\subsection{#1}\input{Classes/More examples/#1}}
+
+We have already seen how to create a user defined class, which
+broadly involves three steps: declaration (of class structure),
+definition (of type structure), and implementation of procedures.
+We can create simple wrapper classes for any basic data type; however, creating a
+new class for each and every C type would add little value and a lot of clutter.
+We have restrained our examples to only four wrapper classes:
+\tt{Unsigned}, \tt{Signed}, \tt{Rational}, and \tt{Text}.
+
+\tt{Signed} is a wrapper class for the fixed-point type \tt{LLong_}, whereas
+\tt{Rational} is a wrapper class for the floating-point type \tt{Float_}.
+The wrapper class \tt{Text} contains two non-trivial members:
+\tt{buffer} is a pointer to \tt{Char_}, and \tt{length} is of type \tt{Size_}.
+The implementation of these wrapper classes are mostly similar
+to that of the \tt{Unsigned} class, and for the sake of brevity,
+their full implementation details have been moved to appendix A.
+So far we have implemented only the basic methods;
+in the next subsections, we shall associate additional methods with a class.
+
+\Subsection{Linear linked list}
+
+\Subsection{Typed linked list}

@@ -1,0 +1,20 @@
+#ifndef LIST__
+#define LIST__
+
+#include "Chain._"
+
+#define List_EXTENDS Chain,\
+ validate, init, compare, copy, read,\
+ write, parse, text, decode, encode, add
+
+class_ (List)
+	Type_ species;
+fin
+
+prototype_(Bool_, (List, append),
+(List_  *, this), (Void *, data))
+
+prototype_(Type_, (List, species),
+(List_  *, this), (Type, species))
+
+#endif

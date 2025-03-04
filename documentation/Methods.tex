@@ -1,0 +1,35 @@
+\def\Section#1{\section{#1}\input{Methods/#1}}
+
+A C\_ method is essentially a pair of function pointers: protocol and procedure.
+The primary motivation behind this design is to separate behavior
+from implementation: protocol describes ``$what$'' needs to be done,
+whereas procedure specifies ``$how$'' it is actually accomplished.
+As an analogy, let us consider the example of making a cake: a protocol would
+describe only the externally observable features of the cake that are of
+interest to buyers; a procedure would be a detailed step-by-step recipe to
+prepare the cake from its ingredients, that is of concern to the baker.
+
+On similar lines, the primary advantage of isolating behavior from
+implementation is that a caller needs to be concerned only with the protocol,
+and the exact implementation details of the procedure ``$should$ be'' irrelevant.
+If a functionality or transformation is conceptually imagined as an opaque box,
+then protocol is an abstract specification of the external behavior, whereas
+procedure deals with the concrete machinery that operates inside the box.
+
+\section {\idx{public} and \idx{private}}
+\input{Methods/public and private}
+
+\section {\idx{no_inline_}}
+\input{Methods/no_inline_}
+
+\Section{Contracts}
+
+\Section{Prototype}
+
+\Section{Protocol}
+
+\Section{Procedure}
+
+\Section{Invocation}
+
+\Section{Design strategies}

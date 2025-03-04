@@ -1,0 +1,25 @@
+\head{Declaration}
+
+\tt{Abstract_ *solver_(Abstract, init)(Type type, Tape tape);}
+
+\head{Description}
+
+If \tt{is(type, type_(Abstract)} is \tt{false} or the first
+element of \tt{tape} is null, a null pointer is returned.
+Otherwise the first element of \tt{tape} is assumed to be a \tt{Type *}
+(\tt{Type} is a synonym for \tt{Ptr (const struct Type)}),
+and if the dereferenced value is not a valid concrete type
+(as determined by calling \tt{is_typex}), then a null pointer is returned.
+
+After validating both arguments, a new \tt{Abstract} instance is created,
+and if the allocation fails, then a null pointer is returned.
+Otherwise \tt{init_} is called with two arguments:
+first is concrete type obtained by dereferencing the first element
+of \tt{tape}, and second is \tt{tape + 1}, which refers to the
+sub-array after excluding the first element at index zero.
+If \tt{init_} returns null, then the new \tt{Abstract}
+instance is deallocated and a null pointer is returned.
+Otherwise the \tt{type} member of \tt{Abstract} instance is
+initialized with the \tt{type} parameter, and the \tt{concrete}
+member is initialized with the outcome of \tt{init_}.
+The return value is a pointer to the initialized \tt{Abstract} instance.

@@ -1,0 +1,19 @@
+\head{Syntax}
+
+\tt{# include <bits._>}
+
+\tt{ULLong_} \idx{first_leading_one}\s\s\tt{( Size} $wordcount$
+\tt{, Ptr ( UInt_fast8 [} $wordcount$ \tt{] )} $bitarray$ \tt{) ;}
+
+\idx{first_leading_one__}\s\s
+\tt{(} \it{pointer-to-bits} \tt{)}
+
+\idX{first_leading_one_}\s\s\s
+\tt{(} \it{pointer-to-bits} \tt{)}
+
+\head{Semantics}
+
+If pointer to the bit array is not null, then outcome is the lowest bit
+index set to one; if all bits are set to zero, the outcome is bit count.
+The function \tt{first_leading_one} returns
+the bit count if $bitarray$ is a null pointer.

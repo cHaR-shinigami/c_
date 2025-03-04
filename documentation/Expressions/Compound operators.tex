@@ -1,0 +1,18 @@
+C\_ has two unusual operators whose semantics can be achieved
+by the combined use of unary, equality, and logical operators;
+for this reason, we refer to them as compound operators.
+Both are useful for expressing logical assertions;
+they are frequently used for writing pre-conditions and
+post-conditions within protocols (introduced in chapter 6).
+
+Due to the way they are provided by the reference implementation,
+both operators require parentheses as part of their syntax.
+If the parenthesized expression is part of a larger expression,
+then it should be doubly parenthesized, as precedence and associativity are
+implementation defined when there are other operators outside the parentheses.
+
+\subsection{\idx{iff}}
+\input{Expressions/Compound operators/iff}
+
+\subsection{\idx{implies}}
+\input{Expressions/Compound operators/implies}

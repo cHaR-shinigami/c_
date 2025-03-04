@@ -1,0 +1,36 @@
+\head{Syntax}
+
+\idx{permute__} \tt{( (} \it{argument-list} \tt{) ,} \it{index-list} \tt{)}
+
+\head{Constraints}
+
+The number of elements in the expanded
+\it{argument-list} shall be less than \tt{PP_MAX}.
+
+If \it{argument-list} expands to $N$ elements and \it{index-list} expands
+to $I$ elements, then for each non-negative integer $i$ less than $N$,
+the element at index $i \% I$ in \it{index-list} shall be
+a non-negative decimal integer not exceeding \tt{PP_MAX}.
+
+\head{Semantics}
+
+Let the expanded \it{argument-list} be labeled as
+$l_0$ \tt{,} $\cdots$ \tt{,} $l_{N - 1}$; similarly the expanded
+\it{index-list} can be labeled as $i_0$ \tt{,} $\cdots$ \tt{,} $i_{I - 1}$.
+If elements in the \it{index-list} at indices less than
+$N$ have values smaller than $N$, then the output is:
+
+\centerline
+{$l_{i_0}$ \tt{,} $l_{i_{1\%I}}$ \tt{,} $\cdots$ \tt{,} $l_{i_{(N - 1)\%I}}$}
+
+Equivalently, the output is a list of $N$ elements, where the
+element at index $j$ is of the form $l_{i_{j\%I}}$ ($0 \le j < N$);
+in other words, the output element at index $j$ is an input
+element from the expanded \it{argument-list} at index $i_{j\%I}$.
+
+If $i_{j\%I}$ is not less than $N$, it indicates an invalid index,
+and the existing element $l_j$ is retained at index $j$.
+
+\note The name \tt{permute__} is a misnomer, as some elements can be repeated,
+and some may not occur at all; a true permutation is obtained if \it{index-list}
+is a shuffling of \tt{RANGE_(}$N$\tt{)}, where every index occurs exactly once.

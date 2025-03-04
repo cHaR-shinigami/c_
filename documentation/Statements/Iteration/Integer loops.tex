@@ -1,0 +1,90 @@
+C\_ provides an additional kind of iteration block to
+simplify looping over an arithmetic progression of integers.
+The conventional approach of using relational operators may not work as expected
+in rare cases, such as signed integer overflow on updating a control variable
+after the final iteration, which causes implementation-defined behavior.
+
+\example The following code is meant to print only three values,
+but it ends up producing a lot more output than one might expect: it is actually
+an infinite loop, assuming overflow causes the signed equivalent of wraparound.
+
+\code{../compile/overflow.c_}
+
+Integer loops take care of such fine-grained subtleties,
+thereby easing the programmer to focus on the loop body.
+
+\head{Syntax}
+
+\idx{loop_}\s\s\s\tt{(} \it{range} \tt{)}
+
+\idx{loop_}\s\s\s\tt{(} \it{start} \tt{,} \it{stop} [\tt{,} \it{step}] \tt{)}
+
+\idx{loop_1_}\s\tt{(}   \it{range} \tt{)}
+
+\idx{loop_2_}\s\tt{(}   \it{start} \tt{,} \it{stop} \tt{)}
+
+\idx{loop_3_}\s\tt{(}   \it{start} \tt{,} \it{stop} \tt{,} \it{step} \tt{)}
+
+\head{Constraints}
+
+\it{range} shall be an expression of some \tt{Range} type; \it{start},
+\it{stop}, and \it{step} shall be expressions of some integer type.
+
+\note \it{range} is pointer to a triplet that encodes an integer sequence;
+\tt{Range} types are presented in chapter 5.
+
+\head{Semantics}
+
+\tt{loop_} invokes \tt{loop_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+These are used to iterate over the following arithmetic sequence, where $k$
+is a non-negative integer determined from the given relational inequality.
+
+\begin{quotation}
+\textsc{relation}\indent
+$|start + k*step| \le |stop| \le |start + (k+1)*step|$
+
+\textsc{sequence}\indent
+$start, start + step, start + 2*step, \cdots, start + k*step$
+\end{quotation}
+
+\tt{loop_1_} obtains \it{start}, \it{stop}, and \it{step} from \it{range}.
+For \tt{loop_2_} and \tt{loop_3_}, all arguments are converted to a common type,
+which is the type of the expression $start - stop$.
+For \tt{loop_2_}, \it{step} is taken as -1 if \it{start} is greater than
+\it{stop}, 1 if \it{start} is smaller than \it{stop}, and zero otherwise.
+For \tt{loop_3_}, if $start - stop$ has an unsigned type and \it{start} is
+greater than \it{step}, then \it{step} is also converted to the same unsigned
+type, and \it{start} is moved backwards by the converted step value;
+in other words, it considers the mathematical negation of the converted
+step value, even though an unsigned type cannot represent negative values.
+If \it{step} is specified as zero, two things can happen:
+if \it{start} is equal to \it{stop}, then the sequence is a singleton,
+and only one iteration is performed; otherwise, the sequence is a pair
+and there are two iterations: first for \it{start}, then for \it{stop}.
+If the result of adding \it{step} to \it{start} diverges away from \it{stop},
+then the sequence is considered to be empty, and no iterations are performed;
+more precisely, $start + step$ moves farther away from \it{stop} if
+$start - stop$ has a signed type and one of the following conditions is met:
+
+\begin{itemize}[nosep]
+\item \it{start} is smaller than \it{stop} and \it{step} is negative.
+\item \it{start} is greater than \it{stop} and \it{step} is positive.
+\end{itemize}
+
+Within the loop block, the modifiable variable \tt{_i_} stores the current
+sequence value that can be updated, and the non-modifiable variables \tt{_omega}
+and \tt{_delta} respectively store final sequence value and converted step value.
+
+\pagebreak
+
+\note \it{step} size zero is given a special meaning to specify singleton
+sequences, and because sometimes it may not be possible to represent ``one
+giant leap'' from \it{start} to \it{stop}; for example, \tt{loop_(min_(Int),
+max_(Int), 0)} jumps directly from \tt{min_(Int)} to \tt{max_(Int)},
+but the difference between them cannot be represented in type \tt{Int}.
+
+\example The buggy code in our earlier example can be
+fixed with \tt{loop_}, which correctly prints three values.
+
+\code{../compile/loop.c_}

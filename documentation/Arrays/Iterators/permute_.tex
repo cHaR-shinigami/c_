@@ -1,0 +1,102 @@
+\tt{<permute._>} defines the macro \tt{PERMUTE__} that configures the
+behavior of \tt{permute_} family;  \tt{PERMUTE__} records the \tt{defined}
+state of \tt{DEBUG} every time \tt{<permute._>} is included:
+it expands to \tt{1} if \tt{DEBUG} was defined, and \tt{0} otherwise.
+
+\head{Syntax}
+
+\tt{# include <permute._>}
+
+\idx{permute_}\s\s\s\tt{(} [$destination$ \tt{,}]
+$permutation$ \tt{,} $source$ [\tt{,} $range$] \tt{)}
+
+\idx{permute_2_}\s\tt{(} $permutation$ \tt{,} $source$ \tt{)}
+
+\idx{permute_3_}\s\tt{(} \phantom{[}$destination$ \tt{,}\phantom{]}
+$permutation$ \tt{,} $source$ \tt{)}
+
+\idx{permute_4_}\s\tt{(} \phantom{[}$destination$ \tt{,}\phantom{]}
+$permutation$ \tt{,} $source$ \phantom{[}\tt{,}  $range$\phantom{]} \tt{)}
+
+\head{Constraints}
+
+$source$, $permutation$, and $destination$ shall be pointers to complete arrays.
+
+For \tt{permute_2_}, $source$ array shall be modifiable;
+for \tt{permute_3_} and \tt{permute_4_}, $destination$ array shall be modifiable.
+It shall be possible to copy an element of $source$
+array to $destination$ array without any type cast.
+
+$permutation$ shall point to an array whose elements have integer type.
+
+$range$ shall be an expression having a \tt{Range} type.
+
+\head{Semantics}
+
+\tt{permute_} invokes  \tt{permute_}$n$\_ if the
+expanded argument sequence contains $n$ arguments.
+
+For \tt{permute_2_}, let $n$ be length of the smaller array.
+For each index $i$ from 0 through $n - 1$,
+let $i'$ be the element at index $i$ of $permutation$.
+The element at index $i'$ of the initial $source$
+array is copied to index $i$ in the same array.
+
+For \tt{permute_3_}, let $n$ be the smallest length out of the three arrays.
+For each index $i$ from 0 through $n - 1$,
+let $i'$ be the element at index $i$ of $permutation$.
+The element at index $i'$ of the initial $source$ array
+is copied to index $i$ in the $destination$ array.
+Let $n'$ be length of the smaller array out of $source$ and $destination$:
+if $n$ is smaller than $n'$, then the elements from index $n$ through $n' - 1$
+are directly copied from the initial $source$ array to $destination$.
+
+For \tt{permute_4_}, let $n$ be the smallest length out of the three arrays.
+For each index $i$ in the sequence specified by $range$,
+if $i$ is less than $n$, let $i'$ be the element at index $i$ of $permutation$.
+The element at index $i'$ of the initial $source$ array is copied to index $i$ in
+the $destination$ array; rest of the elements are not modified in $destination$.
+
+When compiled with \tt{PERMUTE__} as \tt{1}, if a required
+element of $permutation$ array is not a valid $source$ index,
+one of the following diagnostic messages is written to \tt{stderr},
+and the process terminates as if by calling \tt{exit(1)}.
+
+\begin{center}
+\tt{Assertion failed: (*(}$permutation$\tt{))[}%
+$index$\tt{] >= -length_(}$source$\tt{),}
+
+\tt{function} \it{function-identifier}\tt{,}
+\tt{file}     \it{file-name}\tt{,}
+\tt{line}     \it{line-number}\tt{.}
+\end{center}
+
+\begin{center}
+\tt{Assertion failed: (*(}$permutation$\tt{))[}%
+$index$\tt{] <   length_(}$source$\tt{),}
+
+\tt{function} \it{function-identifier}\tt{,}
+\tt{file}     \it{file-name}\tt{,}
+\tt{line}     \it{line-number}\tt{.}
+\end{center}
+
+\it{function-identifier}, \it{file-name}, and \it{line-number} are
+respectively obtained from \tt{__func__}, \tt{__FILE__}, and \tt{__LINE__}.
+
+When compiled with \tt{PERMUTE__} as \tt{0}, if $permutation$
+array contains an invalid $source$ index, then it is ignored.
+
+\note The reference implementation creates a copy of the initial $source$
+array, in case the arrays overlap; the copy is freed after the permutation.
+If memory allocation fails, the following diagnostic message is printed:\\
+
+\noindent
+\tt{Assertion failed:} \tt{new_(*(}\it{source}\tt{)) != NULL, function}
+\it{function-identifier}\tt{, file}
+\it{file-name}\tt{, line}
+\it{line-number}\tt{.}\\
+
+This message is written to the standard error stream \tt{stderr},
+and the process terminates as if by calling \tt{exit(1)}.
+This defensive check for allocation failure is always performed,
+regardless of whether \tt{PERMUTE__} expands to \tt{0} or \tt{1}.

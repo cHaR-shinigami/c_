@@ -1,0 +1,16 @@
+\head{Syntax}
+
+\tt{mux_ (} \it{selection} \tt{) (} \it{yes-text} \tt{,} \it{no-text} \tt{)}
+
+\head{Constraints}
+
+\it{selection} shall be a non-negative decimal integer constant
+not exceeding \tt{PP_MAX}, or expand to such a constant.
+
+\head{Semantics}
+
+If \it{selection} is non-zero, then \it{yes-text} is expanded;
+otherwise \it{selection} is zero and \it{no-text} is expanded.
+
+\note \tt{mux_} is named after multiplexer,
+and it works like a branching instruction in preprocessing code.

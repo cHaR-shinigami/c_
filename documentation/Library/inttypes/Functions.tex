@@ -1,0 +1,28 @@
+\tt{<inttypes._>} additionally provides inline
+definitions for the following functions:
+
+\table{l}
+
+ \tt{UIntmax_} \idx{uimaxabs}\tt{(Intmax);}\\
+
+ \tt{UIntmax_} \idx{gcd}\s\tt{(UIntmax, UIntmax);}\\
+
+ \tt{UIntmax_} \idx{umax}\tt{(UIntmax, UIntmax);}\\
+
+ \tt{UIntmax_} \idx{umin}\tt{(UIntmax, UIntmax);}\\
+
+\s\tt{Intmax_} \idx{smax}\tt{( Intmax,}\s\s\tt{Intmax);}\\
+
+\s\tt{Intmax_} \idx{smin}\tt{( Intmax,}\s\s\tt{Intmax);}\\
+
+\elbat
+
+\tt{uimaxabs} is similar to \tt{imaxabs}, except that the return type is
+\tt{UIntmax_}: it returns the absolute value of an integer, and the behavior
+is well-defined for all values in range of the parameter type \tt{Intmax}.
+
+\tt{gcd} returns the greatest common divisor of two non-negative integers;
+output is zero iff both inputs are zero.
+
+\tt{umax} and \tt{umin} respectively return the maximum and minimum of two
+unsigned integers; \tt{smax} and \tt{smin} are the signed integer counterparts.

@@ -1,0 +1,5 @@
+A new allocation is done only if \tt{this} is not null;
+if the allocation fails, a null pointer is returned.
+Otherwise \tt{copy->value} is set to \tt{that->value}, and if a new allocation
+was performed, then its \tt{type} member is initialized to \tt{type_(Unsigned)}.
+The return value is a pointer to the instance.

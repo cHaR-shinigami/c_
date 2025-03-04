@@ -1,0 +1,11 @@
+Let $copy$ be the pointer returned on invoking the procedure.
+If  $copy$ is not null, then the following must be satisfied:
+
+\begin{itemize}[nosep]
+
+\item \tt{validate(((Object *) that)->type,} $copy$\tt{)} must be \tt{true}.
+
+\item \tt{solver_(Type, compare)(}$copy$\tt{, that)} must be zero;
+in other words, $copy$ and \tt{that} must compare equal.
+
+\end{itemize}

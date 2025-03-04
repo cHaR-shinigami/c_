@@ -1,0 +1,11 @@
+\head{Definition}
+
+\tt{#define pop_(t, ...) __VA_ARGS__}
+
+\head{Semantics}
+
+\tt{pop_} removes the first argument from an unexpanded argument list,
+expanding \it{\tt{ACTIVE}} macros for the rest.
+
+\example \tt{pop_(0 COMMA 0, 5)} expands to \tt{5},
+as the unexpanded text \tt{0 COMMA 0} forms a single argument.

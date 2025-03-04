@@ -1,0 +1,11 @@
+\head{Syntax}
+
+\tt{turn_ (} \it{argument-list} \tt{)}
+
+\head{Semantics}
+
+\it{argument-list} is expanded then rotated by one element on the left,
+by moving the first element to the end.
+
+\note \tt{turn_(...)} can be implemented using primitive
+macros as \tt{pop_(__VA_ARGS__, top_(__VA_ARGS__,))}.

@@ -1,0 +1,18 @@
+The following declaration is available in the header file
+\src{include/interface/Collection._}
+
+\tt{Collection} introduces an additional method \tt{species},
+whose purpose is to associate a \tt{Type} with every instance of \tt{Collection}.
+Each data pointer stored in a collection must refer to a valid instance of
+the \tt{Type} associated with that collection; this is also a validation
+condition in the overriding \tt{validate} procedure of \tt{Collection}.
+
+The benefit of associating a type with every instance of \tt{Collection} is that
+it allows us to override most of the basic \tt{Type} procedures inherited from the
+\tt{Iterable} interface, which in turn inherits them from the \tt{Abstract} type.
+For example, the \tt{write} procedure iterates over a \tt{Collection} instance,
+and since each element has its own \tt{type} member, the \tt{write} procedure of
+that \tt{type} can be invoked to write the instance data on a given output stream.
+Similar abstract designs have been adopted for implementing most of the other
+\tt{Type} methods, and concretizing classes can use the dependency inversion
+technique to utilize the interface procedures without any non-trivial logic.

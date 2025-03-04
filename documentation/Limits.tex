@@ -1,0 +1,68 @@
+The ellipsis framework provides function-like macros for performing various
+arithmetic, logical, and relational operations on non-negative integers.
+These features are modeled after machine instructions in
+a physical processing unit, and like any other translator,
+the ellipsis framework can operate only on a limited set of values.
+This limit is determined by the macro \tt{PP_MAX}, which the reference
+implementation defines as 127; this value was chosen because C compilers can limit
+the maximum number of arguments permitted in a function-like macro invocation,
+and this upper limit must be at least 127 (for all conforming compilers).
+The C standard does not encourage the use of fixed translation limits,
+and most preprocessors have a reasonably larger limit on the number
+of macro arguments (it should be acknowledged that an upper limit
+is inevitable due to the finiteness of memory address space).
+
+\tt{PP_MAX} is required to be at least 127, and for maximum
+portability across implementations, its value should not be changed.
+However, C (and thus C\_) programs can be non-portable, and this upper
+limit can easily be raised: the only pre-requisite is that the underlying C
+processor must support at least \tt{PP_MAX} arguments in a macro invocation.
+
+The reference implementation of the ellipsis framework follows a modular design,
+and it is quite trivial to support operations on larger integers simply
+by updating a few macro constants and extending the \tt{o}$n$\_\_
+family in an inductive manner (defined in the header \tt{<meta._>});
+all in all, the entire process is fairly mechanical.
+
+The following changes need to be made in the header \tt{<count._>},
+located in \tt{.include/ellipsis/} directory:
+
+\begin{itemize}
+
+\item Define a value greater than 127 in the replacement text of \tt{PP_MAX}.
+
+\item Change the replacement text  of  \tt{PP_MAW}
+to one less than the value defined for \tt{PP_MAX}.
+
+\item Update the replacement text of \tt{PP_LOG2} with
+$\lfloor\log_2($\tt{PP_MAX}$)\rfloor$ (truncating any fractional part).
+
+\item Compute the value of $\lfloor\sqrt{\verb|PP_MAX|}\rfloor$
+(truncating any fractional part) and update \tt{PP_SQRT} with this result.
+
+\item Update \tt{PP_INT} as the sequence of integers from
+\tt{PP_MAW} - 1 through 1 (in reverse or decreasing order).
+
+\end{itemize}
+
+The following changes is required in the header \tt{<utilities._>},
+also located in \tt{.include/ellipsis/} directory:
+
+\begin{itemize}
+
+\item Update \tt{PP_RANGE} as reverse of \tt{PP_INT}, $i.e.$
+the increasing sequence of integers from 1 through \tt{PP_MAW} - 1.
+
+\end{itemize}
+
+Finally, for each integer $i$ greater than 127 and up to the
+updated value of \tt{PP_MAX}, define a macro \tt{o}$i$\_\_ as:
+
+\begin{center}
+\tt{#define o}$i$\tt{__(F, f) F(f)o}$i-1$\tt{__(F, f)}
+\end{center}
+
+In other words, each \tt{o}$i$\_\_ macro invokes the one immediately before that.
+The default \tt{o}$n$\_\_ family up to \tt{o127__} is
+defined in the header \tt{<meta._>}, and additional macros
+beyond \tt{o127__} should be defined in the same header.

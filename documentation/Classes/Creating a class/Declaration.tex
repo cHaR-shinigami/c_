@@ -1,0 +1,94 @@
+\head{Syntax}
+
+\tt{# define} \it{class-name}\tt{_EXTENDS}
+\it{base-class} [\tt{,} \it{override-list}]
+
+\idx{class_}\s\s\s\tt{(} \it{class-name} [\tt{,}
+\it{interface-list}] \tt{)} \it{member-declarations} \idx{fin}
+
+\idx{class_0_}\s\tt{(} \it{class-name} \phantom{[}\tt{,}
+\it{interface-list}\phantom{]}  \tt{)} \it{member-declarations} \tt{fin}
+
+\idx{class_1_}\s\tt{(} \it{class-name} \tt{)} \it{member-declarations} \tt{fin}
+
+\head{Constraints}
+
+\it{base-class} shall be the name of another class that has
+ been  declared prior to the declaration of \it{class-name}.
+
+\it{interface-list} shall be a comma-separated list of interface
+names, declared prior to the declaration of \it{class-name}.
+
+The number of elements in the expanded
+\it{interface-list} shall be less than \tt{PP_MAX}.
+
+The identifiers \tt{base} and \tt{type} shall not be
+used as member names in \it{member-declarations}.
+
+The optional \it{override-list} shall be a comma-separated
+list of method names from the \tt{Type} structure.
+
+\head{Semantics}
+
+\tt{class_} invokes \tt{class_0_} if \it{interface-list} is specified;
+otherwise \it{interface-list} is omitted and \tt{class_1_} is invoked.
+
+\tt{class_1_} declaration provides member details
+of a class structure whose tag is \it{class-name}.
+\tt{class_1_} declares two synonyms: \it{class-name}\_ is a synonym for
+\tt{struct} \it{class-name}, and \it{class-name} is its non-modifiable counterpart.
+The first implicit member of a class is named as \tt{base}, which is
+an instance of \it{base-class} as specified in the replacement text
+of \it{class-name}\tt{_EXTENDS}; more precisely, the member \tt{base}
+is declared before \it{member-declarations} as a singleton array whose
+element type is \tt{struct} \it{base-class} (or simply \it{base-class}\_).
+Each class structure also has a member named \tt{type} that is inherited from
+the \tt{Object} class: it is a pointer to a non-modifiable \tt{Type} structure.
+
+\tt{class_1_} also declares procedures for the \tt{Type} methods
+prefixed with \it{class-name}, along with a non-modifiable external
+array whose name is given by \tt{type_(}\it{class-name}\tt{)}:
+the array is a singleton whose element is a \tt{Type} structure.
+
+In addition to the facilities provided by \tt{class_1_},
+\tt{class_0_} also declares a non-modifiable external
+array for each interface specified in \it{interface-list}.
+For an interface identified by \it{interface-name}, name of the external array
+is given by \tt{typex_(}\it{interface-name}\tt{,} \it{class-name}\tt{)}:
+this array is a singleton whose element type is an extended \tt{Type}
+structure identified as \tt{struct Typex (}\it{interface-name}\tt{)},
+having function pointers for each method of that interface.
+
+\note Interfaces provide a mechanism to extend the basic
+\tt{Type} structure, discussed in the next chapter.
+
+\example A wrapper class provides structural encapsulation
+of a basic data type, and describes fundamental operations
+supported on it with the help of \tt{Type} methods.
+As our first example, we shall declare a simple wrapper class named
+\tt{Unsigned}, whose only non-trivial member is \tt{ULLong_ value}
+(\tt{base} and \tt{type} are trivially present).
+
+\code{../include/class/Unsigned._}
+
+The above class declaration is available in the file
+\tt{Unsigned._} located in \tt{examples/include/class} directory.
+The macro \tt{Unsigned_EXTENDS} is required by the \tt{class_}
+declaration, which establishes an inheritance relationship
+between \tt{Unsigned} class and \tt{Object} class; more precisely,
+the member \tt{base} of \tt{struct Unsigned} is of type \tt{Object_}.
+Successive names in the replacement text of \tt{Unsigned_EXTENDS}
+comprise the optional \it{override-list}, specifying the basic
+\tt{Type} methods that are implemented by the \tt{Unsigned} class (more
+precisely, it is the procedures that are being implemented, not the protocols).
+Note that \tt{free} is missing in the list, which means that \tt{Unsigned}
+uses the same procedure that is inherited from \tt{Object} class
+(recall that the \tt{free} procedure implemented by \tt{Object} class
+calls the standard library function \tt{free} for memory deallocation).
+The word \tt{fin} marks the end of the class declaration.
+
+The macro \tt{UNSIGNED_MAX} is later used in validation;
+for maximum portability, the value of $2^{64} - 1$ is used.
+
+\note For naming structure and union members, we shall
+relax the C\_ convention of a trailing underscore.

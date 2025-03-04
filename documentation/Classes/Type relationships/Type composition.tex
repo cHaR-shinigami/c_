@@ -1,0 +1,11 @@
+If an instance of some type $A$ contains a member that is (pointer to) an instance
+of another type $B$, then $A$ is said to be related to $B$ through composition;
+in other words, every instance of type $A$ ``has-an'' instance of type $B$.
+
+For example, if the class structure of \tt{Person} has a member
+that is pointer to an instance of class \tt{Phone}, then we
+can say that ``\tt{Person} `has-a' \tt{Phone}'' (the sentence
+``\tt{Person} `is-a' \tt{Phone}'' would incorrectly suggest inheritance).
+
+\note C predates the advent of object-oriented design,
+and C\_ uses composition for structural inheritance.

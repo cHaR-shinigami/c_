@@ -1,0 +1,19 @@
+\head{Syntax}
+
+\tt{(} \it{implicant} \tt{implies} \it{implicand} \tt{)}
+
+\head{Constraints}
+
+Both \it{implicant} and \it{implicand} shall be scalar expressions.
+
+\head{Semantics}
+
+\tt{implies} checks if a logical implication exists between the two operands:
+the result has value one if \it{implicant} is zero or
+\it{implicand} is non-zero; otherwise the result is zero.
+The result is of type \tt{Int_}, and the operation follows
+short-circuit evaluation: \it{implicant} is evaluated first,
+and if it is non-zero, only then \it{implicand} is evaluated.
+
+\note The reference implementation provides \tt{implies} as
+an object-like macro that expands to \tt{)==0 ||}\s\s\tt{(}

@@ -1,0 +1,76 @@
+The \tt{compile/} directory has a file named \tt{discount.c_},
+which contains the previous example.
+It has another file named \tt{lib.c_},
+which provides external definitions for several helper functions.
+These definitions are required by the linker, so instead of recompiling this
+file \tt{lib.c_} every time, we can generate an object file to be linked later.
+The project directory \tt{examples/} has a shell script named \tt{build.sh},
+which automates this task and also generates object files
+for all the translation units in the \tt{compile/} directory.
+This script is intended for POSIX-compatible shells (such as \tt{bash}),
+and needs to be executed only once.
+The commands of this script are discussed in appendix E,
+based on which similar scripts can be written for other environments
+(such as classic Windows \tt{cmd} or \tt{PowerShell}).
+
+The reference implementation requires a compiler that supports C23.
+Full C23 support is not necessary; only a few improved language rules
+and new features are required to emulate the behavior of C\_ using C.
+The precise set of requirements can be found in the companion document
+that explains the full architecture of the reference implementation;
+many of these dependencies have been available for a long time,
+so these are not entirely new, but ``prior art'' which may
+be available in compilers that do not fully support C23 yet.
+
+The source codes presented in this document have been tested with two
+compilers installed on a 32-bit variant of Ubuntu operating system:
+\tt{gcc} (version 14) and \tt{clang} (version 19),
+whose precompiled binaries for i386 architecture (IA-32)
+were downloaded from the official software repository of Ubuntu.
+The most important task is to make sure that our compiler is able to locate the
+header files; both \tt{gcc} and \tt{clang} have similar options for this.
+For demonstration, if we assume that \tt{examples/} is present
+in the home directory, then the following can be used:\\
+
+\tt{gcc/clang -xc -std=c23 -iprefix "\$HOME"/examples/.include}
+
+\tt{-iwithprefix/ellipsis -iwithprefix/dialect -iwithprefix/library}
+
+\tt{-iprefix "\$HOME"/examples/include -iwithprefix/.}
+
+\tt{gcc/clang} needs to be at least \tt{gcc-14} or \tt{clang-19}.
+The option \tt{-xc} is required due to the filename extension \tt{.c_}:
+it tells the complier to consider them as C files;
+\tt{-std=c23} is required just in case the default
+language version is set to an older C standard.
+\tt{-iprefix "\$HOME"/examples/.include} sets the path relative to which
+the subsequent \tt{-iwithprefix} locations are considered, up to the next
+\tt{-iprefix} which changes the relative path to \tt{include/} directory.
+The sub-directories within \tt{.include/} collectively contain nearly a hundred
+header files that are logically structured into multilevel hierarchies.
+As a small note, \tt{bash} supports ``tilde expansion'' for the home
+directory, so \tt{"\$HOME"} can be replaced with the more terse $\sim$ symbol.
+
+With that, we're all set to compile and execute our first C\_ program.
+Later in this chapter, we shall add several more compilation
+options to enable rigorous diagnostics; however,
+the overall command becomes rather clunky when typed out in its entirety.
+A much cleaner workaround is to set a ``command alias'',
+which is done in \tt{bash} as:\\
+
+\tt{alias cc_="gcc -xc -std=c23 -iprefix '\$HOME'/examples/.include \\}
+
+\tt{-iwithprefix/ellipsis -iwithprefix/dialect -iwithprefix/library \\}
+
+\tt{-iprefix '\$HOME'/examples/include -iwithprefix/."}\\
+
+Note that the trailing backslash in first
+two lines is meant for line splicing.
+Most modern shells will have some mechanism for setting a command alias.
+By default, \tt{bash} tries to read the contents of \tt{"\$HOME"/.bash_aliases}
+(if the file exists), so a better approach is to put
+our alias in that file (create the file if needed);
+it comes into effect at the next invocation of \tt{bash}, or by ``sourcing''
+it as \tt{. "\$HOME"/.bash_aliases} in the current invocation itself.
+Finally, if the \tt{examples/} directory is put elsewhere,
+then users will have to replace \tt{"\$HOME"} with the correct path.

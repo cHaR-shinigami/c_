@@ -1,0 +1,14 @@
+\fbox{\tt{
+examples/compile/class/Chain/append.c_}}
+\code{../compile/class/Chain/append.c_}
+
+If a new node cannot be allocated, then zero is returned.
+Otherwise the members \tt{data} and \tt{next} are initialized
+to the parameter \tt{data} and null pointer; the latter is
+done because the new node will be set as the \tt{tail} node.
+If the existing value of \tt{this->length} prior to incrementing is non-zero,
+then the chain is non-empty, and the new node is linked
+to the \tt{next} member of the current \tt{tail} node;
+otherwise the chain is empty and the new node is set as the \tt{head} node.
+In any case, the new node is set as the \tt{tail}
+node before returning \tt{1}, which indicates success.

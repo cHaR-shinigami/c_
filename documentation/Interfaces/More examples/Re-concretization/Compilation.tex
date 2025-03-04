@@ -1,0 +1,25 @@
+Before running this program, we need to compile the source files of all
+classes and interfaces used in this code, along with their base types.
+To avoid recompiling all source files for any change we make in our program,
+it is suggested that the dependencies should be compiled only once,
+and their resulting object files should be stored in \tt{object/} directory:
+this task can be automated with the shell script \tt{examples/build.sh}
+that needs to be executed once to populate the \tt{object/} directory.
+Once that is done, we can compile our program and link the object files as:
+
+\begin{center}
+
+\tt{cc_ compile/merry.c_ -xnone object/lib.o object/*/*.o object/*/*/*.o}
+
+\end{center}
+
+The option \tt{-xnone} (contraction of \tt{-x none}) is used before the object
+files to undo the effect of \tt{-xc} option that is part of the \tt{cc_} alias:
+\tt{-x c} tells the compiler (\tt{gcc} or \tt{clang} in our tests) to consider
+subsequent files with any extension as \tt{C} programs, which is not the case
+for object files (otherwise recognized by their filename extension \tt{.o}).
+
+If things go well with the compilation,
+executing the program (as \tt{./a.out}) should print the following output.
+
+\code{Interfaces/More examples/Re-concretization/output.txt}

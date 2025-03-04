@@ -1,0 +1,26 @@
+The floating-point types are used for representing rational numbers;
+irrational numbers (such as $\pi$) are approximated to the nearest
+representable value (margin of error can be negative or positive).
+There are three basic floating-point types,
+listed in non-decreasing order of precision and increasing order of rank:
+\type{Float}, \type{Double}, and \type{LDouble}.
+As with integer types, any value representable with a lower
+ranked type is also representable with a higher ranked type.
+However, an information-theoretic impossibility is that a floating-point type
+implemented with $n$ bits cannot ``exactly'' represent all values of an integer
+type with $n$ value bits, when it also supports fractional values in between.
+
+\example Floating-point representation is usually based upon IEEE 754 or
+ISO/IEC 60559, and many integers are approximated to a ``close enough'' value.
+For a concrete demonstration of information loss, \tt{Float} typically
+uses 32 bits, and the following program finds integers in the range
+$[1, 2^{32})$ that cannot be exactly represented as \tt{Float}.
+The code uses \tt{continue_} statements,
+which cause an immediate skip to next iteration if the condition is satisfied.
+
+\code{../compile/approx.c_}
+
+Due to the use of \tt{sqrt} function, the math library has to be
+linked separately with \tt{-lm}, meaning ``link \tt{libm.so}''.
+
+\code{Types/Floating/approx.txt}

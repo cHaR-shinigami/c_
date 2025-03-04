@@ -1,0 +1,26 @@
+The following additional options are used
+for invoking \tt{clang} in our build script.
+
+\begin{itemize}
+
+\item \tt{-fmacro-backtrace-limit} determines the maximum backtrace depth for
+the preprocessing call stack that is implicitly updated for macro invocations.
+Setting it to \tt{1} reduces the verbosity of preprocessing error messages,
+which is analogous (though not entirely equivalent) to
+the option \tt{-ftrack-macro-expansion=0} for \tt{gcc}.
+
+\item \tt{-Wassign-enum} when an enumeration type lvalue
+is assigned a value other than its enumeration constants.
+
+\item \tt{-Wshift-sign-overflow} warns when a left shift operation with a signed
+left operand (after type promotion) might shift a \tt{1} to the sign bit position;
+this option is analogous to the setting \tt{-Wshift-overflow=2} in \tt{gcc}.
+
+\item \tt{-Wunreachable-code-aggressive} activates several diagnostic
+options for detecting code points that cannot be reached during execution.
+Removing such code reduces object file size without changing functional behavior.
+
+\item \tt{-Wno-pointer-arith} is used to disable some false
+positive warnings for address arithmetic on pointer to VLA.
+
+\end{itemize}

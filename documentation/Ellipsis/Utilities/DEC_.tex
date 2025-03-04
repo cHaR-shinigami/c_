@@ -1,0 +1,13 @@
+\head{Syntax}
+
+\tt{DEC_ (} $n$ \tt{)}
+
+\head{Constraints}
+
+$n$ shall be a non-negative decimal integer constant not exceeding \tt{PP_MAX},
+or it shall expand to such a constant.
+
+\head{Semantics}
+
+\tt{DEC_(0)} gives \tt{PP_MAX}; if $n$ is not zero, then
+\tt{DEC_(}$n$\tt{)} expands to the decimal integer constant one less than $n$.

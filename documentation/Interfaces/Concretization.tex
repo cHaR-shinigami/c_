@@ -1,0 +1,23 @@
+\def\Subsection#1{\subsection{#1}\input{Interfaces/Concretization/#1}}
+
+Concretization means defining a structure for materializing
+an abstract data type described by an interface, and providing
+functions that can operate on instances of the concrete structure.
+This structure is provided by a class declaration,
+and for each member in the \tt{Typex} structure declared by an interface,
+the class declares a prototype for a corresponding method whose procedure
+implements the necessary functionality required by the interface.
+
+A concretizing class is said to ``implement'' an interface: an interface can be
+implemented by multiple classes, and a single class can implement multiple classes.
+The implementation relationship between a class and an
+interface is established with the help of object-like macros,
+which are required by declarations as well as definitions.
+
+\Subsection{Declaration}
+
+\Subsection{Definition}
+
+\Subsection{Abstraction}
+
+\Subsection{Methods}

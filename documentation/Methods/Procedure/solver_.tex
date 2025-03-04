@@ -1,0 +1,12 @@
+\head{Syntax}
+
+\tt{solver_ (} \it{prefix} \tt{,} \it{method-name} \tt{)}
+
+\head{Semantics}
+
+\tt{solver_} gives mangled name of the function defined by
+\tt{procedure_}; this function is also declared by \tt{protocol_}.
+
+\note \tt{prototype_} family does not declare the identifier given by \tt{solver_}:
+this is because a procedure can be defined with internal linkage, in which
+case the function will not be visible outside of its own translation unit.
