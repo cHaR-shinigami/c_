@@ -4,7 +4,7 @@
 \usepackage{emptypage}
 \usepackage{enumitem}
 \usepackage{fancyvrb}
-\usepackage[left=2cm, right=2cm]{geometry}
+\usepackage[left = 2cm, right = 2cm]{geometry}
 \usepackage{hyperref}
 \usepackage{imakeidx}
 \usepackage{listings}
@@ -43,16 +43,17 @@
 	upquote,
 }
 
-\def\code#1{\lstinputlisting{#1}}
-\def \src#1{\tt{examples/#1}\code{../#1}}
+\newcommand\code[1]{\lstinputlisting{#1}}
+\newcommand\src [1]{\tt{examples/#1}\code{../#1}}
 
-\def\head#1{\noindent\textbf{#1}}
-\def\example {\textsc {example}\indent}
-\def\exercise{\textsc{exercise}\indent}
-\def\note{\textsc{note}\indent}
+\newcommand\head[1]{\noindent\textbf{#1}}
+
+\newcommand\example {\textsc {example}\indent}
+\newcommand\exercise{\textsc{exercise}\indent}
+\newcommand\note{\textsc{note}\indent}
 
 \def\table#1{\begin{center}\begin{tabular}{#1}}
-\def\elbat{\end{tabular}\end{center}}
+\newcommand\elbat{\end{tabular}\end{center}}
 
 \def\it#1{\textit{#1}}
 \def\tt#1{\lstinline{#1}}
@@ -61,17 +62,17 @@
 
 \def\l{\phantom{[}}
 \def\r{\phantom{]}}
-\def\s{\phantom{\_}}
+\newcommand\s{\phantom{\_}}
 
-\def\opt{$_{opt}$ }
+\newcommand\opt{$_{opt}$ }
 
-\def\idx#1{\tt{#1}\index{#1@\tt{#1}}}
-\def\idX#1{\tt{#1}\index{#1@\tt{#1}*}}
-\def\idxy#1#2{\tt{#2}\index{#1@\tt{#1}!#2@\tt{#2}}}
-\def\idxyz#1#2#3{\tt{#3}\index{#1@\tt{#1}!#2@\tt{#2}!#3@\tt{#3}}}
-\def\type#1{\tt{#1}\index{#1@\tt{#1}[\_]}}
+\newcommand\idx  [1]{\tt{#1}\index{#1@\tt{#1}}}
+\newcommand\idX  [1]{\tt{#1}\index{#1@\tt{#1}*}}
+\newcommand\idxy [2]{\tt{#2}\index{#1@\tt{#1}!#2@\tt{#2}}}
+\newcommand\idxyz[3]{\tt{#3}\index{#1@\tt{#1}!#2@\tt{#2}!#3@\tt{#3}}}
+\newcommand\type [1]{\tt{#1}\index{#1@\tt{#1}[\_]}}
 
-\def\Chapter#1{\chapter{#1}\input{#1}}
+\newcommand\Chapter[1]{\chapter{#1}\input{#1}}
 
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
@@ -112,7 +113,7 @@
 
 \appendix
 
-\def\code#1{\VerbatimInput[obeytabs, tabsize=4]{#1}}
+\def\code#1{\VerbatimInput[obeytabs, tabsize = 4]{#1}}
 
 \Chapter{Examples}
 
