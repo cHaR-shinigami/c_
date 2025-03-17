@@ -18,9 +18,6 @@ Another benefit of using \tt{-O3} is that some warnings
 options are activated only when certain optimizations are
 enabled that perform a more rigorous static analysis.
 
-\item \tt{-Werror} turns diagnostic or warning messages
-into hard errors that cause a compilation failure.
-
 \item \tt{-iprefix} sets a path prefix for subsequent use of
 \tt{-iwithprefix} option, until the next occurrence of \tt{-iprefix}.
 
@@ -32,11 +29,13 @@ added to the path for locating header files, searched in the given order:
 
 \enlargethispage*{\baselineskip}
 
-\table{lll}
+\table{ll}
 
-1. \tt{.include/ellipsis/} & 2. \tt{.include/dialect/} & 3. \tt{.include/library/}\\
+1. \tt{.include/ellipsis/} & 4. \tt{include/}\\
 
-4. \s\tt{include/} & 5. \s\tt{include/class/} & 6. \s\tt{include/interface/}\\
+2. \tt{.include/dialect/}  & 5. \tt{include/class/}\\
+
+3. \tt{.include/library/}  & 6. \tt{include/interface/}\\
 
 \elbat
 

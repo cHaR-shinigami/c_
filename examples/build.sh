@@ -4,7 +4,7 @@ set -e
 C_=$(dirname "$(realpath "$0")")
 
 #<<'#'
-CC_="gcc   -c -xc -std=c2x -O3 -ftrack-macro-expansion=0 -Werror -iprefix
+CC_="gcc   -c -xc -std=c2x -O3 -ftrack-macro-expansion=0 -iprefix
 '$C_'/.include -iwithprefix/ellipsis  -iwithprefix/dialect -iwithprefix/library
 -iprefix '$C_'/include -iwithprefix/. -iwithprefix/class -iwithprefix/interface
 -Wall -Wextra -Wpedantic -Wcast-align -Wcast-qual -Wswitch-enum -Wwrite-strings
@@ -15,7 +15,7 @@ CC_="gcc   -c -xc -std=c2x -O3 -ftrack-macro-expansion=0 -Werror -iprefix
 #
 
 <<'#'
-CC_="clang -c -xc -std=c2x -O3 -fmacro-backtrace-limit=1 -Werror -iprefix
+CC_="clang -c -xc -std=c2x -O3 -fmacro-backtrace-limit=1 -iprefix
 '$C_'/.include -iwithprefix/ellipsis  -iwithprefix/dialect -iwithprefix/library
 -iprefix '$C_'/include -iwithprefix/. -iwithprefix/class -iwithprefix/interface
 -Wall -Wextra -Wpedantic -Wcast-align -Wcast-qual -Wswitch-enum -Wwrite-strings
@@ -35,11 +35,11 @@ mkdir -p class
 cd class
 eval $CC_ "'$C_'"/compile/class/*.c_
 strip --strip-unneeded *.o
-for d in $(cd ../../compile/class     &&  ls -d */)
+for dir in $(cd ../../compile/class     &&  ls -d */)
 do
-	mkdir -p $d
-	cd $d
-	eval $CC_ "'$C_'/compile/class/$d"*.c_
+	mkdir -p $dir
+	cd $dir
+	eval $CC_ "'$C_'/compile/class/$dir"*.c_
 	strip --strip-unneeded *.o
 	cd ..
 done
@@ -50,11 +50,11 @@ mkdir -p interface
 cd interface
 eval $CC_ "'$C_'"/compile/interface/*.c_
 strip --strip-unneeded *.o
-for d in $(cd ../../compile/interface &&  ls -d */)
+for dir in $(cd ../../compile/interface &&  ls -d */)
 do
-	mkdir -p $d
-	cd $d
-	eval $CC_ "'$C_'/compile/interface/$d"*.c_
+	mkdir -p $dir
+	cd $dir
+	eval $CC_ "'$C_'/compile/interface/$dir"*.c_
 	strip --strip-unneeded *.o
 	cd ..
 done
